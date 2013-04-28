@@ -28,6 +28,10 @@
 #include "streq.h"
 #include "uniwidth.h"
 
+#ifdef __KLIBC__
+# undef wcwidth
+#endif
+
 int
 wcwidth (wchar_t wc)
 #undef wcwidth
