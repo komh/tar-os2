@@ -1155,6 +1155,9 @@ xpipe (int fd[2])
 {
   if (pipe (fd) < 0)
     call_arg_fatal ("pipe", _("interprocess channel"));
+
+  SET_BINARY_MODE (fd[0]);
+  SET_BINARY_MODE (fd[1]);
 }
 
 /* Return PTR, aligned upward to the next multiple of ALIGNMENT.
