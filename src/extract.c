@@ -1076,7 +1076,10 @@ extract_file (char *file_name, int typeflag)
   mode_t current_mode_mask = 0;
 
   if (to_stdout_option)
-    fd = STDOUT_FILENO;
+    {
+      fd = STDOUT_FILENO;
+      SET_BINARY_MODE (fd);
+    }
   else if (to_command_option)
     {
       fd = sys_exec_command (file_name, 'f', &current_stat_info);
