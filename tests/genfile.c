@@ -763,6 +763,9 @@ exec_command (void)
 
   pipe (fd);
 
+  SET_BINARY_MODE (fd[0]);
+  SET_BINARY_MODE (fd[1]);
+
   pid = fork ();
   if (pid == -1)
     error (EXIT_FAILURE, errno, "fork");
