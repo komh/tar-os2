@@ -855,6 +855,9 @@ exec_command (int argc, char **argv)
   if (pipe (fd) != 0)
     error (EXIT_FAILURE, errno, "pipe");
 
+  SET_BINARY_MODE (fd[0]);
+  SET_BINARY_MODE (fd[1]);
+
   pid = fork ();
   if (pid == -1)
     error (EXIT_FAILURE, errno, "fork");
