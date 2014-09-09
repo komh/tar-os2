@@ -396,7 +396,10 @@ sys_child_open_for_compress (void)
   xclose (child_pipe[PWRITE]);
 
   if (strcmp (archive_name_array[0], "-") == 0)
-    archive = STDOUT_FILENO;
+    {
+      archive = STDOUT_FILENO;
+      SET_BINARY_MODE (archive);
+    }
   else
     {
       archive = rmtcreat (archive_name_array[0], MODE_RW, rsh_command_option);
@@ -553,7 +556,10 @@ sys_child_open_for_uncompress (void)
   xclose (child_pipe[PREAD]);
 
   if (strcmp (archive_name_array[0], "-") == 0)
-    archive = STDIN_FILENO;
+    {
+      archive = STDIN_FILENO;
+      SET_BINARY_MODE (archive);
+    }
   else
     archive = rmtopen (archive_name_array[0], O_RDONLY | O_BINARY,
 		       MODE_RW, rsh_command_option);

@@ -696,6 +696,7 @@ _open_archive (enum access_mode wanted_access)
             enum compress_type type;
 
             archive = STDIN_FILENO;
+            SET_BINARY_MODE (archive);
 
             type = check_compressed_archive (&shortfile);
             if (type != ct_tar && type != ct_none)
@@ -716,6 +717,7 @@ _open_archive (enum access_mode wanted_access)
         case ACCESS_UPDATE:
           archive = STDIN_FILENO;
           write_archive_to_stdout = true;
+          SET_BINARY_MODE (STDOUT_FILENO);
           record_end = record_start; /* set up for 1st record = # 0 */
           if (!index_file_name)
             stdlis = stderr;
