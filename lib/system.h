@@ -460,11 +460,15 @@ char *getenv ();
 # include <grp.h>
 #endif
 
-#if MSDOS
-# include <process.h>
+#if MSDOS || defined(__OS2__)
+# ifdef __OS2__
+#  include <io.h>    /* setmode() */
+# else
+#  include <process.h>
+#  define mkdir(file, mode) (mkdir) (file)
+# endif
 # define SET_BINARY_MODE(arc) setmode(arc, O_BINARY)
 # define ERRNO_IS_EACCES errno == EACCES
-# define mkdir(file, mode) (mkdir) (file)
 # define TTY_NAME "con"
 # define sys_reset_uid_gid()
 #else
