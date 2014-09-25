@@ -34,6 +34,10 @@
 #define obstack_chunk_free free
 #include <obstack.h>
 
+#ifdef __OS2__
+# include <process.h>
+#endif
+
 #ifndef EXIT_SUCCESS
 # define EXIT_SUCCESS 0
 #endif
@@ -858,6 +862,7 @@ exec_command (int argc, char **argv)
   SET_BINARY_MODE (fd[0]);
   SET_BINARY_MODE (fd[1]);
 
+#ifndef __OS2__
   pid = fork ();
   if (pid == -1)
     error (EXIT_FAILURE, errno, "fork");
@@ -877,6 +882,24 @@ exec_command (int argc, char **argv)
       execvp (xargv[0], xargv);
       error (EXIT_FAILURE, errno, "execvp %s", xargv[0]);
     }
+#else
+  {
+    int saved_stderr;
+
+    saved_stderr = dup (2);
+
+    /* Pipe stderr */
+    dup2 (fd[1], 2);
+
+    /* Make sure POSIX locale is used */
+    setenv ("LC_ALL", "POSIX", 1);
+
+    pid = spawnvp (P_NOWAIT, xargv[0], xargv);
+
+    dup2 (saved_stderr, 2);
+    close (saved_stderr);
+  }
+#endif
 
   /* Master */
   close (fd[1]);
