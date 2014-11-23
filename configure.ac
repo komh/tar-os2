@@ -367,6 +367,8 @@ else
 	BACKUP_SED_COND='/^\#IF_DATE_FORMAT_OK/,/^\#ELSE_DATE_FORMAT_OK/d;/^\#ENDIF_DATE_FORMAT_OK/d'
 fi
 
+AS_CASE([$host_os], [os2*], [LDFLAGS="$LDFLAGS -Zargs-wild"])
+
 AC_OUTPUT([Makefile\
            doc/Makefile\
 	   gnu/Makefile\
