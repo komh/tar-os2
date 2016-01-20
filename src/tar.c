@@ -1348,7 +1348,11 @@ static char const *const sort_mode_arg[] = {
 static int sort_mode_flag[] = {
     SAVEDIR_SORT_NONE,
     SAVEDIR_SORT_NAME,
+#if D_INO_IN_DIRENT
     SAVEDIR_SORT_INODE
+#else
+    SAVEDIR_SORT_NONE
+#endif
 };
 
 ARGMATCH_VERIFY (sort_mode_arg, sort_mode_flag);
