@@ -32,7 +32,7 @@
 #endif
 @PRAGMA_COLUMNS@
 
-#if defined __need_mbstate_t || defined __need_wint_t || (defined __hpux && ((defined _INTTYPES_INCLUDED && !defined strtoimax) || defined _GL_JUST_INCLUDE_SYSTEM_WCHAR_H)) || defined _GL_ALREADY_INCLUDING_WCHAR_H
+#if ((defined __need_mbstate_t || defined __need_wint_t) && !defined __KLIBC__) || (defined __hpux && ((defined _INTTYPES_INCLUDED && !defined strtoimax) || defined _GL_JUST_INCLUDE_SYSTEM_WCHAR_H)) || defined _GL_ALREADY_INCLUDING_WCHAR_H
 /* Special invocation convention:
    - Inside glibc and uClibc header files.
    - On HP-UX 11.00 we have a sequence of nested includes
@@ -442,6 +442,11 @@ _GL_CXXALIAS_RPL (wcwidth, int, (wchar_t));
 #  if !@HAVE_DECL_WCWIDTH@
 /* wcwidth exists but is not declared.  */
 _GL_FUNCDECL_SYS (wcwidth, int, (wchar_t) _GL_ATTRIBUTE_PURE);
+#  elif defined __KLIBC__
+/* On OS/2 kLIBC, wcwidth is a macro that expands to the name of a
+   static inline function.  The implementation of wcwidth in wcwidth.c
+   causes a "conflicting types" error. */
+#   undef wcwidth
 #  endif
 _GL_CXXALIAS_SYS (wcwidth, int, (wchar_t));
 # endif
