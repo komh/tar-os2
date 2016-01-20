@@ -1,7 +1,7 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Create a hard link relative to open directories.
-   Copyright (C) 2009-2011 Free Software Foundation, Inc.
+   Copyright (C) 2009-2014 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -25,7 +25,6 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <limits.h>
-#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>

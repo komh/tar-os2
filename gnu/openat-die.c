@@ -2,7 +2,7 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Report a save- or restore-cwd failure in our openat replacement and then exit.
 
-   Copyright (C) 2005-2006, 2008-2011 Free Software Foundation, Inc.
+   Copyright (C) 2005-2006, 2008-2014 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ openat_save_fail (int errnum)
   error (exit_failure, errnum,
          _("unable to record current working directory"));
 #endif
-  /* The `noreturn' attribute cannot be applied to error, since it returns
+  /* _Noreturn cannot be applied to error, since it returns
      when its first argument is 0.  To help compilers understand that this
      function does not return, call abort.  Also, the abort is a
      safety feature if exit_failure is 0 (which shouldn't happen).  */

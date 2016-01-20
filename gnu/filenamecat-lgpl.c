@@ -2,7 +2,7 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Concatenate two arbitrary file names.
 
-   Copyright (C) 1996-2007, 2009-2011 Free Software Foundation, Inc.
+   Copyright (C) 1996-2007, 2009-2014 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -36,7 +36,7 @@
 /* Return the longest suffix of F that is a relative file name.
    If it has no such suffix, return the empty string.  */
 
-static char const *
+static char const * _GL_ATTRIBUTE_PURE
 longest_relative_suffix (char const *f)
 {
   for (f += FILE_SYSTEM_PREFIX_LEN (f); ISSLASH (*f); f++)

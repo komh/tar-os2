@@ -2,7 +2,7 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* xmalloc.c -- malloc with out of memory checking
 
-   Copyright (C) 1990-2000, 2002-2006, 2008-2011 Free Software Foundation, Inc.
+   Copyright (C) 1990-2000, 2002-2006, 2008-2014 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -19,11 +19,9 @@
 
 #include <config.h>
 
-#if ! HAVE_INLINE
-# define static_inline
-#endif
+#define XALLOC_INLINE _GL_EXTERN_INLINE
+
 #include "xalloc.h"
-#undef static_inline
 
 #include <stdlib.h>
 #include <string.h>
@@ -54,8 +52,16 @@ xmalloc (size_t n)
 void *
 xrealloc (void *p, size_t n)
 {
+  if (!n && p)
+    {
+      /* The GNU and C99 realloc behaviors disagree here.  Act like
+         GNU, even if the underlying realloc is C99.  */
+      free (p);
+      return NULL;
+    }
+
   p = realloc (p, n);
-  if (!p && n != 0)
+  if (!p && n)
     xalloc_die ();
   return p;
 }

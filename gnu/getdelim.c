@@ -1,7 +1,7 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* getdelim.c --- Implementation of replacement getdelim function.
-   Copyright (C) 1994, 1996-1998, 2001, 2003, 2005-2011 Free Software
+   Copyright (C) 1994, 1996-1998, 2001, 2003, 2005-2014 Free Software
    Foundation, Inc.
 
    This program is free software; you can redistribute it and/or
@@ -15,17 +15,15 @@
    General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-   02110-1301, USA.  */
+   along with this program; if not, see <http://www.gnu.org/licenses/>.  */
 
 /* Ported from glibc by Simon Josefsson. */
-
-#include <config.h>
 
 /* Don't use __attribute__ __nonnull__ in this compilation unit.  Otherwise gcc
    optimizes away the lineptr == NULL || n == NULL || fp == NULL tests below.  */
 #define _GL_ARG_NONNULL(params)
+
+#include <config.h>
 
 #include <stdio.h>
 

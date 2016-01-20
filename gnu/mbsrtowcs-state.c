@@ -1,7 +1,7 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Convert string to wide string.
-   Copyright (C) 2008-2011 Free Software Foundation, Inc.
+   Copyright (C) 2008-2014 Free Software Foundation, Inc.
    Written by Bruno Haible <bruno@clisp.org>, 2008.
 
    This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
 /* Internal state used by the functions mbsrtowcs() and mbsnrtowcs().  */
 mbstate_t _gl_mbsrtowcs_state
 /* The state must initially be in the "initial state"; so, zero-initialize it.
-   On most systems, putting it into BSS is sufficient.  Not so on MacOS X 10.3,
+   On most systems, putting it into BSS is sufficient.  Not so on Mac OS X 10.3,
    see <http://lists.gnu.org/archive/html/bug-gnulib/2009-01/msg00329.html>.
    When it needs an initializer, use 0 or {0} as initializer? 0 only works
    when mbstate_t is a scalar type (such as when gnulib defines it, or on

@@ -50,7 +50,7 @@ ChangeLog:
 	  if test -n "$(gen_start_date)"; then                             \
 	    cmd="$$cmd --since=\"$(gen_start_date)\"";                     \
 	  fi;                                                              \
-	  $$cmd |                                                          \
+	  $$cmd --format='%s%n%n%b%n' |                                    \
             sed '/<unknown>$$/d' | fmt -s > $(changelog_dir)/cl-t;         \
           if test -n "$(prev_change_log)" && test -f "$(prev_change_log)"; \
 	  then                                                             \

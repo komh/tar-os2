@@ -1,7 +1,7 @@
-# serial 4
+# serial 5
 # See if we need to provide utimensat replacement.
 
-dnl Copyright (C) 2009-2011 Free Software Foundation, Inc.
+dnl Copyright (C) 2009-2014 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -15,7 +15,6 @@ AC_DEFUN([gl_FUNC_UTIMENSAT],
   AC_CHECK_FUNCS_ONCE([utimensat])
   if test $ac_cv_func_utimensat = no; then
     HAVE_UTIMENSAT=0
-    AC_LIBOBJ([utimensat])
   else
     AC_CACHE_CHECK([whether utimensat works],
       [gl_cv_func_utimensat_works],
@@ -67,7 +66,6 @@ choke me
          [gl_cv_func_utimensat_works="guessing no"])])
     if test "$gl_cv_func_utimensat_works" != yes; then
       REPLACE_UTIMENSAT=1
-      AC_LIBOBJ([utimensat])
     fi
   fi
 ])

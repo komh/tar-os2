@@ -1,7 +1,6 @@
 /* System-dependent calls for tar.
 
-   Copyright (C) 2003, 2004, 2005, 2006, 2007,
-   2008, 2010 Free Software Foundation, Inc.
+   Copyright 2003-2008, 2010, 2013-2014 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -14,8 +13,7 @@
    Public License for more details.
 
    You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
+   with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include <system.h>
 
@@ -23,6 +21,20 @@
 #include <priv-set.h>
 #include <rmt.h>
 #include <signal.h>
+#include <wordsplit.h>
+
+static _Noreturn void
+xexec (const char *cmd)
+{
+  struct wordsplit ws;
+
+  ws.ws_env = (const char **) environ;
+  if (wordsplit (cmd, &ws, (WRDSF_DEFFLAGS | WRDSF_ENV) & ~WRDSF_NOVAR))
+    FATAL_ERROR ((0, 0, _("cannot split string '%s': %s"),
+		  cmd, wordsplit_strerror (&ws)));
+  execvp (ws.ws_wordv[0], ws.ws_wordv);
+  exec_fatal (cmd);
+}
 
 #if MSDOS
 
@@ -194,7 +206,7 @@ sys_spawn_shell (void)
   if (child == 0)
     {
       priv_set_restore_linkdir ();
-      execlp (shell, "-sh", "-i", (char *) 0);
+      execlp (shell, "-sh", "-i", NULL);
       exec_fatal (shell);
     }
   else
@@ -365,8 +377,7 @@ sys_child_open_for_compress (void)
 	  xdup2 (archive, STDOUT_FILENO);
 	}
       priv_set_restore_linkdir ();
-      execlp (use_compress_program_option, use_compress_program_option, NULL);
-      exec_fatal (use_compress_program_option);
+      xexec (use_compress_program_option);
     }
 
   /* We do need a grandchild tar.  */
@@ -383,9 +394,7 @@ sys_child_open_for_compress (void)
       xdup2 (child_pipe[PWRITE], STDOUT_FILENO);
       xclose (child_pipe[PREAD]);
       priv_set_restore_linkdir ();
-      execlp (use_compress_program_option, use_compress_program_option,
-	      (char *) 0);
-      exec_fatal (use_compress_program_option);
+      xexec (use_compress_program_option);
     }
 
   /* The child tar is still here!  */
@@ -460,6 +469,11 @@ run_decompress_program (void)
 {
   int i;
   const char *p, *prog = NULL;
+  struct wordsplit ws;
+  int wsflags = (WRDSF_DEFFLAGS | WRDSF_ENV | WRDSF_DOOFFS) & ~WRDSF_NOVAR;
+
+  ws.ws_env = (const char **) environ;
+  ws.ws_offs = 1;
 
   for (p = first_decompress_program (&i); p; p = next_decompress_program (&i))
     {
@@ -470,8 +484,16 @@ run_decompress_program (void)
 	  WARNOPT (WARN_DECOMPRESS_PROGRAM,
 		   (0, 0, _("trying %s"), p));
 	}
+      if (wordsplit (p, &ws, wsflags))
+	FATAL_ERROR ((0, 0, _("cannot split string '%s': %s"),
+		      p, wordsplit_strerror (&ws)));
+      wsflags |= WRDSF_REUSE;
+      memmove(ws.ws_wordv, ws.ws_wordv + ws.ws_offs,
+	      sizeof(ws.ws_wordv[0])*ws.ws_wordc);
+      ws.ws_wordv[ws.ws_wordc] = (char *) "-d";
       prog = p;
-      execlp (p, p, "-d", NULL);
+      execvp (ws.ws_wordv[0], ws.ws_wordv);
+      ws.ws_wordv[ws.ws_wordc] = NULL;
     }
   if (!prog)
     FATAL_ERROR ((0, 0, _("unable to run decompression program")));
@@ -698,13 +720,12 @@ stat_to_env (char *name, char type, struct tar_stat_info *st)
 }
 
 static pid_t global_pid;
-static RETSIGTYPE (*pipe_handler) (int sig);
+static void (*pipe_handler) (int sig);
 
 int
 sys_exec_command (char *file_name, int typechar, struct tar_stat_info *st)
 {
   int p[2];
-  char *argv[4];
 
   xpipe (p);
   pipe_handler = signal (SIGPIPE, SIG_IGN);
@@ -722,15 +743,8 @@ sys_exec_command (char *file_name, int typechar, struct tar_stat_info *st)
 
   stat_to_env (file_name, typechar, st);
 
-  argv[0] = "/bin/sh";
-  argv[1] = "-c";
-  argv[2] = to_command_option;
-  argv[3] = NULL;
-
   priv_set_restore_linkdir ();
-  execv ("/bin/sh", argv);
-
-  exec_fatal (file_name);
+  xexec (to_command_option);
 }
 
 void
@@ -772,10 +786,9 @@ int
 sys_exec_info_script (const char **archive_name, int volume_number)
 {
   pid_t pid;
-  char *argv[4];
   char uintbuf[UINTMAX_STRSIZE_BOUND];
   int p[2];
-  static RETSIGTYPE (*saved_handler) (int sig);
+  static void (*saved_handler) (int sig);
 
   xpipe (p);
   saved_handler = signal (SIGPIPE, SIG_IGN);
@@ -837,15 +850,8 @@ sys_exec_info_script (const char **archive_name, int volume_number)
 
   xclose (p[PREAD]);
 
-  argv[0] = "/bin/sh";
-  argv[1] = "-c";
-  argv[2] = (char *) info_script_option;
-  argv[3] = NULL;
-
   priv_set_restore_linkdir ();
-  execv (argv[0], argv);
-
-  exec_fatal (info_script_option);
+  xexec (info_script_option);
 }
 
 void
@@ -854,7 +860,6 @@ sys_exec_checkpoint_script (const char *script_name,
 			    int checkpoint_number)
 {
   pid_t pid;
-  char *argv[4];
   char uintbuf[UINTMAX_STRSIZE_BOUND];
 
   pid = xfork ();
@@ -885,15 +890,8 @@ sys_exec_checkpoint_script (const char *script_name,
   setenv ("TAR_FORMAT",
 	  archive_format_string (current_format == DEFAULT_FORMAT ?
 				 archive_format : current_format), 1);
-  argv[0] = "/bin/sh";
-  argv[1] = "-c";
-  argv[2] = (char *) script_name;
-  argv[3] = NULL;
-
   priv_set_restore_linkdir ();
-  execv (argv[0], argv);
-
-  exec_fatal (script_name);
+  xexec (script_name);
 }
 
 #endif /* not MSDOS */

@@ -1,7 +1,7 @@
 /* Miscellaneous functions, not really specific to GNU tar.
 
-   Copyright (C) 1988, 1992, 1994, 1995, 1996, 1997, 1999, 2000, 2001,
-   2003, 2004, 2005, 2006, 2007, 2009, 2010 Free Software Foundation, Inc.
+   Copyright 1988, 1992, 1994-1997, 1999-2001, 2003-2007, 2009-2010,
+   2012-2014 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -14,9 +14,9 @@
    Public License for more details.
 
    You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
+   with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
+#define COMMON_INLINE _GL_EXTERN_INLINE
 #include <system.h>
 #include <rmt.h>
 #include "common.h"
@@ -28,6 +28,8 @@
 #ifndef DOUBLE_SLASH_IS_DISTINCT_ROOT
 # define DOUBLE_SLASH_IS_DISTINCT_ROOT 0
 #endif
+
+static const char *tar_getcdpath (int);
 
 
 /* Handling strings.  */
@@ -105,7 +107,7 @@ quote_copy_string (const char *string)
    completes the unquoting anyway.
 
    This is used for reading the saved directory file in incremental
-   dumps.  It is used for decoding old `N' records (demangling names).
+   dumps.  It is used for decoding old 'N' records (demangling names).
    But also, it is used for decoding file arguments, would they come
    from the shell or a -T file, and for decoding the --exclude
    argument.  */
@@ -229,11 +231,12 @@ zap_slashes (char *name)
 }
 
 /* Normalize FILE_NAME by removing redundant slashes and "."
-   components, including redundant trailing slashes.  Leave ".."
-   alone, as it may be significant in the presence of symlinks and on
-   platforms where "/.." != "/".  Destructive version: modifies its
-   argument. */
-static void
+   components, including redundant trailing slashes.
+   Leave ".." alone, as it may be significant in the presence
+   of symlinks and on platforms where "/.." != "/".
+
+   Destructive version: modifies its argument. */
+void
 normalize_filename_x (char *file_name)
 {
   char *name = file_name + FILE_SYSTEM_PREFIX_LEN (file_name);
@@ -267,37 +270,42 @@ normalize_filename_x (char *file_name)
 }
 
 /* Normalize NAME by removing redundant slashes and "." components,
-   including redundant trailing slashes.  Return a normalized
-   newly-allocated copy.  */
+   including redundant trailing slashes.
+
+   Return a normalized newly-allocated copy.  */
 
 char *
-normalize_filename (const char *name)
+normalize_filename (int cdidx, const char *name)
 {
   char *copy = NULL;
 
   if (IS_RELATIVE_FILE_NAME (name))
     {
-      /* Set COPY to the absolute file name if possible.
+      /* Set COPY to the absolute path for this name.
 
          FIXME: There should be no need to get the absolute file name.
-         getcwd is slow, it might fail, and it does not necessarily
-         return a canonical name even when it succeeds.  Perhaps we
-         can use dev+ino pairs instead of names?  */
-      copy = xgetcwd ();
-      if (copy)
-        {
-          size_t copylen = strlen (copy);
-          bool need_separator = ! (DOUBLE_SLASH_IS_DISTINCT_ROOT
-                                   && copylen == 2 && ISSLASH (copy[1]));
-          copy = xrealloc (copy, copylen + need_separator + strlen (name) + 1);
-          copy[copylen] = DIRECTORY_SEPARATOR;
-          strcpy (copy + copylen + need_separator, name);
-        }
-      else
-        WARN ((0, errno, _("Cannot get working directory")));
+         tar_getcdpath does not return a true "canonical" path, so
+         this following approach may lead to situations where the same
+         file or directory is processed twice under different absolute
+         paths without that duplication being detected.  Perhaps we
+         should use dev+ino pairs instead of names?  (See listed03.at for
+         a related test case.) */
+      const char *cdpath = tar_getcdpath (cdidx);
+      size_t copylen;
+      bool need_separator;
+
+      if (!cdpath)
+	call_arg_fatal ("getcwd", ".");
+      copylen = strlen (cdpath);
+      need_separator = ! (DOUBLE_SLASH_IS_DISTINCT_ROOT
+			  && copylen == 2 && ISSLASH (cdpath[1]));
+      copy = xmalloc (copylen + need_separator + strlen (name) + 1);
+      strcpy (copy, cdpath);
+      copy[copylen] = DIRECTORY_SEPARATOR;
+      strcpy (copy + copylen + need_separator, name);
     }
 
-  if (! copy)
+  if (!copy)
     copy = xstrdup (name);
   normalize_filename_x (copy);
   return copy;
@@ -324,6 +332,76 @@ replace_prefix (char **pname, const char *samp, size_t slen,
 
 
 /* Handling numbers.  */
+
+/* Convert VALUE, which is converted from a system integer type whose
+   minimum value is MINVAL and maximum MINVAL, to an decimal
+   integer string.  Use the storage in BUF and return a pointer to the
+   converted string.  If VALUE is converted from a negative integer in
+   the range MINVAL .. -1, represent it with a string representation
+   of the negative integer, using leading '-'.  */
+#if ! (INTMAX_MAX <= UINTMAX_MAX / 2)
+# error "sysinttostr: uintmax_t cannot represent all intmax_t values"
+#endif
+char *
+sysinttostr (uintmax_t value, intmax_t minval, uintmax_t maxval,
+	     char buf[SYSINT_BUFSIZE])
+{
+  if (value <= maxval)
+    return umaxtostr (value, buf);
+  else
+    {
+      intmax_t i = value - minval;
+      return imaxtostr (i + minval, buf);
+    }
+}
+
+/* Convert a prefix of the string ARG to a system integer type whose
+   minimum value is MINVAL and maximum MAXVAL.  If MINVAL is negative,
+   negative integers MINVAL .. -1 are assumed to be represented using
+   leading '-' in the usual way.  If the represented value exceeds
+   INTMAX_MAX, return a negative integer V such that (uintmax_t) V
+   yields the represented value.  If ARGLIM is nonnull, store into
+   *ARGLIM a pointer to the first character after the prefix.
+
+   This is the inverse of sysinttostr.
+
+   On a normal return, set errno = 0.
+   On conversion error, return 0 and set errno = EINVAL.
+   On overflow, return an extreme value and set errno = ERANGE.  */
+#if ! (INTMAX_MAX <= UINTMAX_MAX)
+# error "strtosysint: nonnegative intmax_t does not fit in uintmax_t"
+#endif
+intmax_t
+strtosysint (char const *arg, char **arglim, intmax_t minval, uintmax_t maxval)
+{
+  errno = 0;
+  if (maxval <= INTMAX_MAX)
+    {
+      if (ISDIGIT (arg[*arg == '-']))
+	{
+	  intmax_t i = strtoimax (arg, arglim, 10);
+	  intmax_t imaxval = maxval;
+	  if (minval <= i && i <= imaxval)
+	    return i;
+	  errno = ERANGE;
+	  return i < minval ? minval : maxval;
+	}
+    }
+  else
+    {
+      if (ISDIGIT (*arg))
+	{
+	  uintmax_t i = strtoumax (arg, arglim, 10);
+	  if (i <= maxval)
+	    return represent_uintmax (i);
+	  errno = ERANGE;
+	  return maxval;
+	}
+    }
+
+  errno = EINVAL;
+  return 0;
+}
 
 /* Output fraction and trailing digits appropriate for a nanoseconds
    count equal to NS, but don't output unnecessary '.' or trailing
@@ -380,6 +458,84 @@ code_timespec (struct timespec t, char sbuf[TIMESPEC_STRSIZE_BOUND])
     *--np = '-';
   code_ns_fraction (ns, sbuf + UINTMAX_STRSIZE_BOUND);
   return np;
+}
+
+struct timespec
+decode_timespec (char const *arg, char **arg_lim, bool parse_fraction)
+{
+  time_t s = TYPE_MINIMUM (time_t);
+  int ns = -1;
+  char const *p = arg;
+  bool negative = *arg == '-';
+  struct timespec r;
+
+  if (! ISDIGIT (arg[negative]))
+    errno = EINVAL;
+  else
+    {
+      errno = 0;
+
+      if (negative)
+	{
+	  intmax_t i = strtoimax (arg, arg_lim, 10);
+	  if (TYPE_SIGNED (time_t) ? TYPE_MINIMUM (time_t) <= i : 0 <= i)
+	    s = i;
+	  else
+	    errno = ERANGE;
+	}
+      else
+	{
+	  uintmax_t i = strtoumax (arg, arg_lim, 10);
+	  if (i <= TYPE_MAXIMUM (time_t))
+	    s = i;
+	  else
+	    errno = ERANGE;
+	}
+
+      p = *arg_lim;
+      ns = 0;
+
+      if (parse_fraction && *p == '.')
+	{
+	  int digits = 0;
+	  bool trailing_nonzero = false;
+
+	  while (ISDIGIT (*++p))
+	    if (digits < LOG10_BILLION)
+	      digits++, ns = 10 * ns + (*p - '0');
+	    else
+	      trailing_nonzero |= *p != '0';
+
+	  while (digits < LOG10_BILLION)
+	    digits++, ns *= 10;
+
+	  if (negative)
+	    {
+	      /* Convert "-1.10000000000001" to s == -2, ns == 89999999.
+		 I.e., truncate time stamps towards minus infinity while
+		 converting them to internal form.  */
+	      ns += trailing_nonzero;
+	      if (ns != 0)
+		{
+		  if (s == TYPE_MINIMUM (time_t))
+		    ns = -1;
+		  else
+		    {
+		      s--;
+		      ns = BILLION - ns;
+		    }
+		}
+	    }
+	}
+
+      if (errno == ERANGE)
+	ns = -1;
+    }
+
+  *arg_lim = (char *) p;
+  r.tv_sec = s;
+  r.tv_nsec = ns;
+  return r;
 }
 
 /* File handling.  */
@@ -483,7 +639,7 @@ remove_any_file (const char *file_name, enum remove_option option)
 
 	case RECURSIVE_REMOVE_OPTION:
 	  {
-	    char *directory = savedir (file_name);
+	    char *directory = tar_savedir (file_name, 0);
 	    char const *entry;
 	    size_t entrylen;
 
@@ -616,6 +772,57 @@ deref_stat (char const *name, struct stat *buf)
   return fstatat (chdir_fd, name, buf, fstatat_flags);
 }
 
+/* Read from FD into the buffer BUF with COUNT bytes.  Attempt to fill
+   BUF.  Wait until input is available; this matters because files are
+   opened O_NONBLOCK for security reasons, and on some file systems
+   this can cause read to fail with errno == EAGAIN.  Return the
+   actual number of bytes read, zero for EOF, or
+   SAFE_READ_ERROR upon error.  */
+size_t
+blocking_read (int fd, void *buf, size_t count)
+{
+  size_t bytes = safe_read (fd, buf, count);
+
+#if defined F_SETFL && O_NONBLOCK
+  if (bytes == SAFE_READ_ERROR && errno == EAGAIN)
+    {
+      int flags = fcntl (fd, F_GETFL);
+      if (0 <= flags && flags & O_NONBLOCK
+	  && fcntl (fd, F_SETFL, flags & ~O_NONBLOCK) != -1)
+	bytes = safe_read (fd, buf, count);
+    }
+#endif
+
+  return bytes;
+}
+
+/* Write to FD from the buffer BUF with COUNT bytes.  Do a full write.
+   Wait until an output buffer is available; this matters because
+   files are opened O_NONBLOCK for security reasons, and on some file
+   systems this can cause write to fail with errno == EAGAIN.  Return
+   the actual number of bytes written, setting errno if that is less
+   than COUNT.  */
+size_t
+blocking_write (int fd, void const *buf, size_t count)
+{
+  size_t bytes = full_write (fd, buf, count);
+
+#if defined F_SETFL && O_NONBLOCK
+  if (bytes < count && errno == EAGAIN)
+    {
+      int flags = fcntl (fd, F_GETFL);
+      if (0 <= flags && flags & O_NONBLOCK
+	  && fcntl (fd, F_SETFL, flags & ~O_NONBLOCK) != -1)
+	{
+	  char const *buffer = buf;
+	  bytes += full_write (fd, buffer + bytes, count - bytes);
+	}
+    }
+#endif
+
+  return bytes;
+}
+
 /* Set FD's (i.e., assuming the working directory is PARENTFD, FILE's)
    access time to ATIME.  */
 int
@@ -632,7 +839,11 @@ struct wd
 {
   /* The directory's name.  */
   char const *name;
-
+  /* "Absolute" path representing this directory; in the contrast to
+     the real absolute pathname, it can contain /../ components (see
+     normalize_filename_x for the reason of it).  It is NULL if the
+     absolute path could not be determined.  */
+  char *abspath;
   /* If nonzero, the file descriptor of the directory, or AT_FDCWD if
      the working directory.  If zero, the directory needs to be opened
      to be used.  */
@@ -662,7 +873,7 @@ static int wdcache[CHDIR_CACHE_SIZE];
 static size_t wdcache_count;
 
 int
-chdir_count ()
+chdir_count (void)
 {
   if (wd_count == 0)
     return wd_count;
@@ -674,19 +885,18 @@ chdir_count ()
 int
 chdir_arg (char const *dir)
 {
+  char *absdir;
+
   if (wd_count == wd_alloc)
     {
       if (wd_alloc == 0)
-	{
-	  wd_alloc = 2;
-	  wd = xmalloc (sizeof *wd * wd_alloc);
-	}
-      else
-	wd = x2nrealloc (wd, &wd_alloc, sizeof *wd);
+	wd_alloc = 2;
+      wd = x2nrealloc (wd, &wd_alloc, sizeof *wd);
 
       if (! wd_count)
 	{
 	  wd[wd_count].name = ".";
+	  wd[wd_count].abspath = xgetcwd ();
 	  wd[wd_count].fd = AT_FDCWD;
 	  wd_count++;
 	}
@@ -703,7 +913,22 @@ chdir_arg (char const *dir)
 	return wd_count - 1;
     }
 
+
+  /* If the given name is absolute, use it to represent this directory;
+     otherwise, construct a name based on the previous -C option.  */
+  if (IS_ABSOLUTE_FILE_NAME (dir))
+    absdir = xstrdup (dir);
+  else if (wd[wd_count - 1].abspath)
+    {
+      namebuf_t nbuf = namebuf_create (wd[wd_count - 1].abspath);
+      namebuf_add_dir (nbuf, dir);
+      absdir = namebuf_finish (nbuf);
+    }
+  else
+    absdir = 0;
+
   wd[wd_count].name = dir;
+  wd[wd_count].abspath = absdir;
   wd[wd_count].fd = 0;
   return wd_count++;
 }
@@ -763,11 +988,11 @@ chdir_do (int i)
 	  int prev = wdcache[0];
 	  for (ci = 1; prev != i; ci++)
 	    {
-	      int curr = wdcache[ci];
+	      int cur = wdcache[ci];
 	      wdcache[ci] = prev;
-	      if (curr == i)
+	      if (cur == i)
 		break;
-	      prev = curr;
+	      prev = cur;
 	    }
 	  wdcache[0] = i;
 	}
@@ -775,6 +1000,32 @@ chdir_do (int i)
       chdir_current = i;
       chdir_fd = fd;
     }
+}
+
+const char *
+tar_dirname (void)
+{
+  return wd[chdir_current].name;
+}
+
+/* Return the absolute path that represents the working
+   directory referenced by IDX.
+
+   If wd is empty, then there were no -C options given, and
+   chdir_args() has never been called, so we simply return the
+   process's actual cwd.  (Note that in this case IDX is ignored,
+   since it should always be 0.) */
+static const char *
+tar_getcdpath (int idx)
+{
+  if (!wd)
+    {
+      static char *cwd;
+      if (!cwd)
+	cwd = xgetcwd ();
+      return cwd;
+    }
+  return wd[idx].abspath;
 }
 
 void
@@ -911,7 +1162,7 @@ page_aligned_alloc (void **ptr, size_t size)
 
 struct namebuf
 {
-  char *buffer;		/* directory, `/', and directory member */
+  char *buffer;		/* directory, '/', and directory member */
   size_t buffer_size;	/* allocated size of name_buffer */
   size_t dir_length;	/* length of directory part in buffer */
 };
@@ -944,4 +1195,56 @@ namebuf_name (namebuf_t buf, const char *name)
     buf->buffer = x2realloc (buf->buffer, &buf->buffer_size);
   strcpy (buf->buffer + buf->dir_length, name);
   return buf->buffer;
+}
+
+void
+namebuf_add_dir (namebuf_t buf, const char *name)
+{
+  static char dirsep[] = { DIRECTORY_SEPARATOR, 0 };
+  if (!ISSLASH (buf->buffer[buf->dir_length - 1]))
+    {
+      namebuf_name (buf, dirsep);
+      buf->dir_length++;
+    }
+  namebuf_name (buf, name);
+  buf->dir_length += strlen (name);
+}
+
+char *
+namebuf_finish (namebuf_t buf)
+{
+  char *res = buf->buffer;
+
+  if (ISSLASH (buf->buffer[buf->dir_length - 1]))
+    buf->buffer[buf->dir_length] = 0;
+  free (buf);
+  return res;
+}
+
+/* Return the filenames in directory NAME, relative to the chdir_fd.
+   If the directory does not exist, report error if MUST_EXIST is
+   true.
+
+   Return NULL on errors.
+*/
+char *
+tar_savedir (const char *name, int must_exist)
+{
+  char *ret = NULL;
+  DIR *dir = NULL;
+  int fd = openat (chdir_fd, name, open_read_flags | O_DIRECTORY);
+  if (fd < 0)
+    {
+      if (!must_exist && errno == ENOENT)
+	return NULL;
+      open_error (name);
+    }
+  else if (! ((dir = fdopendir (fd))
+	      && (ret = streamsavedir (dir, savedir_sort_order))))
+    savedir_error (name);
+
+  if (dir ? closedir (dir) != 0 : 0 <= fd && close (fd) != 0)
+    savedir_error (name);
+
+  return ret;
 }

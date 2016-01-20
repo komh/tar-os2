@@ -1,7 +1,7 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Default definition for ARGP_PROGRAM_VERSION.
-   Copyright (C) 1996-1997, 1999, 2006, 2009-2011 Free Software Foundation,
+   Copyright (C) 1996-1997, 1999, 2006, 2009-2014 Free Software Foundation,
    Inc.
    This file is part of the GNU C Library.
    Written by Miles Bader <miles@gnu.ai.mit.edu>.
@@ -25,7 +25,7 @@
    ARGP_NO_EXIT flag is used).  Overridden by ARGP_PROGRAM_VERSION_HOOK.  */
 const char *argp_program_version
 /* This variable should be zero-initialized.  On most systems, putting it into
-   BSS is sufficient.  Not so on MacOS X 10.3 and 10.4, see
+   BSS is sufficient.  Not so on Mac OS X 10.3 and 10.4, see
    <http://lists.gnu.org/archive/html/bug-gnulib/2009-01/msg00329.html>
    <http://lists.gnu.org/archive/html/bug-gnulib/2009-08/msg00096.html>.  */
 #if defined __ELF__

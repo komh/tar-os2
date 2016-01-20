@@ -2,7 +2,7 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Invoke opendir, but avoid some glitches.
 
-   Copyright (C) 2009-2011 Free Software Foundation, Inc.
+   Copyright (C) 2009-2014 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -52,10 +52,18 @@ opendir_safer (char const *name)
           int e;
 #if HAVE_FDOPENDIR || GNULIB_FDOPENDIR
           int f = dup_safer (fd);
-          newdp = fdopendir (f);
-          e = errno;
-          if (! newdp)
-            close (f);
+          if (f < 0)
+            {
+              e = errno;
+              newdp = NULL;
+            }
+          else
+            {
+              newdp = fdopendir (f);
+              e = errno;
+              if (! newdp)
+                close (f);
+            }
 #else /* !FDOPENDIR */
           newdp = opendir_safer (name);
           e = errno;

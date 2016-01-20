@@ -1,21 +1,22 @@
 /* GNU tar Archive Format description.
 
-   Copyright (C) 1988, 1989, 1991, 1992, 1993, 1994, 1995, 1996, 1997,
-   2000, 2001, 2003, 2004, 2005, 2006, 2007 Free Software Foundation, Inc.
+   Copyright 1988-1989, 1991-1997, 2000-2001, 2003-2007, 2012-2014 Free
+   Software Foundation, Inc.
 
-   This program is free software; you can redistribute it and/or modify it
-   under the terms of the GNU General Public License as published by the
-   Free Software Foundation; either version 3, or (at your option) any later
-   version.
+   This file is part of GNU tar.
 
-   This program is distributed in the hope that it will be useful, but
-   WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-   Public License for more details.
+   GNU tar is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
 
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
+   GNU tar is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 /* tar Header Block, from POSIX 1003.1-1990.  */
 
@@ -80,9 +81,9 @@ struct posix_header
 /* tar Header Block, GNU extensions.  */
 
 /* In GNU tar, SYMTYPE is for to symbolic links, and CONTTYPE is for
-   contiguous files, so maybe disobeying the `reserved' comment in POSIX
+   contiguous files, so maybe disobeying the "reserved" comment in POSIX
    header description.  I suspect these were meant to be used this way, and
-   should not have really been `reserved' in the published standards.  */
+   should not have really been "reserved" in the published standards.  */
 
 /* *BEWARE* *BEWARE* *BEWARE* that the following information is still
    boiling, and may change.  Even if the OLDGNU format description should be
@@ -276,6 +277,14 @@ struct xheader
   uintmax_t string_length;
 };
 
+/* Information about xattrs for a file.  */
+struct xattr_array
+  {
+    char *xkey;
+    char *xval_ptr;
+    size_t xval_len;
+  };
+
 struct tar_stat_info
 {
   char *orig_file_name;     /* name of file read from the archive header */
@@ -287,6 +296,15 @@ struct tar_stat_info
 
   char          *uname;     /* user name of owner */
   char          *gname;     /* group name of owner */
+
+  char *cntx_name;          /* SELinux context for the current archive entry. */
+
+  char *acls_a_ptr;         /* Access ACLs for the current archive entry. */
+  size_t acls_a_len;        /* Access ACLs for the current archive entry. */
+
+  char *acls_d_ptr;         /* Default ACLs for the current archive entry. */
+  size_t acls_d_len;        /* Default ACLs for the current archive entry. */
+
   struct stat   stat;       /* regular filesystem stat */
 
   /* STAT doesn't always have access, data modification, and status
@@ -308,6 +326,9 @@ struct tar_stat_info
 			       not sparse */
   size_t sparse_map_size;   /* Size of the sparse map */
   struct sp_array *sparse_map;
+
+  size_t xattr_map_size;   /* Size of the xattr map */
+  struct xattr_array *xattr_map;
 
   /* Extended headers */
   struct xheader xhdr;
@@ -337,6 +358,9 @@ struct tar_stat_info
      It is negative if it could not be reopened after it was closed.
      Negate it to find out what errno was when the reopen failed.  */
   int fd;
+
+  /* Exclusion list */
+  struct exclist *exclude_list;
 };
 
 union block

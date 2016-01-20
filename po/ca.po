@@ -3,20 +3,20 @@
 # This file is distributed under the same license as the tar package.
 # Àngel Mompó <mecatxis@gmail.com>, 2010, 2011.
 #
-#: src/create.c:1552
+#: src/create.c:1574
 msgid ""
 msgstr ""
-"Project-Id-Version: tar-1.25\n"
+"Project-Id-Version: tar-1.26\n"
 "Report-Msgid-Bugs-To: bug-tar@gnu.org\n"
-"POT-Creation-Date: 2011-03-12 11:53+0200\n"
-"PO-Revision-Date: 2011-01-15 11:54+0100\n"
+"POT-Creation-Date: 2014-07-27 23:35+0300\n"
+"PO-Revision-Date: 2011-03-19 11:52+0100\n"
 "Last-Translator: Àngel Mompó <mecatxis@gmail.com>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
 "Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1\n"
+"Plural-Forms: nplurals=2; plural=n !=1\n"
 
 #: gnu/argmatch.c:135
 #, c-format
@@ -29,36 +29,35 @@ msgid "ambiguous argument %s for %s"
 msgstr "el paràmetre %s és ambigu per %s"
 
 #: gnu/argmatch.c:155
-#, c-format
 msgid "Valid arguments are:"
 msgstr "Els paràmetres vàlids són:"
 
-#: gnu/argp-help.c:149
+#: gnu/argp-help.c:150
 #, c-format
 msgid "ARGP_HELP_FMT: %s value is less than or equal to %s"
 msgstr "ARGP_HELP_FMT: el valor de %s és més petit o igual que %s"
 
-#: gnu/argp-help.c:222
+#: gnu/argp-help.c:223
 #, c-format
 msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
 msgstr "%.*s: El paràmetre ARGP_HELP_FMT necessita un valor"
 
-#: gnu/argp-help.c:228
+#: gnu/argp-help.c:229
 #, c-format
 msgid "%.*s: ARGP_HELP_FMT parameter must be positive"
 msgstr "%.*s: El paràmetre ARGP_HELP_FMT ha de ser positiu"
 
-#: gnu/argp-help.c:237
+#: gnu/argp-help.c:238
 #, c-format
 msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
 msgstr "%.*s: Paràmetre ARGP_HELP_FMT desconegut"
 
-#: gnu/argp-help.c:249
+#: gnu/argp-help.c:250
 #, c-format
 msgid "Garbage in ARGP_HELP_FMT: %s"
 msgstr "Hi ha brossa a ARGP_HELP_FMT: %s"
 
-#: gnu/argp-help.c:1248
+#: gnu/argp-help.c:1250
 msgid ""
 "Mandatory or optional arguments to long options are also mandatory or "
 "optional for any corresponding short options."
@@ -66,29 +65,29 @@ msgstr ""
 "Els paràmetres obligatoris o opcionals per les opcions llargues també ho són "
 "per les corresponents opcions curtes."
 
-#: gnu/argp-help.c:1641
+#: gnu/argp-help.c:1643
 msgid "Usage:"
 msgstr "Ús:"
 
-#: gnu/argp-help.c:1645
+#: gnu/argp-help.c:1647
 msgid "  or: "
 msgstr "  o: "
 
-#: gnu/argp-help.c:1657
+#: gnu/argp-help.c:1659
 msgid " [OPTION...]"
 msgstr " [OPCIÓ...]"
 
-#: gnu/argp-help.c:1684
-#, c-format
-msgid "Try `%s --help' or `%s --usage' for more information.\n"
+#: gnu/argp-help.c:1686
+#, fuzzy, c-format
+msgid "Try '%s --help' or '%s --usage' for more information.\n"
 msgstr "Proveu «%s --help» o «%s --usage» per més informació.\n"
 
-#: gnu/argp-help.c:1712
+#: gnu/argp-help.c:1714
 #, c-format
 msgid "Report bugs to %s.\n"
 msgstr "Informeu dels errors de programació a %s.\n"
 
-#: gnu/argp-help.c:1931 gnu/error.c:183
+#: gnu/argp-help.c:1933 gnu/error.c:190
 msgid "Unknown system error"
 msgstr "Error de sistema desconegut"
 
@@ -100,7 +99,7 @@ msgstr "dóna aquesta llista d'ajuda"
 msgid "give a short usage message"
 msgstr "dóna un missatge curt sobre utilització"
 
-#: gnu/argp-parse.c:85 src/tar.c:489 src/tar.c:491 src/tar.c:560
+#: gnu/argp-parse.c:85 src/tar.c:529 src/tar.c:531 src/tar.c:630
 #: tests/genfile.c:130
 msgid "NAME"
 msgstr "NOM"
@@ -121,17 +120,16 @@ msgstr "es penja durant SECS segons (per defecte 3600)"
 msgid "print program version"
 msgstr "mostra la versió del programa"
 
-#: gnu/argp-parse.c:160
-#, c-format
+#: gnu/argp-parse.c:161
 msgid "(PROGRAM ERROR) No version known!?"
 msgstr "(ERROR DE PROGRAMA) Versió desconeguda!?"
 
-#: gnu/argp-parse.c:613
+#: gnu/argp-parse.c:614
 #, c-format
 msgid "%s: Too many arguments\n"
 msgstr "%s: Massa paràmetres\n"
 
-#: gnu/argp-parse.c:756
+#: gnu/argp-parse.c:757
 msgid "(PROGRAM ERROR) Option should have been recognized!?"
 msgstr "(ERROR DE PROGRAMA) Hauria de conèixer l'opció!?"
 
@@ -139,62 +137,62 @@ msgstr "(ERROR DE PROGRAMA) Hauria de conèixer l'opció!?"
 msgid "write error"
 msgstr "error d'escriptura"
 
-#: gnu/getopt.c:529 gnu/getopt.c:545
-#, c-format
-msgid "%s: option '%s' is ambiguous\n"
+#: gnu/getopt.c:549 gnu/getopt.c:578
+#, fuzzy, c-format
+msgid "%s: option '%s' is ambiguous; possibilities:"
 msgstr "%s: l'opció «%s» és ambigua\n"
 
-#: gnu/getopt.c:578 gnu/getopt.c:582
+#: gnu/getopt.c:626 gnu/getopt.c:630
 #, c-format
 msgid "%s: option '--%s' doesn't allow an argument\n"
 msgstr "%s: l'opció «--%s» no permet cap paràmetre\n"
 
-#: gnu/getopt.c:591 gnu/getopt.c:596
+#: gnu/getopt.c:639 gnu/getopt.c:644
 #, c-format
 msgid "%s: option '%c%s' doesn't allow an argument\n"
 msgstr "%s: l'opció «%c%s» no permet cap paràmetre\n"
 
-#: gnu/getopt.c:639 gnu/getopt.c:658
+#: gnu/getopt.c:687 gnu/getopt.c:706
 #, c-format
 msgid "%s: option '--%s' requires an argument\n"
 msgstr "%s: l'opció «--%s» necessita un paràmetre\n"
 
-#: gnu/getopt.c:696 gnu/getopt.c:699
+#: gnu/getopt.c:744 gnu/getopt.c:747
 #, c-format
 msgid "%s: unrecognized option '--%s'\n"
 msgstr "%s: opció no reconeguda «--%s»\n"
 
-#: gnu/getopt.c:707 gnu/getopt.c:710
+#: gnu/getopt.c:755 gnu/getopt.c:758
 #, c-format
 msgid "%s: unrecognized option '%c%s'\n"
 msgstr "%s: opció no reconeguda «%c%s»\n"
 
-#: gnu/getopt.c:759 gnu/getopt.c:762
+#: gnu/getopt.c:807 gnu/getopt.c:810
 #, c-format
 msgid "%s: invalid option -- '%c'\n"
 msgstr "%s: opció invàlida -- «%c»\n"
 
-#: gnu/getopt.c:812 gnu/getopt.c:829 gnu/getopt.c:1037 gnu/getopt.c:1055
+#: gnu/getopt.c:863 gnu/getopt.c:880 gnu/getopt.c:1090 gnu/getopt.c:1108
 #, c-format
 msgid "%s: option requires an argument -- '%c'\n"
 msgstr "%s: l'opció necessita un paràmetre -- «%c»\n"
 
-#: gnu/getopt.c:885 gnu/getopt.c:901
+#: gnu/getopt.c:936 gnu/getopt.c:952
 #, c-format
 msgid "%s: option '-W %s' is ambiguous\n"
 msgstr "%s: l'opció «-W %s» és ambigua\n"
 
-#: gnu/getopt.c:925 gnu/getopt.c:943
+#: gnu/getopt.c:976 gnu/getopt.c:994
 #, c-format
 msgid "%s: option '-W %s' doesn't allow an argument\n"
 msgstr "%s: l'opció «-W %s» no permet cap paràmetre\n"
 
-#: gnu/getopt.c:964 gnu/getopt.c:982
+#: gnu/getopt.c:1015 gnu/getopt.c:1033
 #, c-format
 msgid "%s: option '-W %s' requires an argument\n"
 msgstr "%s: l'opció «-W %s» necessita un paràmetre\n"
 
-#: gnu/obstack.c:423 gnu/obstack.c:425 gnu/xalloc-die.c:36
+#: gnu/obstack.c:415 gnu/obstack.c:417 gnu/xalloc-die.c:36
 msgid "memory exhausted"
 msgstr "memòria exhaurida"
 
@@ -210,28 +208,30 @@ msgstr "No es pot tornar al directori de treball inicial"
 
 #. TRANSLATORS:
 #. Get translations for open and closing quotation marks.
-#.
 #. The message catalog should translate "`" to a left
 #. quotation mark suitable for the locale, and similarly for
-#. "'".  If the catalog has no translation,
-#. locale_quoting_style quotes `like this', and
-#. clocale_quoting_style quotes "like this".
+#. "'".  For example, a French Unicode local should translate
+#. these to U+00AB (LEFT-POINTING DOUBLE ANGLE
+#. QUOTATION MARK), and U+00BB (RIGHT-POINTING DOUBLE ANGLE
+#. QUOTATION MARK), respectively.
 #.
-#. For example, an American English Unicode locale should
-#. translate "`" to U+201C (LEFT DOUBLE QUOTATION MARK), and
-#. should translate "'" to U+201D (RIGHT DOUBLE QUOTATION
-#. MARK).  A British English Unicode locale should instead
-#. translate these to U+2018 (LEFT SINGLE QUOTATION MARK)
-#. and U+2019 (RIGHT SINGLE QUOTATION MARK), respectively.
+#. If the catalog has no translation, we will try to
+#. use Unicode U+2018 (LEFT SINGLE QUOTATION MARK) and
+#. Unicode U+2019 (RIGHT SINGLE QUOTATION MARK).  If the
+#. current locale is not Unicode, locale_quoting_style
+#. will quote 'like this', and clocale_quoting_style will
+#. quote "like this".  You should always include translations
+#. for "`" and "'" even if U+2018 and U+2019 are appropriate
+#. for your locale.
 #.
 #. If you don't know what to put here, please see
-#. <http://en.wikipedia.org/wiki/Quotation_mark#Glyphs>
+#. <http://en.wikipedia.org/wiki/Quotation_marks_in_other_languages>
 #. and use glyphs suitable for your language.
-#: gnu/quotearg.c:273
+#: gnu/quotearg.c:314
 msgid "`"
 msgstr "«"
 
-#: gnu/quotearg.c:274
+#: gnu/quotearg.c:315
 msgid "'"
 msgstr "»"
 
@@ -241,7 +241,7 @@ msgstr "»"
 #. To enquire the regular expression that your system uses for this
 #. purpose, you can use the command
 #. locale -k LC_MESSAGES | grep '^yesexpr='
-#: gnu/rpmatch.c:149
+#: gnu/rpmatch.c:152
 msgid "^[yY]"
 msgstr "^[sS]"
 
@@ -251,7 +251,7 @@ msgstr "^[sS]"
 #. To enquire the regular expression that your system uses for this
 #. purpose, you can use the command
 #. locale -k LC_MESSAGES | grep '^noexpr='
-#: gnu/rpmatch.c:162
+#: gnu/rpmatch.c:165
 msgid "^[nN]"
 msgstr "^[nN]"
 
@@ -433,7 +433,7 @@ msgstr ""
 #. Directly translating this to another language will not work, first because
 #. %s itself is not translated.
 #. Translate it as `%s: Function %s failed'.
-#: lib/paxerror.c:58 lib/paxerror.c:71
+#: lib/paxerror.c:60 lib/paxerror.c:73
 #, c-format
 msgid "%s: Cannot %s"
 msgstr "%s: No es pot %s"
@@ -442,34 +442,34 @@ msgstr "%s: No es pot %s"
 #. Directly translating this to another language will not work, first because
 #. %s itself is not translated.
 #. Translate it as `%s: Function %s failed'.
-#: lib/paxerror.c:84
+#: lib/paxerror.c:86
 #, c-format
 msgid "%s: Warning: Cannot %s"
 msgstr "%s: Avís: No es pot %s"
 
-#: lib/paxerror.c:93
+#: lib/paxerror.c:95
 #, c-format
 msgid "%s: Cannot change mode to %s"
 msgstr "%s: No es pot canviar el mode a %s"
 
-#: lib/paxerror.c:101
+#: lib/paxerror.c:103
 #, c-format
 msgid "%s: Cannot change ownership to uid %lu, gid %lu"
 msgstr "%s: No es pot canviar la titularitat a uid %lu, gid %lu"
 
-#: lib/paxerror.c:127
+#: lib/paxerror.c:129
 #, c-format
 msgid "%s: Cannot hard link to %s"
 msgstr "%s: No es pot crear l'enllaç dur amb %s"
 
-#: lib/paxerror.c:179 lib/paxerror.c:211
+#: lib/paxerror.c:181 lib/paxerror.c:213
 #, c-format
 msgid "%s: Read error at byte %s, while reading %lu byte"
 msgid_plural "%s: Read error at byte %s, while reading %lu bytes"
 msgstr[0] "%s: Error de lectura al byte %s, quan s'estava llegint %lu byte"
 msgstr[1] "%s: Error de lectura al byte %s, quan s'estaven llegint %lu bytes"
 
-#: lib/paxerror.c:192
+#: lib/paxerror.c:194
 #, c-format
 msgid "%s: Warning: Read error at byte %s, while reading %lu byte"
 msgid_plural "%s: Warning: Read error at byte %s, while reading %lu bytes"
@@ -477,22 +477,22 @@ msgstr[0] ""
 "%s: Avís: Error de lectura al byte %s, quan s'estava llegint %lu byte"
 msgstr[1] "%s: Error de lectura al byte %s, quan s'estaven llegint %lu bytes"
 
-#: lib/paxerror.c:259
+#: lib/paxerror.c:261
 #, c-format
 msgid "%s: Cannot seek to %s"
 msgstr "%s: No es pot buscar a %s"
 
-#: lib/paxerror.c:275
+#: lib/paxerror.c:277
 #, c-format
 msgid "%s: Warning: Cannot seek to %s"
 msgstr "%s: Avís: No es pot buscar a %s"
 
-#: lib/paxerror.c:284
+#: lib/paxerror.c:286
 #, c-format
 msgid "%s: Cannot create symlink to %s"
 msgstr "%s: No es pot crear l'enllaç simbòlic a %s"
 
-#: lib/paxerror.c:349
+#: lib/paxerror.c:351
 #, c-format
 msgid "%s: Wrote only %lu of %lu byte"
 msgid_plural "%s: Wrote only %lu of %lu bytes"
@@ -537,7 +537,12 @@ msgstr "stdout"
 msgid "Cannot connect to %s: resolve failed"
 msgstr "No es pot connectar amb %s: no s'ha pogut resoldre"
 
-#: lib/rtapelib.c:515
+#: lib/rtapelib.c:502
+#, fuzzy, c-format
+msgid "Cannot redirect files for remote shell"
+msgstr "No es pot executar un interpret d'ordres remot"
+
+#: lib/rtapelib.c:516
 #, c-format
 msgid "Cannot execute remote shell"
 msgstr "No es pot executar un interpret d'ordres remot"
@@ -586,8 +591,8 @@ msgstr "Arguments inesperats"
 msgid "Manipulate a tape drive, accepting commands from a remote process"
 msgstr "Manipula una unitat de cinta, acceptant comandes d'un procés remot"
 
-#: rmt/rmt.c:696 src/tar.c:424 src/tar.c:428 src/tar.c:558 src/tar.c:573
-#: src/tar.c:704 src/tar.c:742 tests/genfile.c:166
+#: rmt/rmt.c:696 src/tar.c:454 src/tar.c:458 src/tar.c:628 src/tar.c:643
+#: src/tar.c:782 src/tar.c:820 tests/genfile.c:166
 msgid "NUMBER"
 msgstr "NÚMERO"
 
@@ -595,10 +600,10 @@ msgstr "NÚMERO"
 msgid "set debug level"
 msgstr "estableix el nivell de depuració"
 
-#: rmt/rmt.c:698 src/tar.c:422 src/tar.c:563 src/tar.c:639 src/tar.c:643
-#: src/tar.c:655 src/tar.c:665 src/tar.c:668 src/tar.c:670 src/tar.c:759
-#: tests/genfile.c:132 tests/genfile.c:180 tests/genfile.c:184
-#: tests/genfile.c:187 tests/genfile.c:193
+#: rmt/rmt.c:698 src/tar.c:452 src/tar.c:633 src/tar.c:709 src/tar.c:713
+#: src/tar.c:725 src/tar.c:735 src/tar.c:738 src/tar.c:741 src/tar.c:744
+#: src/tar.c:746 src/tar.c:837 tests/genfile.c:132 tests/genfile.c:180
+#: tests/genfile.c:184 tests/genfile.c:187 tests/genfile.c:193
 msgid "FILE"
 msgstr "FITXER"
 
@@ -611,7 +616,7 @@ msgstr "estableix el nom del fitxer de sortida de la depuració"
 msgid "cannot open %s"
 msgstr "no es pot obrir %s"
 
-#: rmt/rmt.c:780 tests/genfile.c:884 tests/genfile.c:901
+#: rmt/rmt.c:780 tests/genfile.c:892 tests/genfile.c:909
 #, c-format
 msgid "too many arguments"
 msgstr "massa arguments"
@@ -620,104 +625,112 @@ msgstr "massa arguments"
 msgid "Garbage command"
 msgstr "Ordre escombraria"
 
-#: src/buffer.c:457 src/buffer.c:462 src/buffer.c:706 src/buffer.c:1321
-#: src/buffer.c:1367 src/buffer.c:1396 src/delete.c:211 src/list.c:245
-#: src/update.c:200
+#: src/buffer.c:458 src/buffer.c:463 src/buffer.c:757 src/buffer.c:1373
+#: src/buffer.c:1419 src/buffer.c:1448 src/delete.c:212 src/list.c:273
+#: src/update.c:188
 msgid "This does not look like a tar archive"
 msgstr "No sembla un arxiu tar"
 
-#: src/buffer.c:521 src/buffer.c:530
-msgid "Total bytes written"
-msgstr "Bytes totals escrits"
-
-#: src/buffer.c:528 src/buffer.c:542
+#: src/buffer.c:574
 msgid "Total bytes read"
 msgstr "Bytes totals llegits"
 
-#: src/buffer.c:532
-#, c-format
-msgid "Total bytes deleted: %s\n"
+#: src/buffer.c:576
+msgid "Total bytes written"
+msgstr "Bytes totals escrits"
+
+#: src/buffer.c:577
+#, fuzzy
+msgid "Total bytes deleted"
 msgstr "Bytes totals esborrats: %s\n"
 
-#: src/buffer.c:621
+#: src/buffer.c:656
 msgid "(pipe)"
 msgstr "(conducte)"
 
-#: src/buffer.c:644
+#: src/buffer.c:680
+msgid "Refusing to read archive contents from terminal (missing -f option?)"
+msgstr ""
+
+#: src/buffer.c:682
+msgid "Refusing to write archive contents to terminal (missing -f option?)"
+msgstr ""
+
+#: src/buffer.c:695
 msgid "Invalid value for record_size"
 msgstr "El valor de record_size no és vàlid"
 
-#: src/buffer.c:647
+#: src/buffer.c:698
 msgid "No archive name given"
 msgstr "No s'ha donat el nom de l'arxiu"
 
-#: src/buffer.c:689
+#: src/buffer.c:741
 msgid "Cannot verify stdin/stdout archive"
 msgstr "No es pot verificar l'arxiu stdin/stdout"
 
-#: src/buffer.c:703
+#: src/buffer.c:754
 #, c-format
 msgid "Archive is compressed. Use %s option"
 msgstr "L'arxiu està comprimit. Feu servir l'opció %s"
 
-#: src/buffer.c:760 src/tar.c:2448
+#: src/buffer.c:812 src/tar.c:2541
 msgid "Cannot update compressed archives"
 msgstr "No es poden actualitzar els arxius comprimits"
 
-#: src/buffer.c:853
+#: src/buffer.c:905
 msgid "At beginning of tape, quitting now"
 msgstr "Al principi de la cinta, se surt"
 
-#: src/buffer.c:859
+#: src/buffer.c:911
 msgid "Too many errors, quitting"
 msgstr "Massa errors, se surt"
 
-#: src/buffer.c:892
+#: src/buffer.c:944
 #, c-format
 msgid "Record size = %lu block"
 msgid_plural "Record size = %lu blocks"
 msgstr[0] "Mida del registre = %lu bloc"
 msgstr[1] "Mida del registre = %lu blocs"
 
-#: src/buffer.c:913
+#: src/buffer.c:965
 #, c-format
 msgid "Unaligned block (%lu byte) in archive"
 msgid_plural "Unaligned block (%lu bytes) in archive"
 msgstr[0] "Bloc desalineat(byte %lu) a l'arxiu"
 msgstr[1] "Bloc desalineat(bytes %lu) a l'arxiu"
 
-#: src/buffer.c:990
+#: src/buffer.c:1042
 msgid "Cannot backspace archive file; it may be unreadable without -i"
 msgstr ""
 "No es pot tornar enrere al fitxer d'arxiu; potser no es pot llegir sense -i"
 
-#: src/buffer.c:1022
+#: src/buffer.c:1074
 msgid "rmtlseek not stopped at a record boundary"
 msgstr "rmtlseek no s'ha aturat als límits d'un registre "
 
-#: src/buffer.c:1073
+#: src/buffer.c:1125
 #, c-format
 msgid "%s: contains invalid volume number"
 msgstr "%s: conté un número de volum invàlid"
 
-#: src/buffer.c:1108
+#: src/buffer.c:1160
 msgid "Volume number overflow"
 msgstr "Desbordament del número de volum"
 
-#: src/buffer.c:1123
+#: src/buffer.c:1175
 #, c-format
 msgid "Prepare volume #%d for %s and hit return: "
 msgstr "Prepareu el volum #%d per %s i premeu retorn: "
 
-#: src/buffer.c:1129
+#: src/buffer.c:1181
 msgid "EOF where user reply was expected"
 msgstr "Final del fitxer on s'esperava una resposta de l'usuari"
 
-#: src/buffer.c:1134 src/buffer.c:1166
+#: src/buffer.c:1186 src/buffer.c:1218
 msgid "WARNING: Archive is incomplete"
 msgstr "AVÍS: L'arxiu és incomplet"
 
-#: src/buffer.c:1148
+#: src/buffer.c:1200
 #, c-format
 msgid ""
 " n name        Give a new file name for the next (and subsequent) volume(s)\n"
@@ -729,66 +742,66 @@ msgstr ""
 " q            Interromp tar\n"
 " y            Continua l'operació\n"
 
-#: src/buffer.c:1153
+#: src/buffer.c:1205
 #, c-format
 msgid " !             Spawn a subshell\n"
 msgstr " !             Engendra un interpret d'ordres\n"
 
-#: src/buffer.c:1154
+#: src/buffer.c:1206
 #, c-format
 msgid " ?             Print this list\n"
 msgstr " ?             Mostra aquesta ajuda\n"
 
-#: src/buffer.c:1161
+#: src/buffer.c:1213
 msgid "No new volume; exiting.\n"
 msgstr "No hi ha cap volum nou; se surt.\n"
 
-#: src/buffer.c:1194
+#: src/buffer.c:1246
 msgid "File name not specified. Try again.\n"
 msgstr "No s'ha especificat cap nom de fitxer. Torneu-ho a provar.\n"
 
-#: src/buffer.c:1207
+#: src/buffer.c:1259
 #, c-format
 msgid "Invalid input. Type ? for help.\n"
 msgstr "Entrada invàlida. Tecleja ? per mostrar l'ajuda.\n"
 
-#: src/buffer.c:1258
+#: src/buffer.c:1310
 #, c-format
 msgid "%s command failed"
 msgstr "L'ordre %s ha fallat"
 
-#: src/buffer.c:1439
+#: src/buffer.c:1491
 #, c-format
 msgid "%s is possibly continued on this volume: header contains truncated name"
 msgstr ""
 "%s possiblement continua en aquest volum: la capçalera conté un nom truncat"
 
-#: src/buffer.c:1443
+#: src/buffer.c:1495
 #, c-format
 msgid "%s is not continued on this volume"
 msgstr "%s no continua a aquest volum"
 
-#: src/buffer.c:1457
+#: src/buffer.c:1509
 #, c-format
 msgid "%s is the wrong size (%s != %s + %s)"
 msgstr "%s té una mida equivocada (%s != %s + %s)"
 
-#: src/buffer.c:1472
+#: src/buffer.c:1524
 #, c-format
 msgid "This volume is out of sequence (%s - %s != %s)"
 msgstr "Aquest volum és fora de la seqüència (%s - %s != %s)"
 
-#: src/buffer.c:1550 src/buffer.c:1576
+#: src/buffer.c:1602 src/buffer.c:1628
 #, c-format
 msgid "Archive not labeled to match %s"
 msgstr "L'arxiu no està etiquetat per coincidir amb %s"
 
-#: src/buffer.c:1580
+#: src/buffer.c:1632
 #, c-format
 msgid "Volume %s does not match %s"
 msgstr "El Volum %s no coincideix amb %s"
 
-#: src/buffer.c:1674
+#: src/buffer.c:1726
 #, c-format
 msgid ""
 "%s: file name too long to be stored in a GNU multivolume header, truncated"
@@ -796,406 +809,430 @@ msgstr ""
 "%s: El nom del fitxer és massa llarg per ser desat en una capçalera "
 "multivolum GNU. S'ha truncat"
 
-#: src/buffer.c:1865
+#: src/buffer.c:1917
 msgid "write did not end on a block boundary"
 msgstr "l'escriptura no ha acabat al límit d'un bloc"
 
-#: src/compare.c:95
+#: src/compare.c:96
 #, c-format
 msgid "Could only read %lu of %lu byte"
 msgid_plural "Could only read %lu of %lu bytes"
 msgstr[0] "Només es pot llegir %lu de %lu byte"
 msgstr[1] "Només es poden llegir %lu de %lu bytes"
 
-#: src/compare.c:105 src/compare.c:383
+#: src/compare.c:106 src/compare.c:391
 msgid "Contents differ"
 msgstr "El contingut no coincideix"
 
-#: src/compare.c:131 src/extract.c:984 src/incremen.c:1456 src/list.c:456
-#: src/list.c:1388 src/xheader.c:711
+#: src/compare.c:132 src/extract.c:1132 src/incremen.c:1505 src/list.c:487
+#: src/list.c:1426 src/xheader.c:837
 msgid "Unexpected EOF in archive"
 msgstr "Final de l'arxiu inesperat"
 
-#: src/compare.c:179 src/compare.c:195 src/compare.c:309 src/compare.c:407
+#: src/compare.c:180 src/compare.c:196 src/compare.c:310 src/compare.c:415
 msgid "File type differs"
 msgstr "El tipus de fitxer no coincideix"
 
-#: src/compare.c:182 src/compare.c:202 src/compare.c:323
+#: src/compare.c:183 src/compare.c:203 src/compare.c:324
 msgid "Mode differs"
 msgstr "El mode no coincideix"
 
-#: src/compare.c:205
+#: src/compare.c:206
 msgid "Uid differs"
 msgstr "L'identificador d'usuari no coincideix"
 
-#: src/compare.c:207
+#: src/compare.c:208
 msgid "Gid differs"
 msgstr "L'identificador de grup d'usuaris no coincideix"
 
-#: src/compare.c:211
+#: src/compare.c:212
 msgid "Mod time differs"
 msgstr "La data de modificació no coincideix"
 
-#: src/compare.c:215 src/compare.c:415
+#: src/compare.c:216 src/compare.c:425
 msgid "Size differs"
 msgstr "La mida no coincideix"
 
-#: src/compare.c:264
+#: src/compare.c:265
 #, c-format
 msgid "Not linked to %s"
 msgstr "No s'ha enllaçat amb %s"
 
-#: src/compare.c:288
+#: src/compare.c:289
 msgid "Symlink differs"
 msgstr "L'enllaç tou no coincideix"
 
-#: src/compare.c:317
+#: src/compare.c:318
 msgid "Device number differs"
 msgstr "El número de dispositiu no coincideix"
 
-#: src/compare.c:457
+#: src/compare.c:466
 #, c-format
 msgid "Verify "
 msgstr "Verifiqueu "
 
-#: src/compare.c:464
-#, c-format
-msgid "%s: Unknown file type `%c', diffed as normal file"
+#: src/compare.c:473
+#, fuzzy, c-format
+msgid "%s: Unknown file type '%c', diffed as normal file"
 msgstr ""
 "%s: Tipus de fitxer desconegut `%c', s'usa diff com si es tractés d'un "
 "fitxer normal"
 
-#: src/compare.c:520
+#: src/compare.c:529
 msgid "Archive contains file names with leading prefixes removed."
 msgstr "L'arxiu conté noms de fitxers amb els prefixes inicials esborrats."
 
-#: src/compare.c:526
-#, fuzzy
+#: src/compare.c:535
 msgid "Archive contains transformed file names."
-msgstr "L'arxiu conté capçaleres amb base 64 que estan esdevenint obsoletes"
+msgstr "L'arxiu conté noms de fitxers transformats."
 
-#: src/compare.c:531
+#: src/compare.c:540
 msgid "Verification may fail to locate original files."
 msgstr "Pot ser que la verificació no pugui trobar els fitxers originals."
 
-#: src/compare.c:603
+#: src/compare.c:614
 #, c-format
 msgid "VERIFY FAILURE: %d invalid header detected"
 msgid_plural "VERIFY FAILURE: %d invalid headers detected"
 msgstr[0] "HA FALLAT LA VERIFICACIÓ: %d s'ha detectat una capçalera invàlida"
 msgstr[1] "HA FALLAT LA VERIFICACIÓ: %d s'han detectat capçaleres invàlides"
 
-#: src/compare.c:621 src/list.c:222
+#: src/compare.c:632 src/list.c:250
 #, c-format
 msgid "A lone zero block at %s"
 msgstr "Un sol bloc zero a %s"
 
-#: src/create.c:72
+#: src/create.c:73
 #, c-format
 msgid "%s: contains a cache directory tag %s; %s"
 msgstr "%s: conté una etiqueta de directori de memòria cau %s; %s"
 
-#: src/create.c:261
+#: src/create.c:262
 #, c-format
 msgid "value %s out of %s range %s..%s; substituting %s"
 msgstr "el valor %s està fora del rang%s %s..%s; es substitueix per %s"
 
-#: src/create.c:267
+#: src/create.c:268
 #, c-format
 msgid "value %s out of %s range %s..%s"
 msgstr "el valor %s està fora del rang %s %s..%s"
 
-#: src/create.c:327
+#: src/create.c:328
 msgid "Generating negative octal headers"
 msgstr "S'estan generant les capçaleres octals negatives"
 
-#: src/create.c:612 src/create.c:675
+#: src/create.c:601 src/create.c:664
 #, c-format
 msgid "%s: file name is too long (max %d); not dumped"
 msgstr "%s: el nom del fitxer és massa llarg (màx %d); no s'aboca"
 
-#: src/create.c:622
+#: src/create.c:611
 #, c-format
 msgid "%s: file name is too long (cannot be split); not dumped"
 msgstr "%s: el nom del fitxer és massa llarg (no es pot dividir); no s'aboca"
 
-#: src/create.c:649
+#: src/create.c:638
 #, c-format
 msgid "%s: link name is too long; not dumped"
 msgstr "%s: el nom de l'enllaç és massa llarg; no s'aboca"
 
-#: src/create.c:1064
+#: src/create.c:1084
 #, c-format
 msgid "%s: File shrank by %s byte; padding with zeros"
 msgid_plural "%s: File shrank by %s bytes; padding with zeros"
 msgstr[0] "%s: El fitxer s'encongeix %s byte; s'omple amb zero"
 msgstr[1] "%s: El fitxer s'encongeix %s bytes; s'omple amb zeros"
 
-#: src/create.c:1160
+#: src/create.c:1182
 #, c-format
 msgid "%s: file is on a different filesystem; not dumped"
 msgstr "%s: el fitxer es troba a un sistema de fitxers diferent; no s'aboca"
 
-#: src/create.c:1203 src/create.c:1214 src/incremen.c:578 src/incremen.c:584
+#: src/create.c:1225 src/create.c:1236 src/incremen.c:610 src/incremen.c:617
 msgid "contents not dumped"
 msgstr "els continguts no s'aboquen"
 
-#: src/create.c:1418
+#: src/create.c:1440
 #, c-format
 msgid "%s: Unknown file type; file ignored"
 msgstr "%s: Tipus de fitxer desconegut; el fitxer s'ignora"
 
-#: src/create.c:1529
+#: src/create.c:1551
 #, c-format
 msgid "Missing links to %s."
 msgstr "Falten els enllaços a %s."
 
-#: src/create.c:1690
+#: src/create.c:1712
 #, c-format
 msgid "%s: file is unchanged; not dumped"
 msgstr "%s: el fitxer no ha canviat; no s'aboca"
 
-#: src/create.c:1699
+#: src/create.c:1721
 #, c-format
 msgid "%s: file is the archive; not dumped"
 msgstr "%s: el fitxer és l'arxiu; no s'aboca"
 
-#: src/create.c:1723 src/incremen.c:571
+#: src/create.c:1749 src/incremen.c:603
 msgid "directory not dumped"
 msgstr "el directori no s'aboca"
 
-#: src/create.c:1795
+#: src/create.c:1821
 #, c-format
 msgid "%s: file changed as we read it"
 msgstr "%s: el fitxer ha canviat mentre es llegia"
 
-#: src/create.c:1858
+#: src/create.c:1902
 #, c-format
 msgid "%s: socket ignored"
 msgstr "%s: sòcol ignorat"
 
-#: src/create.c:1864
+#: src/create.c:1908
 #, c-format
 msgid "%s: door ignored"
 msgstr "%s: porta ignorada"
 
-#: src/delete.c:217 src/list.c:259 src/update.c:205
+#: src/delete.c:218 src/list.c:287 src/update.c:193
 msgid "Skipping to next header"
 msgstr "Es salta fins a la propera capçalera"
 
-#: src/delete.c:283
+#: src/delete.c:284
 msgid "Deleting non-header from archive"
 msgstr "S'esborra la no-capçalera de l'arxiu"
 
-#: src/extract.c:277
+#: src/extract.c:302
 #, c-format
 msgid "%s: implausibly old time stamp %s"
 msgstr "%s: marca horària inversemblantment antiga %s"
 
-#: src/extract.c:295
+#: src/extract.c:320
 #, c-format
 msgid "%s: time stamp %s is %s s in the future"
 msgstr "%s: la marca horària %s pertany %s s al futur"
 
-#: src/extract.c:475
+#: src/extract.c:536
 #, c-format
 msgid "%s: Unexpected inconsistency when making directory"
 msgstr "%s: Inconsistència inesperada en crear el directori"
 
-#: src/extract.c:721
+#: src/extract.c:705
+#, c-format
+msgid "%s: skipping existing file"
+msgstr ""
+
+#: src/extract.c:821
 #, c-format
 msgid "%s: Directory renamed before its status could be extracted"
 msgstr ""
 "%s: S'ha canviat el nom del directori abans de poder extreure'n l'estat"
 
-#: src/extract.c:875
+#: src/extract.c:1010
 msgid "Extracting contiguous files as regular files"
 msgstr "Els fitxers contigus s'extreuen com fitxers normals"
 
-#: src/extract.c:1209
+#: src/extract.c:1365
 msgid "Attempting extraction of symbolic links as hard links"
 msgstr "Es prova d'extreure els enllaços simbòlics com enllaços durs"
 
-#: src/extract.c:1365
+#: src/extract.c:1528
 #, c-format
 msgid "%s: Cannot extract -- file is continued from another volume"
 msgstr "%s: No espot extreure -- el fitxer continua des d'un altre volum"
 
-#: src/extract.c:1372 src/list.c:1121
+#: src/extract.c:1535 src/list.c:1167
 msgid "Unexpected long name header"
 msgstr "Nom de la capçalera inesperadament llarg"
 
-#: src/extract.c:1379
-#, c-format
-msgid "%s: Unknown file type `%c', extracted as normal file"
+#: src/extract.c:1542
+#, fuzzy, c-format
+msgid "%s: Unknown file type '%c', extracted as normal file"
 msgstr "%s: Tipus de fitxer «%c» desconegut, s'extreu com un fitxer normal"
 
-#: src/extract.c:1405
+#: src/extract.c:1568
 #, c-format
 msgid "Current %s is newer or same age"
 msgstr "L'actual %s és igual d'antic o més nou"
 
-#: src/extract.c:1457
+#: src/extract.c:1620
 #, c-format
 msgid "%s: Was unable to backup this file"
 msgstr "%s: No es pot fer la còpia de seguretat d'aquest fitxer"
 
-#: src/extract.c:1594
+#: src/extract.c:1767
 #, c-format
 msgid "Cannot rename %s to %s"
 msgstr "No es pot canviar el nom de %s a %s"
 
-#: src/incremen.c:473 src/incremen.c:517
+#: src/incremen.c:494 src/incremen.c:536
 #, c-format
 msgid "%s: Directory has been renamed from %s"
 msgstr "%s: El directori ha canviat de nom a partir de %s"
 
-#: src/incremen.c:485
-#, c-format
-msgid "%s: Directory has been renamed"
-msgstr "%s: El directori ha canviat de nom"
-
-#: src/incremen.c:530
+#: src/incremen.c:549
 #, c-format
 msgid "%s: Directory is new"
 msgstr "%s: El directori és nou"
 
-#: src/incremen.c:951 src/incremen.c:968
+#: src/incremen.c:566
+#, fuzzy, c-format
+msgid "%s: directory is on a different filesystem; not dumped"
+msgstr "%s: el fitxer es troba a un sistema de fitxers diferent; no s'aboca"
+
+#: src/incremen.c:587
+#, c-format
+msgid "%s: Directory has been renamed"
+msgstr "%s: El directori ha canviat de nom"
+
+#: src/incremen.c:1003 src/incremen.c:1018
 msgid "Invalid time stamp"
 msgstr "Marca horària invàlida"
 
-#: src/incremen.c:1007
-msgid "Invalid modification time (seconds)"
+#: src/incremen.c:1047
+#, fuzzy
+msgid "Invalid modification time"
 msgstr "Modificació invalida del temps (segons)"
 
-#: src/incremen.c:1022
+#: src/incremen.c:1057
 msgid "Invalid modification time (nanoseconds)"
 msgstr "Modificació invàlida del temps (nanosegons)"
 
-#: src/incremen.c:1042
+#: src/incremen.c:1073
 msgid "Invalid device number"
 msgstr "Número de dispositiu invàlid"
 
-#: src/incremen.c:1057
+#: src/incremen.c:1081
 msgid "Invalid inode number"
 msgstr "Número de node d'identificació invàlid"
 
-#: src/incremen.c:1108 src/incremen.c:1145
-msgid "Field too long while reading snapshot file"
-msgstr "Camp massa llarg en llegir el fitxer d'instantània"
+#: src/incremen.c:1137
+#, c-format
+msgid "%s: byte %s: %s %.*s... too long"
+msgstr ""
 
-#: src/incremen.c:1115 src/incremen.c:1153
-msgid "Read error in snapshot file"
-msgstr "Error de lectura del fitxer d'instantània"
-
-#: src/incremen.c:1117 src/incremen.c:1157 src/incremen.c:1209
-#: src/incremen.c:1267
+#: src/incremen.c:1153 src/incremen.c:1208 src/incremen.c:1270
 msgid "Unexpected EOF in snapshot file"
 msgstr "Final de l'arxiu d'instantània inesperat"
 
-#: src/incremen.c:1124 src/incremen.c:1164
-msgid "Unexpected field value in snapshot file"
-msgstr "Valor de camp inesperat del fitxer d'instantània"
+#: src/incremen.c:1159
+#, c-format
+msgid "%s: byte %s: %s %s followed by invalid byte 0x%02x"
+msgstr ""
+
+#: src/incremen.c:1171
+#, c-format
+msgid ""
+"%s: byte %s: (valid range %s..%s)\n"
+"\t%s %s"
+msgstr ""
+
+#: src/incremen.c:1178
+#, c-format
+msgid "%s: byte %s: %s %s"
+msgstr ""
 
 #: src/incremen.c:1259
+#, c-format
+msgid "%s: byte %s: %s"
+msgstr ""
+
+#: src/incremen.c:1262
 msgid "Missing record terminator"
 msgstr "Falta el terminador del registre"
 
-#: src/incremen.c:1320 src/incremen.c:1323
+#: src/incremen.c:1368 src/incremen.c:1371
 msgid "Bad incremental file format"
 msgstr "Format del fitxer incremental erroni"
 
-#: src/incremen.c:1342
+#: src/incremen.c:1390
 #, c-format
 msgid "Unsupported incremental format version: %<PRIuMAX>"
 msgstr "No se suporta la versió del format incremental: %<PRIuMAX>"
 
-#: src/incremen.c:1496
+#: src/incremen.c:1545
 #, c-format
 msgid "Malformed dumpdir: expected '%c' but found %#3o"
 msgstr "Directori d'abocament mal format: s'esperava «%c» i s'ha trobat %#3o"
 
-#: src/incremen.c:1506
+#: src/incremen.c:1555
 msgid "Malformed dumpdir: 'X' duplicated"
 msgstr "Directori d'abocament mal format: «X» duplicada"
 
-#: src/incremen.c:1519
+#: src/incremen.c:1568
 msgid "Malformed dumpdir: empty name in 'R'"
 msgstr "Directori d'abocament mal format: nom buit a «R»"
 
-#: src/incremen.c:1532
+#: src/incremen.c:1581
 msgid "Malformed dumpdir: 'T' not preceeded by 'R'"
 msgstr "Directori d'abocament mal format: «T» no està  precedit de «R»"
 
-#: src/incremen.c:1538
+#: src/incremen.c:1587
 msgid "Malformed dumpdir: empty name in 'T'"
 msgstr "Directori d'abocament mal format: nom buit a «T»"
 
-#: src/incremen.c:1558
+#: src/incremen.c:1607
 #, c-format
 msgid "Malformed dumpdir: expected '%c' but found end of data"
 msgstr ""
 "Directori d'abocament mal format: s'esperava «%c» però s'ha trobat el final "
 "de les dades"
 
-#: src/incremen.c:1565
+#: src/incremen.c:1614
 msgid "Malformed dumpdir: 'X' never used"
 msgstr "Directori d'abocament mal format: no s'ha fet servir «X»"
 
-#: src/incremen.c:1609
+#: src/incremen.c:1658
 #, c-format
 msgid "Cannot create temporary directory using template %s"
 msgstr "No es pot crear el directori temporal fent servir la plantilla %s"
 
-#: src/incremen.c:1670
+#: src/incremen.c:1719
 #, c-format
 msgid "%s: Not purging directory: unable to stat"
 msgstr "%s: No es purga el directori: no se'n pot saber l'estat"
 
-#: src/incremen.c:1683
+#: src/incremen.c:1732
 #, c-format
 msgid "%s: directory is on a different device: not purging"
 msgstr "%s: el directori és en un dispositiu diferent: no es purga"
 
-#: src/incremen.c:1691
+#: src/incremen.c:1740
 #, c-format
 msgid "%s: Deleting %s\n"
 msgstr "%s: S'elimina %s\n"
 
-#: src/incremen.c:1696
+#: src/incremen.c:1745
 #, c-format
 msgid "%s: Cannot remove"
 msgstr "%s: No es pot esborrar"
 
-#: src/list.c:190
+#: src/list.c:217
 #, c-format
 msgid "%s: Omitting"
 msgstr "%s: S'ometen"
 
-#: src/list.c:207
+#: src/list.c:235
 #, c-format
 msgid "block %s: ** Block of NULs **\n"
 msgstr "bloc %s: ** Bloc de NULs **\n"
 
-#: src/list.c:233
+#: src/list.c:261
 #, c-format
 msgid "block %s: ** End of File **\n"
 msgstr "bloc %s: ** Final del Fitxer **\n"
 
-#: src/list.c:256 src/list.c:1093 src/list.c:1356
+#: src/list.c:284 src/list.c:1136 src/list.c:1394
 #, c-format
 msgid "block %s: "
 msgstr "bloc %s: "
 
 #. TRANSLATORS: %s is type of the value (gid_t, uid_t,
 #. etc.)
-#: src/list.c:708
+#: src/list.c:751
 #, c-format
 msgid "Blanks in header where numeric %s value expected"
 msgstr "Capçalera amb blancs on hi hauria d'haver un valor numèric %s"
 
 #. TRANSLATORS: Second %s is a type name (gid_t,uid_t,etc.)
-#: src/list.c:763
+#: src/list.c:806
 #, c-format
 msgid "Archive octal value %.*s is out of %s range; assuming two's complement"
 msgstr ""
@@ -1203,109 +1240,125 @@ msgstr ""
 "complement a dos"
 
 #. TRANSLATORS: Second %s is a type name (gid_t,uid_t,etc.)
-#: src/list.c:774
+#: src/list.c:817
 #, c-format
 msgid "Archive octal value %.*s is out of %s range"
 msgstr "El valor octal de l'arxiu %.*s està fora del rang %s"
 
-#: src/list.c:795
+#: src/list.c:838
 msgid "Archive contains obsolescent base-64 headers"
 msgstr "L'arxiu conté capçaleres amb base 64 que estan esdevenint obsoletes"
 
-#: src/list.c:809
+#: src/list.c:852
 #, c-format
 msgid "Archive signed base-64 string %s is out of %s range"
 msgstr "La cadena de signatura %s amb base 64 de l'arxiu està fora del rang %s"
 
-#: src/list.c:840
+#: src/list.c:883
 #, c-format
 msgid "Archive base-256 value is out of %s range"
 msgstr "El valor amb base 256 de l'arxiu està fora del rang %s "
 
 #. TRANSLATORS: Second %s is a type name (gid_t,uid_t,etc.)
-#: src/list.c:869
+#: src/list.c:912
 #, c-format
 msgid "Archive contains %.*s where numeric %s value expected"
 msgstr "L'arxiu conté %.*s on hi hauria d'haver un valor numèric de tipus %s"
 
 #. TRANSLATORS: Second %s is type name (gid_t,uid_t,etc.)
-#: src/list.c:891
+#: src/list.c:934
 #, c-format
 msgid "Archive value %s is out of %s range %s..%s"
 msgstr "El valor %s de l'arxiu està fora del rang %s %s..%s"
 
-#: src/list.c:1257
+#: src/list.c:1294
 #, c-format
 msgid " link to %s\n"
 msgstr " enllaç cap a %s\n"
 
-#: src/list.c:1265
+#: src/list.c:1302
 #, c-format
 msgid " unknown file type %s\n"
 msgstr " tipus de fitxer desconegut %s\n"
 
-#: src/list.c:1283
+#: src/list.c:1320
 #, c-format
 msgid "--Long Link--\n"
 msgstr "--Enllaç llarg--\n"
 
-#: src/list.c:1287
+#: src/list.c:1324
 #, c-format
 msgid "--Long Name--\n"
 msgstr "--Nom Llarg--\n"
 
-#: src/list.c:1291
+#: src/list.c:1328
 #, c-format
 msgid "--Volume Header--\n"
 msgstr "--Capçalera del volum--\n"
 
-#: src/list.c:1299
+#: src/list.c:1336
 #, c-format
 msgid "--Continued at byte %s--\n"
 msgstr "--Continua al byte %s--\n"
 
-#: src/list.c:1361
+#: src/list.c:1399
 msgid "Creating directory:"
 msgstr "Es crea el directori:"
 
-#: src/misc.c:297
-msgid "Cannot get working directory"
-msgstr "No es pot trobar el directori de treball"
-
-#: src/misc.c:570
+#: src/misc.c:726
 #, c-format
 msgid "Renaming %s to %s\n"
 msgstr "Es canvia el nom %s per %s\n"
 
-#: src/misc.c:579 src/misc.c:598
+#: src/misc.c:735 src/misc.c:754
 #, c-format
 msgid "%s: Cannot rename to %s"
 msgstr "%s: No es pot canviar el nom a %s"
 
-#: src/misc.c:603
+#: src/misc.c:759
 #, c-format
 msgid "Renaming %s back to %s\n"
 msgstr "Es torna a canviar el nom %s a %s\n"
 
-#: src/misc.c:850
+#: src/misc.c:1101
 #, c-format
 msgid "%s: File removed before we read it"
 msgstr "%s: El fitxer s'ha esborrat abans de poder-lo llegir"
 
-#: src/misc.c:871
+#: src/misc.c:1122
 msgid "child process"
 msgstr "procés descendent"
 
-#: src/misc.c:880
+#: src/misc.c:1131
 msgid "interprocess channel"
 msgstr "canal d'intercomunicació"
 
-#: src/names.c:590
+#: src/names.c:360
+#, fuzzy
+msgid "command line"
+msgstr "L'ordre %s ha fallat"
+
+#: src/names.c:378
+#, fuzzy, c-format
+msgid "%s: file list requested from %s already read from %s"
+msgstr "%s: la llista de fitxers ja s'ha llegit"
+
+#: src/names.c:448 src/checkpoint.c:274
+#, fuzzy, c-format
+msgid "cannot split string '%s': %s"
+msgstr "no es pot definir el temps de «%s»"
+
+#: src/names.c:490
+#, c-format
+msgid "%s: file name read contains nul character"
+msgstr "%s: la lectura del nom del fixter conté un caràcter nul"
+
+#: src/names.c:824
 msgid "Pattern matching characters used in file names"
 msgstr ""
 "Caràcters de patró de coincidència que es fan servir en noms de fitxers"
 
-#: src/names.c:592
+#: src/names.c:826
 msgid ""
 "Use --wildcards to enable pattern matching, or --no-wildcards to suppress "
 "this warning"
@@ -1313,58 +1366,59 @@ msgstr ""
 "Feu servir --wildcards per habilitar els patrons de coincidència, o --no-"
 "wildcars per eliminar aquest avís."
 
-#: src/names.c:610 src/names.c:626
+#: src/names.c:844 src/names.c:860
 #, c-format
 msgid "%s: Not found in archive"
 msgstr "%s: No s'ha trobat a l'arxiu"
 
-#: src/names.c:611
+#: src/names.c:845
 #, c-format
 msgid "%s: Required occurrence not found in archive"
 msgstr "%s: No s'ha trobat cap coincidència a l'arxiu"
 
-#: src/names.c:645
+#: src/names.c:879
 #, c-format
 msgid "Archive label mismatch"
 msgstr "L'etiqueta de l'arxiu no coincideix"
 
-#: src/names.c:949
+#: src/names.c:1183
 msgid ""
 "Using -C option inside file list is not allowed with --listed-incremental"
 msgstr ""
 "No podeu fer servir la opció -C als llistats de fitxer amb --listed-"
 "incremental"
 
-#: src/names.c:955
+#: src/names.c:1189
 msgid "Only one -C option is allowed with --listed-incremental"
 msgstr "Només podeu fer servit una opció -C amb --listed-incemental"
 
-#: src/tar.c:81
-#, c-format
-msgid "Options `-%s' and `-%s' both want standard input"
+#: src/tar.c:87
+#, fuzzy, c-format
+msgid "Options '%s' and '%s' both want standard input"
 msgstr "Ambdues opcions «-%s» i «-%s» necessiten la sortida estàndard"
 
-#: src/tar.c:158
+#: src/tar.c:164
 #, c-format
 msgid "%s: Invalid archive format"
 msgstr "%s: Format de fitxer invàlid"
 
-#: src/tar.c:182
+#: src/tar.c:196
 msgid "GNU features wanted on incompatible archive format"
 msgstr ""
 "El format de l'arxiu és incompatible perquè requereix característiques de GNU"
 
-#: src/tar.c:250
-#, c-format
+#: src/tar.c:264
+#, fuzzy, c-format
 msgid ""
-"Unknown quoting style `%s'. Try `%s --quoting-style=help' to get a list."
+"Unknown quoting style '%s'. Try '%s --quoting-style=help' to get a list."
 msgstr ""
 "Estil de citació desconegut «%s». Feu servir «%s --quoting-style=help» per "
 "obtenir-ne una llista."
 
-#: src/tar.c:348
+#: src/tar.c:378
+#, fuzzy
 msgid ""
-"GNU `tar' saves many files together into a single tape or disk archive, and "
+"GNU 'tar' saves many files together into a single tape or disk archive, and "
 "can restore individual files from the archive.\n"
 "\n"
 "Examples:\n"
@@ -1381,9 +1435,10 @@ msgstr ""
 "ha a l'arxiu.tar.\n"
 "  tar -xf arxiu.tar          # Extreu tots els fitxers de l'arxiu.tar.\n"
 
-#: src/tar.c:357
+#: src/tar.c:387
+#, fuzzy
 msgid ""
-"The backup suffix is `~', unless set with --suffix or SIMPLE_BACKUP_SUFFIX.\n"
+"The backup suffix is '~', unless set with --suffix or SIMPLE_BACKUP_SUFFIX.\n"
 "The version control may be set with --backup or VERSION_CONTROL, values "
 "are:\n"
 "\n"
@@ -1403,82 +1458,82 @@ msgstr ""
 "no simples\n"
 "  never, simple   fes sempre còpies de seguretat simples\n"
 
-#: src/tar.c:387
+#: src/tar.c:417
 msgid "Main operation mode:"
 msgstr "Mode d'operació principal:"
 
-#: src/tar.c:390
+#: src/tar.c:420
 msgid "list the contents of an archive"
 msgstr "Llista els continguts d'un arxiu"
 
-#: src/tar.c:392
+#: src/tar.c:422
 msgid "extract files from an archive"
 msgstr "extreu fitxers d'un arxiu"
 
-#: src/tar.c:395
+#: src/tar.c:425
 msgid "create a new archive"
 msgstr "crea un arxiu nou"
 
-#: src/tar.c:397
+#: src/tar.c:427
 msgid "find differences between archive and file system"
 msgstr "cerca diferències entre un arxiu i el sistema de fitxers"
 
-#: src/tar.c:400
+#: src/tar.c:430
 msgid "append files to the end of an archive"
 msgstr "afegeix fitxers al final d'un arxiu"
 
-#: src/tar.c:402
+#: src/tar.c:432
 msgid "only append files newer than copy in archive"
 msgstr "només afegeix els fitxers més nous que les còpies dins l'arxiu"
 
-#: src/tar.c:404
+#: src/tar.c:434
 msgid "append tar files to an archive"
 msgstr "afegeix fitxers tar a un arxiu"
 
-#: src/tar.c:407
+#: src/tar.c:437
 msgid "delete from the archive (not on mag tapes!)"
 msgstr "esborra de l'arxiu (excepte en cintes magnètiques!)"
 
-#: src/tar.c:409
+#: src/tar.c:439
 msgid "test the archive volume label and exit"
 msgstr "prova l'etiqueta de volum de l'arxiu i surt"
 
-#: src/tar.c:414
+#: src/tar.c:444
 msgid "Operation modifiers:"
 msgstr "Modificadors d'operació:"
 
-#: src/tar.c:417
+#: src/tar.c:447
 msgid "handle sparse files efficiently"
 msgstr "tracta fitxers dispersos de manera eficient"
 
-#: src/tar.c:418
+#: src/tar.c:448
 msgid "MAJOR[.MINOR]"
 msgstr "MAJOR[.MENOR]"
 
-#: src/tar.c:419
+#: src/tar.c:449
 msgid "set version of the sparse format to use (implies --sparse)"
 msgstr ""
 "estableix la versió del format de dispersió que cal fer servir (implica --"
 "sparse)"
 
-#: src/tar.c:421
+#: src/tar.c:451
 msgid "handle old GNU-format incremental backup"
 msgstr "tracta l'antic format incremental GNU de còpies de seguretat"
 
-#: src/tar.c:423
+#: src/tar.c:453
 msgid "handle new GNU-format incremental backup"
 msgstr "tracta el nou format de còpies de seguretat incrementals de GNU"
 
-#: src/tar.c:425
+#: src/tar.c:455
 msgid "dump level for created listed-incremental archive"
 msgstr "nivell de bolcat per l'arxiu llistat-incremental creat"
 
-#: src/tar.c:427
+#: src/tar.c:457
 msgid "do not exit with nonzero on unreadable files"
 msgstr ""
 "no surtis si l'estat és diferent de zero quan trobis fitxers il·legibles "
 
-#: src/tar.c:429
+#: src/tar.c:459
 msgid ""
 "process only the NUMBERth occurrence of each file in the archive; this "
 "option is valid only in conjunction with one of the subcommands --delete, --"
@@ -1490,126 +1545,145 @@ msgstr ""
 "extract o --list i quan es dona una llista de fitxers ja sigui a la línia de "
 "comandes com amb l'opció -T; ENA val 1 per defecte"
 
-#: src/tar.c:435
+#: src/tar.c:465
 msgid "archive is seekable"
 msgstr "l'arxiu pot buscar-se"
 
-#: src/tar.c:437
+#: src/tar.c:467
 msgid "archive is not seekable"
 msgstr "L'arxiu no pot buscar-se"
 
-#: src/tar.c:439
+#: src/tar.c:469
 msgid "do not check device numbers when creating incremental archives"
 msgstr "no comprovis el número de dispositiu quan creis arxius incrementals"
 
-#: src/tar.c:442
+#: src/tar.c:472
 msgid "check device numbers when creating incremental archives (default)"
 msgstr ""
 "comprova el número de dispositiu quan creis arxius incrementals (per defecte)"
 
-#: src/tar.c:448
+#: src/tar.c:478
 msgid "Overwrite control:"
 msgstr "Control de sobreescriptura:"
 
-#: src/tar.c:451
+#: src/tar.c:481
 msgid "attempt to verify the archive after writing it"
 msgstr "intenta verificar l'arxiu després d'escriure'l"
 
-#: src/tar.c:453
+#: src/tar.c:483
 msgid "remove files after adding them to the archive"
 msgstr "eliminar els fitxers després d'afegir-los a l'arxiu"
 
-#: src/tar.c:455
-msgid "don't replace existing files when extracting"
+#: src/tar.c:485
+#, fuzzy
+msgid "don't replace existing files when extracting, treat them as errors"
 msgstr "no reemplacis els fitxers existents quan els extreguis"
 
-#: src/tar.c:457
+#: src/tar.c:488
+#, fuzzy
+msgid "don't replace existing files when extracting, silently skip over them"
+msgstr "no reemplacis els fitxers existents quan els extreguis"
+
+#: src/tar.c:491
 msgid "don't replace existing files that are newer than their archive copies"
 msgstr ""
 "no reemplacis els fitxers existents que siguin més nous que les còpies de "
 "l'arxiu"
 
-#: src/tar.c:459
+#: src/tar.c:493
 msgid "overwrite existing files when extracting"
 msgstr "sobreescriu els fitxers existents quan els extreguis"
 
-#: src/tar.c:461
+#: src/tar.c:495
 msgid "remove each file prior to extracting over it"
 msgstr "elimina cada fitxer abans d'extreure-hi a sobre"
 
-#: src/tar.c:463
+#: src/tar.c:497
 msgid "empty hierarchies prior to extracting directory"
 msgstr "buida les jerarquies abans d'extreure el directori"
 
-#: src/tar.c:465
+#: src/tar.c:499
 msgid "preserve metadata of existing directories"
 msgstr "conserva les metadades dels directoris existents"
 
-#: src/tar.c:467
+#: src/tar.c:501
 msgid "overwrite metadata of existing directories when extracting (default)"
 msgstr ""
 "sobreescriu les metadades dels directoris existents quan s'extreguin (per "
 "defecte)"
 
-#: src/tar.c:473
+#: src/tar.c:504
+#, fuzzy
+msgid "preserve existing symlinks to directories when extracting"
+msgstr "sobreescriu els fitxers existents quan els extreguis"
+
+#: src/tar.c:506 src/tar.c:711
+msgid "DIR"
+msgstr "DIRECTORI"
+
+#: src/tar.c:507
+msgid "create a subdirectory to avoid having loose files extracted"
+msgstr ""
+
+#: src/tar.c:513
 msgid "Select output stream:"
 msgstr "Selecciona la sortida del flux de dades:"
 
-#: src/tar.c:476
+#: src/tar.c:516
 msgid "extract files to standard output"
 msgstr "extreu els fitxers a la sortida estàndard"
 
-#: src/tar.c:477 src/tar.c:536 src/tar.c:538 tests/genfile.c:190
+#: src/tar.c:517 src/tar.c:606 src/tar.c:608 tests/genfile.c:190
 msgid "COMMAND"
 msgstr "COMANDA"
 
-#: src/tar.c:478
+#: src/tar.c:518
 msgid "pipe extracted files to another program"
 msgstr "condueix els fitxers extrets a un altre programa"
 
-#: src/tar.c:480
+#: src/tar.c:520
 msgid "ignore exit codes of children"
 msgstr "ignora els codis de sortida dels processos fill"
 
-#: src/tar.c:482
+#: src/tar.c:522
 msgid "treat non-zero exit codes of children as error"
 msgstr ""
 "tracta els codis de sortida dels processos fills diferents de zero com a "
 "error"
 
-#: src/tar.c:487
+#: src/tar.c:527
 msgid "Handling of file attributes:"
 msgstr "Gestió dels atributs del fitxer:"
 
-#: src/tar.c:490
+#: src/tar.c:530
 msgid "force NAME as owner for added files"
 msgstr "força NOM coma propietari dels fitxers afegits"
 
-#: src/tar.c:492
+#: src/tar.c:532
 msgid "force NAME as group for added files"
 msgstr "força NOM com a grup pels fitxers afegits"
 
-#: src/tar.c:493 src/tar.c:690
+#: src/tar.c:533 src/tar.c:768
 msgid "DATE-OR-FILE"
 msgstr "DATA-O-FITXER"
 
-#: src/tar.c:494
+#: src/tar.c:534
 msgid "set mtime for added files from DATE-OR-FILE"
 msgstr "estableix mtime pels fitxers afegits des de DATA-O-FITXER"
 
-#: src/tar.c:495
+#: src/tar.c:535
 msgid "CHANGES"
 msgstr "CANVIS"
 
-#: src/tar.c:496
+#: src/tar.c:536
 msgid "force (symbolic) mode CHANGES for added files"
 msgstr "força CANVIS de mode (simbòlic) als fitxers que s'afegeixin"
 
-#: src/tar.c:498
+#: src/tar.c:538
 msgid "METHOD"
 msgstr "MÈTODE"
 
-#: src/tar.c:499
+#: src/tar.c:539
 msgid ""
 "preserve access times on dumped files, either by restoring the times after "
 "reading (METHOD='replace'; default) or by not setting the times in the first "
@@ -1619,11 +1693,11 @@ msgstr ""
 "hores després de llegir-los (MÈTODE='replace'; per defecte) o no posant "
 "primer les hores(MÈTODE='system')"
 
-#: src/tar.c:503
+#: src/tar.c:543
 msgid "don't extract file modified time"
 msgstr "no extreguis la data de modificació dels fitxers"
 
-#: src/tar.c:505
+#: src/tar.c:545
 msgid ""
 "try extracting files with the same ownership as exists in the archive "
 "(default for superuser)"
@@ -1631,23 +1705,23 @@ msgstr ""
 "intenta extreure els fitxers amb el mateix propietari que existeix a l'arxiu "
 "(per defecte pel superusuari)"
 
-#: src/tar.c:507
+#: src/tar.c:547
 msgid "extract files as yourself (default for ordinary users)"
 msgstr ""
 "extreu el fitxer com a tu mateix com a propietari (per defecte pels usuaris "
 "ordinaris"
 
-#: src/tar.c:509
+#: src/tar.c:549
 msgid "always use numbers for user/group names"
 msgstr "fes servir sempre números pels noms de usuari/grup"
 
-#: src/tar.c:511
+#: src/tar.c:551
 msgid "extract information about file permissions (default for superuser)"
 msgstr ""
 "extreu la informació dels permisos del fitxer (per defecte per al "
 "superusuari)"
 
-#: src/tar.c:515
+#: src/tar.c:555
 msgid ""
 "apply the user's umask when extracting permissions from the archive (default "
 "for ordinary users)"
@@ -1655,15 +1729,16 @@ msgstr ""
 "fes servir els permisos especificats per l'usuari qua s'extreguin permisos "
 "de l'arxiu (per defecte per usuaris normals)"
 
-#: src/tar.c:517
-msgid "sort names to extract to match archive"
-msgstr "ordena els noms a extreure per que coincideixin amb els de l'arxiu"
+#: src/tar.c:557
+msgid ""
+"member arguments are listed in the same order as the files in the archive"
+msgstr ""
 
-#: src/tar.c:520
+#: src/tar.c:561
 msgid "same as both -p and -s"
 msgstr "el mateix que per -p i -s"
 
-#: src/tar.c:522
+#: src/tar.c:563
 msgid ""
 "delay setting modification times and permissions of extracted directories "
 "until the end of extraction"
@@ -1671,139 +1746,188 @@ msgstr ""
 "no modifiquis els temps i els permisos dels directoris extrets fins que "
 "s'acabi l'extracció"
 
-#: src/tar.c:525
+#: src/tar.c:566
 msgid "cancel the effect of --delay-directory-restore option"
 msgstr "cancel·la l'efecte de l'opció --delay-directory-restore"
 
-#: src/tar.c:530
+#: src/tar.c:567
+msgid "ORDER"
+msgstr ""
+
+#: src/tar.c:571
+msgid "directory sorting order: none (default) or name"
+msgstr ""
+
+#: src/tar.c:578
+#, fuzzy
+msgid "Handling of extended file attributes:"
+msgstr "Gestió dels atributs del fitxer:"
+
+#: src/tar.c:581
+msgid "Enable extended attributes support"
+msgstr ""
+
+#: src/tar.c:583
+msgid "Disable extended attributes support"
+msgstr ""
+
+#: src/tar.c:584 src/tar.c:586
+msgid "MASK"
+msgstr ""
+
+#: src/tar.c:585
+msgid "specify the include pattern for xattr keys"
+msgstr ""
+
+#: src/tar.c:587
+msgid "specify the exclude pattern for xattr keys"
+msgstr ""
+
+#: src/tar.c:589
+msgid "Enable the SELinux context support"
+msgstr ""
+
+#: src/tar.c:591
+msgid "Disable the SELinux context support"
+msgstr ""
+
+#: src/tar.c:593
+msgid "Enable the POSIX ACLs support"
+msgstr ""
+
+#: src/tar.c:595
+msgid "Disable the POSIX ACLs support"
+msgstr ""
+
+#: src/tar.c:600
 msgid "Device selection and switching:"
 msgstr "Selecció i canvi de dispositiu:"
 
-#: src/tar.c:532
+#: src/tar.c:602
 msgid "ARCHIVE"
 msgstr "ARXIU"
 
-#: src/tar.c:533
+#: src/tar.c:603
 msgid "use archive file or device ARCHIVE"
 msgstr "fes servir el fitxer o dispositiu ARXIU"
 
-#: src/tar.c:535
+#: src/tar.c:605
 msgid "archive file is local even if it has a colon"
 msgstr "l'arxiu és local encara que tingui dos punts"
 
-#: src/tar.c:537
+#: src/tar.c:607
 msgid "use given rmt COMMAND instead of rmt"
 msgstr "fes servir la COMANDA rmt en comtes de rmt"
 
-#: src/tar.c:539
+#: src/tar.c:609
 msgid "use remote COMMAND instead of rsh"
 msgstr "fes servir la COMANDA remota en comptes de rsh"
 
-#: src/tar.c:543
+#: src/tar.c:613
 msgid "specify drive and density"
 msgstr "especifica la unitat i la densitat"
 
-#: src/tar.c:557
+#: src/tar.c:627
 msgid "create/list/extract multi-volume archive"
 msgstr "crea/llista/extreu arxius de múltiples volums"
 
-#: src/tar.c:559
+#: src/tar.c:629
 msgid "change tape after writing NUMBER x 1024 bytes"
 msgstr "canvia la cinta després d'escriure NÚMERO x 1024 bytes"
 
-#: src/tar.c:561
+#: src/tar.c:631
 msgid "run script at end of each tape (implies -M)"
 msgstr "executa seqüència al final de cada cinta (implica -M)"
 
-#: src/tar.c:564
+#: src/tar.c:634
 msgid "use/update the volume number in FILE"
 msgstr "fes servir/actualitza el número de volum del FITXER"
 
-#: src/tar.c:569
+#: src/tar.c:639
 msgid "Device blocking:"
 msgstr "Blocs als dispositius:"
 
-#: src/tar.c:571
+#: src/tar.c:641
 msgid "BLOCKS"
 msgstr "BLOCS"
 
-#: src/tar.c:572
+#: src/tar.c:642
 msgid "BLOCKS x 512 bytes per record"
 msgstr "BLOCS x 512 bytes per registre"
 
-#: src/tar.c:574
+#: src/tar.c:644
 msgid "NUMBER of bytes per record, multiple of 512"
 msgstr "NÚMERO de bytes per registre, múltiple de 512"
 
-#: src/tar.c:576
+#: src/tar.c:646
 msgid "ignore zeroed blocks in archive (means EOF)"
 msgstr "ignora els blocs posats a zero de l'arxiu (volen dir fi del fitxer)"
 
-#: src/tar.c:578
+#: src/tar.c:648
 msgid "reblock as we read (for 4.2BSD pipes)"
 msgstr "refés els blocs mentre els llegeixes (per conductes de 4.2BSD)"
 
-#: src/tar.c:583
+#: src/tar.c:653
 msgid "Archive format selection:"
 msgstr "Selecció del format de l'arxiu: "
 
-#: src/tar.c:585 tests/genfile.c:153
+#: src/tar.c:655 tests/genfile.c:153
 msgid "FORMAT"
 msgstr "FORMAT"
 
-#: src/tar.c:586
+#: src/tar.c:656
 msgid "create archive of the given format"
 msgstr "crea un arxiu del format especificat"
 
-#: src/tar.c:588
+#: src/tar.c:658
 msgid "FORMAT is one of the following:"
 msgstr "El FORMAT és un dels següents"
 
-#: src/tar.c:589
+#: src/tar.c:659
 msgid "old V7 tar format"
 msgstr "format tar de l'antiga versió 7"
 
-#: src/tar.c:592
+#: src/tar.c:662
 msgid "GNU format as per tar <= 1.12"
 msgstr "format GNU tar <= 1.12"
 
-#: src/tar.c:594
+#: src/tar.c:664
 msgid "GNU tar 1.13.x format"
 msgstr "format GNU tar 1.13.x"
 
-#: src/tar.c:596
+#: src/tar.c:666
 msgid "POSIX 1003.1-1988 (ustar) format"
 msgstr "format POSIX 1003.1-1988 (ustar)"
 
-#: src/tar.c:598
+#: src/tar.c:668
 msgid "POSIX 1003.1-2001 (pax) format"
 msgstr "format POSIX 1003.1-2001 (pax)"
 
-#: src/tar.c:599
+#: src/tar.c:669
 msgid "same as pax"
 msgstr "el mateix que pax"
 
-#: src/tar.c:602
+#: src/tar.c:672
 msgid "same as --format=v7"
 msgstr "el mateix que --format=v7"
 
-#: src/tar.c:605
+#: src/tar.c:675
 msgid "same as --format=posix"
 msgstr "el mateix que --format=posix"
 
-#: src/tar.c:606
+#: src/tar.c:676
 msgid "keyword[[:]=value][,keyword[[:]=value]]..."
 msgstr "paraula clau[[:]=valor][,paraula clau[[:]=valor]]..."
 
-#: src/tar.c:607
+#: src/tar.c:677
 msgid "control pax keywords"
 msgstr "controla les paraules clau de pax"
 
-#: src/tar.c:608
+#: src/tar.c:678
 msgid "TEXT"
 msgstr "TEXT"
 
-#: src/tar.c:609
+#: src/tar.c:679
 msgid ""
 "create archive with volume name TEXT; at list/extract time, use TEXT as a "
 "globbing pattern for volume name"
@@ -1811,76 +1935,74 @@ msgstr ""
 "crea l'arxiu amb el nom de volum TEXT. Quan es llista/s'extreu, utilitza "
 "TEXT com a patró global de noms de volum"
 
-#: src/tar.c:614
+#: src/tar.c:684
 msgid "Compression options:"
 msgstr "Opcions de compressió:"
 
-#: src/tar.c:616
+#: src/tar.c:686
 msgid "use archive suffix to determine the compression program"
 msgstr "utilitza el sufix de l'arxiu per determinar el programa de compressió"
 
-#: src/tar.c:618
+#: src/tar.c:688
 msgid "do not use archive suffix to determine the compression program"
 msgstr ""
 "no fa servir el sufix de l'arxiu per determinar el programa de compressió"
 
-#: src/tar.c:620
+#: src/tar.c:690
 msgid "PROG"
 msgstr "PROGRAMA"
 
-#: src/tar.c:621
+#: src/tar.c:691
 msgid "filter through PROG (must accept -d)"
 msgstr "filtra mitjançant PROGRAMA (ha d'acceptar -d)"
 
-#: src/tar.c:637
+#: src/tar.c:707
 msgid "Local file selection:"
 msgstr "Selecció de fixter local:"
 
-#: src/tar.c:640
+#: src/tar.c:710
 msgid "add given FILE to the archive (useful if its name starts with a dash)"
 msgstr "afegeix el FITXER a l'arxiu (útil si el nom comença per un guió)"
 
-#: src/tar.c:641
-msgid "DIR"
-msgstr "DIRECTORI"
-
-#: src/tar.c:642
+#: src/tar.c:712
 msgid "change to directory DIR"
 msgstr "Canvia al directori DIRECTORI"
 
-#: src/tar.c:644
+#: src/tar.c:714
 msgid "get names to extract or create from FILE"
 msgstr "obté els noms que cal extreure u crear del FITXER"
 
-#: src/tar.c:646
+#: src/tar.c:716
 msgid "-T reads null-terminated names, disable -C"
 msgstr "-T llegeix els noms acabats en nul, desactivar-ho amb -C"
 
-#: src/tar.c:648
+#: src/tar.c:718
 msgid "disable the effect of the previous --null option"
 msgstr "deshabilita l'efecte del la opció --null prèvia"
 
-#: src/tar.c:650
-msgid "unquote filenames read with -T (default)"
+#: src/tar.c:720
+#, fuzzy
+msgid "unquote input file or member names (default)"
 msgstr "treu les cometes dels noms dels fitxers llegits amb -T (per defecte)"
 
-#: src/tar.c:652
-msgid "do not unquote filenames read with -T"
+#: src/tar.c:722
+#, fuzzy
+msgid "do not unquote input file or member names"
 msgstr "no treguis les cometes dels noms dels fitxers llegits amb -T"
 
-#: src/tar.c:653 tests/genfile.c:136
+#: src/tar.c:723 tests/genfile.c:136
 msgid "PATTERN"
 msgstr "PATRÓ"
 
-#: src/tar.c:654
+#: src/tar.c:724
 msgid "exclude files, given as a PATTERN"
 msgstr "exclou els fitxers que es donen com un PATRÓ"
 
-#: src/tar.c:656
+#: src/tar.c:726
 msgid "exclude patterns listed in FILE"
 msgstr "exclou els patrons que es llisten al FITXER"
 
-#: src/tar.c:658
+#: src/tar.c:728
 msgid ""
 "exclude contents of directories containing CACHEDIR.TAG, except for the tag "
 "file itself"
@@ -1888,96 +2010,112 @@ msgstr ""
 "exclou el contingut dels directoris que continguin CACHEDIR.TAG, excepte el "
 "propi fitxer d'etiquetes"
 
-#: src/tar.c:661
+#: src/tar.c:731
 msgid "exclude everything under directories containing CACHEDIR.TAG"
 msgstr "exclou tot el que estigui als directoris que continguin CACHEDIR.TAG"
 
-#: src/tar.c:664
+#: src/tar.c:734
 msgid "exclude directories containing CACHEDIR.TAG"
 msgstr "exclou els directoris que continguin CACHEDIR.TAG "
 
-#: src/tar.c:666
+#: src/tar.c:736
 msgid "exclude contents of directories containing FILE, except for FILE itself"
 msgstr ""
 "exclou el contingut dels directoris que contenen el FITXER, excepte el "
 "FITXER mateix"
 
-#: src/tar.c:669
+#: src/tar.c:739
+msgid "read exclude patterns for each directory from FILE, if it exists"
+msgstr ""
+
+#: src/tar.c:742
+msgid ""
+"read exclude patterns for each directory and its subdirectories from FILE, "
+"if it exists"
+msgstr ""
+
+#: src/tar.c:745
 msgid "exclude everything under directories containing FILE"
 msgstr "exclou tot el que hi hagi al directori que contingui el FITXER"
 
-#: src/tar.c:671
+#: src/tar.c:747
 msgid "exclude directories containing FILE"
 msgstr "exclou els directoris que continguin el FITXER"
 
-#: src/tar.c:673
+#: src/tar.c:749
 msgid "exclude version control system directories"
 msgstr "exclou els directoris del sistema de control de versions"
 
-#: src/tar.c:675
+#: src/tar.c:751
+msgid "read exclude patterns from the VCS ignore files"
+msgstr ""
+
+#: src/tar.c:753
 msgid "exclude backup and lock files"
 msgstr "exclou els fitxers de còpia de seguretat i de blocat"
 
-#: src/tar.c:677
+#: src/tar.c:755
 msgid "avoid descending automatically in directories"
 msgstr "no baixa automàticament als directoris"
 
-#: src/tar.c:679
+#: src/tar.c:757
 msgid "stay in local file system when creating archive"
 msgstr "queda't al sistema de fitxers local quan creïs l'arxiu"
 
-#: src/tar.c:681
+#: src/tar.c:759
 msgid "recurse into directories (default)"
 msgstr "incloure els subdirectoris (per defecte)"
 
-#: src/tar.c:683
-msgid "don't strip leading `/'s from file names"
+#: src/tar.c:761
+#, fuzzy
+msgid "don't strip leading '/'s from file names"
 msgstr "no treguis les primeres «/» dels noms dels fitxers"
 
-#: src/tar.c:685
+#: src/tar.c:763
 msgid "follow symlinks; archive and dump the files they point to"
 msgstr ""
 "segueix els enllaços simbòlics; arxiva i aboca els fitxers als quals apunten"
 
-#: src/tar.c:687
+#: src/tar.c:765
 msgid "follow hard links; archive and dump the files they refer to"
 msgstr ""
 "segueix els enllaços durs; arxiva i aboca els fitxers als quals es refereix"
 
-#: src/tar.c:688
+#: src/tar.c:766
 msgid "MEMBER-NAME"
 msgstr "NOM-DEL-MEMBRE"
 
-#: src/tar.c:689
-msgid "begin at member MEMBER-NAME in the archive"
+#: src/tar.c:767
+#, fuzzy
+msgid "begin at member MEMBER-NAME when reading the archive"
 msgstr "comença al membre NOM-DEL MEMBRE de l'arxiu"
 
-#: src/tar.c:691
+#: src/tar.c:769
 msgid "only store files newer than DATE-OR-FILE"
 msgstr "desa només els fitxers més nous que DATA-O-FITXER"
 
-#: src/tar.c:693
+#: src/tar.c:771
 msgid "DATE"
 msgstr "DATA"
 
-#: src/tar.c:694
+#: src/tar.c:772
 msgid "compare date and time when data changed only"
 msgstr "compara la data i l'hora només quan les dades hagin canviat"
 
-#: src/tar.c:695
+#: src/tar.c:773
 msgid "CONTROL"
 msgstr "CONTROL"
 
-#: src/tar.c:696
+#: src/tar.c:774
 msgid "backup before removal, choose version CONTROL"
 msgstr ""
 "fes una còpia de seguretat abans d'esborrar, tria el CONTROL de versions"
 
-#: src/tar.c:697 src/tar.c:776 src/tar.c:778 tests/genfile.c:169
+#: src/tar.c:775 src/tar.c:856 src/tar.c:858 tests/genfile.c:169
 msgid "STRING"
 msgstr "CADENA"
 
-#: src/tar.c:698
+#: src/tar.c:776
 msgid ""
 "backup before removal, override usual suffix ('~' unless overridden by "
 "environment variable SIMPLE_BACKUP_SUFFIX)"
@@ -1985,101 +2123,104 @@ msgstr ""
 "fa una còpia de seguretat abans d'esborrar, substitueix el sufix usual («~» "
 "si no s'ha definit la variable d'entorn SIMPLE_BACKUP_SUFFIX)"
 
-#: src/tar.c:703
+#: src/tar.c:781
 msgid "File name transformations:"
 msgstr "Transformacions del nom del fitxer:"
 
-#: src/tar.c:705
+#: src/tar.c:783
 msgid "strip NUMBER leading components from file names on extraction"
 msgstr ""
 "treu NÚMERO components de la capçalera dels noms dels fitxers quan extreu"
 
-#: src/tar.c:707
+#: src/tar.c:785
 msgid "EXPRESSION"
 msgstr "EXPRESSIÓ"
 
-#: src/tar.c:708
+#: src/tar.c:786
 msgid "use sed replace EXPRESSION to transform file names"
 msgstr ""
 "fes servir l'EXPRESSIÓ de substitució sed per transformar els noms dels "
 "fitxers"
 
-#: src/tar.c:714
+#: src/tar.c:792
 msgid "File name matching options (affect both exclude and include patterns):"
 msgstr ""
 "opcions de concordança de nom de fitxer (afecta tant als patrons de inclusió "
 "com als d'exclusió):"
 
-#: src/tar.c:717
+#: src/tar.c:795
 msgid "ignore case"
 msgstr "ignora diferències majúscules/minúscules"
 
-#: src/tar.c:719
+#: src/tar.c:797
 msgid "patterns match file name start"
 msgstr "comprova els patrons del començament del nom del fitxer"
 
-#: src/tar.c:721
-msgid "patterns match after any `/' (default for exclusion)"
+#: src/tar.c:799
+#, fuzzy
+msgid "patterns match after any '/' (default for exclusion)"
 msgstr ""
 "comprova els patrons després de qualsevol «/» (per defecte a les exclusions) "
 
-#: src/tar.c:723
+#: src/tar.c:801
 msgid "case sensitive matching (default)"
 msgstr "comprova diferències majúscules/minúscules (per defecte)"
 
-#: src/tar.c:725
+#: src/tar.c:803
 msgid "use wildcards (default for exclusion)"
 msgstr "fa servir comodins (per defecte a les exclusions)"
 
-#: src/tar.c:727
+#: src/tar.c:805
 msgid "verbatim string matching"
 msgstr "concordància exacte a les cadenes"
 
-#: src/tar.c:729
-msgid "wildcards do not match `/'"
+#: src/tar.c:807
+#, fuzzy
+msgid "wildcards do not match '/'"
 msgstr "els comodins no han de concordar amb «/»"
 
-#: src/tar.c:731
-msgid "wildcards match `/' (default for exclusion)"
+#: src/tar.c:809
+#, fuzzy
+msgid "wildcards match '/' (default for exclusion)"
 msgstr "els comodins han de concordar amb «/» (per defecte a les exclusions)"
 
-#: src/tar.c:736
+#: src/tar.c:814
 msgid "Informative output:"
 msgstr "Sortida informativa:"
 
-#: src/tar.c:739
+#: src/tar.c:817
 msgid "verbosely list files processed"
 msgstr "llista els fitxers processats detalladament"
 
-#: src/tar.c:740
+#: src/tar.c:818
 msgid "KEYWORD"
 msgstr "PARAULA CLAU"
 
-#: src/tar.c:741
+#: src/tar.c:819
 msgid "warning control"
 msgstr "control d'avisos"
 
-#: src/tar.c:743
+#: src/tar.c:821
 msgid "display progress messages every NUMBERth record (default 10)"
 msgstr "mostra els missatges de progres cada NÚMERO registres (per defecte 10)"
 
-#: src/tar.c:745
+#: src/tar.c:823
 msgid "ACTION"
 msgstr "ACCIÓ"
 
-#: src/tar.c:746
+#: src/tar.c:824
 msgid "execute ACTION on each checkpoint"
 msgstr "executa ACCIÓ a cada punt de comprovació"
 
-#: src/tar.c:749
+#: src/tar.c:827
 msgid "print a message if not all links are dumped"
 msgstr "mostra un missatge si no s'aboquen tots els enllaços"
 
-#: src/tar.c:750
+#: src/tar.c:828
 msgid "SIGNAL"
 msgstr "SENYAL"
 
-#: src/tar.c:751
+#: src/tar.c:829
 msgid ""
 "print total bytes after processing the archive; with an argument - print "
 "total bytes when this SIGNAL is delivered; Allowed signals are: SIGHUP, "
@@ -2091,31 +2232,35 @@ msgstr ""
 "SIGHUP, SIGQUIT, SIGINT, SIGUSR1 i SIGUSR2. També s'accepta els noms sense "
 "el prefix SIG"
 
-#: src/tar.c:756
+#: src/tar.c:834
 msgid "print file modification times in UTC"
 msgstr "mostra l'hora de modificació del fitxer en UTC"
 
-#: src/tar.c:758
+#: src/tar.c:836
 msgid "print file time to its full resolution"
 msgstr "Mostra l'hora del fitxer amb alta precisió"
 
-#: src/tar.c:760
+#: src/tar.c:838
 msgid "send verbose output to FILE"
 msgstr "envia la sortida detallada al FITXER"
 
-#: src/tar.c:762
+#: src/tar.c:840
 msgid "show block number within archive with each message"
 msgstr "mostra el número de bloc de dins l'arxiu a cada missatge"
 
-#: src/tar.c:764
+#: src/tar.c:842
 msgid "ask for confirmation for every action"
 msgstr "demana la confirmació per cada acció"
 
-#: src/tar.c:767
+#: src/tar.c:845
 msgid "show tar defaults"
 msgstr "mostra els valors per defecte de tar"
 
-#: src/tar.c:769
+#: src/tar.c:847
+msgid "show valid ranges for snapshot-file fields"
+msgstr ""
+
+#: src/tar.c:849
 msgid ""
 "when listing or extracting, list each directory that does not match search "
 "criteria"
@@ -2123,33 +2268,33 @@ msgstr ""
 "quan es llisti o s'extregui, llista tots els directoris que no es "
 "corresponguin amb el criteri de cerca"
 
-#: src/tar.c:771
+#: src/tar.c:851
 msgid "show file or archive names after transformation"
 msgstr "mostra el nom del fitxer o de l'arxiu després de la transformació"
 
-#: src/tar.c:774
+#: src/tar.c:854
 msgid "STYLE"
 msgstr "ESTIL"
 
-#: src/tar.c:775
+#: src/tar.c:855
 msgid "set name quoting style; see below for valid STYLE values"
 msgstr ""
 "estableix el nom de l'estil de citació; vegeu més avall una llista de valors "
 "vàlids per ESTIL"
 
-#: src/tar.c:777
+#: src/tar.c:857
 msgid "additionally quote characters from STRING"
 msgstr "més caràcters de cometes des de CADENA"
 
-#: src/tar.c:779
+#: src/tar.c:859
 msgid "disable quoting for characters from STRING"
 msgstr "deshabilita els caràcters de cometa de la CADENA"
 
-#: src/tar.c:784
+#: src/tar.c:864
 msgid "Compatibility options:"
 msgstr "Opcions de compatibilitat:"
 
-#: src/tar.c:787
+#: src/tar.c:867
 msgid ""
 "when creating, same as --old-archive; when extracting, same as --no-same-"
 "owner"
@@ -2157,62 +2302,55 @@ msgstr ""
 "quan es crea, el mateix que --old-archive; quan s'extreu, el mateix que --no-"
 "same-owner"
 
-#: src/tar.c:792
+#: src/tar.c:872
 msgid "Other options:"
 msgstr "Altres opcions:"
 
-#: src/tar.c:795
+#: src/tar.c:875
 msgid "disable use of some potentially harmful options"
 msgstr "desactiva l'ús de certes opcions potencialment perjudicials"
 
-#: src/tar.c:930
-msgid "You may not specify more than one `-Acdtrux' or `--test-label' option"
+#: src/tar.c:1010
+#, fuzzy
+msgid ""
+"You may not specify more than one '-Acdtrux', '--delete' or  '--test-label' "
+"option"
 msgstr "No podeu especificar més d'un «-Acdtrux» o d'opció «--test-label»"
 
-#: src/tar.c:940
+#: src/tar.c:1020
 msgid "Conflicting compression options"
 msgstr "Opcions de compressió conflictives"
 
-#: src/tar.c:996
+#: src/tar.c:1079
 #, c-format
 msgid "Unknown signal name: %s"
 msgstr "Nom del senyal desconegut: %s"
 
-#: src/tar.c:1020
+#: src/tar.c:1103
 msgid "Date sample file not found"
 msgstr "No s'ha trobat el fitxer de mostra de la data"
 
-#: src/tar.c:1028
+#: src/tar.c:1111
 #, c-format
 msgid "Substituting %s for unknown date format %s"
 msgstr "S'està substituint %s pel format de data desconegut %s"
 
-#: src/tar.c:1057
-#, c-format
-msgid "Option %s: Treating date `%s' as %s"
+#: src/tar.c:1140
+#, fuzzy, c-format
+msgid "Option %s: Treating date '%s' as %s"
 msgstr "Opció %s: S'està tractant la data «%s» com a %s"
 
-#: src/tar.c:1135
-#, c-format
-msgid "%s: file list already read"
-msgstr "%s: la llista de fitxers ja s'ha llegit"
-
-#: src/tar.c:1201
-#, c-format
-msgid "%s: file name read contains nul character"
-msgstr "%s: la lectura del nom del fixter conté un caràcter nul"
-
-#: src/tar.c:1268 src/tar.c:1272 src/tar.c:1276 src/tar.c:1280 src/tar.c:1284
-#: src/tar.c:1288
+#: src/tar.c:1183 src/tar.c:1187 src/tar.c:1191 src/tar.c:1195 src/tar.c:1199
+#: src/tar.c:1203 src/tar.c:1206
 #, c-format
 msgid "filter the archive through %s"
 msgstr "filtra l'arxiu a mitjançant %s"
 
-#: src/tar.c:1296
+#: src/tar.c:1214
 msgid "Valid arguments for the --quoting-style option are:"
 msgstr "Les opcions vàlides per la opció --quoting-style són:"
 
-#: src/tar.c:1300
+#: src/tar.c:1218
 msgid ""
 "\n"
 "*This* tar defaults to:\n"
@@ -2220,51 +2358,48 @@ msgstr ""
 "\n"
 "*Aquest* tar va per defecte en:\n"
 
-#: src/tar.c:1402
+#: src/tar.c:1330
+#, fuzzy
+msgid "Invalid owner or group ID"
+msgstr "Propietari invàlid"
+
+#: src/tar.c:1389
 msgid "Invalid blocking factor"
 msgstr "Factor de blocs invàlid"
 
-#: src/tar.c:1515
+#: src/tar.c:1507
 msgid "Invalid tape length"
 msgstr "Longitud de la cinta invàlida"
 
-#: src/tar.c:1529
+#: src/tar.c:1521
 msgid "Invalid incremental level value"
 msgstr "valor invàlid del nivell d'increment"
 
-#: src/tar.c:1575
+#: src/tar.c:1567
 msgid "More than one threshold date"
 msgstr "Més d'una data del llindar"
 
-#: src/tar.c:1630 src/tar.c:1633
+#: src/tar.c:1626 src/tar.c:1629
 msgid "Invalid sparse version value"
 msgstr "valor de la versió de la opció de dispersió invalid"
 
-#: src/tar.c:1718
+#: src/tar.c:1714
 msgid "--atime-preserve='system' is not supported on this platform"
 msgstr "No es permet l'ús de --atime-preserve=«system» en aquesta plataforma"
 
-#: src/tar.c:1743
+#: src/tar.c:1739
 msgid "--checkpoint value is not an integer"
 msgstr "El valor --checkpoint no és un enter"
 
-#: src/tar.c:1848
-msgid "Invalid group"
-msgstr "Grup invàlid"
-
-#: src/tar.c:1855
+#: src/tar.c:1868
 msgid "Invalid mode given on option"
 msgstr "Mode invàlid donat a les opcions"
 
-#: src/tar.c:1912
+#: src/tar.c:1925
 msgid "Invalid number"
 msgstr "Número invàlid"
 
-#: src/tar.c:1934
-msgid "Invalid owner"
-msgstr "Propietari invàlid"
-
-#: src/tar.c:1964
+#: src/tar.c:1982
 msgid ""
 "The --preserve option is deprecated, use --preserve-permissions --preserve-"
 "order instead"
@@ -2272,127 +2407,151 @@ msgstr ""
 "La opció --preserve es obsoleta, en comptes d'això feu servir --preserve-"
 "permissions --preserve-order"
 
-#: src/tar.c:1975
+#: src/tar.c:1993
 msgid "Invalid record size"
 msgstr "Mida del registre invàlida"
 
-#: src/tar.c:1978
+#: src/tar.c:1996
 #, c-format
 msgid "Record size must be a multiple of %d."
 msgstr "La mida del registre ha de ser múltiple de %d."
 
-#: src/tar.c:2019
+#: src/tar.c:2042
 msgid "Invalid number of elements"
 msgstr "Nombre d'elements invàlid"
 
-#: src/tar.c:2039
+#: src/tar.c:2067
 msgid "Only one --to-command option allowed"
 msgstr "Només es permet una opció --to-command"
 
-#: src/tar.c:2119
+#: src/tar.c:2179
 #, c-format
 msgid "Malformed density argument: %s"
 msgstr "Argument de densitat mal format: %s"
 
-#: src/tar.c:2145
-#, c-format
-msgid "Unknown density: `%c'"
+#: src/tar.c:2205
+#, fuzzy, c-format
+msgid "Unknown density: '%c'"
 msgstr "Densitat desconeguda: «%c»"
 
-#: src/tar.c:2162
-#, c-format
-msgid "Options `-[0-7][lmh]' not supported by *this* tar"
+#: src/tar.c:2222
+#, fuzzy, c-format
+msgid "Options '-[0-7][lmh]' not supported by *this* tar"
 msgstr "Opcions «-[0-7][lmh]» no suportades per *aquest* tar"
 
-#: src/tar.c:2175
+#: src/tar.c:2235
 msgid "[FILE]..."
 msgstr "[FITXER]..."
 
-#: src/tar.c:2293
-#, c-format
-msgid "Old option `%c' requires an argument."
+#. TRANSLATORS: Both %s in this statement are replaced with
+#. option names.
+#: src/tar.c:2303
+#, fuzzy, c-format
+msgid "'%s' cannot be used with '%s'"
+msgstr "No s'ha pogut utilitzar el patró %s "
+
+#: src/tar.c:2389
+#, fuzzy, c-format
+msgid "Old option '%c' requires an argument."
 msgstr "L'opció antiga «%c» requereix un argument."
 
-#: src/tar.c:2374
+#: src/tar.c:2469
 msgid "--occurrence is meaningless without a file list"
 msgstr "--occurrence no te sentit sense una llista de fitxers"
 
-#: src/tar.c:2380
-msgid "--occurrence cannot be used in the requested operation mode"
-msgstr "--occurrence no es pot utilitzar en el mode d'operació que ha requerit"
-
-#: src/tar.c:2398
-msgid "Multiple archive files require `-M' option"
+#: src/tar.c:2490
+#, fuzzy
+msgid "Multiple archive files require '-M' option"
 msgstr "Per a múltiples arxius de fitxers es requereix l'opció «-M»"
 
-#: src/tar.c:2403
-msgid "Cannot combine --listed-incremental with --newer"
-msgstr "No es pot combinar --listed-incremental amb --newer"
-
-#: src/tar.c:2406
+#: src/tar.c:2498
 msgid "--level is meaningless without --listed-incremental"
 msgstr "--level no té sentit sense --listed-incremental"
 
-#: src/tar.c:2423
+#: src/tar.c:2515
 #, c-format
 msgid "%s: Volume label is too long (limit is %lu byte)"
 msgid_plural "%s: Volume label is too long (limit is %lu bytes)"
 msgstr[0] "%s: l'etiqueta del volum és massa llarga (el limit és %lu byte)"
 msgstr[1] "%s: l'etiqueta del volum és massa llarga (el limit és %lu bytes)"
 
-#: src/tar.c:2436
+#: src/tar.c:2528
 msgid "Cannot verify multi-volume archives"
 msgstr "No es poden verificar els arxius multi-volum"
 
-#: src/tar.c:2438
+#: src/tar.c:2530
 msgid "Cannot verify compressed archives"
 msgstr "No es poden verificar els arxius comprimits"
 
-#: src/tar.c:2444
+#: src/tar.c:2539
 msgid "Cannot use multi-volume compressed archives"
 msgstr "No es poden utilitzar arxius comprimits multi-volum"
 
-#: src/tar.c:2450
+#: src/tar.c:2543
 msgid "Cannot concatenate compressed archives"
 msgstr "No es poden concatenar arxius comprimits"
 
-#: src/tar.c:2462
+#: src/tar.c:2553
 msgid "--pax-option can be used only on POSIX archives"
 msgstr "--pax-option només es pot utilitzar en arxius POSIX"
 
-#: src/tar.c:2492
+#: src/tar.c:2560
+#, fuzzy
+msgid "--acls can be used only on POSIX archives"
+msgstr "--pax-option només es pot utilitzar en arxius POSIX"
+
+#: src/tar.c:2565
+#, fuzzy
+msgid "--selinux can be used only on POSIX archives"
+msgstr "--pax-option només es pot utilitzar en arxius POSIX"
+
+#: src/tar.c:2570
+#, fuzzy
+msgid "--xattrs can be used only on POSIX archives"
+msgstr "--pax-option només es pot utilitzar en arxius POSIX"
+
+#: src/tar.c:2597
+msgid ""
+"Cannot deduce top-level directory name; please set it explicitly with --one-"
+"top-level=DIR"
+msgstr ""
+
+#: src/tar.c:2630
 msgid "Volume length cannot be less than record size"
 msgstr "La llargada del volum no pot ser inferior que la mida del registre"
 
-#: src/tar.c:2495
-msgid "--preserve-order is not compatible with --listed-incremental"
-msgstr "--preserve-order no és compatible amb --listed-incremental"
-
-#: src/tar.c:2506
+#: src/tar.c:2643
 msgid "Cowardly refusing to create an empty archive"
 msgstr "S'està refusant covardament crear un arxiu buit"
 
-#: src/tar.c:2532
-msgid "Options `-Aru' are incompatible with `-f -'"
+#: src/tar.c:2669
+#, fuzzy
+msgid "Options '-Aru' are incompatible with '-f -'"
 msgstr "Les opcions «-Aru» son incompatibles amb «-f -»"
 
-#: src/tar.c:2621
-msgid "You must specify one of the `-Acdtrux' or `--test-label'  options"
+#: src/tar.c:2766
+#, fuzzy
+msgid ""
+"You must specify one of the '-Acdtrux', '--delete' or '--test-label' options"
 msgstr "Heu d'especificar una opció «-Acdtrux» o «--test-label»"
 
-#: src/tar.c:2675
+#: src/tar.c:2823
 #, c-format
 msgid "Exiting with failure status due to previous errors"
 msgstr "Se surt amb estat de fallida degut a errors prèvis"
 
-#: src/update.c:86
+#: src/tar.c:569
+msgid "directory sorting order: none (default), name or inode"
+msgstr ""
+
+#: src/update.c:87
 #, c-format
 msgid "%s: File shrank by %s byte"
 msgid_plural "%s: File shrank by %s bytes"
 msgstr[0] "%s: El fitxer s'encongeix %s byte"
 msgstr[1] "%s: El fitxer s'encongeix %s bytes"
 
-#: src/xheader.c:164
+#: src/xheader.c:165
 #, c-format
 msgid "Keyword %s is unknown or not yet implemented"
 msgstr "La paraula clau %s és desconeguda o encara no s'ha implementat"
@@ -2411,37 +2570,33 @@ msgstr "No s'ha pogut utilitzar el patró %s "
 msgid "Keyword %s cannot be overridden"
 msgstr "No s'ha pogut sobreescriure la paraula clau %s"
 
-#: src/xheader.c:542
+#: src/xheader.c:668
 msgid "Malformed extended header: missing length"
 msgstr "Capçalera estesa mal formada: falta la longitud"
 
-#: src/xheader.c:550
-msgid "Extended header length is out of allowed range"
-msgstr "Longitud de la capçalera estesa està fora del rang permès"
-
-#: src/xheader.c:557
+#: src/xheader.c:677
 #, c-format
 msgid "Extended header length %*s is out of range"
 msgstr "La longitud de la capçalera estesa %*s està fora de rang"
 
-#: src/xheader.c:569
+#: src/xheader.c:689
 msgid "Malformed extended header: missing blank after length"
 msgstr "Capçalera estesa mal formada: falta l'espai després de la longitud"
 
-#: src/xheader.c:577
+#: src/xheader.c:697
 msgid "Malformed extended header: missing equal sign"
 msgstr "Capçalera estesa mal formada: falta el signe igual"
 
-#: src/xheader.c:583
+#: src/xheader.c:703
 msgid "Malformed extended header: missing newline"
 msgstr "Capçalera estesa mal formada: falta el salt de línia"
 
-#: src/xheader.c:621
-#, c-format
-msgid "Ignoring unknown extended header keyword `%s'"
+#: src/xheader.c:741
+#, fuzzy, c-format
+msgid "Ignoring unknown extended header keyword '%s'"
 msgstr "S'ignora la paraula clau desconeguda de la capçalera estesa «%s»"
 
-#: src/xheader.c:831
+#: src/xheader.c:1013
 #, c-format
 msgid "Generated keyword/value pair is too long (keyword=%s, length=%s)"
 msgstr ""
@@ -2450,63 +2605,63 @@ msgstr ""
 
 #. TRANSLATORS: The first %s is the pax extended header keyword
 #. (atime, gid, etc.).
-#: src/xheader.c:863
+#: src/xheader.c:1043
 #, c-format
 msgid "Extended header %s=%s is out of range %s..%s"
 msgstr "La capçalera estesa %s=%s està fora del rang %s..%s"
 
-#: src/xheader.c:994 src/xheader.c:1024 src/xheader.c:1338
+#: src/xheader.c:1094 src/xheader.c:1127 src/xheader.c:1456
 #, c-format
 msgid "Malformed extended header: invalid %s=%s"
 msgstr "Capçalera estesa mal formada: %s=%s invàlid"
 
-#: src/xheader.c:1291 src/xheader.c:1316 src/xheader.c:1366
+#: src/xheader.c:1409 src/xheader.c:1434 src/xheader.c:1489
 #, c-format
 msgid "Malformed extended header: excess %s=%s"
 msgstr "Capçalera estesa mal formada: excedeix %s=%s"
 
-#: src/xheader.c:1379
+#: src/xheader.c:1502
 #, c-format
 msgid "Malformed extended header: invalid %s: unexpected delimiter %c"
 msgstr "Capçalera estesa mal formada: %s invàlid, delimitador %c inesperat"
 
-#: src/xheader.c:1389
+#: src/xheader.c:1512
 #, c-format
 msgid "Malformed extended header: invalid %s: odd number of values"
 msgstr "Capçalera estesa mal formada: %s invàlid: nombre de valors incorrecte"
 
-#: src/checkpoint.c:107
+#: src/checkpoint.c:114
 #, c-format
 msgid "%s: not a valid timeout"
 msgstr "%s: no és un temps d'espera vàlid"
 
-#: src/checkpoint.c:112
+#: src/checkpoint.c:121
 #, c-format
 msgid "%s: unknown checkpoint action"
 msgstr "%s: acció del punt de comprovació desconegut"
 
-#: src/checkpoint.c:132
+#: src/checkpoint.c:202
 msgid "write"
 msgstr "escriu"
 
-#: src/checkpoint.c:132
+#: src/checkpoint.c:202
 msgid "read"
 msgstr "llegeix"
 
-#. TRANSLATORS: This is a ``checkpoint of write operation'',
-#. *not* ``Writing a checkpoint''.
-#. E.g. in Spanish ``Punto de comprobaci@'on de escritura'',
-#. *not* ``Escribiendo un punto de comprobaci@'on''
-#: src/checkpoint.c:222
+#. TRANSLATORS: This is a "checkpoint of write operation",
+#. *not* "Writing a checkpoint".
+#. E.g. in Spanish "Punto de comprobaci@'on de escritura",
+#. *not* "Escribiendo un punto de comprobaci@'on"
+#: src/checkpoint.c:218
 #, c-format
 msgid "Write checkpoint %u"
 msgstr "Punt de comprovació d'escriptura %u"
 
-#. TRANSLATORS: This is a ``checkpoint of read operation'',
-#. *not* ``Reading a checkpoint''.
-#. E.g. in Spanish ``Punto de comprobaci@'on de lectura'',
-#. *not* ``Leyendo un punto de comprobaci@'on''
-#: src/checkpoint.c:228
+#. TRANSLATORS: This is a "checkpoint of read operation",
+#. *not* "Reading a checkpoint".
+#. E.g. in Spanish "Punto de comprobaci@'on de lectura",
+#. *not* "Leyendo un punto de comprobaci@'on"
+#: src/checkpoint.c:224
 #, c-format
 msgid "Read checkpoint %u"
 msgstr "Punt de comprovació de lectura %u"
@@ -2657,7 +2812,7 @@ msgstr "Número fora de l'abast permés: %s"
 msgid "Negative size: %s"
 msgstr "Mida negativa: %s"
 
-#: tests/genfile.c:265 tests/genfile.c:567
+#: tests/genfile.c:265 tests/genfile.c:569
 #, c-format
 msgid "stat(%s) failed"
 msgstr "Ha fallat la petició d'stat(%s)"
@@ -2686,8 +2841,8 @@ msgstr "Format de data desconegut"
 msgid "[ARGS...]"
 msgstr "[ARGS...]"
 
-#: tests/genfile.c:428 tests/genfile.c:468 tests/genfile.c:521
-#: tests/genfile.c:671 tests/genfile.c:685
+#: tests/genfile.c:428 tests/genfile.c:468 tests/genfile.c:523
+#: tests/genfile.c:673 tests/genfile.c:687
 #, c-format
 msgid "cannot open `%s'"
 msgstr "no es pot obrir «%s»"
@@ -2701,67 +2856,109 @@ msgstr "no es pot cercar"
 msgid "file name contains null character"
 msgstr "el nom del fitxer conté un caràcter nul"
 
-#: tests/genfile.c:516
+#: tests/genfile.c:518
 #, c-format
 msgid "cannot generate sparse files on standard output, use --file option"
 msgstr ""
 "no es pot generar fitxers dispersos a la sortida estàndard, empreu la opció "
 "--file"
 
-#: tests/genfile.c:594
+#: tests/genfile.c:596
 #, c-format
 msgid "incorrect mask (near `%s')"
 msgstr "màscara incorrecta (prop de «%s»)"
 
-#: tests/genfile.c:600 tests/genfile.c:633
+#: tests/genfile.c:602 tests/genfile.c:635
 #, c-format
 msgid "Unknown field `%s'"
 msgstr "Camp desconegut «%s»"
 
-#: tests/genfile.c:660
+#: tests/genfile.c:662
 #, c-format
 msgid "cannot set time on `%s'"
 msgstr "no es pot definir el temps de «%s»"
 
-#: tests/genfile.c:699
+#: tests/genfile.c:692
+#, fuzzy, c-format
+msgid "cannot truncate `%s'"
+msgstr "no es pot desfer l'enllaç «%s»"
+
+#: tests/genfile.c:701
+#, fuzzy, c-format
+msgid "command failed: %s"
+msgstr "L'ordre %s ha fallat"
+
+#: tests/genfile.c:706
 #, c-format
 msgid "cannot unlink `%s'"
 msgstr "no es pot desfer l'enllaç «%s»"
 
-#: tests/genfile.c:825
+#: tests/genfile.c:833
 #, c-format
 msgid "Command exited successfully\n"
 msgstr "La comanda ha finalitzat amb èxit\n"
 
-#: tests/genfile.c:827
+#: tests/genfile.c:835
 #, c-format
 msgid "Command failed with status %d\n"
 msgstr "La comanda ha fallat amb estat %d\n"
 
-#: tests/genfile.c:831
+#: tests/genfile.c:839
 #, c-format
 msgid "Command terminated on signal %d\n"
 msgstr "La comanda ha finalitzat amb la senyal %d\n"
 
-#: tests/genfile.c:833
+#: tests/genfile.c:841
 #, c-format
 msgid "Command stopped on signal %d\n"
 msgstr "La comanda ha parat amb la senyal %d\n"
 
-#: tests/genfile.c:836
+#: tests/genfile.c:844
 #, c-format
 msgid "Command dumped core\n"
 msgstr "La comanda ha abocat l'ànima\n"
 
-#: tests/genfile.c:839
+#: tests/genfile.c:847
 #, c-format
 msgid "Command terminated\n"
 msgstr "Comanda finalitzada\n"
 
-#: tests/genfile.c:871
+#: tests/genfile.c:879
 #, c-format
 msgid "--stat requires file names"
 msgstr "--stat requereix noms de fitxers"
+
+#~ msgid "sort names to extract to match archive"
+#~ msgstr "ordena els noms a extreure per que coincideixin amb els de l'arxiu"
+
+#, fuzzy
+#~ msgid "--occurrence cannot be used with %s"
+#~ msgstr ""
+#~ "--occurrence no es pot utilitzar en el mode d'operació que ha requerit"
+
+#~ msgid "Cannot combine --listed-incremental with --newer"
+#~ msgstr "No es pot combinar --listed-incremental amb --newer"
+
+#~ msgid "--preserve-order is not compatible with --listed-incremental"
+#~ msgstr "--preserve-order no és compatible amb --listed-incremental"
+
+#~ msgid "Field too long while reading snapshot file"
+#~ msgstr "Camp massa llarg en llegir el fitxer d'instantània"
+
+#~ msgid "Read error in snapshot file"
+#~ msgstr "Error de lectura del fitxer d'instantània"
+
+#~ msgid "Unexpected field value in snapshot file"
+#~ msgstr "Valor de camp inesperat del fitxer d'instantània"
+
+#~ msgid "Cannot get working directory"
+#~ msgstr "No es pot trobar el directori de treball"
+
+#~ msgid "Invalid group"
+#~ msgstr "Grup invàlid"
+
+#~ msgid "Extended header length is out of allowed range"
+#~ msgstr "Longitud de la capçalera estesa està fora del rang permès"
 
 #~ msgid "%s: Directory removed before we read it"
 #~ msgstr "%s: El directori s'ha esborrat abans de poder-lo llegir"

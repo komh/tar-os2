@@ -1,42 +1,40 @@
 # Configure template for GNU tar.  -*- autoconf -*-
 
-# Copyright (C) 1991, 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001,
-# 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010 Free
-# Software Foundation, Inc.
+# Copyright 1991, 1994-2010, 2013-2014 Free Software Foundation, Inc.
 
-# This program is free software; you can redistribute it and/or modify
+# This file is part of GNU tar.
+
+# GNU tar is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3, or (at your option)
-# any later version.
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
 
-# This program is distributed in the hope that it will be useful,
+# GNU tar is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-# 02110-1301, USA.
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([GNU tar], [1.26], [bug-tar@gnu.org])
+AC_INIT([GNU tar], [1.28], [bug-tar@gnu.org])
 AC_CONFIG_SRCDIR([src/tar.c])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_HEADERS([config.h])
 AC_PREREQ([2.63])
-AM_INIT_AUTOMAKE([1.11 gnits tar-ustar dist-bzip2 dist-xz dist-shar std-options silent-rules])
+AM_INIT_AUTOMAKE([1.11 gnits tar-ustar dist-bzip2 dist-xz std-options silent-rules])
 
 # Enable silent rules by default:
 AM_SILENT_RULES([yes])
 
-AC_PROG_CC
+AC_PROG_CC_STDC
 AC_EXEEXT
 AC_PROG_RANLIB
 AC_PROG_YACC
 gl_EARLY
+AC_CHECK_TOOLS([AR], [ar])
 
 AC_SYS_LARGEFILE
-AC_ISC_POSIX
 AC_C_INLINE
 
 AC_CHECK_HEADERS_ONCE(fcntl.h linux/fd.h memory.h net/errno.h \
@@ -51,12 +49,7 @@ AC_CHECK_HEADERS([sys/buf.h], [], [],
 #include <sys/param.h>
 #endif])
 
-AC_HEADER_SYS_WAIT
-
-AC_HEADER_DIRENT
 AC_HEADER_MAJOR
-AC_HEADER_STAT
-AC_HEADER_STDC
 
 AC_MSG_CHECKING([for st_fstype string in struct stat])
 AC_CACHE_VAL(diff_cv_st_fstype_string,
@@ -70,11 +63,33 @@ if test $diff_cv_st_fstype_string = yes; then
     [Define if struct stat has a char st_fstype[] member.])
 fi
 
-AC_TYPE_SIGNAL
+# even if we use gnulib's acl.h with integrated m4 file later on (used because
+# of very useful file_has_acl() function) we need following checks that restrict
+# tar to use POSIX.1e ACLs only.
+AC_ARG_WITH([posix-acls],
+    AS_HELP_STRING([--without-posix-acls],
+                   [do not use POSIX.1e access control lists]),
+    [],
+    [with_posix_acls=yes])
+if test "x$with_posix_acls" != "xno"; then
+  AC_CHECK_HEADERS(sys/acl.h,, [with_posix_acls=no])
+  for tar_acl_func in acl_get_file acl_get_fd acl_set_file acl_set_fd \
+		      acl_to_text acl_from_text acl_delete_def_file \
+		      acl_free; do \
+    test "x$with_posix_acls" = xno && break
+    AC_SEARCH_LIBS([$tar_acl_func], [acl pacl], [], [with_posix_acls=no])
+  done
+  if test "x$with_posix_acls" != xno; then
+    AC_DEFINE(HAVE_POSIX_ACLS,,[Define when we have working POSIX acls])
+  fi
+else
+  # disable acls in gnulib's checks
+  export enable_acl=no
+fi
+
 AC_TYPE_MODE_T
 AC_TYPE_PID_T
 AC_TYPE_OFF_T
-AC_TYPE_SIZE_T
 AC_TYPE_UID_T
 AC_CHECK_TYPE(major_t, , AC_DEFINE(major_t, int,
 				   [Type of major device numbers.]))
@@ -90,13 +105,115 @@ gl_INIT
 # paxutils modules
 tar_PAXUTILS
 
-AC_CHECK_FUNCS_ONCE([fchmod fchown fsync lstat mkfifo readlink symlink])
+# gl_GCC_VERSION_IFELSE([major], [minor], [run-if-found], [run-if-not-found])
+# ------------------------------------------------
+# If $CPP is gcc-MAJOR.MINOR or newer, then run RUN-IF-FOUND.
+# Otherwise, run RUN-IF-NOT-FOUND.
+AC_DEFUN([gl_GCC_VERSION_IFELSE],
+  [AC_PREPROC_IFELSE(
+    [AC_LANG_PROGRAM(
+      [[
+#if ($1) < __GNUC__ || (($1) == __GNUC__ && ($2) <= __GNUC_MINOR__)
+/* ok */
+#else
+# error "your version of gcc is older than $1.$2"
+#endif
+      ]]),
+    ], [$3], [$4])
+  ]
+)
+
+AC_ARG_ENABLE([gcc-warnings],
+  [AS_HELP_STRING([--enable-gcc-warnings],
+     [turn on many GCC warnings (for developers; best with GNU make)])],
+  [case $enableval in
+     yes|no) ;;
+     *)      AC_MSG_ERROR([bad value $enableval for gcc-warnings option]) ;;
+   esac
+   gl_gcc_warnings=$enableval],
+  [gl_gcc_warnings=no
+   if test -d "$srcdir"/.git; then
+     gl_GCC_VERSION_IFELSE([4], [6], [gl_gcc_warnings=yes])
+   fi]
+)
+
+if test "$gl_gcc_warnings" = yes; then
+  gl_WARN_ADD([-Werror], [WERROR_CFLAGS])
+  AC_SUBST([WERROR_CFLAGS])
+
+  nw=
+  # This, $nw, is the list of warnings we disable.
+  nw="$nw -Wformat-nonliteral"      # warnings in Fedora 17 stdio.h
+  nw="$nw -Wvla"                    # warnings in gettext.h
+  nw="$nw -Wswitch-default"         # Too many warnings for now
+  nw="$nw -Wunsafe-loop-optimizations" # It's OK to omit unsafe optimizations.
+  nw="$nw -Winline"                 # It's OK to not inline.
+  nw="$nw -Wstrict-overflow"	    # It's OK to optimize strictly.
+  nw="$nw -Wsuggest-attribute=pure" # Too many warnings for now.
+
+  gl_MANYWARN_ALL_GCC([ws])
+  gl_MANYWARN_COMPLEMENT([ws], [$ws], [$nw])
+  for w in $ws; do
+    gl_WARN_ADD([$w])
+  done
+  gl_WARN_ADD([-Wno-sign-compare])     # Too many warnings for now
+  gl_WARN_ADD([-Wno-type-limits])      # It's OK to optimize based on types.
+  gl_WARN_ADD([-Wno-unused-parameter]) # Too many warnings for now
+  gl_WARN_ADD([-Wno-format-nonliteral])
+
+  gl_WARN_ADD([-fdiagnostics-show-option])
+  gl_WARN_ADD([-funit-at-a-time])
+
+  AC_SUBST([WARN_CFLAGS])
+
+  AC_DEFINE([lint], [1], [Define to 1 if the compiler is checking for lint.])
+  AH_VERBATIM([FORTIFY_SOURCE],
+  [/* Enable compile-time and run-time bounds-checking, and some warnings,
+      without upsetting glibc 2.15+. */
+   #if !defined _FORTIFY_SOURCE && defined __OPTIMIZE__ && __OPTIMIZE__
+   # define _FORTIFY_SOURCE 2
+   #endif
+  ])
+  AC_DEFINE([GNULIB_PORTCHECK], [1], [enable some gnulib portability checks])
+
+  # Use a slightly smaller set of warning options for lib/.
+  # Remove the following and save the result in GNULIB_WARN_CFLAGS.
+  nw=
+  nw="$nw -Wmissing-prototypes"
+  nw="$nw -Wunused-macros"
+  #
+  # These are for argp.
+  nw="$nw -Wmissing-field-initializers"
+  nw="$nw -Wshadow"
+  #
+  gl_MANYWARN_COMPLEMENT([GNULIB_WARN_CFLAGS], [$WARN_CFLAGS], [$nw])
+
+  # This is also for argp.
+  gl_WARN_ADD([-Wno-missing-field-initializers], [GNULIB_WARN_CFLAGS])
+
+  AC_SUBST([GNULIB_WARN_CFLAGS])
+
+  # For gnulib-tests, the set is slightly smaller still.
+  nw=
+  # It's not worth being this picky about test programs.
+  nw="$nw -Wsuggest-attribute=const"
+  gl_MANYWARN_COMPLEMENT([GNULIB_TEST_WARN_CFLAGS],
+                         [$GNULIB_WARN_CFLAGS], [$nw])
+  AC_SUBST([GNULIB_TEST_WARN_CFLAGS])
+fi
+
+TAR_HEADERS_ATTR_XATTR_H
+
+AC_CHECK_FUNCS_ONCE([fchmod fchown fsync lstat mkfifo readlink symlink grantpt])
+AM_CONDITIONAL([TAR_COND_GRANTPT], [test $ac_cv_func_grantpt = yes])
+
 AC_CHECK_DECLS([getgrgid],,, [#include <grp.h>])
 AC_CHECK_DECLS([getpwuid],,, [#include <pwd.h>])
 AC_CHECK_DECLS([time],,, [#include <time.h>])
 
 AC_REPLACE_FUNCS(waitpid)
 
+AC_ARG_VAR([RSH], [Configure absolute path to default remote shell binary])
 AC_CACHE_CHECK(for remote shell, tar_cv_path_RSH,
   [if test -n "$RSH"; then
     tar_cv_path_RSH=$RSH
@@ -157,7 +274,7 @@ if test -z "$DEFAULT_ARCHIVE"; then
   DEFAULT_ARCHIVE=-
 else
   if test -z "`ls $DEFAULT_ARCHIVE 2>/dev/null`"; then
-    AC_MSG_WARN(DEFAULT_ARCHIVE \`$DEFAULT_ARCHIVE' not found on this system)
+    AC_MSG_WARN(DEFAULT_ARCHIVE '$DEFAULT_ARCHIVE' not found on this system)
   fi
   # FIXME: Look for DEFTAPE in <sys/mtio.h>.
   # FIXME: Let DEVICE_PREFIX be configured from the environment.

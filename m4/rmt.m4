@@ -68,4 +68,5 @@ AC_DEFUN([PU_RMT],[
     AC_DEFINE_UNQUOTED(DEFAULT_RMT_COMMAND, "$DEFAULT_RMT_COMMAND",
                        [Define full file name of rmt program.])
   fi
+  AM_CONDITIONAL([PU_RMT_COND],[test "$pu_cv_header_rmt" = yes])
 ])

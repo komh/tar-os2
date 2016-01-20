@@ -2,7 +2,7 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* exclude.h -- declarations for excluding file names
 
-   Copyright (C) 1992-1994, 1997, 1999, 2001-2003, 2005-2006, 2009-2011 Free
+   Copyright (C) 1992-1994, 1997, 1999, 2001-2003, 2005-2006, 2009-2014 Free
    Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,7 @@
 #define _GL_EXCLUDE_H 1
 
 #include <stdbool.h>
+#include <stdio.h>
 
 /* Written by Paul Eggert <eggert@twinsun.com>
    and Sergey Poznyakoff <gray@gnu.org> */
@@ -39,16 +40,25 @@
    option, these characters are ordinary and fnmatch is not used.  */
 #define EXCLUDE_WILDCARDS (1 << 28)
 
+/* Patterns are POSIX extended regular expressions */
+#define EXCLUDE_REGEX     (1 << 27)
+
+/* Allocate storage for the pattern */
+#define EXCLUDE_ALLOC     (1 << 26)
+
 struct exclude;
 
-bool fnmatch_pattern_has_wildcards (const char *, int);
+bool fnmatch_pattern_has_wildcards (const char *, int) _GL_ATTRIBUTE_PURE;
 
 struct exclude *new_exclude (void);
 void free_exclude (struct exclude *);
 void add_exclude (struct exclude *, char const *, int);
 int add_exclude_file (void (*) (struct exclude *, char const *, int),
                       struct exclude *, char const *, int, char);
+int add_exclude_fp (void (*) (struct exclude *, char const *, int, void *),
+		    struct exclude *, FILE *, int, char, void *);
 bool excluded_file_name (struct exclude const *, char const *);
-bool exclude_fnmatch (char const *pattern, char const *f, int options);
+void exclude_add_pattern_buffer (struct exclude *ex, char *buf);
+bool exclude_fnmatch (char const *, char const *, int);
 
 #endif /* _GL_EXCLUDE_H */

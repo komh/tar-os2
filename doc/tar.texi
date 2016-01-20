@@ -13,9 +13,9 @@
 @c Maintenance notes:
 @c  1. Pay attention to @FIXME{}s and @UNREVISED{}s
 @c  2. Before creating final variant:
-@c    2.1. Run `make check-options' to make sure all options are properly
+@c    2.1. Run 'make check-options' to make sure all options are properly
 @c         documented;
-@c    2.2. Run `make master-menu' (see comment before the master menu).
+@c    2.2. Run 'make master-menu' (see comment before the master menu).
 
 @include rendition.texi
 @include value.texi
@@ -36,21 +36,20 @@ This manual is for @acronym{GNU} @command{tar} (version
 @value{VERSION}, @value{UPDATED}), which creates and extracts files
 from archives.
 
-Copyright @copyright{} 1992, 1994, 1995, 1996, 1997, 1999, 2000, 2001,
-2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
+Copyright @copyright{} 1992, 1994--1997, 1999--2001, 2003--2013 Free
+Software Foundation, Inc.
 
 @quotation
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
-any later version published by the Free Software Foundation; with no
-Invariant Sections, with the Front-Cover Texts being ``A GNU Manual'',
-and with the Back-Cover Texts as in (a) below.  A copy of the license
-is included in the section entitled ``GNU Free Documentation
-License''.
+any later version published by the Free Software Foundation; with the
+Invariant Sections being ``GNU General Public License'', with the
+Front-Cover Texts being ``A GNU Manual'', and with the Back-Cover Texts
+as in (a) below.  A copy of the license is included in the section
+entitled ``GNU Free Documentation License''.
 
 (a) The FSF's Back-Cover Text is: ``You have the freedom to
-copy and modify this GNU manual.  Buying copies from the FSF
-supports it in developing GNU and promoting software freedom.''
+copy and modify this GNU manual.''
 @end quotation
 @end copying
 
@@ -647,9 +646,9 @@ If you find problems or have suggestions about this program or manual,
 please report them to @file{bug-tar@@gnu.org}.
 
 When reporting a bug, please be sure to include as much detail as
-possible, in order to reproduce it.  @FIXME{Be more specific, I'd
-like to make this node as detailed as 'Bug reporting' node in Emacs
-manual.}
+possible, in order to reproduce it.
+@FIXME{Be more specific, I'd like to make this node as detailed as
+'Bug reporting' node in Emacs manual.}
 
 @node Tutorial
 @chapter Tutorial Introduction to @command{tar}
@@ -694,8 +693,8 @@ file system.  You should have some basic understanding of directory
 structure and how files are named according to which directory they are
 in.  You should understand concepts such as standard output and standard
 input, what various definitions of the term @samp{argument} mean, and the
-differences between relative and absolute file names.  @FIXME{and what
-else?}
+differences between relative and absolute file names.
+@FIXME{and what else?}
 
 @item
 This manual assumes that you are working from your own home directory
@@ -1438,7 +1437,7 @@ example:
 @smallexample
 @group
 $ @kbd{tar --create --verbose --file archive /etc/mail}
-tar: Removing leading `/' from member names
+tar: Removing leading '/' from member names
 /etc/mail/
 /etc/mail/sendmail.cf
 /etc/mail/aliases
@@ -1801,13 +1800,14 @@ and @option{--interactive} options (@pxref{interactive}).
 * Synopsis::
 * using tar options::
 * Styles::
-* All Options::
-* help::
-* defaults::
-* verbose::
-* checkpoints::
-* warnings::
-* interactive::
+* All Options::           All @command{tar} Options.
+* help::                  Where to Get Help.
+* defaults::              What are the Default Values.
+* verbose::               Checking @command{tar} progress.
+* checkpoints::           Checkpoints.
+* warnings::              Controlling Warning Messages.
+* interactive::           Asking for Confirmation During Operations.
+* external::              Running External Commands.
 @end menu
 
 @node Synopsis
@@ -1881,6 +1881,7 @@ The other operations of @command{tar} (@option{--list},
 @option{--extract}, @option{--compare}, and @option{--update})
 will act on the entire contents of the archive.
 
+@anchor{exit status}
 @cindex exit status
 @cindex return status
 Besides successful exits, @GNUTAR{} may fail for
@@ -2117,12 +2118,20 @@ end up overwriting files.
 @subsection Old Option Style
 @cindex options, old style
 @cindex old option style
+@cindex option syntax, traditional
 
-Like short options, @dfn{old options} are single letters.  However, old options
+As far as we know, all @command{tar} programs, @acronym{GNU} and
+non-@acronym{GNU}, support @dfn{old options}: that is, if the first
+argument does not start with @samp{-}, it is assumed to specify option
+letters.  @GNUTAR{} supports old options not only for historical
+reasons, but also because many people are used to them.  If the first
+argument does not start with a dash, you are announcing the old option
+style instead of the short option style; old options are decoded
+differently.
+
+Like short options, old options are single letters.  However, old options
 must be written together as a single clumped set, without spaces separating
-them or dashes preceding them@footnote{Beware that if you precede options
-with a dash, you are announcing the short option style instead of the
-old option style; short options are decoded differently.}.  This set
+them or dashes preceding them.  This set
 of letters must be the first to appear on the command line, after the
 @command{tar} program name and some white space; old options cannot appear
 anywhere else.  The letter of an old option is exactly the same letter as
@@ -2146,7 +2155,7 @@ $ @kbd{tar cvbf 20 /dev/rmt0}
 Here, @samp{20} is the argument of @option{-b} and @samp{/dev/rmt0} is
 the argument of @option{-f}.
 
-On the other hand, this old style syntax makes it difficult to match
+The old style syntax can make it difficult to match
 option letters with their corresponding arguments, and is often
 confusing.  In the command @w{@samp{tar cvbf 20 /dev/rmt0}}, for example,
 @samp{20} is the argument for @option{-b}, @samp{/dev/rmt0} is the
@@ -2172,8 +2181,6 @@ the value for option @samp{f} and recognizes the option @samp{z}.  The
 second example, however, uses @file{z} as the value for option
 @samp{f} --- probably not what was intended.
 
-Old options are kept for compatibility with old versions of @command{tar}.
-
 This second example could be corrected in many ways, among which the
 following are equivalent:
 
@@ -2182,16 +2189,6 @@ following are equivalent:
 @kbd{tar -cf archive.tar.gz -z file}
 @kbd{tar cf archive.tar.gz -z file}
 @end smallexample
-
-@cindex option syntax, traditional
-As far as we know, all @command{tar} programs, @acronym{GNU} and
-non-@acronym{GNU}, support old options.  @GNUTAR{}
-supports them not only for historical reasons, but also because many
-people are used to them.  For compatibility with Unix @command{tar},
-the first argument is always treated as containing command and option
-letters even if it doesn't start with @samp{-}.  Thus, @samp{tar c} is
-equivalent to @w{@samp{tar -c}:} both of them specify the
-@option{--create} (@option{-c}) command to create an archive.
 
 @node Mixing
 @subsection Mixing Option Styles
@@ -2259,7 +2256,8 @@ respectively.  The first two examples also specify a single non-option,
 @var{name} argument having the value @samp{archive.tar}.  The last
 example contains only old style option letters (repeating option
 @samp{c} twice), not all of which are meaningful (eg., @samp{.},
-@samp{h}, or @samp{i}), with no argument value.  @FIXME{not sure i liked
+@samp{h}, or @samp{i}), with no argument value.
+@FIXME{not sure i liked
 the first sentence of this paragraph..}
 
 @node All Options
@@ -2366,8 +2364,9 @@ exist in the archive. @xref{update}.
 @itemx -P
 
 Normally when creating an archive, @command{tar} strips an initial
-@samp{/} from member names.  This option disables that behavior.
-@xref{absolute}.
+@samp{/} from member names, and when extracting from an archive @command{tar}
+treats names specially if they have initial @samp{/} or internal
+@samp{..}.  This option disables that behavior.  @xref{absolute}.
 
 @opsummary{after-date}
 @item --after-date
@@ -2609,6 +2608,19 @@ tag file, but still dump the directory node itself.
 Exclude from dump any directory containing a valid cache directory
 tag file.  @xref{exclude}.
 
+@opsummary{exclude-ignore}
+@item --exclude-ignore=@var{file}
+Before dumping a directory, @command{tar} checks if it contains
+@var{file}.  If so, exclusion patterns are read from this file.
+The patterns affect only the directory itself.  @xref{exclude}.
+
+@opsummary{exclude-ignore-recursive}
+@item --exclude-ignore-recursive=@var{file}
+Before dumping a directory, @command{tar} checks if it contains
+@var{file}.  If so, exclusion patterns are read from this file.
+The patterns affect the directory and all itssubdirectories.
+@xref{exclude}.
+
 @opsummary{exclude-tag}
 @item --exclude-tag=@var{file}
 
@@ -2634,7 +2646,16 @@ Exclude from dump any directory containing file named @var{file}.
 Exclude from dump directories and files, that are internal for some
 widely used version control systems.
 
-@xref{exclude,,exclude-vcs}.
+@xref{exclude-vcs}.
+
+@opsummary{exclude-vcs-ignores}
+@item --exclude-vcs-ignores
+Exclude files that match patterns read from VCS-specific ignore
+files.  Supported files are: @file{.cvsignore}, @file{.gitignore},
+@file{.bzrignore}, and @file{.hgignore}.  The semantics of each file
+is the same as for the corresponding VCS, e.g. patterns read from
+@file{.gitignore} affect the directory and all its subdirectories.
+@xref{exclude-vcs-ignores}.
 
 @opsummary{file}
 @item --file=@var{archive}
@@ -2717,9 +2738,9 @@ tutorial}).
 @item --group=@var{group}
 
 Files added to the @command{tar} archive will have a group @acronym{ID} of @var{group},
-rather than the group from the source file.  @var{group} is first decoded
-as a group symbolic name, but if this interpretation fails, it has to be
-a decimal numeric group @acronym{ID}.  @xref{override}.
+rather than the group from the source file.  @var{group} can specify a
+symbolic name, or a numeric @acronym{ID}, or both as
+@var{name}:@var{id}.  @xref{override}.
 
 Also see the comments for the @option{--owner=@var{user}} option.
 
@@ -2762,7 +2783,7 @@ Ignore exit codes of subprocesses. @xref{Writing to an External Program}.
 @item --ignore-failed-read
 
 Do not exit unsuccessfully merely because an unreadable file was encountered.
-@xref{Reading}.
+@xref{Ignore Failed Read}.
 
 @opsummary{ignore-zeros}
 @item --ignore-zeros
@@ -2787,14 +2808,14 @@ Send verbose output to @var{file} instead of to standard output.
 
 @opsummary{info-script}
 @opsummary{new-volume-script}
-@item --info-script=@var{script-file}
-@itemx --new-volume-script=@var{script-file}
-@itemx -F @var{script-file}
+@item --info-script=@var{command}
+@itemx --new-volume-script=@var{command}
+@itemx -F @var{command}
 
-When @command{tar} is performing multi-tape backups, @var{script-file} is run
-at the end of each tape.  If @var{script-file} exits with nonzero status,
+When @command{tar} is performing multi-tape backups, @var{command} is run
+at the end of each tape.  If it exits with nonzero status,
 @command{tar} fails immediately.  @xref{info-script}, for a detailed
-discussion of @var{script-file}.
+discussion of this feature.
 
 @opsummary{interactive}
 @item --interactive
@@ -2804,6 +2825,21 @@ discussion of @var{script-file}.
 Specifies that @command{tar} should ask the user for confirmation before
 performing potentially destructive options, such as overwriting files.
 @xref{interactive}.
+
+@opsummary{--keep-directory-symlink}
+@item --keep-directory-symlink
+
+This option changes the behavior of tar when it encounters a symlink
+with the same name as the directory that it is about to extract.  By
+default, in this case tar would first remove the symlink and then
+proceed extracting the directory.
+
+The @option{--keep-directory-symlink} option disables this behavior
+and instructs tar to follow symlinks to directories when extracting
+from the archive.
+
+It is mainly intended to provide compatibility with the Slackware
+installation scripts.
 
 @opsummary{keep-newer-files}
 @item --keep-newer-files
@@ -2815,7 +2851,10 @@ when extracting files from an archive.
 @item --keep-old-files
 @itemx -k
 
-Do not overwrite existing files when extracting files from an archive.
+Do not overwrite existing files when extracting files from an
+archive.  Return error if such files exist.  See also
+@ref{--skip-old-files}.
+
 @xref{Keep Old Files}.
 
 @opsummary{label}
@@ -3069,6 +3108,19 @@ Used when creating an archive.  Prevents @command{tar} from recursing into
 directories that are on different file systems from the current
 directory.
 
+@opsummary{one-top-level}
+@item --one-top-level[=@var{dir}]
+Tells @command{tar} to create a new directory beneath the extraction directory
+(or the one passed to @option{-C}) and use it to guard against
+tarbombs.  In the absence of @var{dir} argument, the name of the new directory
+will be equal to the base name of the archive (file name minus the
+archive suffix, if recognized).  Any member names that do not begin
+with that directory name (after 
+transformations from @option{--transform} and
+@option{--strip-components}) will be prefixed with it.  Recognized
+file name suffixes are @samp{.tar}, and any compression suffixes
+recognizable by @xref{--auto-compress}.
+
 @opsummary{overwrite}
 @item --overwrite
 
@@ -3086,8 +3138,8 @@ from an archive.  @xref{Overwrite Old Files}.
 
 Specifies that @command{tar} should use @var{user} as the owner of members
 when creating archives, instead of the user associated with the source
-file.  @var{user} is first decoded as a user symbolic name, but if
-this interpretation fails, it has to be a decimal numeric user @acronym{ID}.
+file.  @var{user} can specify a symbolic name, or a numeric
+@acronym{ID}, or both as @var{name}:@var{id}.
 @xref{override}.
 
 This option does not affect extraction from archives.
@@ -3249,13 +3301,20 @@ $ @kbd{tar --show-defaults}
 
 @noindent
 Notice, that this option outputs only one line.  The example output
-above has been split to fit page boundaries.
+above has been split to fit page boundaries. @xref{defaults}.
 
 @opsummary{show-omitted-dirs}
 @item --show-omitted-dirs
 
 Instructs @command{tar} to mention the directories it is skipping when
 operating on a @command{tar} archive.  @xref{show-omitted-dirs}.
+
+@opsummary{show-snapshot-field-ranges}
+@item --show-snapshot-field-ranges
+
+Displays the range of values allowed by this version of @command{tar}
+for each field in the snapshot file, then exits successfully.
+@xref{Snapshot Files}.
 
 @opsummary{show-transformed-names}
 @opsummary{show-stored-names}
@@ -3267,6 +3326,41 @@ Display file or member names after applying any transformations
 the archive creation operations it instructs @command{tar} to list the
 member names stored in the archive, as opposed to the actual file
 names.  @xref{listing member and file names}.
+
+@opsummary{skip-old-files}
+@item --skip-old-files
+
+Do not overwrite existing files when extracting files from an
+archive.  @xref{Keep Old Files}.
+
+This option differs from @option{--keep-old-files} in that it does not
+treat such files as an error, instead it just silently avoids
+overwriting them.
+
+The @option{--warning=existing-file} option can be used together with
+this option to produce warning messages about existing old files
+(@pxref{warnings}).
+
+@opsummary{sort}
+@item --sort=@var{order}
+Specify the directory sorting order when reading directories.
+@var{Order} may be one of the following:
+
+@table @samp
+@item none
+No directory sorting is performed. This is the default.
+
+@item name
+Sort the directory entries on name. The operating system may deliver
+directory entries in a more or less random order, and sorting them
+makes archive creation reproducible.
+
+@item inode
+Sort the directory entries on inode number. Sorting directories on
+inode number may reduce the amount of disk seek operations when
+creating an archive for some file systems.
+
+@end table
 
 @opsummary{sparse}
 @item --sparse
@@ -3576,8 +3670,7 @@ successfully.  For example, @w{@samp{tar --version}} might print:
 
 @smallexample
 tar (GNU tar) @value{VERSION}
-Copyright (C) 2010 Free Software Foundation, Inc.
-Copyright (C) 2010 Free Software Foundation, Inc.
+Copyright (C) 2013-2014 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
@@ -3732,7 +3825,7 @@ $ @kbd{tar xvvf archive.tar}
 
 Verbose output appears on the standard output except when an archive is
 being written to the standard output, as with @samp{tar --create
---file=- --verbose} (@samp{tar cfv -}, or even @samp{tar cv}---if the
+--file=- --verbose} (@samp{tar cvf -}, or even @samp{tar cv}---if the
 installer let standard output be the default archive).  In that case
 @command{tar} writes verbose output to the standard error stream.
 
@@ -3924,10 +4017,10 @@ e.g.:
 @end smallexample
 
 The @samp{%s} and @samp{%u} in the above example are
-@dfn{meta-characters}.  The @samp{%s} meta-character is replaced with
+@dfn{format specifiers}.  The @samp{%s} specifier is replaced with
 the @dfn{type} of the checkpoint: @samp{write} or
 @samp{read} (or a corresponding translated version in locales other
-than @acronym{POSIX}).  The @samp{%u} meta-character is replaced with
+than @acronym{POSIX}).  The @samp{%u} specifier is replaced with
 the ordinal number of the checkpoint.  Thus, the above example could
 produce the following output when used with the @option{--create}
 option:
@@ -3938,7 +4031,54 @@ tar: Hit write checkpoint #20
 tar: Hit write checkpoint #30
 @end smallexample
 
-Aside from meta-character expansion, the message string is subject to
+The complete list of available format specifiers follows.  Some of
+them can take optional arguments.  These arguments, if given, are
+supplied in curly braces between the percent sign and the specifier
+letter.
+
+@table @samp
+@item %s
+Print type of the checkpoint (@samp{write} or @samp{read}).
+
+@item %u
+Print number of the checkpoint.
+
+@item %@{r,w,d@}T
+Print number of bytes transferred so far and approximate transfer
+speed.  Optional arguments supply prefixes to be used before number
+of bytes read, written and deleted, correspondingly.  If absent,
+they default to @samp{R}. @samp{W}, @samp{D}.  Any or all of them can
+be omitted, so, that e.g. @samp{%@{@}T} means to print corresponding
+statistics without any prefixes.  Any surplus arguments, if present,
+are silently ignored.
+
+@example
+$ @kbd{tar --delete -f f.tar --checkpoint-action=echo="#%u: %T" main.c}
+tar: #1: R: 0 (0B, 0B/s),W: 0 (0B, 0B/s),D: 0
+tar: #2: R: 10240 (10KiB, 19MiB/s),W: 0 (0B, 0B/s),D: 10240
+@end example
+
+@noindent
+See also the @samp{totals} action, described below.
+
+@item %@{@var{fmt}@}t
+Output current local time using @var{fmt} as format for @command{strftime}
+(@pxref{strftime, strftime,,strftime(3), strftime(3) man page}).  The
+@samp{@{@var{fmt}@}} part is optional.  If not present, the default
+format is @samp{%c}, i.e. the preferred date and time representation
+for the current locale.
+
+@item %@{@var{n}@}*
+Pad output with spaces to the @var{n}th column.  If the
+@samp{@{@var{n}@}} part is omitted, the current screen width
+is assumed.
+
+@item %c
+This is a shortcut for @samp{%@{%Y-%m-%d %H:%M:%S@}t: %ds, %@{read,wrote@}T%*\r},
+intended mainly for use with @samp{ttyout} action (see below).
+@end table
+
+Aside from format expansion, the message string is subject to
 @dfn{unquoting}, during which the backslash @dfn{escape sequences} are
 replaced with their corresponding @acronym{ASCII} characters
 (@pxref{escape sequences}).  E.g. the following action will produce an
@@ -3965,8 +4105,22 @@ following action will print the checkpoint message at the same screen
 line, overwriting any previous message:
 
 @smallexample
---checkpoint-action="ttyout=\rHit %s checkpoint #%u"
+--checkpoint-action="ttyout=Hit %s checkpoint #%u%*\r"
 @end smallexample
+
+@noindent
+Notice the use of @samp{%*} specifier to clear out any eventual
+remains of the prior output line.  As as more complex example,
+consider this:
+
+@smallexample
+--checkpoint-action=ttyout='%@{%Y-%m-%d %H:%M:%S@}t (%d sec): #%u, %T%*\r'
+@end smallexample
+
+@noindent
+This prints the current local time, number of seconds expired since
+tar was started, the checkpoint ordinal number, transferred bytes and
+average computed I/O speed.
 
 @cindex @code{dot}, checkpoint action
 Another available checkpoint action is @samp{dot} (or @samp{.}).  It
@@ -3982,6 +4136,12 @@ For compatibility with previous @GNUTAR{} versions, this action can
 be abbreviated by placing a dot in front of the checkpoint frequency,
 as shown in the previous section.
 
+@cindex @code{totals}, checkpoint action
+The @samp{totals} action prints the total number of bytes transferred
+so far.  The format of the data is the same as for the
+@option{--totals} option (@pxref{totals}).  See also @samp{%T} format
+specifier of the @samp{echo} or @samp{ttyout} action.
+
 @cindex @code{sleep}, checkpoint action
 Yet another action, @samp{sleep}, pauses @command{tar} for a specified
 amount of seconds.  The following example will stop for 30 seconds at each
@@ -3991,17 +4151,22 @@ checkpoint:
 $ @kbd{tar -c --checkpoint=1000 --checkpoint-action=sleep=30}
 @end smallexample
 
+@anchor{checkpoint exec}
 @cindex @code{exec}, checkpoint action
-Finally, the @code{exec} action executes a given external program.
+Finally, the @code{exec} action executes a given external command.
 For example:
 
 @smallexample
 $ @kbd{tar -c --checkpoint=1000 --checkpoint-action=exec=/sbin/cpoint}
 @end smallexample
 
-This program is executed using @command{/bin/sh -c}, with no
-additional arguments.  Its exit code is ignored.  It gets a copy of
-@command{tar}'s environment plus the following variables:
+The supplied command can be any valid command invocation, with or
+without additional command line arguments.  If it does contain
+arguments, don't forget to quote it to prevent it from being split by
+the shell.  @xref{external, Running External Commands}, for more detail.
+
+The command gets a copy of @command{tar}'s environment plus the
+following variables:
 
 @table @env
 @vrindex TAR_VERSION, checkpoint script environment
@@ -4030,6 +4195,18 @@ A short option describing the operation @command{tar} is executing.
 Format of the archive being processed. @xref{Formats}, for a complete
 list of archive format names.
 @end table
+
+These environment variables can also be passed as arguments to the
+command, provided that they are properly escaped, for example:
+
+@smallexample
+@kbd{tar -c -f arc.tar \
+     --checkpoint-action='exec=/sbin/cpoint $TAR_FILENAME'}
+@end smallexample
+
+@noindent
+Notice single quotes to prevent variable names from being expanded by
+the shell when invoking @command{tar}.
 
 Any number of actions can be defined, by supplying several
 @option{--checkpoint-action} options in the command line.  For
@@ -4154,17 +4331,17 @@ Disable all warning messages.
 @item symlink-cast
 @samp{Attempting extraction of symbolic links as hard links}
 @kwindex unknown-cast
-@cindex @samp{Unknown file type `%c', extracted as normal file}, warning message
+@cindex @samp{Unknown file type '%c', extracted as normal file}, warning message
 @item unknown-cast
-@samp{%s: Unknown file type `%c', extracted as normal file}
+@samp{%s: Unknown file type '%c', extracted as normal file}
 @kwindex ignore-newer
 @cindex @samp{Current %s is newer or same age}, warning message
 @item ignore-newer
 @samp{Current %s is newer or same age}
 @kwindex unknown-keyword
-@cindex @samp{Ignoring unknown extended header keyword `%s'}, warning message
+@cindex @samp{Ignoring unknown extended header keyword '%s'}, warning message
 @item unknown-keyword
-@samp{Ignoring unknown extended header keyword `%s'}
+@samp{Ignoring unknown extended header keyword '%s'}
 @kwindex decompress-program
 @item decompress-program
 Controls verbose description of failures occurring when trying to run
@@ -4182,6 +4359,10 @@ tar (child): trying gzip
 This means that @command{tar} first tried to decompress
 @file{archive.Z} using @command{compress}, and, when that
 failed, switched to @command{gzip}.
+@kwindex record-size
+@cindex @samp{Record size = %lu blocks}, warning message
+@item record-size
+@samp{Record size = %lu blocks}
 @end table
 
 @subheading Keywords controlling incremental extraction:
@@ -4244,6 +4425,42 @@ verbose output and error output.  A possible approach would be using a
 named pipe to receive the archive, and having the consumer process to
 read from that named pipe.  This has the advantage of letting standard
 output free to receive verbose output, all separate from errors.
+
+@node external
+@section Running External Commands
+
+Certain @GNUTAR{} operations imply running external commands that you
+supply on the command line.  One of such operations is checkpointing,
+described above (@pxref{checkpoint exec}).  Another example of this
+feature is the @option{-I} option, which allows you to supply the
+program to use for compressing or decompressing the archive
+(@pxref{use-compress-program}).
+
+Whenever such operation is requested, @command{tar} first splits the
+supplied command into words much like the shell does.  It then treats
+the first word as the name of the program or the shell script to execute
+and the rest of words as its command line arguments.  The program,
+unless given as an absolute file name, is searched in the shell's
+@env{PATH}.
+
+Any additional information is normally supplied to external commands
+in environment variables, specific to each particular operation.  For
+example, the @option{--checkpoint-action=exec} option, defines the
+@env{TAR_ARCHIVE} variable to the name of the archive being worked
+upon.  You can, should the need be, use these variables in the
+command line of the external command.  For example:
+
+@smallexample
+$ @kbd{tar -x -f archive.tar \
+    --checkpoint=exec='printf "%04d in %32s\r" $TAR_CHECKPOINT $TAR_ARCHIVE'}
+@end smallexample
+
+@noindent
+This command prints for each checkpoint its number and the name of the
+archive, using the same output line on the screen.
+
+Notice the use of single quotes to prevent variable names from being
+expanded by the shell when invoking @command{tar}.
 
 @node operations
 @chapter @GNUTAR{} Operations
@@ -4312,7 +4529,7 @@ the following commands:
 
 @smallexample
 @kbd{tar --create --file=empty-archive.tar --files-from=/dev/null}
-@kbd{tar cfT empty-archive.tar /dev/null}
+@kbd{tar -cf empty-archive.tar -T /dev/null}
 @end smallexample
 
 @xopindex{extract, complementary notes}
@@ -4443,11 +4660,11 @@ in the archive; the most recently archived members will be extracted
 last.  Additionally, an extracted member will @emph{replace} a file of
 the same name which existed in the directory already, and @command{tar}
 will not prompt you about this@footnote{Unless you give it
-@option{--keep-old-files} option, or the disk copy is newer than
-the one in the archive and you invoke @command{tar} with
-@option{--keep-newer-files} option.}.  Thus, only the most recently archived
-member will end up being extracted, as it will replace the one
-extracted before it, and so on.
+@option{--keep-old-files} (or @option{--skip-old-files}) option, or
+the disk copy is newer than the one in the archive and you invoke
+@command{tar} with @option{--keep-newer-files} option.}.  Thus, only
+the most recently archived member will end up being extracted, as it
+will replace the one extracted before it, and so on.
 
 @cindex extracting @var{n}th copy of the file
 @xopindex{occurrence, described}
@@ -4941,7 +5158,7 @@ For example:
 
 @smallexample
 $ @kbd{tar -c -f archive.tar -v --mtime=yesterday .}
-tar: Option --mtime: Treating date `yesterday' as 2006-06-20
+tar: Option --mtime: Treating date 'yesterday' as 2006-06-20
 13:06:29.152478
 @dots{}
 @end smallexample
@@ -4951,8 +5168,22 @@ tar: Option --mtime: Treating date `yesterday' as 2006-06-20
 
 Specifies that @command{tar} should use @var{user} as the owner of members
 when creating archives, instead of the user associated with the source
-file.  The argument @var{user} can be either an existing user symbolic
-name, or a decimal numeric user @acronym{ID}.
+file.
+
+If @var{user} contains a colon, it is taken to be of the form
+@var{name}:@var{id} where a nonempty @var{name} specifies the user
+name and a nonempty @var{id} specifies the decimal numeric user
+@acronym{ID}.  If @var{user} does not contain a colon, it is taken to
+be a user number if it is one or more decimal digits; otherwise it is
+taken to be a user name.
+
+If a name is given but no number, the number is inferred from the
+current host's user database if possible, and the file's user number
+is used otherwise.  If a number is given but no name, the name is
+inferred from the number if possible, and an empty name is used
+otherwise.  If both name and number are given, the user database is
+not consulted, and the name and number need not be valid on the
+current host.
 
 There is no value indicating a missing number, and @samp{0} usually means
 @code{root}.  Some people like to force @samp{0} as the value to offer in
@@ -4975,8 +5206,9 @@ $ @kbd{tar -c -f archive.tar --owner=root .}
 @opindex group
 
 Files added to the @command{tar} archive will have a group @acronym{ID} of @var{group},
-rather than the group from the source file.  The argument @var{group}
-can be either an existing group symbolic name, or a decimal numeric group @acronym{ID}.
+rather than the group from the source file.  As with @option{--owner},
+the argument @var{group} can be an existing group symbolic name, or a
+decimal numeric group @acronym{ID}, or @var{name}:@var{id}.
 @end table
 
 @node Ignore Failed Read
@@ -5123,10 +5355,25 @@ such a directory, use the @option{--no-overwrite-dir} option.
 @cindex Overwriting old files, prevention
 @xopindex{keep-old-files, introduced}
 To be even more cautious and prevent existing files from being replaced, use
-the @option{--keep-old-files} (@option{-k}) option.  It causes @command{tar} to refuse
-to replace or update a file that already exists, i.e., a file with the
-same name as an archive member prevents extraction of that archive
-member.  Instead, it reports an error.
+the @option{--keep-old-files} (@option{-k}) option.  It causes
+@command{tar} to refuse to replace or update a file that already
+exists, i.e., a file with the same name as an archive member prevents
+extraction of that archive member.  Instead, it reports an error.  For
+example:
+
+@example
+$ @kbd{ls}
+blues
+$ @kbd{tar -x -k -f archive.tar}
+tar: blues: Cannot open: File exists
+tar: Exiting with failure status due to previous errors
+@end example
+
+@xopindex{skip-old-files, introduced}
+If you wish to preserve old files untouched, but don't want
+@command{tar} to treat them as errors, use the
+@option{--skip-old-files} option.  This option causes @command{tar} to
+silently skip extracting over existing files.
 
 @xopindex{overwrite, introduced}
 To be more aggressive about altering existing files, use the
@@ -5192,16 +5439,24 @@ archive, but remove other files before extracting.
 @node Keep Old Files
 @unnumberedsubsubsec Keep Old Files
 
+@GNUTAR{} provides two options to control its actions in a situation
+when it is about to extract a file which already exists on disk.
+
 @table @option
 @opindex keep-old-files
 @item --keep-old-files
 @itemx -k
-Do not replace existing files from archive.  The
-@option{--keep-old-files} (@option{-k}) option prevents @command{tar}
-from replacing existing files with files with the same name from the
-archive. The @option{--keep-old-files} option is meaningless with
-@option{--list} (@option{-t}).  Prevents @command{tar} from replacing
-files in the file system during extraction.
+Do not replace existing files from archive.  When such a file is
+encountered, @command{tar} issues an error message.  Upon end of
+extraction, @command{tar} exits with code 2 (@pxref{exit status}).
+
+@item --skip-old-files
+Do not replace existing files from archive, but do not treat that
+as error.  Such files are silently skipped and do not affect
+@command{tar} exit status.
+
+Additional verbosity can be obtained using @option{--warning=existing-file}
+together with that option (@pxref{warnings}).
 @end table
 
 @node Keep Newer Files
@@ -5419,11 +5674,13 @@ file to the standard input of an external program:
 @opindex to-command
 @item --to-command=@var{command}
 Extract files and pipe their contents to the standard input of
-@var{command}. When this option is used, instead of creating the
+@var{command}.  When this option is used, instead of creating the
 files specified, @command{tar} invokes @var{command} and pipes the
-contents of the files to its standard output. The @var{command} may
-contain command line arguments. The program is executed via
-@code{sh -c}. Notice, that @var{command} is executed once for each regular file
+contents of the files to its standard output.  The @var{command} may
+contain command line arguments (see @ref{external, Running External Commands},
+for more detail).
+
+Notice, that @var{command} is executed once for each regular file
 extracted. Non-regular files (directories, etc.) are ignored when this
 option is used.
 @end table
@@ -5520,6 +5777,20 @@ Ordinal number of the volume @command{tar} is processing.
 Format of the archive being processed. @xref{Formats}, for a complete
 list of archive format names.
 @end table
+
+These variables are defined prior to executing the command, so you can
+pass them as arguments, if you prefer.  For example, if the command
+@var{proc} takes the member name and size as its arguments, then you
+could do:
+
+@smallexample
+$ @kbd{tar -x -f archive.tar \
+       --to-command='proc $TAR_FILENAME $TAR_SIZE'}
+@end smallexample
+
+@noindent
+Notice single quotes to prevent variable names from being expanded by
+the shell when invoking @command{tar}.
 
 If @var{command} exits with a non-0 status, @command{tar} will print
 an error message similar to the following:
@@ -6896,7 +7167,7 @@ When @command{tar} is invoked with @option{--create} (@option{-c}),
 @group
 $ @kbd{tar cf a.tar}
 tar: Cowardly refusing to create an empty archive
-Try `tar --help' or `tar --usage' for more information.
+Try 'tar --help' or 'tar --usage' for more information.
 @end group
 @end smallexample
 
@@ -6998,45 +7269,6 @@ libc.a
 @end group
 @end smallexample
 
-@noindent
-@xopindex{directory, using in @option{--files-from} argument}
-Notice that the option parsing algorithm used with @option{-T} is
-stricter than the one used by shell.  Namely, when specifying option
-arguments, you should observe the following rules:
-
-@itemize @bullet
-@item
-When using short (single-letter) option form, its argument must
-immediately follow the option letter, without any intervening
-whitespace.  For example: @code{-Cdir}.
-
-@item
-When using long option form, the option argument must be separated
-from the option by a single equal sign.  No whitespace is allowed on
-any side of the equal sign.  For example: @code{--directory=dir}.
-
-@item
-For both short and long option forms, the option argument can be given
-on the next line after the option name, e.g.:
-
-@smallexample
-@group
---directory
-dir
-@end group
-@end smallexample
-
-@noindent
-and
-
-@smallexample
-@group
--C
-dir
-@end group
-@end smallexample
-@end itemize
-
 @opindex add-file
 If you happen to have a file whose name starts with @samp{-},
 precede it with @option{--add-file} option to prevent it from
@@ -7104,10 +7336,11 @@ $ @kbd{find . -size +800 -print0 |
 This example uses short options for typographic reasons, to avoid
 very long lines.
 
-@GNUTAR is able to automatically detect @code{NUL}-terminated file lists, so
-it is safe to use them even without the @option{--null} option.  In
-this case @command{tar} will print a warning and continue reading such
-a file as if @option{--null} were actually given:
+@GNUTAR is tries to automatically detect @code{NUL}-terminated file
+lists, so in many cases it is safe to use them even without the
+@option{--null} option.  In this case @command{tar} will print a
+warning and continue reading such a file as if @option{--null} were
+actually given:
 
 @smallexample
 @group
@@ -7170,6 +7403,77 @@ which is difficult to catch using text editors.
 
 However, empty lines are OK.
 
+@cindex VCS, excluding patterns from ignore files
+@cindex VCS, ignore files
+@cindex CVS, ignore files
+@cindex Git, ignore files
+@cindex Bazaar, ignore files
+@cindex Mercurial, ignore files
+When archiving directories that are under some version control system (VCS), 
+it is often convenient to read exclusion patterns from this VCS'
+ignore files (e.g. @file{.cvsignore}, @file{.gitignore}, etc.)  The
+following options provide such possibilty:
+
+@table @option
+@anchor{exclude-vcs-ignores}
+@opindex exclude-vcs-ignores
+@item --exclude-vcs-ignores
+Before archiving a directory, see if it contains any of the following
+files: @file{cvsignore}, @file{.gitignore}, @file{.bzrignore}, or
+@file{.hgignore}.  If so, read ignore patterns from these files.
+
+The patterns are treated much as the corresponding VCS would treat
+them, i.e.:
+
+@table @file
+@findex .cvsignore
+@item .cvsignore
+Contains shell-style globbing patterns that apply only to the
+directory where this file resides.  No comments are allowed in the
+file.  Empty lines are ignored.
+
+@findex .gitignore
+@item .gitignore
+Contains shell-style globbing patterns.  Applies to the directory
+where @file{.gitfile} is located and all its subdirectories.
+
+Any line beginning with a @samp{#} is a comment.  Backslash escapes
+the comment character.
+
+@findex .bzrignore
+@item .bzrignore
+Contains shell globbing-patterns and regular expressions (if prefixed
+with @samp{RE:}@footnote{According to the Bazaar docs,
+globbing-patterns are Korn-shell style and regular expressions are
+perl-style.  As of @GNUTAR{} version @value{VERSION}, these are
+treated as shell-style globs and posix extended regexps.  This will be
+fixed in future releases.}.  Patterns affect the directory and all its
+subdirectories.
+
+Any line beginning with a @samp{#} is a comment.
+
+@findex .hgignore
+@item .hgignore
+Contains posix regular expressions@footnote{Support for perl-style
+regexps will appear in future releases.}.  The line @samp{syntax:
+glob} switches to shell globbing patterns.  The line @samp{syntax:
+regexp} switches back.  Comments begin with a @samp{#}.  Patterns
+affect the directory and all its subdirectories.
+@end table
+
+@opindex exclude-ignore
+@item --exclude-ignore=@var{file}
+Before dumping a directory, @command{tar} checks if it contains
+@var{file}.  If so, exclusion patterns are read from this file.
+The patterns affect only the directory itself.
+
+@opindex exclude-ignore-recursive
+@item --exclude-ignore-recursive=@var{file}
+Same as @option{--exclude-ignore}, except that the patterns read
+affect both the directory where @var{file} resides and all its
+subdirectories.
+@end table
+
 @table @option
 @cindex version control system, excluding files
 @cindex VCS, excluding files
@@ -7182,6 +7486,7 @@ However, empty lines are OK.
 @cindex Arch, excluding files
 @cindex Mercurial, excluding files
 @cindex Darcs, excluding files
+@anchor{exclude-vcs}
 @opindex exclude-vcs
 @item --exclude-vcs
 Exclude files and directories used by following version control
@@ -7787,7 +8092,7 @@ $ @kbd{tar tf arch.tar --quoting-style=escape}
 Control characters, single quote and backslash are printed using
 backslash notation.  All names are quoted using left and right
 quotation marks, appropriate to the current locale.  If it does not
-define quotation marks, use @samp{`} as left and @samp{'} as right
+define quotation marks, use @samp{'} as left and as right
 quotation marks.  Any occurrences of the right quotation mark in a
 name are escaped with @samp{\}, for example:
 
@@ -7796,13 +8101,13 @@ For example:
 @smallexample
 @group
 $ @kbd{tar tf arch.tar --quoting-style=locale}
-`./'
-`./a space'
-`./a\'single\'quote'
-`./a"double"quote'
-`./a\\backslash'
-`./a\ttab'
-`./a\nnewline'
+'./'
+'./a space'
+'./a\'single\'quote'
+'./a"double"quote'
+'./a\\backslash'
+'./a\ttab'
+'./a\nnewline'
 @end group
 @end smallexample
 
@@ -8249,7 +8554,7 @@ ensure he is using the right date.  For example:
 @smallexample
 @group
 $ @kbd{tar -c -f archive.tar --after-date='10 days ago' .}
-tar: Option --after-date: Treating date `10 days ago' as 2006-06-11
+tar: Option --after-date: Treating date '10 days ago' as 2006-06-11
 13:19:37.232434
 @end group
 @end smallexample
@@ -8524,6 +8829,10 @@ is not, generally speaking, the same as the one you'd get running
 scripts for comparing both outputs.  @xref{listing member and file names},
 for the information on how to handle this case.}.
 
+Symbolic links containing @file{..} or leading @samp{/} can also cause
+problems when extracting, so @command{tar} normally extracts them last;
+it may create empty files as placeholders during extraction.
+
 If you use the @option{--absolute-names} (@option{-P}) option,
 @command{tar} will do none of these transformations.
 
@@ -8547,7 +8856,7 @@ to transfer files between systems.}
 @table @option
 @item --absolute-names
 Preserves full file names (including superior directory names) when
-archiving files.  Preserves leading slash when extracting files.
+archiving and extracting files.
 
 @end table
 
@@ -8730,7 +9039,7 @@ archive, @option{--lzop} to create an @asis{LSOP} archive, and
 For example:
 
 @smallexample
-$ @kbd{tar cfz archive.tar.gz .}
+$ @kbd{tar czf archive.tar.gz .}
 @end smallexample
 
 You can also let @GNUTAR{} select the compression program based on
@@ -8740,14 +9049,14 @@ example, the following invocation will use @command{bzip2} for
 compression:
 
 @smallexample
-$ @kbd{tar cfa archive.tar.bz2 .}
+$ @kbd{tar caf archive.tar.bz2 .}
 @end smallexample
 
 @noindent
 whereas the following one will use @command{lzma}:
 
 @smallexample
-$ @kbd{tar cfa archive.tar.lzma .}
+$ @kbd{tar caf archive.tar.lzma .}
 @end smallexample
 
 For a complete list of file name suffixes recognized by @GNUTAR{},
@@ -8804,7 +9113,7 @@ If you see such diagnostics, just add the suggested option to the
 invocation of @GNUTAR{}:
 
 @smallexample
-$ @kbd{cat archive.tar.gz | tar tfz -}
+$ @kbd{cat archive.tar.gz | tar tzf -}
 @end smallexample
 
 Notice also, that there are several restrictions on operations on
@@ -8870,39 +9179,36 @@ etc.) and remote files as well as on normal files; data to or from
 such devices or remote files is reblocked by another copy of the
 @command{tar} program to enforce the specified (or default) record
 size.  The default compression parameters are used.  Most compression
-programs allow to override these by setting a program-specific
-environment variable.  For example, when using @command{gzip} you can
-use @env{GZIP} as in the example below:
+programs let you override these by setting a program-specific
+environment variable.  For example, with @command{gzip} you can set
+@env{GZIP}:
 
 @smallexample
-$ @kbd{GZIP=--best tar cfz archive.tar.gz subdir}
+$ @kbd{GZIP='-9 -n' tar czf archive.tar.gz subdir}
 @end smallexample
-
-@noindent
 Another way would be to use the @option{-I} option instead (see
 below), e.g.:
 
 @smallexample
-$ @kbd{tar -cf archive.tar.gz -I 'gzip --best' subdir}
+$ @kbd{tar -cf archive.tar.gz -I 'gzip -9 -n' subdir}
 @end smallexample
 
 @noindent
-Finally, the third, traditional, way to achieve the same result is to
-use pipe:
+Finally, the third, traditional, way to do this is to use a pipe:
 
 @smallexample
-$ @kbd{tar cf - subdir | gzip --best -c - > archive.tar.gz}
+$ @kbd{tar cf - subdir | gzip -9 -n > archive.tar.gz}
 @end smallexample
 
 @cindex corrupted archives
-About corrupted compressed archives: compressed files have no
-redundancy, for maximum compression.  The adaptive nature of the
+Compressed archives are easily corrupted, because compressed files
+have little redundancy.  The adaptive nature of the
 compression scheme means that the compression tables are implicitly
 spread all over the archive.  If you lose a few blocks, the dynamic
 construction of the compression tables becomes unsynchronized, and there
 is little chance that you could recover later in the archive.
 
-Another compression options provide a better control over creating
+Other compression options provide better control over creating
 compressed archives.  These are:
 
 @table @option
@@ -8931,21 +9237,29 @@ suffix.  The following suffixes are recognized:
 @item @samp{.xz} @tab @command{xz}
 @end multitable
 
+@anchor{use-compress-program}
 @opindex use-compress-program
-@item --use-compress-program=@var{prog}
-@itemx -I=@var{prog}
-Use external compression program @var{prog}.  Use this option if you
+@item --use-compress-program=@var{command}
+@itemx -I=@var{command}
+Use external compression program @var{command}.  Use this option if you
 are not happy with the compression program associated with the suffix
 at compile time or if you have a compression program that @GNUTAR{}
-does not support.  There are two requirements to which @var{prog}
-should comply:
+does not support.  The @var{command} argument is a valid command
+invocation, as you would type it at the command line prompt, with any
+additional options as needed.  Enclose it in quotes if it contains
+white space (see @ref{external, Running External Commands}, for more detail).
 
-First, when called without options, it should read data from standard
-input, compress it and output it on standard output.
+The @var{command} should follow two conventions:
 
-Secondly, if called with @option{-d} argument, it should do exactly
-the opposite, i.e., read the compressed data from the standard input
-and produce uncompressed data on the standard output.
+First, when invoked without additional options, it should read data
+from standard input, compress it and output it on standard output.
+
+Secondly, if invoked with the additional @option{-d} option, it should
+do exactly the opposite, i.e., read the compressed data from the
+standard input and produce uncompressed data on the standard output.
+
+The latter requirement means that you must not use the @option{-d}
+option as a part of the @var{command} itself.
 @end table
 
 @cindex gpg, using with tar
@@ -9397,7 +9711,7 @@ directory with a verbose level 2, you will get an output similar to
 the following:
 
 @smallexample
-$ tar cfvv ../archive.tar .
+$ tar cvvf ../archive.tar .
 drwxr-xr-x gray/staff        0 2007-10-30 15:13 ./
 -rw-r--r-- gray/staff        4 2007-10-30 15:11 ./jeden
 hrw-r--r-- gray/staff        0 2007-10-30 15:11 ./one link to ./jeden
@@ -9425,7 +9739,7 @@ produces the following diagnostics:
 
 @smallexample
 $ tar -c -f ../archive.tar -l jeden
-tar: Missing links to `jeden'.
+tar: Missing links to 'jeden'.
 @end smallexample
 
 Although creating special records for hard links helps keep a faithful
@@ -9437,7 +9751,7 @@ archive created in previous examples produces, in the absense of file
 
 @smallexample
 $ tar xf archive.tar ./one
-tar: ./one: Cannot hard link to `./jeden': No such file or directory
+tar: ./one: Cannot hard link to './jeden': No such file or directory
 tar: Error exit delayed from previous errors
 @end smallexample
 
@@ -9499,15 +9813,15 @@ free from many of @samp{v7}'s drawbacks.
 @subsection Ustar Archive Format
 
 @cindex ustar archive format
-Archive format defined by @acronym{POSIX}.1-1988 specification is called
-@code{ustar}.  Although it is more flexible than the V7 format, it
+The archive format defined by the @acronym{POSIX}.1-1988 specification is
+called @code{ustar}.  Although it is more flexible than the V7 format, it
 still has many restrictions (@pxref{Formats,ustar}, for the detailed
 description of @code{ustar} format).  Along with V7 format,
 @code{ustar} format is a good choice for archives intended to be read
 with other implementations of @command{tar}.
 
-To create archive in @code{ustar} format, use @option{--format=ustar}
-option in conjunction with the @option{--create} (@option{-c}).
+To create an archive in @code{ustar} format, use the @option{--format=ustar}
+option in conjunction with @option{--create} (@option{-c}).
 
 @node gnu
 @subsection @acronym{GNU} and old @GNUTAR{} format
@@ -9710,18 +10024,18 @@ same contents:
 
 SunOS and HP-UX @command{tar} fail to accept archives created using
 @GNUTAR{} and containing non-@acronym{ASCII} file names, that
-is, file names having characters with the eight bit set, because they
+is, file names having characters with the eighth bit set, because they
 use signed checksums, while @GNUTAR{} uses unsigned
 checksums while creating archives, as per @acronym{POSIX} standards.  On
-reading, @GNUTAR{} computes both checksums and
-accepts any.  It is somewhat worrying that a lot of people may go
+reading, @GNUTAR{} computes both checksums and accepts either of them.
+It is somewhat worrying that a lot of people may go
 around doing backup of their files using faulty (or at least
 non-standard) software, not learning about it until it's time to
 restore their missing files with an incompatible file extractor, or
 vice versa.
 
-@GNUTAR{} computes checksums both ways, and accept
-any on read, so @acronym{GNU} tar can read Sun tapes even with their
+@GNUTAR{} computes checksums both ways, and accepts either of them
+on read, so @acronym{GNU} tar can read Sun tapes even with their
 wrong checksums.  @GNUTAR{} produces the standard
 checksum, however, raising incompatibilities with Sun.  That is to
 say, @GNUTAR{} has not been modified to
@@ -9736,7 +10050,7 @@ the default signing of @code{char}'s in their compiler.  So they
 started computing checksums wrongly.  When they later realized their
 mistake, they merely decided to stay compatible with it, and with
 themselves afterwards.  Presumably, but I do not really know, HP-UX
-has chosen that their @command{tar} archives to be compatible with Sun's.
+has chosen their @command{tar} archives to be compatible with Sun's.
 The current standards do not favor Sun @command{tar} format.  In any
 case, it now falls on the shoulders of SunOS and HP-UX users to get
 a @command{tar} able to read the good archives they receive.
@@ -9977,8 +10291,8 @@ run mode is enabled by @option{-n} command line argument:
 @group
 $ @kbd{xsparse -n /home/gray/GNUSparseFile.6058/sparsefile}
 Reading v.1.0 sparse map
-Expanding file `/home/gray/GNUSparseFile.6058/sparsefile' to
-`/home/gray/sparsefile'
+Expanding file '/home/gray/GNUSparseFile.6058/sparsefile' to
+'/home/gray/sparsefile'
 Finished dry run
 @end group
 @end smallexample
@@ -9999,8 +10313,8 @@ similar to that from the dry run mode, use @option{-v} option:
 @group
 $ @kbd{xsparse -v /home/gray/GNUSparseFile.6058/sparsefile}
 Reading v.1.0 sparse map
-Expanding file `/home/gray/GNUSparseFile.6058/sparsefile' to
-`/home/gray/sparsefile'
+Expanding file '/home/gray/GNUSparseFile.6058/sparsefile' to
+'/home/gray/sparsefile'
 Done
 @end group
 @end smallexample
@@ -10021,8 +10335,8 @@ Found variable GNU.sparse.minor = 0
 Found variable GNU.sparse.name = sparsefile
 Found variable GNU.sparse.realsize = 217481216
 Reading v.1.0 sparse map
-Expanding file `/home/gray/GNUSparseFile.6058/sparsefile' to
-`/home/gray/sparsefile'
+Expanding file '/home/gray/GNUSparseFile.6058/sparsefile' to
+'/home/gray/sparsefile'
 Done
 @end group
 @end smallexample
@@ -10124,7 +10438,7 @@ Found variable GNU.sparse.size = 217481216
 Found variable GNU.sparse.numblocks = 208
 Found variable GNU.sparse.name = sparsefile
 Found variable GNU.sparse.map = 0,2048,1050624,2048,@dots{}
-Expanding file `GNUSparseFile.28124/sparsefile' to `sparsefile'
+Expanding file 'GNUSparseFile.28124/sparsefile' to 'sparsefile'
 Done
 @end group
 @end smallexample
@@ -10417,10 +10731,10 @@ maximum tape length, you might avoid the problem entirely.
 
 @xopindex{info-script, short description}
 @xopindex{new-volume-script, short description}
-@item -F @var{file}
-@itemx --info-script=@var{file}
-@itemx --new-volume-script=@var{file}
-Execute @file{file} at end of each tape.  This implies
+@item -F @var{command}
+@itemx --info-script=@var{command}
+@itemx --new-volume-script=@var{command}
+Execute @var{command} at end of each tape.  This implies
 @option{--multi-volume} (@option{-M}).  @xref{info-script}, for a detailed
 description of this option.
 @end table
@@ -10438,9 +10752,8 @@ want to use.  @command{tar} calls @command{rmt} by running an
 @command{rsh} or @command{remsh} to the remote machine, optionally
 using a different login name if one is supplied.
 
-A copy of the source for the remote tape server is provided.  It is
-Copyright @copyright{} 1983 by the Regents of the University of
-California, but can be freely distributed.  It is compiled and
+A copy of the source for the remote tape server is provided.  Its
+source code can be freely distributed.  It is compiled and
 installed by default.
 
 @cindex absolute file names
@@ -10607,15 +10920,16 @@ When reading an archive, @command{tar} can usually figure out the
 record size on itself.  When this is the case, and a non-standard
 record size was used when the archive was created, @command{tar} will
 print a message about a non-standard blocking factor, and then operate
-normally.  On some tape devices, however, @command{tar} cannot figure
-out the record size itself.  On most of those, you can specify a
-blocking factor (with @option{--blocking-factor}) larger than the
-actual blocking factor, and then use the @option{--read-full-records}
-(@option{-B}) option.  (If you specify a blocking factor with
-@option{--blocking-factor} and don't use the
-@option{--read-full-records} option, then @command{tar} will not
-attempt to figure out the recording size itself.)  On some devices,
-you must always specify the record size exactly with
+normally@footnote{If this message is not needed, you can turn it off
+using the @option{--warning=no-record-size} option.}.  On some tape
+devices, however, @command{tar} cannot figure out the record size
+itself.  On most of those, you can specify a blocking factor (with
+@option{--blocking-factor}) larger than the actual blocking factor,
+and then use the @option{--read-full-records} (@option{-B}) option.
+(If you specify a blocking factor with @option{--blocking-factor} and
+don't use the @option{--read-full-records} option, then @command{tar}
+will not attempt to figure out the recording size itself.)  On some
+devices, you must always specify the record size exactly with
 @option{--blocking-factor} when reading, because @command{tar} cannot
 figure it out.  In any case, use @option{--list} (@option{-t}) before
 doing any extractions to see whether @command{tar} is reading the archive
@@ -11246,7 +11560,7 @@ is@footnote{If you run @GNUTAR{} under a different locale, the
 translation to the locale's language will be used.}:
 
 @smallexample
-Prepare volume #@var{n} for `@var{archive}' and hit return:
+Prepare volume #@var{n} for '@var{archive}' and hit return:
 @end smallexample
 
 @noindent
@@ -11301,19 +11615,20 @@ volume, and instruct @command{tar} to use it instead of its normal
 prompting procedure:
 
 @table @option
-@item --info-script=@var{script-name}
-@itemx --new-volume-script=@var{script-name}
-@itemx -F @var{script-name}
-Specify the full name of the volume script to use.  The script can be
-used to eject cassettes, or to broadcast messages such as
+@item --info-script=@var{command}
+@itemx --new-volume-script=@var{command}
+@itemx -F @var{command}
+Specify the command to invoke when switching volumes.  The @var{command}
+can be used to eject cassettes, or to broadcast messages such as
 @samp{Someone please come change my tape} when performing unattended
 backups.
 @end table
 
-The @var{script-name} is executed without any command line
-arguments.  It inherits @command{tar}'s shell environment.
-Additional data is passed to it via the following
-environment variables:
+The @var{command} can contain additional options, if such are needed.
+@xref{external, Running External Commands}, for a detailed discussion
+of the way @GNUTAR{} runs external commands.  It inherits
+@command{tar}'s shell environment.  Additional data is passed to it
+via the following environment variables:
 
 @table @env
 @vrindex TAR_VERSION, info script environment variable
@@ -11348,6 +11663,10 @@ File descriptor which can be used to communicate the new volume
 name to @command{tar}.
 @end table
 
+These variables can be used in the @var{command} itself, provided that
+they are properly quoted to prevent them from being expanded by the
+shell that invokes @command{tar}.
+
 The volume script can instruct @command{tar} to use new archive name,
 by writing in to file descriptor @env{$TAR_FD} (see below for an example).
 
@@ -11367,7 +11686,7 @@ second tape, and then back to the first tape, etc., just do either of:
 
 @smallexample
 $ @kbd{tar --create --multi-volume --file=/dev/tape0 --file=/dev/tape1 @var{files}}
-$ @kbd{tar cMff /dev/tape0 /dev/tape1 @var{files}}
+$ @kbd{tar -cM -f /dev/tape0 -f /dev/tape1 @var{files}}
 @end smallexample
 
 The second method is to use the @samp{n} response to the tape-change
@@ -11382,7 +11701,10 @@ archive being created (as given by @option{--file} option) and
 
 @smallexample
 @group
-#! /bin/sh
+#! /bin/bash
+# For this script it's advisable to use a shell, such as Bash,
+# that supports a TAR_FD value greater than 9.
+
 echo Preparing volume $TAR_VOLUME of $TAR_ARCHIVE.
 
 name=`expr $TAR_ARCHIVE : '\(.*\)-.*'`
@@ -11615,7 +11937,7 @@ you will get:
 @smallexample
 @group
 $ @kbd{tar -rf archive --label 'My volume' .}
-tar: Archive not labeled to match `My volume'
+tar: Archive not labeled to match 'My volume'
 @end group
 @end smallexample
 
@@ -11646,7 +11968,7 @@ manage to get some date string as part of the label.  For example:
 
 @smallexample
 @group
-$ @kbd{tar cfMV /dev/tape "Daily backup for `date +%Y-%m-%d`"}
+$ @kbd{tar -cM -f /dev/tape -V "Daily backup for `date +%Y-%m-%d`"}
 $ @kbd{tar --create --file=/dev/tape --multi-volume \
      --label="Daily backup for `date +%Y-%m-%d`"}
 @end group
@@ -11925,11 +12247,16 @@ lets the archive overwrite any file in your system that you can write,
 the @option{--absolute-names} (@option{-P}) option should be used only
 for trusted archives.
 
-Conversely, with the @option{--keep-old-files} (@option{-k}) option,
-@command{tar} refuses to replace existing files when extracting; and
-with the @option{--no-overwrite-dir} option, @command{tar} refuses to
-replace the permissions or ownership of already-existing directories.
-These options may help when extracting from untrusted archives.
+Conversely, with the @option{--keep-old-files} (@option{-k}) and
+@option{--skip-old-files} options, @command{tar} refuses to replace
+existing files when extracting.  The difference between the two
+options is that the former treats existing files as errors whereas the
+latter just silently ignores them.
+
+Finally, with the @option{--no-overwrite-dir} option, @command{tar}
+refuses to replace the permissions or ownership of already-existing
+directories.  These options may help when extracting from untrusted
+archives.
 
 @node Live untrusted data
 @subsection Dealing with Live Untrusted Data

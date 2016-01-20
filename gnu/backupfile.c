@@ -2,7 +2,7 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* backupfile.c -- make Emacs style backup file names
 
-   Copyright (C) 1990-2006, 2009-2011 Free Software Foundation, Inc.
+   Copyright (C) 1990-2006, 2009-2014 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -77,7 +77,7 @@
    - It's typically faster.
    POSIX says that only '0' through '9' are digits.  Prefer ISDIGIT to
    ISDIGIT unless it's important to use the locale's definition
-   of `digit' even when the host does not conform to POSIX.  */
+   of "digit" even when the host does not conform to POSIX.  */
 #define ISDIGIT(c) ((unsigned int) (c) - '0' <= 9)
 
 /* The extension added to file names to produce a simple (as opposed

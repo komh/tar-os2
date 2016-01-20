@@ -17,8 +17,8 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
 
-extern char *rmt_command;
-extern char *rmt_dev_name__;
+extern char const *rmt_command;
+extern char const *rmt_dev_name__;
 
 int rmt_open__ (const char *, int, int, const char *);
 int rmt_close__ (int);

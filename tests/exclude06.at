@@ -1,12 +1,14 @@
 # Process this file with autom4te to create testsuite. -*- Autotest -*-
-# Copyright (C) 2010 Free Software Foundation, Inc.
+# Copyright 2010, 2013-2014 Free Software Foundation, Inc.
 
-# This program is free software; you can redistribute it and/or modify
+# This file is part of GNU tar.
+
+# GNU tar is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 3, or (at your option)
-# any later version.
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
 
-# This program is distributed in the hope that it will be useful,
+# GNU tar is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
@@ -24,7 +26,7 @@
 AT_SETUP([exclude: long files in pax archives])
 AT_KEYWORDS([exclude exclude06])
 
-m4_define([test_base_dir],[one/two/three/four/five/six/seven/eight/nine/ten/eleven/twelve/thirteen/fourteen/fifteen/sixteen/seventeen])
+m4_pushdef([test_base_dir],[one/two/three/four/five/six/seven/eight/nine/ten/eleven/twelve/thirteen/fourteen/fifteen/sixteen/seventeen])
 
 AT_TAR_CHECK([
 AT_TAR_MKHIER(test_base_dir)
@@ -44,4 +46,5 @@ find out -type f
 [],
 [pax])
 
+m4_popdef([test_base_dir])
 AT_CLEANUP

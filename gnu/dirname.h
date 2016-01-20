@@ -2,7 +2,7 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /*  Take file names apart into directory and base names.
 
-    Copyright (C) 1998, 2001, 2003-2006, 2009-2011 Free Software Foundation,
+    Copyright (C) 1998, 2001, 2003-2006, 2009-2014 Free Software Foundation,
     Inc.
 
     This program is free software: you can redistribute it and/or modify
@@ -39,9 +39,9 @@ char *dir_name (char const *file);
 # endif
 
 char *mdir_name (char const *file);
-size_t base_len (char const *file);
-size_t dir_len (char const *file);
-char *last_component (char const *file);
+size_t base_len (char const *file) _GL_ATTRIBUTE_PURE;
+size_t dir_len (char const *file) _GL_ATTRIBUTE_PURE;
+char *last_component (char const *file) _GL_ATTRIBUTE_PURE;
 
 bool strip_trailing_slashes (char *file);
 

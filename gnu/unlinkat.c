@@ -1,8 +1,8 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
-/* Work around unlinkat bugs on Solaris 9.
+/* Work around unlinkat bugs on Solaris 9 and Hurd.
 
-   Copyright (C) 2009-2011 Free Software Foundation, Inc.
+   Copyright (C) 2009-2014 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,6 +28,8 @@
 #include <string.h>
 #include <sys/stat.h>
 
+#include <stdlib.h>
+
 #include "dosname.h"
 #include "openat.h"
 
@@ -36,7 +38,8 @@
 # undef unlinkat
 
 /* unlinkat without AT_REMOVEDIR does not honor trailing / on Solaris
-   9.  Solve it in a similar manner to unlink.  */
+   9.  Solve it in a similar manner to unlink.  Hurd has the same
+   issue. */
 
 int
 rpl_unlinkat (int fd, char const *name, int flag)

@@ -1,19 +1,21 @@
-/* This file is part of GNU tar.
+/* Warnings for GNU tar.
 
-   Copyright (C) 2009 Free Software Foundation, Inc.
+   Copyright 2009, 2012-2014 Free Software Foundation, Inc.
 
-   This program is free software; you can redistribute it and/or modify it
-   under the terms of the GNU General Public License as published by the
-   Free Software Foundation; either version 3, or (at your option) any later
-   version.
+   This file is part of GNU tar.
 
-   This program is distributed in the hope that it will be useful, but
-   WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-   Public License for more details.
+   GNU tar is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
 
-   You should have received a copy of the GNU General Public License along
-   with this program.  If not, see <http://www.gnu.org/licenses/>. */
+   GNU tar is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include <system.h>
 #include <argmatch.h>
@@ -42,6 +44,9 @@ static char const *const warning_args[] = {
   "unknown-keyword",
   "xdev",
   "decompress-program",
+  "existing-file",
+  "xattr-write",
+  "record-size",
   NULL
 };
 
@@ -66,7 +71,10 @@ static int warning_types[] = {
   WARN_UNKNOWN_CAST,
   WARN_UNKNOWN_KEYWORD,
   WARN_XDEV,
-  WARN_DECOMPRESS_PROGRAM
+  WARN_DECOMPRESS_PROGRAM,
+  WARN_EXISTING_FILE,
+  WARN_XATTR_WRITE,
+  WARN_RECORD_SIZE
 };
 
 ARGMATCH_VERIFY (warning_args, warning_types);

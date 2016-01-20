@@ -1,23 +1,24 @@
 /* Diff files from a tar archive.
 
-   Copyright (C) 1988, 1992, 1993, 1994, 1996, 1997, 1999, 2000, 2001,
-   2003, 2004, 2005, 2006, 2007, 2009, 2010 Free Software Foundation, Inc.
+   Copyright 1988, 1992-1994, 1996-1997, 1999-2001, 2003-2007,
+   2009-2010, 2012-2014 Free Software Foundation, Inc.
 
-   Written by John Gilmore, on 1987-04-30.
+   This file is part of GNU tar.
 
-   This program is free software; you can redistribute it and/or modify it
-   under the terms of the GNU General Public License as published by the
-   Free Software Foundation; either version 3, or (at your option) any later
-   version.
+   GNU tar is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
 
-   This program is distributed in the hope that it will be useful, but
-   WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-   Public License for more details.
+   GNU tar is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+   Written by John Gilmore, on 1987-04-30.  */
 
 #include <system.h>
 #include <system-ioctl.h>
@@ -80,7 +81,7 @@ process_noop (size_t size __attribute__ ((unused)),
 static int
 process_rawdata (size_t bytes, char *buffer)
 {
-  size_t status = safe_read (diff_handle, diff_buffer, bytes);
+  size_t status = blocking_read (diff_handle, diff_buffer, bytes);
 
   if (status != bytes)
     {
@@ -359,31 +360,38 @@ dumpdir_cmp (const char *a, const char *b)
 }
 
 static void
-diff_dumpdir (void)
+diff_dumpdir (struct tar_stat_info *dir)
 {
   const char *dumpdir_buffer;
-  dev_t dev = 0;
-  struct stat stat_data;
 
-  if (deref_stat (current_stat_info.file_name, &stat_data) != 0)
+  if (dir->fd == 0)
     {
-      if (errno == ENOENT)
-	stat_warn (current_stat_info.file_name);
+      void (*diag) (char const *) = NULL;
+      int fd = subfile_open (dir->parent, dir->orig_file_name, open_read_flags);
+      if (fd < 0)
+	diag = open_diag;
+      else if (fstat (fd, &dir->stat))
+        {
+	  diag = stat_diag;
+          close (fd);
+        }
       else
-	stat_error (current_stat_info.file_name);
+	dir->fd = fd;
+      if (diag)
+	{
+	  file_removed_diag (dir->orig_file_name, false, diag);
+	  return;
+	}
     }
-  else
-    dev = stat_data.st_dev;
-
-  dumpdir_buffer = directory_contents (scan_directory (&current_stat_info));
+  dumpdir_buffer = directory_contents (scan_directory (dir));
 
   if (dumpdir_buffer)
     {
-      if (dumpdir_cmp (current_stat_info.dumpdir, dumpdir_buffer))
-	report_difference (&current_stat_info, _("Contents differ"));
+      if (dumpdir_cmp (dir->dumpdir, dumpdir_buffer))
+	report_difference (dir, _("Contents differ"));
     }
   else
-    read_and_process (&current_stat_info, process_noop);
+    read_and_process (dir, process_noop);
 }
 
 static void
@@ -410,7 +418,9 @@ diff_multivol (void)
     }
 
   offset = OFF_FROM_HEADER (current_header->oldgnu_header.offset);
-  if (stat_data.st_size != current_stat_info.stat.st_size + offset)
+  if (offset < 0
+      || INT_ADD_OVERFLOW (current_stat_info.stat.st_size, offset)
+      || stat_data.st_size != current_stat_info.stat.st_size + offset)
     {
       report_difference (&current_stat_info, _("Size differs"));
       skip_member ();
@@ -432,10 +442,9 @@ diff_multivol (void)
     {
       seek_error_details (current_stat_info.file_name, offset);
       report_difference (&current_stat_info, NULL);
-      return;
     }
-
-  read_and_process (&current_stat_info, process_rawdata);
+  else
+    read_and_process (&current_stat_info, process_rawdata);
 
   status = close (fd);
   if (status != 0)
@@ -461,7 +470,7 @@ diff_archive (void)
   switch (current_header->header.typeflag)
     {
     default:
-      ERROR ((0, 0, _("%s: Unknown file type `%c', diffed as normal file"),
+      ERROR ((0, 0, _("%s: Unknown file type '%c', diffed as normal file"),
 	      quotearg_colon (current_stat_info.file_name),
 	      current_header->header.typeflag));
       /* Fall through.  */
@@ -498,7 +507,7 @@ diff_archive (void)
     case GNUTYPE_DUMPDIR:
     case DIRTYPE:
       if (is_dumpdir (&current_stat_info))
-	diff_dumpdir ();
+	diff_dumpdir (&current_stat_info);
       diff_dir ();
       break;
 
@@ -529,6 +538,8 @@ verify_volume (void)
   if (may_fail)
     WARN((0, 0,
 	  _("Verification may fail to locate original files.")));
+
+  clear_directory_table ();
 
   if (!diff_buffer)
     diff_init ();

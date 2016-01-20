@@ -1,7 +1,6 @@
 /* Functions for dealing with sparse files
 
-   Copyright (C) 2003, 2004, 2005, 2006, 2007, 2010 Free Software
-   Foundation, Inc.
+   Copyright 2003-2007, 2010, 2013-2014 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -14,8 +13,7 @@
    Public License for more details.
 
    You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
+   with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include <system.h>
 #include <inttostr.h>
@@ -230,7 +228,7 @@ sparse_scan_file (struct tar_sparse_file *file)
       if (!tar_sparse_scan (file, scan_begin, NULL))
 	return false;
 
-      while ((count = safe_read (fd, buffer, sizeof buffer)) != 0
+      while ((count = blocking_read (fd, buffer, sizeof buffer)) != 0
 	     && count != SAFE_READ_ERROR)
 	{
 	  /* Analyze the block.  */
@@ -360,7 +358,7 @@ sparse_extract_region (struct tar_sparse_file *file, size_t i)
 	  return false;
 	}
       set_next_block_after (blk);
-      count = full_write (file->fd, blk->buffer, wrbytes);
+      count = blocking_write (file->fd, blk->buffer, wrbytes);
       write_size -= count;
       file->dumped_size += count;
       mv_size_left (file->stat_info->archive_file_size - file->dumped_size);
@@ -591,18 +589,18 @@ sparse_diff_file (int fd, struct tar_stat_info *st)
 /* Old GNU Format. The sparse file information is stored in the
    oldgnu_header in the following manner:
 
-   The header is marked with type 'S'. Its `size' field contains
+   The header is marked with type 'S'. Its 'size' field contains
    the cumulative size of all non-empty blocks of the file. The
-   actual file size is stored in `realsize' member of oldgnu_header.
+   actual file size is stored in 'realsize' member of oldgnu_header.
 
-   The map of the file is stored in a list of `struct sparse'.
+   The map of the file is stored in a list of 'struct sparse'.
    Each struct contains offset to the block of data and its
    size (both as octal numbers). The first file header contains
    at most 4 such structs (SPARSES_IN_OLDGNU_HEADER). If the map
-   contains more structs, then the field `isextended' of the main
-   header is set to 1 (binary) and the `struct sparse_header'
+   contains more structs, then the field 'isextended' of the main
+   header is set to 1 (binary) and the 'struct sparse_header'
    header follows, containing at most 21 following structs
-   (SPARSES_IN_SPARSE_HEADER). If more structs follow, `isextended'
+   (SPARSES_IN_SPARSE_HEADER). If more structs follow, 'isextended'
    field of the extended header is set and next  next extension header
    follows, etc... */
 
@@ -629,8 +627,8 @@ oldgnu_add_sparse (struct tar_sparse_file *file, struct sparse *s)
     return add_finish;
   sp.offset = OFF_FROM_HEADER (s->offset);
   sp.numbytes = OFF_FROM_HEADER (s->numbytes);
-  if (sp.offset < 0
-      || sp.offset + sp.numbytes < 0
+  if (sp.offset < 0 || sp.numbytes < 0
+      || INT_ADD_OVERFLOW (sp.offset, sp.numbytes)
       || file->stat_info->stat.st_size < sp.offset + sp.numbytes
       || file->stat_info->archive_file_size < 0)
     return add_fail;
@@ -644,10 +642,10 @@ oldgnu_fixup_header (struct tar_sparse_file *file)
 {
   /* NOTE! st_size was initialized from the header
      which actually contains archived size. The following fixes it */
+  off_t realsize = OFF_FROM_HEADER (current_header->oldgnu_header.realsize);
   file->stat_info->archive_file_size = file->stat_info->stat.st_size;
-  file->stat_info->stat.st_size =
-    OFF_FROM_HEADER (current_header->oldgnu_header.realsize);
-  return true;
+  file->stat_info->stat.st_size = max (0, realsize);
+  return 0 <= realsize;
 }
 
 /* Convert old GNU format sparse data to internal representation */
@@ -768,10 +766,10 @@ star_fixup_header (struct tar_sparse_file *file)
 {
   /* NOTE! st_size was initialized from the header
      which actually contains archived size. The following fixes it */
+  off_t realsize = OFF_FROM_HEADER (current_header->star_in_header.realsize);
   file->stat_info->archive_file_size = file->stat_info->stat.st_size;
-  file->stat_info->stat.st_size =
-            OFF_FROM_HEADER (current_header->star_in_header.realsize);
-  return true;
+  file->stat_info->stat.st_size = max (0, realsize);
+  return 0 <= realsize;
 }
 
 /* Convert STAR format sparse data to internal representation */
@@ -811,6 +809,7 @@ star_get_sparse_info (struct tar_sparse_file *file)
       set_next_block_after (h);
       for (i = 0; i < SPARSES_IN_STAR_EXT_HEADER && rc == add_ok; i++)
 	rc = oldgnu_add_sparse (file, &h->star_ext_header.sp[i]);
+      file->dumped_size += BLOCKSIZE;
     }
 
   if (rc == add_fail)
@@ -919,6 +918,18 @@ pax_sparse_member_p (struct tar_sparse_file *file)
           || file->stat_info->sparse_major > 0;
 }
 
+/* Start a header that uses the effective (shrunken) file size.  */
+static union block *
+pax_start_header (struct tar_stat_info *st)
+{
+  off_t realsize = st->stat.st_size;
+  union block *blk;
+  st->stat.st_size = st->archive_file_size;
+  blk = start_header (st);
+  st->stat.st_size = realsize;
+  return blk;
+}
+
 static bool
 pax_dump_header_0 (struct tar_sparse_file *file)
 {
@@ -968,9 +979,7 @@ pax_dump_header_0 (struct tar_sparse_file *file)
 	  return false;
 	}
     }
-  blk = start_header (file->stat_info);
-  /* Store the effective (shrunken) file size */
-  OFF_TO_CHARS (file->stat_info->archive_file_size, blk->header.size);
+  blk = pax_start_header (file->stat_info);
   finish_header (file->stat_info, blk, block_ordinal);
   if (save_file_name)
     {
@@ -991,7 +1000,7 @@ pax_dump_header_1 (struct tar_sparse_file *file)
   off_t size = 0;
   struct sp_array *map = file->stat_info->sparse_map;
   char *save_file_name = file->stat_info->file_name;
-  
+
 #define COPY_STRING(b,dst,src) do                \
  {                                               \
    char *endp = b->buffer + BLOCKSIZE;           \
@@ -1035,9 +1044,7 @@ pax_dump_header_1 (struct tar_sparse_file *file)
   if (strlen (file->stat_info->file_name) > NAME_FIELD_SIZE)
     file->stat_info->file_name[NAME_FIELD_SIZE] = 0;
 
-  blk = start_header (file->stat_info);
-  /* Store the effective (shrunken) file size */
-  OFF_TO_CHARS (file->stat_info->archive_file_size, blk->header.size);
+  blk = pax_start_header (file->stat_info);
   finish_header (file->stat_info, blk, block_ordinal);
   free (file->stat_info->file_name);
   file->stat_info->file_name = save_file_name;
@@ -1080,6 +1087,7 @@ decode_num (uintmax_t *num, char const *arg, uintmax_t maxval)
   if (!ISDIGIT (*arg))
     return false;
 
+  errno = 0;
   u = strtoumax (arg, &arg_lim, 10);
 
   if (! (u <= maxval && errno != ERANGE) || *arg_lim)

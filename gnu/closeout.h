@@ -2,7 +2,7 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Close standard output and standard error.
 
-   Copyright (C) 1998, 2000, 2003-2004, 2006, 2008-2011 Free Software
+   Copyright (C) 1998, 2000, 2003-2004, 2006, 2008-2014 Free Software
    Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify

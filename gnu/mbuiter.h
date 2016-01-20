@@ -1,7 +1,7 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Iterating through multibyte strings: macros for multi-byte encodings.
-   Copyright (C) 2001, 2005, 2007, 2009-2011 Free Software Foundation, Inc.
+   Copyright (C) 2001, 2005, 2007, 2009-2014 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -57,9 +57,9 @@
      initializes the iterator, starting at startptr.
 
    mbui_avail (iter)
-     returns true if there are more multibyte chracters available before
+     returns true if there are more multibyte characters available before
      the end of string is reached. In this case, mbui_cur (iter) is
-     initialized to the next multibyte chracter.
+     initialized to the next multibyte character.
 
    mbui_advance (iter)
      advances the iterator by one multibyte character.
@@ -108,6 +108,14 @@
 #include "mbchar.h"
 #include "strnlen1.h"
 
+#ifndef _GL_INLINE_HEADER_BEGIN
+ #error "Please include config.h first."
+#endif
+_GL_INLINE_HEADER_BEGIN
+#ifndef MBUITER_INLINE
+# define MBUITER_INLINE _GL_INLINE
+#endif
+
 struct mbuiter_multi
 {
   bool in_shift;        /* true if next byte may not be interpreted as ASCII */
@@ -122,7 +130,7 @@ struct mbuiter_multi
         */
 };
 
-static inline void
+MBUITER_INLINE void
 mbuiter_multi_next (struct mbuiter_multi *iter)
 {
   if (iter->next_done)
@@ -183,13 +191,13 @@ mbuiter_multi_next (struct mbuiter_multi *iter)
   iter->next_done = true;
 }
 
-static inline void
+MBUITER_INLINE void
 mbuiter_multi_reloc (struct mbuiter_multi *iter, ptrdiff_t ptrdiff)
 {
   iter->cur.ptr += ptrdiff;
 }
 
-static inline void
+MBUITER_INLINE void
 mbuiter_multi_copy (struct mbuiter_multi *new_iter, const struct mbuiter_multi *old_iter)
 {
   if ((new_iter->in_shift = old_iter->in_shift))
@@ -220,5 +228,7 @@ typedef struct mbuiter_multi mbui_iterator_t;
 
 /* Copying an iterator.  */
 #define mbui_copy mbuiter_multi_copy
+
+_GL_INLINE_HEADER_END
 
 #endif /* _MBUITER_H */

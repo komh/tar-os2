@@ -21,6 +21,8 @@
 #include <quote.h>
 #include <quotearg.h>
 
+void (*error_hook) (void);
+
 /* Decode MODE from its binary form in a stat structure, and encode it
    into a 9-byte string STRING, terminated with a NUL.  */
 

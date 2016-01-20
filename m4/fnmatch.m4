@@ -1,6 +1,6 @@
-# Check for fnmatch - serial 5.
+# Check for fnmatch - serial 9.
 
-# Copyright (C) 2000-2007, 2009-2011 Free Software Foundation, Inc.
+# Copyright (C) 2000-2007, 2009-2014 Free Software Foundation, Inc.
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -21,7 +21,7 @@ AC_DEFUN([gl_FUNC_FNMATCH_POSIX],
 
   FNMATCH_H=
   gl_fnmatch_required_lowercase=`
-    echo $gl_fnmatch_required | tr '[[A-Z]]' '[[a-z]]'
+    echo $gl_fnmatch_required | LC_ALL=C tr '[[A-Z]]' '[[a-z]]'
   `
   gl_fnmatch_cache_var="gl_cv_func_fnmatch_${gl_fnmatch_required_lowercase}"
   AC_CACHE_CHECK([for working $gl_fnmatch_required fnmatch],
@@ -64,6 +64,8 @@ AC_DEFUN([gl_FUNC_FNMATCH_POSIX],
             if (!n ("a*", "", 0))
               return 1;
             if (!y ("a*", "abc", 0))
+              return 1;
+            if (!y ("[/b", "[/b", 0)) /*"]]"*/ /* glibc Bugzilla bug 12378 */
               return 1;
             if (!n ("d*/*1", "d/s/1", FNM_PATHNAME))
               return 2;
@@ -126,19 +128,9 @@ AC_DEFUN([gl_FUNC_FNMATCH_POSIX],
     rm -f "$gl_source_base/fnmatch.h"
   else
     FNMATCH_H=fnmatch.h
-    AC_LIBOBJ([fnmatch])
-    dnl We must choose a different name for our function, since on ELF systems
-    dnl a broken fnmatch() in libc.so would override our fnmatch() if it is
-    dnl compiled into a shared library.
-    AC_DEFINE_UNQUOTED([fnmatch], [${gl_fnmatch_required_lowercase}_fnmatch],
-      [Define to a replacement function name for fnmatch().])
-    dnl Prerequisites of lib/fnmatch.c.
-    AC_REQUIRE([AC_TYPE_MBSTATE_T])
-    AC_CHECK_DECLS([isblank], [], [], [#include <ctype.h>])
-    AC_CHECK_FUNCS_ONCE([btowc isblank iswctype mbsrtowcs mempcpy wmemchr wmemcpy wmempcpy])
-    AC_CHECK_HEADERS_ONCE([wctype.h])
   fi
   AC_SUBST([FNMATCH_H])
+  AM_CONDITIONAL([GL_GENERATE_FNMATCH_H], [test -n "$FNMATCH_H"])
 ])
 
 # Request a POSIX compliant fnmatch function with GNU extensions.
@@ -147,4 +139,18 @@ AC_DEFUN([gl_FUNC_FNMATCH_GNU],
   m4_divert_text([INIT_PREPARE], [gl_fnmatch_required=GNU])
 
   AC_REQUIRE([gl_FUNC_FNMATCH_POSIX])
+])
+
+AC_DEFUN([gl_PREREQ_FNMATCH],
+[
+  dnl We must choose a different name for our function, since on ELF systems
+  dnl a broken fnmatch() in libc.so would override our fnmatch() if it is
+  dnl compiled into a shared library.
+  AC_DEFINE_UNQUOTED([fnmatch], [${gl_fnmatch_required_lowercase}_fnmatch],
+    [Define to a replacement function name for fnmatch().])
+  dnl Prerequisites of lib/fnmatch.c.
+  AC_REQUIRE([AC_TYPE_MBSTATE_T])
+  AC_CHECK_DECLS([isblank], [], [], [[#include <ctype.h>]])
+  AC_CHECK_FUNCS_ONCE([btowc isblank iswctype mbsrtowcs mempcpy wmemchr wmemcpy wmempcpy])
+  AC_CHECK_HEADERS_ONCE([wctype.h])
 ])

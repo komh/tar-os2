@@ -1,22 +1,28 @@
 /* Checkpoint management for tar.
 
-   Copyright (C) 2007 Free Software Foundation, Inc.
+   Copyright 2007, 2013-2014 Free Software Foundation, Inc.
 
-   This program is free software; you can redistribute it and/or modify it
-   under the terms of the GNU General Public License as published by the
-   Free Software Foundation; either version 3, or (at your option) any later
-   version.
+   This file is part of GNU tar.
 
-   This program is distributed in the hope that it will be useful, but
-   WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-   Public License for more details.
+   GNU tar is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
 
-   You should have received a copy of the GNU General Public License along
-   with this program.  If not, see <http://www.gnu.org/licenses/>. */
+   GNU tar is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include <system.h>
 #include "common.h"
+#include "wordsplit.h"
+#include <sys/ioctl.h>
+#include <termios.h>
+#include "fprintftime.h"
 
 enum checkpoint_opcode
   {
@@ -25,7 +31,8 @@ enum checkpoint_opcode
     cop_echo,
     cop_ttyout,
     cop_sleep,
-    cop_exec
+    cop_exec,
+    cop_totals
   };
 
 struct checkpoint_action
@@ -108,12 +115,14 @@ checkpoint_compile_action (const char *str)
       act = alloc_action (cop_sleep);
       act->v.time = n;
     }
+  else if (strcmp (str, "totals") == 0)
+    alloc_action (cop_totals);
   else
     FATAL_ERROR ((0, 0, _("%s: unknown checkpoint action"), str));
 }
 
 void
-checkpoint_finish_compile ()
+checkpoint_finish_compile (void)
 {
   if (checkpoint_option)
     {
@@ -126,68 +135,211 @@ checkpoint_finish_compile ()
     checkpoint_option = DEFAULT_CHECKPOINT;
 }
 
-static char *
-expand_checkpoint_string (const char *input, bool do_write, unsigned cpn)
+static const char *checkpoint_total_format[] = {
+  "R",
+  "W",
+  "D"
+};
+
+static long
+getwidth (FILE *fp)
 {
-  const char *opstr = do_write ? gettext ("write") : gettext ("read");
-  size_t opstrlen = strlen (opstr);
-  char uintbuf[UINTMAX_STRSIZE_BOUND];
-  char *cps = STRINGIFY_BIGINT (cpn, uintbuf);
-  size_t cpslen = strlen (cps);
-  const char *ip;
-  char *op;
-  char *output;
-  size_t outlen = strlen (input); /* Initial guess */
+  char const *columns;
 
-  /* Fix the initial length guess */
-  for (ip = input; (ip = strchr (ip, '%')) != NULL; )
+#ifdef TIOCGWINSZ
+  struct winsize ws;
+  if (ioctl (fileno (fp), TIOCGWINSZ, &ws) == 0 && 0 < ws.ws_col)
+    return ws.ws_col;
+#endif
+
+  columns = getenv ("COLUMNS");
+  if (columns)
     {
-      switch (ip[1])
-	{
-	case 'u':
-	  outlen += cpslen - 2;
-	  break;
-
-	case 's':
-	  outlen += opstrlen - 2;
-	}
-      ip++;
+      long int col = strtol (columns, NULL, 10);
+      if (0 < col)
+	return col;
     }
 
-  output = xmalloc (outlen + 1);
-  for (ip = input, op = output; *ip; )
+  return 80;
+}
+
+static char *
+getarg (const char *input, const char ** endp, char **argbuf, size_t *arglen)
+{
+  if (input[0] == '{')
+    {
+      char *p = strchr (input + 1, '}');
+      if (p)
+	{
+	  size_t n = p - input;
+	  if (n > *arglen)
+	    {
+	      *arglen = n;
+	      *argbuf = xrealloc (*argbuf, *arglen);
+	    }
+	  n--;
+	  memcpy (*argbuf, input + 1, n);
+	  (*argbuf)[n] = 0;
+	  *endp = p + 1;
+	  return *argbuf;
+	}
+    }
+
+  *endp = input;
+  return NULL;
+}
+
+static int tty_cleanup;
+
+static const char *def_format =
+  "%{%Y-%m-%d %H:%M:%S}t: %ds, %{read,wrote}T%*\r";
+
+static int
+format_checkpoint_string (FILE *fp, size_t len,
+			  const char *input, bool do_write,
+			  unsigned cpn)
+{
+  const char *opstr = do_write ? gettext ("write") : gettext ("read");
+  char uintbuf[UINTMAX_STRSIZE_BOUND];
+  char *cps = STRINGIFY_BIGINT (cpn, uintbuf);
+  const char *ip;
+
+  static char *argbuf = NULL;
+  static size_t arglen = 0;
+  char *arg = NULL;
+
+  if (!input)
+    {
+      if (do_write)
+	/* TRANSLATORS: This is a "checkpoint of write operation",
+	 *not* "Writing a checkpoint".
+	 E.g. in Spanish "Punto de comprobaci@'on de escritura",
+	 *not* "Escribiendo un punto de comprobaci@'on" */
+	input = gettext ("Write checkpoint %u");
+      else
+	/* TRANSLATORS: This is a "checkpoint of read operation",
+	 *not* "Reading a checkpoint".
+	 E.g. in Spanish "Punto de comprobaci@'on de lectura",
+	 *not* "Leyendo un punto de comprobaci@'on" */
+	input = gettext ("Read checkpoint %u");
+    }
+
+  for (ip = input; *ip; ip++)
     {
       if (*ip == '%')
 	{
-	  switch (*++ip)
+	  if (*++ip == '{')
 	    {
+	      arg = getarg (ip, &ip, &argbuf, &arglen);
+	      if (!arg)
+		{
+		  fputc ('%', fp);
+		  fputc (*ip, fp);
+		  len += 2;
+		  continue;
+		}
+	    }
+	  switch (*ip)
+	    {
+	    case 'c':
+	      len += format_checkpoint_string (fp, len, def_format, do_write,
+					       cpn);
+	      break;
+
 	    case 'u':
-	      op = stpcpy (op, cps);
+	      fputs (cps, fp);
+	      len += strlen (cps);
 	      break;
 
 	    case 's':
-	      op = stpcpy (op, opstr);
+	      fputs (opstr, fp);
+	      len += strlen (opstr);
+	      break;
+
+	    case 'd':
+	      len += fprintf (fp, "%.0f", compute_duration ());
+	      break;
+
+	    case 'T':
+	      {
+		const char **fmt = checkpoint_total_format, *fmtbuf[3];
+		struct wordsplit ws;
+		compute_duration ();
+
+		if (arg)
+		  {
+		    ws.ws_delim = ",";
+		    if (wordsplit (arg, &ws, WRDSF_NOVAR | WRDSF_NOCMD |
+				           WRDSF_QUOTE | WRDSF_DELIM))
+		      ERROR ((0, 0, _("cannot split string '%s': %s"),
+			      arg, wordsplit_strerror (&ws)));
+		    else
+		      {
+			int i;
+
+			for (i = 0; i < ws.ws_wordc; i++)
+			  fmtbuf[i] = ws.ws_wordv[i];
+			for (; i < 3; i++)
+			  fmtbuf[i] = NULL;
+			fmt = fmtbuf;
+		      }
+		  }
+		len += format_total_stats (fp, fmt, ',', 0);
+		if (arg)
+		  wordsplit_free (&ws);
+	      }
+	      break;
+
+	    case 't':
+	      {
+		struct timeval tv;
+		struct tm *tm;
+		const char *fmt = arg ? arg : "%c";
+
+		gettimeofday (&tv, NULL);
+		tm = localtime (&tv.tv_sec);
+		len += fprintftime (fp, fmt, tm, 0, tv.tv_usec * 1000);
+	      }
+	      break;
+
+	    case '*':
+	      {
+		long w = arg ? strtol (arg, NULL, 10) : getwidth (fp);
+		for (; w > len; len++)
+		  fputc (' ', fp);
+	      }
 	      break;
 
 	    default:
-	      *op++ = '%';
-	      *op++ = *ip;
+	      fputc ('%', fp);
+	      fputc (*ip, fp);
+	      len += 2;
 	      break;
 	    }
-	  ip++;
+	  arg = NULL;
 	}
       else
-	*op++ = *ip++;
+	{
+	  fputc (*ip, fp);
+	  if (*ip == '\r')
+	    {
+	      len = 0;
+	      tty_cleanup = 1;
+	    }
+	  else
+	    len++;
+	}
     }
-  *op = 0;
-  return output;
+  fflush (fp);
+  return len;
 }
+
+static FILE *tty = NULL;
 
 static void
 run_checkpoint_actions (bool do_write)
 {
   struct checkpoint_action *p;
-  FILE *tty = NULL;
 
   for (p = checkpoint_action; p; p = p->next)
     {
@@ -210,26 +362,10 @@ run_checkpoint_actions (bool do_write)
 
 	case cop_echo:
 	  {
-	    char *tmp;
-	    const char *str = p->v.command;
-	    if (!str)
-	      {
-		if (do_write)
-		  /* TRANSLATORS: This is a ``checkpoint of write operation'',
- 		     *not* ``Writing a checkpoint''.
-		     E.g. in Spanish ``Punto de comprobaci@'on de escritura'',
-		     *not* ``Escribiendo un punto de comprobaci@'on'' */
-		  str = gettext ("Write checkpoint %u");
-		else
-		  /* TRANSLATORS: This is a ``checkpoint of read operation'',
-	             *not* ``Reading a checkpoint''.
-		     E.g. in Spanish ``Punto de comprobaci@'on de lectura'',
-		     *not* ``Leyendo un punto de comprobaci@'on'' */
-		  str = gettext ("Read checkpoint %u");
-	      }
-	    tmp = expand_checkpoint_string (str, do_write, checkpoint);
-	    WARN ((0, 0, "%s", tmp));
-	    free (tmp);
+	    int n = fprintf (stderr, "%s: ", program_name);
+	    format_checkpoint_string (stderr, n, p->v.command, do_write,
+				      checkpoint);
+	    fputc ('\n', stderr);
 	  }
 	  break;
 
@@ -237,13 +373,8 @@ run_checkpoint_actions (bool do_write)
 	  if (!tty)
 	    tty = fopen ("/dev/tty", "w");
 	  if (tty)
-	    {
-	      char *tmp = expand_checkpoint_string (p->v.command, do_write,
-						    checkpoint);
-	      fprintf (tty, "%s", tmp);
-	      fflush (tty);
-	      free (tmp);
-	    }
+	    format_checkpoint_string (tty, 0, p->v.command, do_write,
+				      checkpoint);
 	  break;
 
 	case cop_sleep:
@@ -255,10 +386,37 @@ run_checkpoint_actions (bool do_write)
 				      archive_name_cursor[0],
 				      checkpoint);
 	  break;
+
+	case cop_totals:
+	  compute_duration ();
+	  print_total_stats ();
 	}
     }
-  if (tty)
-    fclose (tty);
+}
+
+void
+checkpoint_flush_actions (void)
+{
+  struct checkpoint_action *p;
+
+  for (p = checkpoint_action; p; p = p->next)
+    {
+      switch (p->opcode)
+	{
+	case cop_ttyout:
+	  if (tty && tty_cleanup)
+	    {
+	      long w = getwidth (tty);
+	      while (w--)
+		fputc (' ', tty);
+	      fputc ('\r', tty);
+	      fflush (tty);
+	    }
+	  break;
+	default:
+	  /* nothing */;
+	}
+    }
 }
 
 void
@@ -266,4 +424,15 @@ checkpoint_run (bool do_write)
 {
   if (checkpoint_option && !(++checkpoint % checkpoint_option))
     run_checkpoint_actions (do_write);
+}
+
+void
+checkpoint_finish (void)
+{
+  if (checkpoint_option)
+    {
+      checkpoint_flush_actions ();
+      if (tty)
+	fclose (tty);
+    }
 }

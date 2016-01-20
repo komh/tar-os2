@@ -1,7 +1,7 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Multibyte character data type.
-   Copyright (C) 2001, 2005-2007, 2009-2011 Free Software Foundation, Inc.
+   Copyright (C) 2001, 2005-2007, 2009-2014 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -158,6 +158,14 @@
 #include <wchar.h>
 #include <wctype.h>
 
+#ifndef _GL_INLINE_HEADER_BEGIN
+ #error "Please include config.h first."
+#endif
+_GL_INLINE_HEADER_BEGIN
+#ifndef MBCHAR_INLINE
+# define MBCHAR_INLINE _GL_INLINE
+#endif
+
 #define MBCHAR_BUF_SIZE 24
 
 struct mbchar
@@ -237,7 +245,7 @@ typedef struct mbchar mbchar_t;
 /* Unprintable characters appear as a small box of width 1.  */
 #define MB_UNPRINTABLE_WIDTH 1
 
-static inline int
+MBCHAR_INLINE int
 mb_width_aux (wint_t wc)
 {
   int w = wcwidth (wc);
@@ -258,7 +266,7 @@ mb_width_aux (wint_t wc)
    (mbc)->wc = (mbc)->buf[0] = (sc))
 
 /* Copying a character.  */
-static inline void
+MBCHAR_INLINE void
 mb_copy (mbchar_t *new_mbc, const mbchar_t *old_mbc)
 {
   if (old_mbc->ptr == &old_mbc->buf[0])
@@ -306,7 +314,7 @@ mb_copy (mbchar_t *new_mbc, const mbchar_t *old_mbc)
 
 extern const unsigned int is_basic_table[];
 
-static inline bool
+MBCHAR_INLINE bool
 is_basic (char c)
 {
   return (is_basic_table [(unsigned char) c >> 5] >> ((unsigned char) c & 31))
@@ -315,7 +323,7 @@ is_basic (char c)
 
 #else
 
-static inline bool
+MBCHAR_INLINE bool
 is_basic (char c)
 {
   switch (c)
@@ -348,5 +356,7 @@ is_basic (char c)
 }
 
 #endif
+
+_GL_INLINE_HEADER_END
 
 #endif /* _MBCHAR_H */

@@ -2,7 +2,7 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* timespec -- System time interface
 
-   Copyright (C) 2000, 2002, 2004-2005, 2007, 2009-2011 Free Software
+   Copyright (C) 2000, 2002, 2004-2005, 2007, 2009-2014 Free Software
    Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
@@ -22,6 +22,31 @@
 # define TIMESPEC_H
 
 # include <time.h>
+
+#ifndef _GL_INLINE_HEADER_BEGIN
+ #error "Please include config.h first."
+#endif
+_GL_INLINE_HEADER_BEGIN
+#ifndef _GL_TIMESPEC_INLINE
+# define _GL_TIMESPEC_INLINE _GL_INLINE
+#endif
+
+/* Resolution of timespec time stamps (in units per second), and log
+   base 10 of the resolution.  */
+
+enum { TIMESPEC_RESOLUTION = 1000000000 };
+enum { LOG10_TIMESPEC_RESOLUTION = 9 };
+
+/* Return a timespec with seconds S and nanoseconds NS.  */
+
+_GL_TIMESPEC_INLINE struct timespec
+make_timespec (time_t s, long int ns)
+{
+  struct timespec r;
+  r.tv_sec = s;
+  r.tv_nsec = ns;
+  return r;
+}
 
 /* Return negative, zero, positive if A < B, A == B, A > B, respectively.
 
@@ -51,7 +76,7 @@
 
    The (int) cast avoids a gcc -Wconversion warning.  */
 
-static inline int
+_GL_TIMESPEC_INLINE int
 timespec_cmp (struct timespec a, struct timespec b)
 {
   return (a.tv_sec < b.tv_sec ? -1
@@ -59,7 +84,31 @@ timespec_cmp (struct timespec a, struct timespec b)
           : (int) (a.tv_nsec - b.tv_nsec));
 }
 
+/* Return -1, 0, 1, depending on the sign of A.  A.tv_nsec must be
+   nonnegative.  */
+_GL_TIMESPEC_INLINE int
+timespec_sign (struct timespec a)
+{
+  return a.tv_sec < 0 ? -1 : a.tv_sec || a.tv_nsec;
+}
+
+struct timespec timespec_add (struct timespec, struct timespec)
+  _GL_ATTRIBUTE_CONST;
+struct timespec timespec_sub (struct timespec, struct timespec)
+  _GL_ATTRIBUTE_CONST;
+struct timespec dtotimespec (double)
+  _GL_ATTRIBUTE_CONST;
+
+/* Return an approximation to A, of type 'double'.  */
+_GL_TIMESPEC_INLINE double
+timespectod (struct timespec a)
+{
+  return a.tv_sec + a.tv_nsec / 1e9;
+}
+
 void gettime (struct timespec *);
 int settime (struct timespec const *);
+
+_GL_INLINE_HEADER_END
 
 #endif

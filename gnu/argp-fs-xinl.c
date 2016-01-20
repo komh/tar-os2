@@ -1,7 +1,7 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Real definitions for extern inline functions in argp-fmtstream.h
-   Copyright (C) 1997, 2003-2004, 2009-2011 Free Software Foundation, Inc.
+   Copyright (C) 1997, 2003-2004, 2009-2014 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Written by Miles Bader <miles@gnu.ai.mit.edu>.
 
@@ -22,7 +22,11 @@
 # include <config.h>
 #endif
 
-#define ARGP_FS_EI
+#ifdef _LIBC
+# define ARGP_FS_EI
+#else
+# define ARGP_FS_EI _GL_EXTERN_INLINE
+#endif
 #undef __OPTIMIZE__
 #define __OPTIMIZE__ 1
 #include "argp-fmtstream.h"

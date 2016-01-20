@@ -1,7 +1,7 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* vasprintf and asprintf with out-of-memory checking.
-   Copyright (C) 1999, 2002-2004, 2006, 2009-2011 Free Software Foundation,
+   Copyright (C) 1999, 2002-2004, 2006, 2009-2014 Free Software Foundation,
    Inc.
 
    This program is free software: you can redistribute it and/or modify

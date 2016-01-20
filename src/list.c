@@ -1,23 +1,24 @@
 /* List a tar archive, with support routines for reading a tar archive.
 
-   Copyright (C) 1988, 1992, 1993, 1994, 1996, 1997, 1998, 1999, 2000,
-   2001, 2003, 2004, 2005, 2006, 2007, 2010 Free Software Foundation, Inc.
+   Copyright 1988, 1992-1994, 1996-2001, 2003-2007, 2010, 2012-2014 Free
+   Software Foundation, Inc.
 
-   Written by John Gilmore, on 1985-08-26.
+   This file is part of GNU tar.
 
-   This program is free software; you can redistribute it and/or modify it
-   under the terms of the GNU General Public License as published by the
-   Free Software Foundation; either version 3, or (at your option) any later
-   version.
+   GNU tar is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
 
-   This program is distributed in the hope that it will be useful, but
-   WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-   Public License for more details.
+   GNU tar is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+   Written by John Gilmore, on 1985-08-26.  */
 
 #include <system.h>
 #include <inttostr.h>
@@ -25,15 +26,13 @@
 
 #include "common.h"
 
-#define max(a, b) ((a) < (b) ? (b) : (a))
-
 union block *current_header;	/* points to current archive header */
 enum archive_format current_format; /* recognized format */
 union block *recent_long_name;	/* recent long name header and contents */
 union block *recent_long_link;	/* likewise, for long link */
 size_t recent_long_name_blocks;	/* number of blocks in recent_long_name */
 size_t recent_long_link_blocks;	/* likewise, for long link */
-union block *recent_global_header; /* Recent global header block */
+static union block *recent_global_header; /* Recent global header block */
 
 #define GID_FROM_HEADER(where) gid_from_header (where, sizeof (where))
 #define MAJOR_FROM_HEADER(where) major_from_header (where, sizeof (where))
@@ -46,11 +45,11 @@ union block *recent_global_header; /* Recent global header block */
 static gid_t gid_from_header (const char *buf, size_t size);
 static major_t major_from_header (const char *buf, size_t size);
 static minor_t minor_from_header (const char *buf, size_t size);
-static mode_t mode_from_header (const char *buf, size_t size, unsigned *hbits);
+static mode_t mode_from_header (const char *buf, size_t size, bool *hbits);
 static time_t time_from_header (const char *buf, size_t size);
 static uid_t uid_from_header (const char *buf, size_t size);
-static uintmax_t from_header (const char *, size_t, const char *,
-			      uintmax_t, uintmax_t, bool, bool);
+static intmax_t from_header (const char *, size_t, const char *,
+			     intmax_t, uintmax_t, bool, bool);
 
 /* Base 64 digits; see Internet RFC 2045 Table 1.  */
 static char const base_64_digits[64] =
@@ -116,6 +115,30 @@ transform_member_name (char **pinput, int type)
   return transform_name_fp (pinput, type, decode_xform, &type);
 }
 
+static void
+enforce_one_top_level (char **pfile_name)
+{
+  char *file_name = *pfile_name;
+  char *p;
+  
+  for (p = file_name; *p && (ISSLASH (*p) || *p == '.'); p++)
+    ;
+
+  if (!*p)
+    return;
+
+  if (strncmp (p, one_top_level_dir, strlen (one_top_level_dir)) == 0)
+    {
+      int pos = strlen (one_top_level_dir);
+      if (ISSLASH (p[pos]) || p[pos] == 0)
+	return;
+    }
+
+  *pfile_name = new_name (one_top_level_dir, file_name);
+  normalize_filename_x (*pfile_name);
+  free (file_name);
+}
+
 void
 transform_stat_info (int typeflag, struct tar_stat_info *stat_info)
 {
@@ -133,6 +156,9 @@ transform_stat_info (int typeflag, struct tar_stat_info *stat_info)
     case LNKTYPE:
       transform_member_name (&stat_info->link_name, XFORM_LINK);
     }
+
+  if (one_top_level_option)
+    enforce_one_top_level (&current_stat_info.file_name);
 }
 
 /* Main loop for reading an archive.  */
@@ -177,7 +203,8 @@ read_and (void (*do_something) (void))
 		      mtime.tv_nsec = 0,
 		      current_stat_info.mtime = mtime,
 		      OLDER_TAR_STAT_TIME (current_stat_info, m)))
-	      || excluded_name (current_stat_info.file_name))
+	      || excluded_name (current_stat_info.file_name,
+				current_stat_info.parent))
 	    {
 	      switch (current_header->header.typeflag)
 		{
@@ -195,6 +222,7 @@ read_and (void (*do_something) (void))
 		  continue;
 		}
 	    }
+
 	  transform_stat_info (current_header->header.typeflag,
 			       &current_stat_info);
 	  (*do_something) ();
@@ -317,7 +345,7 @@ tar_checksum (union block *header, bool silent)
   int unsigned_sum = 0;		/* the POSIX one :-) */
   int signed_sum = 0;		/* the Sun one :-( */
   int recorded_sum;
-  uintmax_t parsed_sum;
+  int parsed_sum;
   char *p;
 
   p = header->buffer;
@@ -342,9 +370,8 @@ tar_checksum (union block *header, bool silent)
 
   parsed_sum = from_header (header->header.chksum,
 			    sizeof header->header.chksum, 0,
-			    (uintmax_t) 0,
-			    (uintmax_t) TYPE_MAXIMUM (int), true, silent);
-  if (parsed_sum == (uintmax_t) -1)
+			    0, INT_MAX, true, silent);
+  if (parsed_sum < 0)
     return HEADER_FAILURE;
 
   recorded_sum = parsed_sum;
@@ -407,7 +434,11 @@ read_header (union block **return_block, struct tar_stat_info *info,
       if (header->header.typeflag == LNKTYPE)
 	info->stat.st_size = 0;	/* links 0 size on tape */
       else
-	info->stat.st_size = OFF_FROM_HEADER (header->header.size);
+	{
+	  info->stat.st_size = OFF_FROM_HEADER (header->header.size);
+	  if (info->stat.st_size < 0)
+	    return HEADER_FAILURE;
+	}
 
       if (header->header.typeflag == GNUTYPE_LONGNAME
 	  || header->header.typeflag == GNUTYPE_LONGLINK
@@ -572,7 +603,7 @@ decode_header (union block *header, struct tar_stat_info *stat_info,
 	       enum archive_format *format_pointer, int do_user_group)
 {
   enum archive_format format;
-  unsigned hbits; /* high bits of the file mode. */
+  bool hbits;
   mode_t mode = MODE_FROM_HEADER (header->header.mode, &hbits);
 
   if (strcmp (header->header.magic, TMAGIC) == 0)
@@ -603,6 +634,8 @@ decode_header (union block *header, struct tar_stat_info *stat_info,
 		 header->header.uname[0] ? header->header.uname : NULL);
   assign_string (&stat_info->gname,
 		 header->header.gname[0] ? header->header.gname : NULL);
+
+  xheader_xattr_init (stat_info);
 
   if (format == OLDGNU_FORMAT && incremental_option)
     {
@@ -677,20 +710,30 @@ decode_header (union block *header, struct tar_stat_info *stat_info,
 
 
 /* Convert buffer at WHERE0 of size DIGS from external format to
-   uintmax_t.  DIGS must be positive.  If TYPE is nonnull, the data
-   are of type TYPE.  The buffer must represent a value in the range
-   -MINUS_MINVAL through MAXVAL.  If OCTAL_ONLY, allow only octal
+   intmax_t.  DIGS must be positive.  If TYPE is nonnull, the data are
+   of type TYPE.  The buffer must represent a value in the range
+   MINVAL through MAXVAL; if the mathematically correct result V would
+   be greater than INTMAX_MAX, return a negative integer V such that
+   (uintmax_t) V yields the correct result.  If OCTAL_ONLY, allow only octal
    numbers instead of the other GNU extensions.  Return -1 on error,
    diagnosing the error if TYPE is nonnull and if !SILENT.  */
-static uintmax_t
+#if ! (INTMAX_MAX <= UINTMAX_MAX && - (INTMAX_MIN + 1) <= UINTMAX_MAX)
+# error "from_header internally represents intmax_t as uintmax_t + sign"
+#endif
+#if ! (UINTMAX_MAX / 2 <= INTMAX_MAX)
+# error "from_header returns intmax_t to represent uintmax_t"
+#endif
+static intmax_t
 from_header (char const *where0, size_t digs, char const *type,
-	     uintmax_t minus_minval, uintmax_t maxval,
+	     intmax_t minval, uintmax_t maxval,
 	     bool octal_only, bool silent)
 {
   uintmax_t value;
+  uintmax_t uminval = minval;
+  uintmax_t minus_minval = - uminval;
   char const *where = where0;
   char const *lim = where + digs;
-  int negative = 0;
+  bool negative = false;
 
   /* Accommodate buggy tar of unknown vintage, which outputs leading
      NUL if the previous field overflows.  */
@@ -709,7 +752,7 @@ from_header (char const *where0, size_t digs, char const *type,
 		    type));
 	  return -1;
 	}
-      if (!ISSPACE ((unsigned char) *where))
+      if (!isspace ((unsigned char) *where))
 	break;
       where++;
     }
@@ -718,14 +761,14 @@ from_header (char const *where0, size_t digs, char const *type,
   if (ISODIGIT (*where))
     {
       char const *where1 = where;
-      uintmax_t overflow = 0;
+      bool overflow = false;
 
       for (;;)
 	{
 	  value += *where++ - '0';
 	  if (where == lim || ! ISODIGIT (*where))
 	    break;
-	  overflow |= value ^ (value << LG_8 >> LG_8);
+	  overflow |= value != (value << LG_8 >> LG_8);
 	  value <<= LG_8;
 	}
 
@@ -749,7 +792,7 @@ from_header (char const *where0, size_t digs, char const *type,
 	      if (where == lim || ! ISODIGIT (*where))
 		break;
 	      digit = *where - '0';
-	      overflow |= value ^ (value << LG_8 >> LG_8);
+	      overflow |= value != (value << LG_8 >> LG_8);
 	      value <<= LG_8;
 	    }
 	  value++;
@@ -762,7 +805,7 @@ from_header (char const *where0, size_t digs, char const *type,
 		       /* TRANSLATORS: Second %s is a type name (gid_t,uid_t,etc.) */
 		       _("Archive octal value %.*s is out of %s range; assuming two's complement"),
 		       (int) (where - where1), where1, type));
-	      negative = 1;
+	      negative = true;
 	    }
 	}
 
@@ -842,12 +885,12 @@ from_header (char const *where0, size_t digs, char const *type,
 	      return -1;
 	    }
 	}
-      negative = signbit;
+      negative = signbit != 0;
       if (negative)
 	value = -value;
     }
 
-  if (where != lim && *where && !ISSPACE ((unsigned char) *where))
+  if (where != lim && *where && !isspace ((unsigned char) *where))
     {
       if (type)
 	{
@@ -862,7 +905,7 @@ from_header (char const *where0, size_t digs, char const *type,
 
 	  while (where0 != lim && ! lim[-1])
 	    lim--;
-	  quotearg_buffer (buf, sizeof buf, where0, lim - where, o);
+	  quotearg_buffer (buf, sizeof buf, where0, lim - where0, o);
 	  if (!silent)
 	    ERROR ((0, 0,
 		    /* TRANSLATORS: Second %s is a type name (gid_t,uid_t,etc.) */
@@ -874,7 +917,7 @@ from_header (char const *where0, size_t digs, char const *type,
     }
 
   if (value <= (negative ? minus_minval : maxval))
-    return negative ? -value : value;
+    return represent_uintmax (negative ? -value : value);
 
   if (type && !silent)
     {
@@ -900,8 +943,7 @@ static gid_t
 gid_from_header (const char *p, size_t s)
 {
   return from_header (p, s, "gid_t",
-		      - (uintmax_t) TYPE_MINIMUM (gid_t),
-		      (uintmax_t) TYPE_MAXIMUM (gid_t),
+		      TYPE_MINIMUM (gid_t), TYPE_MAXIMUM (gid_t),
 		      false, false);
 }
 
@@ -909,26 +951,26 @@ static major_t
 major_from_header (const char *p, size_t s)
 {
   return from_header (p, s, "major_t",
-		      - (uintmax_t) TYPE_MINIMUM (major_t),
-		      (uintmax_t) TYPE_MAXIMUM (major_t), false, false);
+		      TYPE_MINIMUM (major_t), TYPE_MAXIMUM (major_t),
+		      false, false);
 }
 
 static minor_t
 minor_from_header (const char *p, size_t s)
 {
   return from_header (p, s, "minor_t",
-		      - (uintmax_t) TYPE_MINIMUM (minor_t),
-		      (uintmax_t) TYPE_MAXIMUM (minor_t), false, false);
+		      TYPE_MINIMUM (minor_t), TYPE_MAXIMUM (minor_t),
+		      false, false);
 }
 
 /* Convert P to the file mode, as understood by tar.
-   Store unrecognized mode bits (from 10th up) in HBITS. */
+   Set *HBITS if there are any unrecognized bits.  */
 static mode_t
-mode_from_header (const char *p, size_t s, unsigned *hbits)
+mode_from_header (const char *p, size_t s, bool *hbits)
 {
-  unsigned u = from_header (p, s, "mode_t",
-			    - (uintmax_t) TYPE_MINIMUM (mode_t),
-			    TYPE_MAXIMUM (uintmax_t), false, false);
+  intmax_t u = from_header (p, s, "mode_t",
+			    INTMAX_MIN, UINTMAX_MAX,
+			    false, false);
   mode_t mode = ((u & TSUID ? S_ISUID : 0)
 		 | (u & TSGID ? S_ISGID : 0)
 		 | (u & TSVTX ? S_ISVTX : 0)
@@ -941,7 +983,7 @@ mode_from_header (const char *p, size_t s, unsigned *hbits)
 		 | (u & TOREAD ? S_IROTH : 0)
 		 | (u & TOWRITE ? S_IWOTH : 0)
 		 | (u & TOEXEC ? S_IXOTH : 0));
-  *hbits = mode ^ u;
+  *hbits = (u & ~07777) != 0;
   return mode;
 }
 
@@ -950,31 +992,31 @@ off_from_header (const char *p, size_t s)
 {
   /* Negative offsets are not allowed in tar files, so invoke
      from_header with minimum value 0, not TYPE_MINIMUM (off_t).  */
-  return from_header (p, s, "off_t", (uintmax_t) 0,
-		      (uintmax_t) TYPE_MAXIMUM (off_t), false, false);
+  return from_header (p, s, "off_t",
+		      0, TYPE_MAXIMUM (off_t),
+		      false, false);
 }
 
 static time_t
 time_from_header (const char *p, size_t s)
 {
   return from_header (p, s, "time_t",
-		      - (uintmax_t) TYPE_MINIMUM (time_t),
-		      (uintmax_t) TYPE_MAXIMUM (time_t), false, false);
+		      TYPE_MINIMUM (time_t), TYPE_MAXIMUM (time_t),
+		      false, false);
 }
 
 static uid_t
 uid_from_header (const char *p, size_t s)
 {
   return from_header (p, s, "uid_t",
-		      - (uintmax_t) TYPE_MINIMUM (uid_t),
-		      (uintmax_t) TYPE_MAXIMUM (uid_t), false, false);
+		      TYPE_MINIMUM (uid_t), TYPE_MAXIMUM (uid_t),
+		      false, false);
 }
 
 uintmax_t
 uintmax_from_header (const char *p, size_t s)
 {
-  return from_header (p, s, "uintmax_t", (uintmax_t) 0,
-		      TYPE_MAXIMUM (uintmax_t), false, false);
+  return from_header (p, s, "uintmax_t", 0, UINTMAX_MAX, false, false);
 }
 
 
@@ -1064,13 +1106,14 @@ static void
 simple_print_header (struct tar_stat_info *st, union block *blk,
 		     off_t block_ordinal)
 {
-  char modes[11];
+  char modes[12];
   char const *time_stamp;
   int time_stamp_len;
   char *temp_name;
 
   /* These hold formatted ints.  */
-  char uform[UINTMAX_STRSIZE_BOUND], gform[UINTMAX_STRSIZE_BOUND];
+  char uform[max (INT_BUFSIZE_BOUND (intmax_t), UINTMAX_STRSIZE_BOUND)];
+  char gform[sizeof uform];
   char *user, *group;
   char size[2 * UINTMAX_STRSIZE_BOUND];
   				/* holds formatted size or major,minor */
@@ -1097,7 +1140,10 @@ simple_print_header (struct tar_stat_info *st, union block *blk,
   if (verbose_option <= 1)
     {
       /* Just the fax, mam.  */
-      fprintf (stdlis, "%s\n", quotearg (temp_name));
+      fputs (quotearg (temp_name), stdlis);
+      if (show_transformed_names_option && st->had_trailing_slash)
+	fputc ('/', stdlis);
+      fputc ('\n', stdlis);
     }
   else
     {
@@ -1124,9 +1170,7 @@ simple_print_header (struct tar_stat_info *st, union block *blk,
 	case GNUTYPE_SPARSE:
 	case REGTYPE:
 	case AREGTYPE:
-	  modes[0] = '-';
-	  if (temp_name[strlen (temp_name) - 1] == '/')
-	    modes[0] = 'd';
+	  modes[0] = st->had_trailing_slash ? 'd' : '-';
 	  break;
 	case LNKTYPE:
 	  modes[0] = 'h';
@@ -1156,6 +1200,9 @@ simple_print_header (struct tar_stat_info *st, union block *blk,
 
       pax_decode_mode (st->stat.st_mode, modes + 1);
 
+      /* extended attributes:  GNU `ls -l'-like preview */
+      xattrs_print_char (st, modes + 10);
+
       /* Time stamp.  */
 
       time_stamp = tartime (st->mtime, full_time_option);
@@ -1177,17 +1224,11 @@ simple_print_header (struct tar_stat_info *st, union block *blk,
 	     ids that are too large to fit in a uid_t.  */
 	  uintmax_t u = from_header (blk->header.uid,
 				     sizeof blk->header.uid, 0,
-				     (uintmax_t) 0,
-				     (uintmax_t) TYPE_MAXIMUM (uintmax_t),
+				     0, UINTMAX_MAX,
 				     false, false);
-	  if (u != -1)
-	    user = STRINGIFY_BIGINT (u, uform);
-	  else
-	    {
-	      sprintf (uform, "%ld",
-		       (long) UID_FROM_HEADER (blk->header.uid));
-	      user = uform;
-	    }
+	  user = (u != -1
+		  ? STRINGIFY_BIGINT (u, uform)
+		  : imaxtostr (UID_FROM_HEADER (blk->header.uid), uform));
 	}
 
       if (st->gname
@@ -1202,17 +1243,11 @@ simple_print_header (struct tar_stat_info *st, union block *blk,
 	     ids that are too large to fit in a gid_t.  */
 	  uintmax_t g = from_header (blk->header.gid,
 				     sizeof blk->header.gid, 0,
-				     (uintmax_t) 0,
-				     (uintmax_t) TYPE_MAXIMUM (uintmax_t),
+				     0, UINTMAX_MAX,
 				     false, false);
-	  if (g != -1)
-	    group = STRINGIFY_BIGINT (g, gform);
-	  else
-	    {
-	      sprintf (gform, "%ld",
-		       (long) GID_FROM_HEADER (blk->header.gid));
-	      group = gform;
-	    }
+	  group = (g != -1
+		   ? STRINGIFY_BIGINT (g, gform)
+		   : imaxtostr (GID_FROM_HEADER (blk->header.gid), gform));
 	}
 
       /* Format the file size or major/minor device numbers.  */
@@ -1246,6 +1281,8 @@ simple_print_header (struct tar_stat_info *st, union block *blk,
 	       datewidth, time_stamp);
 
       fprintf (stdlis, " %s", quotearg (temp_name));
+      if (show_transformed_names_option && st->had_trailing_slash)
+	fputc ('/', stdlis);
 
       switch (blk->header.typeflag)
 	{
@@ -1301,6 +1338,7 @@ simple_print_header (struct tar_stat_info *st, union block *blk,
 	}
     }
   fflush (stdlis);
+  xattrs_print (st);
 }
 
 
@@ -1357,8 +1395,8 @@ print_for_mkdir (char *dirname, int length, mode_t mode)
 		   STRINGIFY_BIGINT (current_block_ordinal (), buf));
 	}
 
-      fprintf (stdlis, "%s %*s %.*s\n", modes, ugswidth + 1 + datewidth,
-	       _("Creating directory:"), length, quotearg (dirname));
+      fprintf (stdlis, "%s %*s %s\n", modes, ugswidth + 1 + datewidth,
+	       _("Creating directory:"), quotearg (dirname));
     }
 }
 
@@ -1415,7 +1453,7 @@ skip_member (void)
 }
 
 void
-test_archive_label ()
+test_archive_label (void)
 {
   base64_init ();
   name_gather ();

@@ -1,5 +1,5 @@
 /* Parse arguments from a string and prepend them to an argv.
-   Copyright 1999, 2000, 2001, 2007 Free Software Foundation, Inc.
+   Copyright 1999-2001, 2007, 2013-2014 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -12,9 +12,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-   02110-1301, USA.  */
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 /* Written by Paul Eggert <eggert@twinsun.com>.  */
 
@@ -31,16 +29,6 @@
 
 #include <ctype.h>
 
-/* IN_CTYPE_DOMAIN (C) is nonzero if the unsigned char C can safely be given
-   as an argument to <ctype.h> macros like "isspace".  */
-#ifdef STDC_HEADERS
-# define IN_CTYPE_DOMAIN(c) 1
-#else
-# define IN_CTYPE_DOMAIN(c) ((c) <= 0177)
-#endif
-
-#define ISSPACE(c) (IN_CTYPE_DOMAIN (c) && isspace (c))
-
 /* Find the white-space-separated options specified by OPTIONS, and
    using BUF to store copies of these options, set ARGV[0], ARGV[1],
    etc. to the option copies.  Return the number N of options found.
@@ -55,7 +43,7 @@ prepend_args (char const *options, char *buf, char **argv)
 
   for (;;)
     {
-      while (ISSPACE ((unsigned char) *o))
+      while (isspace ((unsigned char) *o))
 	o++;
       if (!*o)
 	return n;
@@ -66,7 +54,7 @@ prepend_args (char const *options, char *buf, char **argv)
       do
 	if ((*b++ = *o++) == '\\' && *o)
 	  b[-1] = *o++;
-      while (*o && ! ISSPACE ((unsigned char) *o));
+      while (*o && ! isspace ((unsigned char) *o));
 
       *b++ = '\0';
     }

@@ -1,5 +1,5 @@
 /* This file is part of GNU tar.
-   Copyright (C) 2006, 2007, 2008 Free Software Foundation, Inc.
+   Copyright 2006-2008, 2013-2014 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -12,8 +12,7 @@
    Public License for more details.
 
    You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
+   with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include <system.h>
 #include <regex.h>
@@ -71,7 +70,7 @@ struct transform
 
 
 
-int transform_flags = XFORM_ALL;
+static int transform_flags = XFORM_ALL;
 static struct transform *transform_head, *transform_tail;
 
 static struct transform *
@@ -347,7 +346,7 @@ parse_transform_expr (const char *expr)
 	      break;
 
 	    case 'L':
-	      /* Turn the replacement to lowercase until a `\U' or `\E'
+	      /* Turn the replacement to lowercase until a '\U' or '\E'
 		 is found, */
 	      add_case_ctl_segment (tf, ctl_locase);
 	      cur++;
@@ -360,7 +359,7 @@ parse_transform_expr (const char *expr)
 	      break;
 
 	    case 'U':
-	      /* Turn the replacement to uppercase until a `\L' or `\E'
+	      /* Turn the replacement to uppercase until a '\L' or '\E'
 		 is found, */
 	      add_case_ctl_segment (tf, ctl_upcase);
 	      cur++;
@@ -373,7 +372,7 @@ parse_transform_expr (const char *expr)
 	      break;
 
 	    case 'E':
-	      /* Stop case conversion started by `\L' or `\U'. */
+	      /* Stop case conversion started by '\L' or '\U'. */
 	      add_case_ctl_segment (tf, ctl_stop);
 	      cur++;
 	      break;

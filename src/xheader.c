@@ -1,21 +1,22 @@
 /* POSIX extended headers for tar.
 
-   Copyright (C) 2003, 2004, 2005, 2006, 2007, 2009, 2010 Free Software
+   Copyright (C) 2003-2007, 2009-2010, 2012-2014 Free Software
    Foundation, Inc.
 
-   This program is free software; you can redistribute it and/or modify it
-   under the terms of the GNU General Public License as published by the
-   Free Software Foundation; either version 3, or (at your option) any later
-   version.
+   This file is part of GNU tar.
 
-   This program is distributed in the hope that it will be useful, but
-   WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-   Public License for more details.
+   GNU tar is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
 
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
+   GNU tar is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include <system.h>
 
@@ -86,10 +87,10 @@ struct keyword_list
 /* List of keyword patterns set by delete= option */
 static struct keyword_list *keyword_pattern_list;
 
-/* List of keyword/value pairs set by `keyword=value' option */
+/* List of keyword/value pairs set by 'keyword=value' option */
 static struct keyword_list *keyword_global_override_list;
 
-/* List of keyword/value pairs set by `keyword:=value' option */
+/* List of keyword/value pairs set by 'keyword:=value' option */
 static struct keyword_list *keyword_override_list;
 
 /* List of keyword/value pairs decoded from the last 'g' type header */
@@ -167,14 +168,13 @@ xheader_set_single_keyword (char *kw)
 static void
 assign_time_option (char **sval, time_t *tval, const char *input)
 {
-  uintmax_t u;
   char *p;
-  time_t t = u = strtoumax (input, &p, 10);
-  if (t != u || *p || errno == ERANGE)
+  struct timespec t = decode_timespec (input, &p, false);
+  if (! valid_timespec (t) || *p)
     ERROR ((0, 0, _("Time stamp is out of allowed range")));
   else
     {
-      *tval = t;
+      *tval = t.tv_sec;
       assign_string (sval, input);
     }
 }
@@ -262,7 +262,7 @@ xheader_format_name (struct tar_stat_info *st, const char *fmt, size_t n)
   char *dir = NULL;
   char *base = NULL;
   char pidbuf[UINTMAX_STRSIZE_BOUND];
-  char const *pptr;
+  char const *pptr = NULL;
   char nbuf[UINTMAX_STRSIZE_BOUND];
   char const *nptr = NULL;
 
@@ -335,13 +335,10 @@ xheader_format_name (struct tar_stat_info *st, const char *fmt, size_t n)
 	      break;
 
 	    case 'n':
-	      if (nptr)
-		{
-		  q = stpcpy (q, nptr);
-		  p += 2;
-		  break;
-		}
-	      /* else fall through */
+	      q = stpcpy (q, nptr);
+	      p += 2;
+	      break;
+
 
 	    default:
 	      *q++ = *p++;
@@ -455,8 +452,126 @@ xheader_write_global (struct xheader *xhdr)
       char *name;
 
       xheader_finish (xhdr);
-      xheader_write (XGLTYPE, name = xheader_ghdr_name (), time (NULL), xhdr);
+      name = xheader_ghdr_name ();
+      xheader_write (XGLTYPE, name, start_time.tv_sec, xhdr);
       free (name);
+    }
+}
+
+void
+xheader_xattr_init (struct tar_stat_info *st)
+{
+  st->xattr_map = NULL;
+  st->xattr_map_size = 0;
+
+  st->acls_a_ptr = NULL;
+  st->acls_a_len = 0;
+  st->acls_d_ptr = NULL;
+  st->acls_d_len = 0;
+  st->cntx_name = NULL;
+}
+
+void
+xheader_xattr_free (struct xattr_array *xattr_map, size_t xattr_map_size)
+{
+  size_t scan = 0;
+
+  while (scan < xattr_map_size)
+    {
+      free (xattr_map[scan].xkey);
+      free (xattr_map[scan].xval_ptr);
+
+      ++scan;
+    }
+  free (xattr_map);
+}
+
+static void
+xheader_xattr__add (struct xattr_array **xattr_map,
+		    size_t *xattr_map_size,
+		    const char *key, const char *val, size_t len)
+{
+  size_t pos = (*xattr_map_size)++;
+
+  *xattr_map = xrealloc (*xattr_map,
+                         *xattr_map_size * sizeof(struct xattr_array));
+  (*xattr_map)[pos].xkey = xstrdup (key);
+  (*xattr_map)[pos].xval_ptr = xmemdup (val, len + 1);
+  (*xattr_map)[pos].xval_len = len;
+}
+
+/* This is reversal function for xattr_encode_keyword.  See comment for
+   xattr_encode_keyword() for more info. */
+static void
+xattr_decode_keyword (char *keyword)
+{
+  char *kpr, *kpl; /* keyword pointer left/right */
+  kpr = kpl = keyword;
+
+  for (;;)
+    {
+      if (*kpr == '%')
+        {
+          if (kpr[1] == '3' && kpr[2] == 'D')
+            {
+              *kpl = '=';
+              kpr += 3;
+              kpl ++;
+              continue;
+            }
+          else if (kpr[1] == '2' && kpr[2] == '5')
+            {
+              *kpl = '%';
+              kpr += 3;
+              kpl ++;
+              continue;
+            }
+        }
+
+      *kpl = *kpr;
+
+      if (*kpr == 0)
+        break;
+
+      kpr++;
+      kpl++;
+    }
+}
+
+void
+xheader_xattr_add (struct tar_stat_info *st,
+		   const char *key, const char *val, size_t len)
+{
+  size_t klen = strlen (key);
+  char *xkey = xmalloc (strlen("SCHILY.xattr.") + klen + 1);
+  char *tmp = xkey;
+
+  tmp = stpcpy (tmp, "SCHILY.xattr.");
+  stpcpy (tmp, key);
+
+  xheader_xattr__add (&st->xattr_map, &st->xattr_map_size, xkey, val, len);
+
+  free (xkey);
+}
+
+void
+xheader_xattr_copy (const struct tar_stat_info *st,
+		    struct xattr_array **xattr_map, size_t *xattr_map_size)
+{
+  size_t scan = 0;
+
+  *xattr_map = NULL;
+  *xattr_map_size = 0;
+
+  while (scan < st->xattr_map_size)
+    {
+      char  *key = st->xattr_map[scan].xkey;
+      char  *val = st->xattr_map[scan].xval_ptr;
+      size_t len = st->xattr_map[scan].xval_len;
+
+      xheader_xattr__add(xattr_map, xattr_map_size, key, val, len);
+
+      ++scan;
     }
 }
 
@@ -473,6 +588,7 @@ struct xhdr_tab
 		 struct xheader *, void const *data);
   void (*decoder) (struct tar_stat_info *, char const *, char const *, size_t);
   int flags;
+  bool prefix; /* select handler comparing prefix only */
 };
 
 /* This declaration must be extern, because ISO C99 section 6.9.2
@@ -489,8 +605,17 @@ locate_handler (char const *keyword)
   struct xhdr_tab const *p;
 
   for (p = xhdr_tab; p->keyword; p++)
-    if (strcmp (p->keyword, keyword) == 0)
-      return p;
+    if (p->prefix)
+      {
+        if (strncmp (p->keyword, keyword, strlen(p->keyword)) == 0)
+          return p;
+      }
+    else
+      {
+        if (strcmp (p->keyword, keyword) == 0)
+          return p;
+      }
+
   return NULL;
 }
 
@@ -500,7 +625,8 @@ xheader_protected_pattern_p (const char *pattern)
   struct xhdr_tab const *p;
 
   for (p = xhdr_tab; p->keyword; p++)
-    if ((p->flags & XHDR_PROTECTED) && fnmatch (pattern, p->keyword, 0) == 0)
+    if (!p->prefix && (p->flags & XHDR_PROTECTED)
+        && fnmatch (pattern, p->keyword, 0) == 0)
       return true;
   return false;
 }
@@ -511,7 +637,8 @@ xheader_protected_keyword_p (const char *keyword)
   struct xhdr_tab const *p;
 
   for (p = xhdr_tab; p->keyword; p++)
-    if ((p->flags & XHDR_PROTECTED) && strcmp (p->keyword, keyword) == 0)
+    if (!p->prefix && (p->flags & XHDR_PROTECTED)
+        && strcmp (p->keyword, keyword) == 0)
       return true;
   return false;
 }
@@ -526,7 +653,6 @@ decode_record (struct xheader *xhdr,
 {
   char *start = *ptr;
   char *p = start;
-  uintmax_t u;
   size_t len;
   char *len_lim;
   char const *keyword;
@@ -543,13 +669,7 @@ decode_record (struct xheader *xhdr,
       return false;
     }
 
-  errno = 0;
-  len = u = strtoumax (p, &len_lim, 10);
-  if (len != u || errno == ERANGE)
-    {
-      ERROR ((0, 0, _("Extended header length is out of allowed range")));
-      return false;
-    }
+  len = strtoumax (p, &len_lim, 10);
 
   if (len_max < len)
     {
@@ -618,7 +738,7 @@ decx (void *data, char const *keyword, char const *value, size_t size)
     t->decoder (st, keyword, value, size);
   else
     WARNOPT (WARN_UNKNOWN_KEYWORD,
-	     (0, 0, _("Ignoring unknown extended header keyword `%s'"),
+	     (0, 0, _("Ignoring unknown extended header keyword '%s'"),
 	      keyword));
 }
 
@@ -691,9 +811,15 @@ xheader_store (char const *keyword, struct tar_stat_info *st,
 }
 
 void
-xheader_read (struct xheader *xhdr, union block *p, size_t size)
+xheader_read (struct xheader *xhdr, union block *p, off_t size)
 {
   size_t j = 0;
+
+  if (size < 0)
+    size = 0; /* Already diagnosed.  */
+
+  if (SIZE_MAX - BLOCKSIZE <= size)
+    xalloc_die ();
 
   size += BLOCKSIZE;
   xhdr->size = size;
@@ -721,15 +847,71 @@ xheader_read (struct xheader *xhdr, union block *p, size_t size)
   while (size > 0);
 }
 
+/* xattr_encode_keyword() substitutes '=' ~~> '%3D' and '%' ~~> '%25'
+   in extended attribute keywords.  This is needed because the '=' character
+   has special purpose in extended attribute header - it splits keyword and
+   value part of header.  If there was the '=' occurrence allowed inside
+   keyword, there would be no unambiguous way how to decode this extended
+   attribute.
+
+   (http://lists.gnu.org/archive/html/bug-tar/2012-10/msg00017.html)
+ */
+static char *
+xattr_encode_keyword(const char *keyword)
+{
+  static char *encode_buffer = NULL;
+  static size_t encode_buffer_size = 0;
+  size_t bp; /* keyword/buffer pointers */
+
+  if (!encode_buffer)
+    {
+      encode_buffer_size = 256;
+      encode_buffer = xmalloc (encode_buffer_size);
+    }
+  else
+    *encode_buffer = 0;
+
+  for (bp = 0; *keyword != 0; ++bp, ++keyword)
+    {
+      char c = *keyword;
+
+      if (bp + 2 /* enough for URL encoding also.. */ >= encode_buffer_size)
+        {
+          encode_buffer = x2realloc (encode_buffer, &encode_buffer_size);
+        }
+
+      if (c == '%')
+        {
+          strcpy (encode_buffer + bp, "%25");
+          bp += 2;
+        }
+      else if (c == '=')
+        {
+          strcpy (encode_buffer + bp, "%3D");
+          bp += 2;
+        }
+      else
+        encode_buffer[bp] = c;
+    }
+
+  encode_buffer[bp] = 0;
+
+  return encode_buffer;
+}
+
 static void
 xheader_print_n (struct xheader *xhdr, char const *keyword,
 		 char const *value, size_t vsize)
 {
-  size_t len = strlen (keyword) + vsize + 3; /* ' ' + '=' + '\n' */
   size_t p;
   size_t n = 0;
   char nbuf[UINTMAX_STRSIZE_BOUND];
   char const *np;
+  size_t len, klen;
+
+  keyword = xattr_encode_keyword (keyword);
+  klen = strlen (keyword);
+  len = klen + vsize + 3; /* ' ' + '=' + '\n' */
 
   do
     {
@@ -741,7 +923,7 @@ xheader_print_n (struct xheader *xhdr, char const *keyword,
 
   x_obstack_grow (xhdr, np, n);
   x_obstack_1grow (xhdr, ' ');
-  x_obstack_grow (xhdr, keyword, strlen (keyword));
+  x_obstack_grow (xhdr, keyword, klen);
   x_obstack_1grow (xhdr, '=');
   x_obstack_grow (xhdr, value, vsize);
   x_obstack_1grow (xhdr, '\n');
@@ -849,14 +1031,12 @@ xheader_string_end (struct xheader *xhdr, char const *keyword)
 
 static void
 out_of_range_header (char const *keyword, char const *value,
-		     uintmax_t minus_minval, uintmax_t maxval)
+		     intmax_t minval, uintmax_t maxval)
 {
-  char minval_buf[UINTMAX_STRSIZE_BOUND + 1];
+  char minval_buf[INT_BUFSIZE_BOUND (intmax_t)];
   char maxval_buf[UINTMAX_STRSIZE_BOUND];
-  char *minval_string = umaxtostr (minus_minval, minval_buf + 1);
+  char *minval_string = imaxtostr (minval, minval_buf);
   char *maxval_string = umaxtostr (maxval, maxval_buf);
-  if (minus_minval)
-    *--minval_string = '-';
 
   /* TRANSLATORS: The first %s is the pax extended header keyword
      (atime, gid, etc.).  */
@@ -899,140 +1079,74 @@ code_time (struct timespec t, char const *keyword, struct xheader *xhdr)
   xheader_print (xhdr, keyword, code_timespec (t, buf));
 }
 
-enum decode_time_status
-  {
-    decode_time_success,
-    decode_time_range,
-    decode_time_bad_header
-  };
-
-static enum decode_time_status
-_decode_time (struct timespec *ts, char const *arg, char const *keyword)
-{
-  time_t s;
-  unsigned long int ns = 0;
-  char *p;
-  char *arg_lim;
-  bool negative = *arg == '-';
-
-  errno = 0;
-
-  if (ISDIGIT (arg[negative]))
-    {
-      if (negative)
-	{
-	  intmax_t i = strtoimax (arg, &arg_lim, 10);
-	  if (TYPE_SIGNED (time_t) ? i < TYPE_MINIMUM (time_t) : i < 0)
-	    return decode_time_range;
-	  s = i;
-	}
-      else
-	{
-	  uintmax_t i = strtoumax (arg, &arg_lim, 10);
-	  if (TYPE_MAXIMUM (time_t) < i)
-	    return decode_time_range;
-	  s = i;
-	}
-
-      p = arg_lim;
-
-      if (errno == ERANGE)
-	return decode_time_range;
-
-      if (*p == '.')
-	{
-	  int digits = 0;
-	  bool trailing_nonzero = false;
-
-	  while (ISDIGIT (*++p))
-	    if (digits < LOG10_BILLION)
-	      {
-		ns = 10 * ns + (*p - '0');
-		digits++;
-	      }
-	    else
-	      trailing_nonzero |= *p != '0';
-
-	  while (digits++ < LOG10_BILLION)
-	    ns *= 10;
-
-	  if (negative)
-	    {
-	      /* Convert "-1.10000000000001" to s == -2, ns == 89999999.
-		 I.e., truncate time stamps towards minus infinity while
-		 converting them to internal form.  */
-	      ns += trailing_nonzero;
-	      if (ns != 0)
-		{
-		  if (s == TYPE_MINIMUM (time_t))
-		    return decode_time_range;
-		  s--;
-		  ns = BILLION - ns;
-		}
-	    }
-	}
-
-      if (! *p)
-	{
-	  ts->tv_sec = s;
-	  ts->tv_nsec = ns;
-	  return decode_time_success;
-	}
-    }
-
-  return decode_time_bad_header;
-}
-
 static bool
 decode_time (struct timespec *ts, char const *arg, char const *keyword)
 {
-  switch (_decode_time (ts, arg, keyword))
+  char *arg_lim;
+  struct timespec t = decode_timespec (arg, &arg_lim, true);
+
+  if (! valid_timespec (t))
     {
-    case decode_time_success:
-      return true;
-    case decode_time_bad_header:
-      ERROR ((0, 0, _("Malformed extended header: invalid %s=%s"),
-	      keyword, arg));
-      return false;
-    case decode_time_range:
-      out_of_range_header (keyword, arg, - (uintmax_t) TYPE_MINIMUM (time_t),
-			   TYPE_MAXIMUM (time_t));
+      if (arg < arg_lim && !*arg_lim)
+	out_of_range_header (keyword, arg, TYPE_MINIMUM (time_t),
+			     TYPE_MAXIMUM (time_t));
+      else
+	ERROR ((0, 0, _("Malformed extended header: invalid %s=%s"),
+		keyword, arg));
       return false;
     }
+
+  *ts = t;
   return true;
 }
 
-
+static void
+code_signed_num (uintmax_t value, char const *keyword,
+		 intmax_t minval, uintmax_t maxval, struct xheader *xhdr)
+{
+  char sbuf[SYSINT_BUFSIZE];
+  xheader_print (xhdr, keyword, sysinttostr (value, minval, maxval, sbuf));
+}
 
 static void
 code_num (uintmax_t value, char const *keyword, struct xheader *xhdr)
 {
-  char sbuf[UINTMAX_STRSIZE_BOUND];
-  xheader_print (xhdr, keyword, umaxtostr (value, sbuf));
+  code_signed_num (value, keyword, 0, UINTMAX_MAX, xhdr);
+}
+
+static bool
+decode_signed_num (intmax_t *num, char const *arg,
+		   intmax_t minval, uintmax_t maxval,
+		   char const *keyword)
+{
+  char *arg_lim;
+  intmax_t u = strtosysint (arg, &arg_lim, minval, maxval);
+
+  if (errno == EINVAL || *arg_lim)
+    {
+      ERROR ((0, 0, _("Malformed extended header: invalid %s=%s"),
+	      keyword, arg));
+      return false;
+    }
+
+  if (errno == ERANGE)
+    {
+      out_of_range_header (keyword, arg, minval, maxval);
+      return false;
+    }
+
+  *num = u;
+  return true;
 }
 
 static bool
 decode_num (uintmax_t *num, char const *arg, uintmax_t maxval,
 	    char const *keyword)
 {
-  uintmax_t u;
-  char *arg_lim;
-
-  if (! (ISDIGIT (*arg)
-	 && (errno = 0, u = strtoumax (arg, &arg_lim, 10), !*arg_lim)))
-    {
-      ERROR ((0, 0, _("Malformed extended header: invalid %s=%s"),
-	      keyword, arg));
-      return false;
-    }
-
-  if (! (u <= maxval && errno != ERANGE))
-    {
-      out_of_range_header (keyword, arg, 0, maxval);
-      return false;
-    }
-
-  *num = u;
+  intmax_t i;
+  if (! decode_signed_num (&i, arg, 0, maxval, keyword))
+    return false;
+  *num = i;
   return true;
 }
 
@@ -1074,7 +1188,8 @@ static void
 gid_coder (struct tar_stat_info const *st, char const *keyword,
 	   struct xheader *xhdr, void const *data __attribute__ ((unused)))
 {
-  code_num (st->stat.st_gid, keyword, xhdr);
+  code_signed_num (st->stat.st_gid, keyword,
+		   TYPE_MINIMUM (gid_t), TYPE_MAXIMUM (gid_t), xhdr);
 }
 
 static void
@@ -1083,8 +1198,9 @@ gid_decoder (struct tar_stat_info *st,
 	     char const *arg,
 	     size_t size __attribute__((unused)))
 {
-  uintmax_t u;
-  if (decode_num (&u, arg, TYPE_MAXIMUM (gid_t), keyword))
+  intmax_t u;
+  if (decode_signed_num (&u, arg, TYPE_MINIMUM (gid_t),
+			 TYPE_MAXIMUM (gid_t), keyword))
     st->stat.st_gid = u;
 }
 
@@ -1197,7 +1313,8 @@ static void
 uid_coder (struct tar_stat_info const *st, char const *keyword,
 	   struct xheader *xhdr, void const *data __attribute__ ((unused)))
 {
-  code_num (st->stat.st_uid, keyword, xhdr);
+  code_signed_num (st->stat.st_uid, keyword,
+		   TYPE_MINIMUM (uid_t), TYPE_MAXIMUM (uid_t), xhdr);
 }
 
 static void
@@ -1206,8 +1323,9 @@ uid_decoder (struct tar_stat_info *st,
 	     char const *arg,
 	     size_t size __attribute__((unused)))
 {
-  uintmax_t u;
-  if (decode_num (&u, arg, TYPE_MAXIMUM (uid_t), keyword))
+  intmax_t u;
+  if (decode_signed_num (&u, arg, TYPE_MINIMUM (uid_t),
+			 TYPE_MAXIMUM (uid_t), keyword))
     st->stat.st_uid = u;
 }
 
@@ -1329,7 +1447,7 @@ sparse_map_decoder (struct tar_stat_info *st,
   st->sparse_map_avail = 0;
   while (1)
     {
-      uintmax_t u;
+      intmax_t u;
       char *delim;
       struct sp_array e;
 
@@ -1341,11 +1459,16 @@ sparse_map_decoder (struct tar_stat_info *st,
 	}
 
       errno = 0;
-      u = strtoumax (arg, &delim, 10);
+      u = strtoimax (arg, &delim, 10);
+      if (TYPE_MAXIMUM (off_t) < u)
+	{
+	  u = TYPE_MAXIMUM (off_t);
+	  errno = ERANGE;
+	}
       if (offset)
 	{
 	  e.offset = u;
-	  if (!(u == e.offset && errno != ERANGE))
+	  if (errno == ERANGE)
 	    {
 	      out_of_range_header (keyword, arg, 0, TYPE_MAXIMUM (off_t));
 	      return;
@@ -1354,7 +1477,7 @@ sparse_map_decoder (struct tar_stat_info *st,
       else
 	{
 	  e.numbytes = u;
-	  if (!(u == e.numbytes && errno != ERANGE))
+	  if (errno == ERANGE)
 	    {
 	      out_of_range_header (keyword, arg, 0, TYPE_MAXIMUM (off_t));
 	      return;
@@ -1470,6 +1593,80 @@ volume_filename_decoder (struct tar_stat_info *st,
 }
 
 static void
+xattr_selinux_coder (struct tar_stat_info const *st, char const *keyword,
+                     struct xheader *xhdr, void const *data)
+{
+  code_string (st->cntx_name, keyword, xhdr);
+}
+
+static void
+xattr_selinux_decoder (struct tar_stat_info *st,
+                       char const *keyword, char const *arg, size_t size)
+{
+  decode_string (&st->cntx_name, arg);
+}
+
+static void
+xattr_acls_a_coder (struct tar_stat_info const *st , char const *keyword,
+                    struct xheader *xhdr, void const *data)
+{
+  xheader_print_n (xhdr, keyword, st->acls_a_ptr, st->acls_a_len);
+}
+
+static void
+xattr_acls_a_decoder (struct tar_stat_info *st,
+                      char const *keyword, char const *arg, size_t size)
+{
+  st->acls_a_ptr = xmemdup (arg, size + 1);
+  st->acls_a_len = size;
+}
+
+static void
+xattr_acls_d_coder (struct tar_stat_info const *st , char const *keyword,
+                    struct xheader *xhdr, void const *data)
+{
+  xheader_print_n (xhdr, keyword, st->acls_d_ptr, st->acls_d_len);
+}
+
+static void
+xattr_acls_d_decoder (struct tar_stat_info *st,
+                      char const *keyword, char const *arg, size_t size)
+{
+  st->acls_d_ptr = xmemdup (arg, size + 1);
+  st->acls_d_len = size;
+}
+
+static void
+xattr_coder (struct tar_stat_info const *st, char const *keyword,
+             struct xheader *xhdr, void const *data)
+{
+  struct xattr_array *xattr_map = st->xattr_map;
+  const size_t *off = data;
+  xheader_print_n (xhdr, keyword,
+                   xattr_map[*off].xval_ptr, xattr_map[*off].xval_len);
+}
+
+static void
+xattr_decoder (struct tar_stat_info *st,
+               char const *keyword, char const *arg, size_t size)
+{
+  char *xstr, *xkey;
+
+  /* copy keyword */
+  size_t klen_raw = strlen (keyword);
+  xkey = alloca (klen_raw + 1);
+  memcpy (xkey, keyword, klen_raw + 1) /* including null-terminating */;
+
+  /* copy value */
+  xstr = alloca (size + 1);
+  memcpy (xstr, arg, size + 1); /* separator included, for GNU tar '\n' */;
+
+  xattr_decode_keyword (xkey);
+
+  xheader_xattr_add (st, xkey + strlen("SCHILY.xattr."), xstr, size);
+}
+
+static void
 sparse_major_coder (struct tar_stat_info const *st, char const *keyword,
 		    struct xheader *xhdr, void const *data)
 {
@@ -1506,53 +1703,53 @@ sparse_minor_decoder (struct tar_stat_info *st,
 }
 
 struct xhdr_tab const xhdr_tab[] = {
-  { "atime",	atime_coder,	atime_decoder,	  0 },
-  { "comment",	dummy_coder,	dummy_decoder,	  0 },
-  { "charset",	dummy_coder,	dummy_decoder,	  0 },
-  { "ctime",	ctime_coder,	ctime_decoder,	  0 },
-  { "gid",	gid_coder,	gid_decoder,	  0 },
-  { "gname",	gname_coder,	gname_decoder,	  0 },
-  { "linkpath", linkpath_coder, linkpath_decoder, 0 },
-  { "mtime",	mtime_coder,	mtime_decoder,	  0 },
-  { "path",	path_coder,	path_decoder,	  0 },
-  { "size",	size_coder,	size_decoder,	  0 },
-  { "uid",	uid_coder,	uid_decoder,	  0 },
-  { "uname",	uname_coder,	uname_decoder,	  0 },
+  { "atime",    atime_coder,    atime_decoder,    0, false },
+  { "comment",  dummy_coder,    dummy_decoder,    0, false },
+  { "charset",  dummy_coder,    dummy_decoder,    0, false },
+  { "ctime",    ctime_coder,    ctime_decoder,    0, false },
+  { "gid",      gid_coder,      gid_decoder,      0, false },
+  { "gname",    gname_coder,    gname_decoder,    0, false },
+  { "linkpath", linkpath_coder, linkpath_decoder, 0, false },
+  { "mtime",    mtime_coder,    mtime_decoder,    0, false },
+  { "path",     path_coder,     path_decoder,     0, false },
+  { "size",     size_coder,     size_decoder,     0, false },
+  { "uid",      uid_coder,      uid_decoder,      0, false },
+  { "uname",    uname_coder,    uname_decoder,    0, false },
 
   /* Sparse file handling */
   { "GNU.sparse.name",       path_coder, path_decoder,
-    XHDR_PROTECTED },
+    XHDR_PROTECTED, false },
   { "GNU.sparse.major",      sparse_major_coder, sparse_major_decoder,
-    XHDR_PROTECTED },
+    XHDR_PROTECTED, false },
   { "GNU.sparse.minor",      sparse_minor_coder, sparse_minor_decoder,
-    XHDR_PROTECTED },
+    XHDR_PROTECTED, false },
   { "GNU.sparse.realsize",   sparse_size_coder, sparse_size_decoder,
-    XHDR_PROTECTED },
+    XHDR_PROTECTED, false },
   { "GNU.sparse.numblocks",  sparse_numblocks_coder, sparse_numblocks_decoder,
-    XHDR_PROTECTED },
+    XHDR_PROTECTED, false },
 
   /* tar 1.14 - 1.15.90 keywords. */
   { "GNU.sparse.size",       sparse_size_coder, sparse_size_decoder,
-    XHDR_PROTECTED },
+    XHDR_PROTECTED, false },
   /* tar 1.14 - 1.15.1 keywords. Multiple instances of these appeared in 'x'
      headers, and each of them was meaningful. It confilcted with POSIX specs,
      which requires that "when extended header records conflict, the last one
      given in the header shall take precedence." */
   { "GNU.sparse.offset",     sparse_offset_coder, sparse_offset_decoder,
-    XHDR_PROTECTED },
+    XHDR_PROTECTED, false },
   { "GNU.sparse.numbytes",   sparse_numbytes_coder, sparse_numbytes_decoder,
-    XHDR_PROTECTED },
+    XHDR_PROTECTED, false },
   /* tar 1.15.90 keyword, introduced to remove the above-mentioned conflict. */
   { "GNU.sparse.map",        NULL /* Unused, see pax_dump_header() */,
-    sparse_map_decoder, 0 },
+    sparse_map_decoder, 0, false },
 
   { "GNU.dumpdir",           dumpdir_coder, dumpdir_decoder,
-    XHDR_PROTECTED },
+    XHDR_PROTECTED, false },
 
   /* Keeps the tape/volume label. May be present only in the global headers.
      Equivalent to GNUTYPE_VOLHDR.  */
   { "GNU.volume.label", volume_label_coder, volume_label_decoder,
-    XHDR_PROTECTED | XHDR_GLOBAL },
+    XHDR_PROTECTED | XHDR_GLOBAL, false },
 
   /* These may be present in a first global header of the archive.
      They provide the same functionality as GNUTYPE_MULTIVOL header.
@@ -1561,11 +1758,28 @@ struct xhdr_tab const xhdr_tab[] = {
      GNU.volume.offset keeps the offset of the start of this volume,
      otherwise kept in oldgnu_header.offset.  */
   { "GNU.volume.filename", volume_label_coder, volume_filename_decoder,
-    XHDR_PROTECTED | XHDR_GLOBAL },
+    XHDR_PROTECTED | XHDR_GLOBAL, false },
   { "GNU.volume.size", volume_size_coder, volume_size_decoder,
-    XHDR_PROTECTED | XHDR_GLOBAL },
+    XHDR_PROTECTED | XHDR_GLOBAL, false },
   { "GNU.volume.offset", volume_offset_coder, volume_offset_decoder,
-    XHDR_PROTECTED | XHDR_GLOBAL },
+    XHDR_PROTECTED | XHDR_GLOBAL, false },
 
-  { NULL, NULL, NULL, 0 }
+  /* We get the SELinux value from filecon, so add a namespace for SELinux
+     instead of storing it in SCHILY.xattr.* (which would be RAW). */
+  { "RHT.security.selinux",
+    xattr_selinux_coder, xattr_selinux_decoder, 0, false },
+
+  /* ACLs, use the star format... */
+  { "SCHILY.acl.access",
+    xattr_acls_a_coder, xattr_acls_a_decoder, 0, false },
+
+  { "SCHILY.acl.default",
+    xattr_acls_d_coder, xattr_acls_d_decoder, 0, false },
+
+  /* We are storing all extended attributes using this rule even if some of them
+     were stored by some previous rule (duplicates) -- we just have to make sure
+     they are restored *only once* during extraction later on. */
+  { "SCHILY.xattr", xattr_coder, xattr_decoder, 0, true },
+
+  { NULL, NULL, NULL, 0, false }
 };

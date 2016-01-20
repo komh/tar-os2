@@ -1,21 +1,22 @@
 /* Update a tar archive.
 
-   Copyright (C) 1988, 1992, 1994, 1996, 1997, 1999, 2000, 2001, 2003,
-   2004, 2005, 2007, 2010 Free Software Foundation, Inc.
+   Copyright 1988, 1992, 1994, 1996-1997, 1999-2001, 2003-2005, 2007,
+   2010, 2013-2014 Free Software Foundation, Inc.
 
-   This program is free software; you can redistribute it and/or modify it
-   under the terms of the GNU General Public License as published by the
-   Free Software Foundation; either version 3, or (at your option) any later
-   version.
+   This file is part of GNU tar.
 
-   This program is distributed in the hope that it will be useful, but
-   WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-   Public License for more details.
+   GNU tar is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
 
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
+   GNU tar is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 /* Implement the 'r', 'u' and 'A' options for tar.  'A' means that the
    file names are tar files, and they should simply be appended to the end
@@ -144,16 +145,8 @@ update_archive (void)
 		  {
 		    if (S_ISDIR (s.st_mode))
 		      {
-			char *p, *dirp;
-			DIR *stream;
-			int fd = openat (chdir_fd, name->name,
-					 open_read_flags | O_DIRECTORY);
-			if (fd < 0)
-			  open_error (name->name);
-			else if (! ((stream = fdopendir (fd))
-				    && (dirp = streamsavedir (stream))))
-			  savedir_error (name->name);
-			else
+			char *p, *dirp = tar_savedir (name->name, 1);
+			if (dirp)
 			  {
 			    namebuf_t nbuf = namebuf_create (name->name);
 
@@ -166,11 +159,6 @@ update_archive (void)
 
 			    remname (name);
 			  }
-
-			if (stream
-			    ? closedir (stream) != 0
-			    : 0 <= fd && close (fd) != 0)
-			  savedir_error (name->name);
 		      }
 		    else if (tar_timespec_cmp (get_stat_mtime (&s),
 					       current_stat_info.mtime)
@@ -228,7 +216,7 @@ update_archive (void)
     while ((p = name_from_list ()) != NULL)
       {
 	char *file_name = p->name;
-	if (excluded_name (file_name))
+	if (excluded_name (file_name, NULL))
 	  continue;
 	if (interactive_option && !confirm ("add", file_name))
 	  continue;

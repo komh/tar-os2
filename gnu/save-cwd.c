@@ -2,7 +2,7 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* save-cwd.c -- Save and restore current working directory.
 
-   Copyright (C) 1995, 1997-1998, 2003-2006, 2009-2011 Free Software
+   Copyright (C) 1995, 1997-1998, 2003-2006, 2009-2014 Free Software
    Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
@@ -49,10 +49,11 @@
    closed;  return non-zero -- in that case, free_cwd need not be
    called, but doing so is ok.  Otherwise, return zero.
 
-   The `raison d'etre' for this interface is that the working directory
+   The _raison d'etre_ for this interface is that the working directory
    is sometimes inaccessible, and getcwd is not robust or as efficient.
    So, we prefer to use the open/fchdir approach, but fall back on
-   getcwd if necessary.
+   getcwd if necessary.  This module works for most cases with just
+   the getcwd-lgpl module, but to be truly robust, use the getcwd module.
 
    Some systems lack fchdir altogether: e.g., OS/2, pre-2001 Cygwin,
    SCO Xenix.  Also, SunOS 4 and Irix 5.3 provide the function, yet it

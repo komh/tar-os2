@@ -2,7 +2,7 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Declare __fpending.
 
-   Copyright (C) 2000, 2003, 2005-2006, 2009-2011 Free Software Foundation,
+   Copyright (C) 2000, 2003, 2005-2006, 2009-2014 Free Software Foundation,
    Inc.
 
    This program is free software: you can redistribute it and/or modify
@@ -22,15 +22,10 @@
 
 #include <stddef.h>
 #include <stdio.h>
-
-#ifndef HAVE_DECL___FPENDING
-"this configure-time declaration test was not run"
+#if HAVE_STDIO_EXT_H
+# include <stdio_ext.h>
 #endif
 
-#if HAVE_DECL___FPENDING
-# if HAVE_STDIO_EXT_H
-#  include <stdio_ext.h>
-# endif
-#else
-size_t __fpending (FILE *);
+#if !HAVE_DECL___FPENDING
+size_t __fpending (FILE *) _GL_ATTRIBUTE_PURE;
 #endif

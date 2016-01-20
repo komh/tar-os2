@@ -90,10 +90,10 @@ static int from_remote[MAXUNIT][2] = {{-1, -1}, {-1, -1}, {-1, -1}, {-1, -1}};
 /* The pipes for sending data to remote tape drives.  */
 static int to_remote[MAXUNIT][2] = {{-1, -1}, {-1, -1}, {-1, -1}, {-1, -1}};
 
-char *rmt_command = DEFAULT_RMT_COMMAND;
+char const *rmt_command = DEFAULT_RMT_COMMAND;
 
 /* Temporary variable used by macros in rmt.h.  */
-char *rmt_dev_name__;
+char const *rmt_dev_name__;
 
 /* If true, always consider file names to be local, even if they contain
    colons */
@@ -490,15 +490,16 @@ rmt_open__ (const char *file_name, int open_mode, int bias,
       {
 	/* Child.  */
 
-	close (STDIN_FILENO);
-	dup (to_remote[remote_pipe_number][PREAD]);
-	close (to_remote[remote_pipe_number][PREAD]);
-	close (to_remote[remote_pipe_number][PWRITE]);
-
-	close (STDOUT_FILENO);
-	dup (from_remote[remote_pipe_number][PWRITE]);
-	close (from_remote[remote_pipe_number][PREAD]);
-	close (from_remote[remote_pipe_number][PWRITE]);
+	if (dup2 (to_remote[remote_pipe_number][PREAD], STDIN_FILENO) < 0
+	    || (to_remote[remote_pipe_number][PREAD] != STDIN_FILENO
+		&& close (to_remote[remote_pipe_number][PREAD]) != 0)
+	    || (to_remote[remote_pipe_number][PWRITE] != STDIN_FILENO
+		&& close (to_remote[remote_pipe_number][PWRITE]) != 0)
+	    || dup2 (from_remote[remote_pipe_number][PWRITE], STDOUT_FILENO) < 0
+	    || close (from_remote[remote_pipe_number][PREAD]) != 0
+	    || close (from_remote[remote_pipe_number][PWRITE]) != 0)
+	  error (EXIT_ON_EXEC_ERROR, errno,
+		 _("Cannot redirect files for remote shell"));
 
 	sys_reset_uid_gid ();
 

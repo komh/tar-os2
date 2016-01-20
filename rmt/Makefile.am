@@ -4,7 +4,7 @@ EXTRA_PROGRAMS = rmt
 
 rmt_SOURCES = rmt.c
 
-INCLUDES = -I$(top_srcdir)/gnu -I../ -I../gnu -I$(top_srcdir)/lib
+AM_CPPFLAGS = -I$(top_srcdir)/gnu -I../ -I../gnu -I$(top_srcdir)/lib
 
 LDADD = ../gnu/libgnu.a $(LIBINTL)
 

@@ -1,21 +1,22 @@
 # Makefile for GNU tar documentation.
 
-# Copyright (C) 1994, 1995, 1996, 1997, 1999, 2000, 2001, 2003, 2006,
-# 2007 Free Software Foundation, Inc.
+# Copyright 1994-1997, 1999-2001, 2003, 2006-2007, 2013-2014 Free
+# Software Foundation, Inc.
 
-## This program is free software; you can redistribute it and/or modify
-## it under the terms of the GNU General Public License as published by
-## the Free Software Foundation; either version 3, or (at your option)
-## any later version.
+# This file is part of GNU tar.
 
-## This program is distributed in the hope that it will be useful,
-## but WITHOUT ANY WARRANTY; without even the implied warranty of
-## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-## GNU General Public License for more details.
+# GNU tar is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
 
-## You should have received a copy of the GNU General Public License
-## along with this program; if not, write to the Free Software Foundation,
-## Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# GNU tar is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 info_TEXINFOS = tar.texi
 tar_TEXINFOS = \
@@ -31,10 +32,16 @@ tar_TEXINFOS = \
  snapshot.texi\
  sparse.texi\
  value.texi
-EXTRA_DIST = gendocs_template mastermenu.el texify.sed untabify.el
+
+dist_man_MANS=tar.1 $(RMT_8)
+if PU_RMT_COND
+  RMT_8=rmt.8
+endif
+
+EXTRA_DIST = gendocs_template mastermenu.el texify.sed untabify.el rmt.8
 
 # The rendering level is anyone of PUBLISH, DISTRIB or PROOF.
-# Just call `make RENDITION=PROOF [target]' if you want PROOF rendition.
+# Just call 'make RENDITION=PROOF [target]' if you want PROOF rendition.
 RENDITION = DISTRIB
 
 MAKEINFOFLAGS=-D$(RENDITION)

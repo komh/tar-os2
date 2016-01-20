@@ -2,7 +2,7 @@
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* basename.c -- return the last element in a file name
 
-   Copyright (C) 1990, 1998-2001, 2003-2006, 2009-2011 Free Software
+   Copyright (C) 1990, 1998-2001, 2003-2006, 2009-2014 Free Software
    Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
@@ -42,8 +42,8 @@ base_name (char const *name)
   if (ISSLASH (base[length]))
     length++;
 
-  /* On systems with drive letters, `a/b:c' must return `./b:c' rather
-     than `b:c' to avoid confusion with a drive letter.  On systems
+  /* On systems with drive letters, "a/b:c" must return "./b:c" rather
+     than "b:c" to avoid confusion with a drive letter.  On systems
      with pure POSIX semantics, this is not an issue.  */
   if (FILE_SYSTEM_PREFIX_LEN (base))
     {

@@ -1,7 +1,7 @@
 /* Various processing of names.
 
-   Copyright (C) 1988, 1992, 1994, 1996, 1997, 1998, 1999, 2000, 2001,
-   2003, 2004, 2005, 2006, 2007, 2009 Free Software Foundation, Inc.
+   Copyright 1988, 1992, 1994, 1996-2001, 2003-2007, 2009, 2013-2014
+   Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -14,14 +14,15 @@
    Public License for more details.
 
    You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
+   with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include <system.h>
 
 #include <fnmatch.h>
 #include <hash.h>
 #include <quotearg.h>
+#include <wordsplit.h>
+#include <argp.h>
 
 #include "common.h"
 
@@ -197,7 +198,7 @@ static struct name *namelist;	/* first name in list, if any */
 static struct name *nametail;	/* end of name list */
 
 /* File name arguments are processed in two stages: first a
-   name_array (see below) is filled, then the names from it
+   name element list (see below) is filled, then the names from it
    are moved into the namelist.
 
    This awkward process is needed only to implement --same-order option,
@@ -207,39 +208,72 @@ static struct name *nametail;	/* end of name list */
 
    However, I very much doubt if we still need this -- Sergey */
 
-/* A name_array element contains entries of three types: */
+/* A name_list element contains entries of three types: */
 
 #define NELT_NAME  0   /* File name */
 #define NELT_CHDIR 1   /* Change directory request */
 #define NELT_FMASK 2   /* Change fnmatch options request */
+#define NELT_FILE  3   /* Read file names from that file */
+#define NELT_NOOP  4   /* No operation */
 
 struct name_elt        /* A name_array element. */
 {
+  struct name_elt *next, *prev;
   char type;           /* Element type, see NELT_* constants above */
   union
   {
     const char *name;  /* File or directory name */
     int matching_flags;/* fnmatch options if type == NELT_FMASK */
+    struct             /* File, if type == NELT_FILE */
+    {
+      const char *name;/* File name */
+      int term;        /* File name terminator in the list */
+      FILE *fp;
+    } file;
   } v;
 };
 
-static struct name_elt *name_array;  /* store an array of names */
-static size_t allocated_entries; /* how big is the array? */
-static size_t entries;		 /* how many entries does it have? */
-static size_t scanned;		 /* how many of the entries have we scanned? */
-size_t name_count;		 /* how many of the entries are names? */
+static struct name_elt *name_head;  /* store a list of names */
+size_t name_count;	 	    /* how many of the entries are names? */
 
-/* Check the size of name_array, reallocating it as necessary.  */
-static void
-check_name_alloc (void)
+static struct name_elt *
+name_elt_alloc (void)
 {
-  if (entries == allocated_entries)
+  struct name_elt *elt;
+
+  elt = xmalloc (sizeof (*elt));
+  if (!name_head)
     {
-      if (allocated_entries == 0)
-	allocated_entries = 10; /* Set initial allocation */
-      name_array = x2nrealloc (name_array, &allocated_entries,
-			       sizeof (name_array[0]));
+      name_head = elt;
+      name_head->prev = name_head->next = NULL;
+      name_head->type = NELT_NOOP;
+      elt = xmalloc (sizeof (*elt));
     }
+
+  elt->prev = name_head->prev;
+  if (name_head->prev)
+    name_head->prev->next = elt;
+  elt->next = name_head;
+  name_head->prev = elt;
+  return elt;
+}
+
+static void
+name_list_adjust (void)
+{
+  if (name_head)
+    while (name_head->prev)
+      name_head = name_head->prev;
+}
+
+static void
+name_list_advance (void)
+{
+  struct name_elt *elt = name_head;
+  name_head = elt->next;
+  if (name_head)
+    name_head->prev = NULL;
+  free (elt);
 }
 
 /* Add to name_array the file NAME with fnmatch options MATCHING_FLAGS */
@@ -247,17 +281,14 @@ void
 name_add_name (const char *name, int matching_flags)
 {
   static int prev_flags = 0; /* FIXME: Or EXCLUDE_ANCHORED? */
-  struct name_elt *ep;
+  struct name_elt *ep = name_elt_alloc ();
 
-  check_name_alloc ();
-  ep = &name_array[entries++];
   if (prev_flags != matching_flags)
     {
       ep->type = NELT_FMASK;
       ep->v.matching_flags = matching_flags;
       prev_flags = matching_flags;
-      check_name_alloc ();
-      ep = &name_array[entries++];
+      ep = name_elt_alloc ();
     }
   ep->type = NELT_NAME;
   ep->v.name = name;
@@ -268,13 +299,20 @@ name_add_name (const char *name, int matching_flags)
 void
 name_add_dir (const char *name)
 {
-  struct name_elt *ep;
-  check_name_alloc ();
-  ep = &name_array[entries++];
+  struct name_elt *ep = name_elt_alloc ();
   ep->type = NELT_CHDIR;
   ep->v.name = name;
 }
 
+void
+name_add_file (const char *name, int term)
+{
+  struct name_elt *ep = name_elt_alloc ();
+  ep->type = NELT_FILE;
+  ep->v.file.name = name;
+  ep->v.file.term = term;
+  ep->v.file.fp = NULL;
+}
 
 /* Names from external name file.  */
 
@@ -288,15 +326,224 @@ name_init (void)
 {
   name_buffer = xmalloc (NAME_FIELD_SIZE + 2);
   name_buffer_length = NAME_FIELD_SIZE;
+  name_list_adjust ();
 }
 
 void
 name_term (void)
 {
   free (name_buffer);
-  free (name_array);
+}
+
+/* Prevent recursive inclusion of the same file */
+struct file_id_list
+{
+  struct file_id_list *next;
+  ino_t ino;
+  dev_t dev;
+  const char *from_file;
+};
+
+static struct file_id_list *file_id_list;
+
+/* Return the name of the file from which the file names and options
+   are being read.
+*/
+static const char *
+file_list_name (void)
+{
+  struct name_elt *elt;
+
+  for (elt = name_head; elt; elt = elt->next)
+    if (elt->type == NELT_FILE && elt->v.file.fp)
+      return elt->v.file.name;
+  return _("command line");
 }
 
+static int
+add_file_id (const char *filename)
+{
+  struct file_id_list *p;
+  struct stat st;
+  const char *reading_from;
+
+  if (stat (filename, &st))
+    stat_fatal (filename);
+  reading_from = file_list_name ();
+  for (p = file_id_list; p; p = p->next)
+    if (p->ino == st.st_ino && p->dev == st.st_dev)
+      {
+	int oldc = set_char_quoting (NULL, ':', 1);
+	ERROR ((0, 0,
+		_("%s: file list requested from %s already read from %s"),
+		quotearg_n (0, filename),
+		reading_from, p->from_file));
+	set_char_quoting (NULL, ':', oldc);
+	return 1;
+      }
+  p = xmalloc (sizeof *p);
+  p->next = file_id_list;
+  p->ino = st.st_ino;
+  p->dev = st.st_dev;
+  p->from_file = reading_from;
+  file_id_list = p;
+  return 0;
+}
+
+enum read_file_list_state  /* Result of reading file name from the list file */
+  {
+    file_list_success,     /* OK, name read successfully */
+    file_list_end,         /* End of list file */
+    file_list_zero,        /* Zero separator encountered where it should not */
+    file_list_skip         /* Empty (zero-length) entry encountered, skip it */
+  };
+
+/* Read from FP a sequence of characters up to TERM and put them
+   into STK.
+ */
+static enum read_file_list_state
+read_name_from_file (struct name_elt *ent)
+{
+  int c;
+  size_t counter = 0;
+  FILE *fp = ent->v.file.fp;
+  int term = ent->v.file.term;
+
+  for (c = getc (fp); c != EOF && c != term; c = getc (fp))
+    {
+      if (counter == name_buffer_length)
+	name_buffer = x2realloc (name_buffer, &name_buffer_length);
+      name_buffer[counter++] = c;
+      if (c == 0)
+	{
+	  /* We have read a zero separator. The file possibly is
+	     zero-separated */
+	  return file_list_zero;
+	}
+    }
+
+  if (counter == 0 && c != EOF)
+    return file_list_skip;
+
+  if (counter == name_buffer_length)
+    name_buffer = x2realloc (name_buffer, &name_buffer_length);
+  name_buffer[counter] = 0;
+
+  return (counter == 0 && c == EOF) ? file_list_end : file_list_success;
+}
+
+static int
+handle_option (const char *str)
+{
+  struct wordsplit ws;
+  int i;
+
+  while (*str && isspace (*str))
+    ++str;
+  if (*str != '-')
+    return 1;
+
+  ws.ws_offs = 1;
+  if (wordsplit (str, &ws, WRDSF_DEFFLAGS|WRDSF_DOOFFS))
+    FATAL_ERROR ((0, 0, _("cannot split string '%s': %s"),
+		  str, wordsplit_strerror (&ws)));
+  ws.ws_wordv[0] = program_invocation_short_name;
+  more_options (ws.ws_wordc+ws.ws_offs, ws.ws_wordv);
+  for (i = 0; i < ws.ws_wordc+ws.ws_offs; i++)
+    ws.ws_wordv[i] = NULL;
+
+  wordsplit_free (&ws);
+  return 0;
+}
+
+static int
+read_next_name (struct name_elt *ent, struct name_elt *ret)
+{
+  if (!ent->v.file.fp)
+    {
+      if (!strcmp (ent->v.file.name, "-"))
+	{
+	  request_stdin ("-T");
+	  ent->v.file.fp = stdin;
+	}
+      else
+	{
+	  if (add_file_id (ent->v.file.name))
+	    {
+	      name_list_advance ();
+	      return 1;
+	    }
+	  if ((ent->v.file.fp = fopen (ent->v.file.name, "r")) == NULL)
+	    open_fatal (ent->v.file.name);
+	}
+    }
+
+  while (1)
+    {
+      switch (read_name_from_file (ent))
+	{
+	case file_list_skip:
+	  continue;
+
+	case file_list_zero:
+	  WARNOPT (WARN_FILENAME_WITH_NULS,
+		   (0, 0, N_("%s: file name read contains nul character"),
+		    quotearg_colon (ent->v.file.name)));
+	  ent->v.file.term = 0;
+	  /* fall through */
+	case file_list_success:
+	  if (unquote_option)
+	    unquote_string (name_buffer);
+	  if (handle_option (name_buffer) == 0)
+	    {
+	      name_list_adjust ();
+	      return 1;
+	    }
+	  ret->type = NELT_NAME;
+	  ret->v.name = name_buffer;
+	  return 0;
+
+	case file_list_end:
+	  if (strcmp (ent->v.file.name, "-"))
+	    fclose (ent->v.file.fp);
+	  ent->v.file.fp = NULL;
+	  name_list_advance ();
+	  return 1;
+	}
+    }
+}
+
+static void
+copy_name (struct name_elt *ep)
+{
+  const char *source;
+  size_t source_len;
+  char *cursor;
+
+  source = ep->v.name;
+  source_len = strlen (source);
+  if (name_buffer_length < source_len)
+    {
+      do
+	{
+	  name_buffer_length *= 2;
+	  if (! name_buffer_length)
+	    xalloc_die ();
+	}
+      while (name_buffer_length < source_len);
+
+      free (name_buffer);
+      name_buffer = xmalloc(name_buffer_length + 2);
+    }
+  strcpy (name_buffer, source);
+
+  /* Zap trailing slashes.  */
+  cursor = name_buffer + strlen (name_buffer) - 1;
+  while (cursor > name_buffer && ISSLASH (*cursor))
+    *cursor-- = '\0';
+}
+
+
 static int matching_flags; /* exclude_fnmatch options */
 
 /* Get the next NELT_NAME element from name_array.  Result is in
@@ -311,55 +558,42 @@ static struct name_elt *
 name_next_elt (int change_dirs)
 {
   static struct name_elt entry;
-  const char *source;
-  char *cursor;
+  struct name_elt *ep;
 
-  while (scanned != entries)
+  while ((ep = name_head) != NULL)
     {
-      struct name_elt *ep;
-      size_t source_len;
-
-      ep = &name_array[scanned++];
-      if (ep->type == NELT_FMASK)
+      switch (ep->type)
 	{
+	case NELT_NOOP:
+	  name_list_advance ();
+	  break;
+
+	case NELT_FMASK:
 	  matching_flags = ep->v.matching_flags;
+	  recursion_option = matching_flags & FNM_LEADING_DIR;
+	  name_list_advance ();
 	  continue;
-	}
 
-      source = ep->v.name;
-      source_len = strlen (source);
-      if (name_buffer_length < source_len)
-	{
-	  do
+	case NELT_FILE:
+	  if (read_next_name (ep, &entry) == 0)
+	    return &entry;
+	  continue;
+
+	case NELT_CHDIR:
+	  if (change_dirs)
 	    {
-	      name_buffer_length *= 2;
-	      if (! name_buffer_length)
-		xalloc_die ();
+	      chdir_do (chdir_arg (xstrdup (ep->v.name)));
+	      name_list_advance ();
+	      break;
 	    }
-	  while (name_buffer_length < source_len);
-
-	  free (name_buffer);
-	  name_buffer = xmalloc (name_buffer_length + 2);
-	}
-      strcpy (name_buffer, source);
-
-      /* Zap trailing slashes.  */
-
-      cursor = name_buffer + strlen (name_buffer) - 1;
-      while (cursor > name_buffer && ISSLASH (*cursor))
-	*cursor-- = '\0';
-
-      if (change_dirs && ep->type == NELT_CHDIR)
-	{
-	  if (chdir (name_buffer) < 0)
-	    chdir_fatal (name_buffer);
-	}
-      else
-	{
+	  /* fall through */
+	case NELT_NAME:
+	  copy_name (ep);
 	  if (unquote_option)
 	    unquote_string (name_buffer);
 	  entry.type = ep->type;
 	  entry.v.name = name_buffer;
+	  name_list_advance ();
 	  return &entry;
 	}
     }
@@ -669,9 +903,9 @@ label_notfound (void)
 
 /* Sort *singly* linked LIST of names, of given LENGTH, using COMPARE
    to order names.  Return the sorted list.  Note that after calling
-   this function, the `prev' links in list elements are messed up.
+   this function, the 'prev' links in list elements are messed up.
 
-   Apart from the type `struct name' and the definition of SUCCESSOR,
+   Apart from the type 'struct name' and the definition of SUCCESSOR,
    this is a generic list-sorting function, but it's too painful to
    make it both generic and portable
    in C.  */
@@ -894,7 +1128,7 @@ name_compare (void const *entry1, void const *entry2)
 }
 
 
-/* Rebase `name' member of CHILD and all its siblings to
+/* Rebase 'name' member of CHILD and all its siblings to
    the new PARENT. */
 static void
 rebase_child_list (struct name *child, struct name *parent)
@@ -1008,13 +1242,11 @@ collect_and_sort_names (void)
   namelist = merge_sort (namelist, num_names, compare_names);
 
   num_names = 0;
-  nametab = hash_initialize (0, 0,
-			     name_hash,
-			     name_compare, NULL);
+  nametab = hash_initialize (0, 0, name_hash, name_compare, NULL);
   for (name = namelist; name; name = next_name)
     {
       next_name = name->next;
-      name->caname = normalize_filename (name->name);
+      name->caname = normalize_filename (name->change_dir, name->name);
       if (prev_name)
 	{
 	  struct name *p = hash_lookup (nametab, name);
@@ -1100,7 +1332,7 @@ name_scan (const char *file_name)
 struct name *gnu_list_name;
 
 struct name const *
-name_from_list ()
+name_from_list (void)
 {
   if (!gnu_list_name)
     gnu_list_name = namelist;
@@ -1141,12 +1373,6 @@ new_name (const char *file_name, const char *name)
   return buffer;
 }
 
-/* Return nonzero if file NAME is excluded.  */
-bool
-excluded_name (char const *name)
-{
-  return excluded_file_name (excluded, name + FILE_SYSTEM_PREFIX_LEN (name));
-}
 
 
 /* Return the size of the prefix of FILE_NAME that is removed after

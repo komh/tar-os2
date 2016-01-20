@@ -1,22 +1,22 @@
 /* Common declarations for the tar program.
 
-   Copyright (C) 1988, 1992, 1993, 1994, 1996, 1997, 1999, 2000, 2001,
-   2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010 Free Software Foundation,
-   Inc.
+   Copyright 1988, 1992-1994, 1996-1997, 1999-2010, 2012-2014 Free
+   Software Foundation, Inc.
 
-   This program is free software; you can redistribute it and/or modify it
-   under the terms of the GNU General Public License as published by the
-   Free Software Foundation; either version 3, or (at your option) any later
-   version.
+   This file is part of GNU tar.
 
-   This program is distributed in the hope that it will be useful, but
-   WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-   Public License for more details.
+   GNU tar is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
 
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
+   GNU tar is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 /* Declare the GNU tar archive format.  */
 #include "tar.h"
@@ -70,6 +70,11 @@
 #define LG_8 3
 #define LG_64 6
 #define LG_256 8
+
+_GL_INLINE_HEADER_BEGIN
+#ifndef COMMON_INLINE
+# define COMMON_INLINE _GL_INLINE
+#endif
 
 /* Information gleaned from the command line.  */
 
@@ -138,9 +143,6 @@ GLOBAL const char *use_compress_program_option;
 GLOBAL bool dereference_option;
 GLOBAL bool hard_dereference_option;
 
-/* Print a message if not all links are dumped */
-GLOBAL int check_links_option;
-
 /* Patterns that match file names to be excluded.  */
 GLOBAL struct exclude *excluded;
 
@@ -158,7 +160,8 @@ enum exclusion_tag_type
   };
 
 /* Specified value to be put into tar file in place of stat () results, or
-   just -1 if such an override should not take place.  */
+   just null and -1 if such an override should not take place.  */
+GLOBAL char const *group_name_option;
 GLOBAL gid_t group_option;
 
 GLOBAL bool ignore_failed_read_option;
@@ -182,9 +185,12 @@ enum old_files
   OVERWRITE_OLD_FILES,        /* --overwrite */
   UNLINK_FIRST_OLD_FILES,     /* --unlink-first */
   KEEP_OLD_FILES,             /* --keep-old-files */
+  SKIP_OLD_FILES,             /* --skip-old-files */
   KEEP_NEWER_FILES	      /* --keep-newer-files */
 };
 GLOBAL enum old_files old_files_option;
+
+GLOBAL bool keep_directory_symlink_option;
 
 /* Specified file name for incremental list.  */
 GLOBAL const char *listed_incremental_option;
@@ -229,8 +235,13 @@ GLOBAL bool numeric_owner_option;
 
 GLOBAL bool one_file_system_option;
 
+/* Create a top-level directory for extracting based on the archive name.  */
+GLOBAL bool one_top_level_option;
+GLOBAL char *one_top_level_dir;
+
 /* Specified value to be put into tar file in place of stat () results, or
-   just -1 if such an override should not take place.  */
+   just null and -1 if such an override should not take place.  */
+GLOBAL char const *owner_name_option;
 GLOBAL uid_t owner_option;
 
 GLOBAL bool recursive_unlink_option;
@@ -238,9 +249,6 @@ GLOBAL bool recursive_unlink_option;
 GLOBAL bool read_full_records_option;
 
 GLOBAL bool remove_files_option;
-
-/* Specified rmt command.  */
-GLOBAL const char *rmt_command_option;
 
 /* Specified remote shell command.  */
 GLOBAL const char *rsh_command_option;
@@ -252,6 +260,15 @@ GLOBAL int same_owner_option;
 
 /* If positive, preserve permissions when extracting.  */
 GLOBAL int same_permissions_option;
+
+/* If positive, save the SELinux context.  */
+GLOBAL int selinux_context_option;
+
+/* If positive, save the ACLs.  */
+GLOBAL int acls_option;
+
+/* If positive, save the user and root xattrs.  */
+GLOBAL int xattrs_option;
 
 /* When set, strip the given number of file name components from the file name
    before extracting */
@@ -313,11 +330,10 @@ GLOBAL struct timespec last_stat_time;    /* when the statistics was last
 
 GLOBAL struct tar_stat_info current_stat_info;
 
-/* List of tape drive names, number of such tape drives, allocated number,
+/* List of tape drive names, number of such tape drives,
    and current cursor in list.  */
 GLOBAL const char **archive_name_array;
 GLOBAL size_t archive_names;
-GLOBAL size_t allocated_archive_names;
 GLOBAL const char **archive_name_cursor;
 
 /* Output index file name.  */
@@ -370,6 +386,8 @@ GLOBAL dev_t root_device;
 /* Unquote filenames */
 GLOBAL bool unquote_option;
 
+GLOBAL int savedir_sort_order;
+
 /* Show file or archive names after transformation.
    In particular, when creating archive in verbose mode, list member names
    as stored in the archive */
@@ -415,7 +433,7 @@ size_t available_space_after (union block *pointer);
 off_t current_block_ordinal (void);
 void close_archive (void);
 void closeout_volume_number (void);
-void compute_duration (void);
+double compute_duration (void);
 union block *find_next_block (void);
 void flush_read (void);
 void flush_write (void);
@@ -431,6 +449,12 @@ void archive_write_error (ssize_t status) __attribute__ ((noreturn));
 void archive_read_error (void);
 off_t seek_archive (off_t size);
 void set_start_time (void);
+
+#define TF_READ    0
+#define TF_WRITE   1
+#define TF_DELETED 2
+int format_total_stats (FILE *fp, const char **formats, int eor, int eol);
+void print_total_stats (void);
 
 void mv_begin_write (const char *file_name, off_t totsize, off_t sizeleft);
 
@@ -514,6 +538,7 @@ void rebase_directory (struct directory *dir,
 		       const char *repl, size_t rlen);
 
 void append_incremental_renames (struct directory *dir);
+void show_snapshot_field_ranges (void);
 void read_directory_file (void);
 void write_directory_file (void);
 void purge_directory (char const *directory_name);
@@ -522,6 +547,7 @@ void update_parent_directory (struct tar_stat_info *st);
 
 size_t dumpdir_size (const char *p);
 bool is_dumpdir (struct tar_stat_info *stat_info);
+void clear_directory_table (void);
 
 /* Module list.c.  */
 
@@ -577,23 +603,62 @@ void skip_member (void);
 
 /* Module misc.c.  */
 
+#define min(a, b) ((a) < (b) ? (a) : (b))
+#define max(a, b) ((a) < (b) ? (b) : (a))
 void assign_string (char **dest, const char *src);
 int unquote_string (char *str);
 char *zap_slashes (char *name);
-char *normalize_filename (const char *name);
+char *normalize_filename (int cdidx, const char *name);
+void normalize_filename_x (char *name);
 void replace_prefix (char **pname, const char *samp, size_t slen,
 		     const char *repl, size_t rlen);
+char *tar_savedir (const char *name, int must_exist);
 
 typedef struct namebuf *namebuf_t;
 namebuf_t namebuf_create (const char *dir);
 void namebuf_free (namebuf_t buf);
 char *namebuf_name (namebuf_t buf, const char *name);
+void namebuf_add_dir (namebuf_t buf, const char *name);
+char *namebuf_finish (namebuf_t buf);
 
+const char *tar_dirname (void);
+
+/* Represent N using a signed integer I such that (uintmax_t) I == N.
+   With a good optimizing compiler, this is equivalent to (intmax_t) i
+   and requires zero machine instructions.  */
+#if ! (UINTMAX_MAX / 2 <= INTMAX_MAX)
+# error "represent_uintmax returns intmax_t to represent uintmax_t"
+#endif
+COMMON_INLINE intmax_t
+represent_uintmax (uintmax_t n)
+{
+  if (n <= INTMAX_MAX)
+    return n;
+  else
+    {
+      /* Avoid signed integer overflow on picky platforms.  */
+      intmax_t nd = n - INTMAX_MIN;
+      return nd + INTMAX_MIN;
+    }
+}
+
+enum { SYSINT_BUFSIZE =
+	 max (UINTMAX_STRSIZE_BOUND, INT_BUFSIZE_BOUND (intmax_t)) };
+char *sysinttostr (uintmax_t, intmax_t, uintmax_t, char buf[SYSINT_BUFSIZE]);
+intmax_t strtosysint (char const *, char **, intmax_t, uintmax_t);
 void code_ns_fraction (int ns, char *p);
 char const *code_timespec (struct timespec ts, char *sbuf);
 enum { BILLION = 1000000000, LOG10_BILLION = 9 };
 enum { TIMESPEC_STRSIZE_BOUND =
          UINTMAX_STRSIZE_BOUND + LOG10_BILLION + sizeof "-." - 1 };
+struct timespec decode_timespec (char const *, char **, bool);
+
+/* Return true if T does not represent an out-of-range or invalid value.  */
+COMMON_INLINE bool
+valid_timespec (struct timespec t)
+{
+  return 0 <= t.tv_nsec;
+}
 
 bool must_be_dot_or_slash (char const *);
 
@@ -616,6 +681,9 @@ bool maybe_backup_file (const char *file_name, bool this_is_the_archive);
 void undo_last_backup (void);
 
 int deref_stat (char const *name, struct stat *buf);
+
+size_t blocking_read (int fd, void *buf, size_t count);
+size_t blocking_write (int fd, void const *buf, size_t count);
 
 extern int chdir_current;
 extern int chdir_fd;
@@ -657,6 +725,7 @@ int uname_to_uid (char const *uname, uid_t *puid);
 void name_init (void);
 void name_add_name (const char *name, int matching_flags);
 void name_add_dir (const char *name);
+void name_add_file (const char *name, int term);
 void name_term (void);
 const char *name_next (int change_dirs);
 void name_gather (void);
@@ -673,8 +742,6 @@ void blank_name_list (void);
 char *new_name (const char *dir_name, const char *name);
 size_t stripped_prefix_len (char const *file_name, size_t num);
 bool all_names_found (struct tar_stat_info *st);
-
-bool excluded_name (char const *name);
 
 void add_avoided_name (char const *name);
 bool is_avoided_name (char const *name);
@@ -701,11 +768,17 @@ const char *archive_format_string (enum archive_format fmt);
 const char *subcommand_string (enum subcommand c);
 void set_exit_status (int val);
 
+void request_stdin (const char *option);
+void more_options (int argc, char **argv);
+
 /* Module update.c.  */
 
 extern char *output_start;
 
 void update_archive (void);
+
+/* Module attrs.c.  */
+#include "xattrs.h"
 
 /* Module xheader.c.  */
 
@@ -713,7 +786,7 @@ void xheader_decode (struct tar_stat_info *stat);
 void xheader_decode_global (struct xheader *xhdr);
 void xheader_store (char const *keyword, struct tar_stat_info *st,
 		    void const *data);
-void xheader_read (struct xheader *xhdr, union block *header, size_t size);
+void xheader_read (struct xheader *xhdr, union block *header, off_t size);
 void xheader_write (char type, char *name, time_t t, struct xheader *xhdr);
 void xheader_write_global (struct xheader *xhdr);
 void xheader_finish (struct xheader *hdr);
@@ -727,6 +800,12 @@ bool xheader_string_end (struct xheader *xhdr, char const *keyword);
 bool xheader_keyword_deleted_p (const char *kw);
 char *xheader_format_name (struct tar_stat_info *st, const char *fmt,
 			   size_t n);
+void xheader_xattr_init (struct tar_stat_info *st);
+void xheader_xattr_free (struct xattr_array *vals, size_t sz);
+void xheader_xattr_copy (const struct tar_stat_info *st,
+                         struct xattr_array **vals, size_t *sz);
+void xheader_xattr_add (struct tar_stat_info *st,
+                        const char *key, const char *val, size_t len);
 
 /* Module system.c */
 
@@ -751,7 +830,8 @@ void sys_exec_checkpoint_script (const char *script_name,
 				 int checkpoint_number);
 
 /* Module compare.c */
-void report_difference (struct tar_stat_info *st, const char *message, ...);
+void report_difference (struct tar_stat_info *st, const char *message, ...)
+  __attribute__ ((format (printf, 2, 3)));
 
 /* Module sparse.c */
 bool sparse_member_p (struct tar_stat_info *st);
@@ -780,11 +860,14 @@ bool transform_program_p (void);
 
 /* Module suffix.c */
 void set_compression_program_by_suffix (const char *name, const char *defprog);
+char *strip_compression_suffix (const char *name);
 
 /* Module checkpoint.c */
 void checkpoint_compile_action (const char *str);
 void checkpoint_finish_compile (void);
 void checkpoint_run (bool do_write);
+void checkpoint_finish (void);
+void checkpoint_flush_actions (void);
 
 /* Module warning.c */
 #define WARN_ALONE_ZERO_BLOCK    0x00000001
@@ -807,11 +890,14 @@ void checkpoint_run (bool do_write);
 #define WARN_UNKNOWN_KEYWORD     0x00020000
 #define WARN_XDEV                0x00040000
 #define WARN_DECOMPRESS_PROGRAM  0x00080000
+#define WARN_EXISTING_FILE       0x00100000
+#define WARN_XATTR_WRITE         0x00200000
+#define WARN_RECORD_SIZE         0x00400000
 
-/* The warnings composing WARN_VERBOSE_WARNINGS are enabled by default
-   in verbose mode */
+/* These warnings are enabled by default in verbose mode: */
 #define WARN_VERBOSE_WARNINGS    (WARN_RENAME_DIRECTORY|WARN_NEW_DIRECTORY|\
-				  WARN_DECOMPRESS_PROGRAM)
+				  WARN_DECOMPRESS_PROGRAM|WARN_EXISTING_FILE|\
+		                  WARN_RECORD_SIZE)
 #define WARN_ALL                 (~WARN_VERBOSE_WARNINGS)
 
 void set_warning_option (const char *arg);
@@ -832,3 +918,17 @@ void finish_deferred_unlinks (void);
 
 /* Module exit.c */
 extern void (*fatal_exit_hook) (void);
+
+/* Module exclist.c */
+#define EXCL_DEFAULT       0x00
+#define EXCL_RECURSIVE     0x01
+#define EXCL_NON_RECURSIVE 0x02
+
+void excfile_add (const char *name, int flags);
+void info_attach_exclist (struct tar_stat_info *dir);
+void info_cleanup_exclist (struct tar_stat_info *dir);
+void info_free_exclist (struct tar_stat_info *dir);
+bool excluded_name (char const *name, struct tar_stat_info *st);
+void exclude_vcs_ignores (void);
+
+_GL_INLINE_HEADER_END

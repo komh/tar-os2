@@ -485,9 +485,11 @@ generate_files_from_list ()
 static void
 mkhole (int fd, off_t displ)
 {
-  if (lseek (fd, displ, SEEK_CUR) == -1)
+  off_t offset = lseek (fd, displ, SEEK_CUR);
+  if (offset < 0)
     error (EXIT_FAILURE, errno, "lseek");
-  ftruncate (fd, lseek (fd, 0, SEEK_CUR));
+  if (ftruncate (fd, offset) != 0)
+    error (EXIT_FAILURE, errno, "ftruncate");
 }
 
 static void
@@ -685,13 +687,18 @@ exec_checkpoint (struct action *p)
 	    error (0, errno, _("cannot open `%s'"), p->name);
 	    break;
 	  }
-	ftruncate (fd, p->size);
+	if (ftruncate (fd, p->size) != 0)
+	  {
+	    error (0, errno, _("cannot truncate `%s'"), p->name);
+	    break;
+	  }
 	close (fd);
       }
       break;
 
     case OPT_EXEC:
-      system (p->name);
+      if (system (p->name) != 0)
+	error (0, 0, _("command failed: %s"), p->name);
       break;
 
     case OPT_UNLINK:
@@ -761,7 +768,8 @@ exec_command (void)
   signal (SIGCHLD, SIG_DFL);
 #endif
 
-  pipe (fd);
+  if (pipe (fd) != 0)
+    error (EXIT_FAILURE, errno, "pipe");
 
   pid = fork ();
   if (pid == -1)

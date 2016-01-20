@@ -108,7 +108,7 @@ name to use. Currently two patterns are implemented:
     If no file name was given, the program exits with the code
 @code{0}.  Otherwise, it exits with @code{0} only if it was able to
 create a file of the specified length.
-    
+
 @cindex Sparse files, creating using @command{genfile}
 @cindex @command{genfile}, creating sparse files
     Special option @option{--sparse} (@option{-s}) instructs
@@ -145,7 +145,7 @@ a @dfn{block} of data, filled with this letter and will write it to
 the fragment. The size of block is given by @option{--block-size}
 option. It defaults to 512. Thus, if the string consists of @var{n}
 characters, the resulting file fragment will contain
-@code{@var{n}*@var{block-size}} of data. 
+@code{@var{n}*@var{block-size}} of data.
 
     Last fragment descriptor can have only file offset part. In this
 case @command{genfile} will create a hole at the end of the file up to
@@ -154,7 +154,7 @@ the given offset.
     For example, consider the following invocation:
 
 @smallexample
-genfile --sparse --file sparsefile 0 ABCD 1M EFGHI 2000K 
+genfile --sparse --file sparsefile 0 ABCD 1M EFGHI 2000K
 @end smallexample
 
 @noindent
@@ -164,7 +164,7 @@ It will create 3101184-bytes long file of the following structure:
 @item Offset  @tab Length       @tab Contents
 @item 0       @tab 4*512=2048   @tab Four 512-byte blocks, filled with
 letters @samp{A}, @samp{B}, @samp{C} and @samp{D}.
-@item 2048    @tab 1046528      @tab Zero bytes 
+@item 2048    @tab 1046528      @tab Zero bytes
 @item 1050624 @tab 5*512=2560   @tab Five blocks, filled with letters
 @samp{E}, @samp{F}, @samp{G}, @samp{H}, @samp{I}.
 @item 1053184  @tab 2048000     @tab Zero bytes
@@ -172,7 +172,7 @@ letters @samp{A}, @samp{B}, @samp{C} and @samp{D}.
 
     The exit code of @command{genfile --status} command is @code{0}
 only if created file is actually sparse.
-    
+
 @node Status Mode
 @appendixsec Status Mode
 
@@ -181,56 +181,58 @@ each file specified in the command line. This mode is toggled by
 @option{--stat} (@option{-S}) command line option. An optional argument to this
 option specifies output @dfn{format}: a comma-separated list of
 @code{struct stat} fields to be displayed. This list can contain
-following identifiers @FIXME{should we also support @samp{%} notations
-as in stat(1)??}:
+following identifiers:
 
 @table @asis
 @item name
     The file name.
-    
+
 @item dev
 @itemx st_dev
     Device number in decimal.
-    
+
 @item ino
 @itemx st_ino
     Inode number.
-    
+
 @item mode[.@var{number}]
 @itemx st_mode[.@var{number}]
+
+@FIXME{Should we also support @samp{%} notations as in stat(1)?}
+
     File mode in octal.  Optional @var{number} specifies octal mask to
 be applied to the mode before outputting.  For example, @code{--stat
 mode.777} will preserve lower nine bits of it.  Notice, that you can
 use any punctuation character in place of @samp{.}.
-    
+
 @item nlink
 @itemx st_nlink
     Number of hard links.
-    
+
 @item uid
 @itemx st_uid
     User ID of owner.
-    
+
 @item gid
 @itemx st_gid
     Group ID of owner.
-    
+
 @item size
 @itemx st_size
     File size in decimal.
-    
+
 @item blksize
 @itemx st_blksize
     The size in bytes of each file block.
-    
+
 @item blocks
 @itemx st_blocks
     Number of blocks allocated.
-     
+
 @item atime
 @itemx st_atime
     Time of last access.
-    
+
 @item mtime
 @itemx st_mtime
     Time of last modification
@@ -240,7 +242,7 @@ use any punctuation character in place of @samp{.}.
     Time of last status change
 
 @item sparse
-    A boolean value indicating whether the file is @samp{sparse}.     
+    A boolean value indicating whether the file is @samp{sparse}.
 @end table
 
     Modification times are displayed in @acronym{UTC} as
@@ -249,7 +251,7 @@ use any punctuation character in place of @samp{.}.
 @code{tar tv} output format is used.
 
     The default output format is: @samp{name,dev,ino,mode,
-nlink,uid,gid,size,blksize,blocks,atime,mtime,ctime}. 
+nlink,uid,gid,size,blksize,blocks,atime,mtime,ctime}.
 
     For example, the following command will display file names and
 corresponding times of last access for each file in the current working
@@ -285,7 +287,7 @@ checkpoint. Available actions are
 @itemx --truncate @var{file}
     Truncate @var{file} to the size specified by previous
 @option{--length} option (or 0, if it is not given).
-    
+
 @item --append @var{file}
     Append data to @var{file}. The size of data and its pattern are
 given by previous @option{--length} and @option{pattern} options.

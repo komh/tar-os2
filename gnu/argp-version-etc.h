@@ -1,7 +1,7 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Version hook for Argp.
-   Copyright (C) 2009-2011 Free Software Foundation, Inc.
+   Copyright (C) 2009-2014 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,13 +23,13 @@
 extern "C" {
 #endif
 
-/* Setup standard display of the version information for the `--version'
+/* Setup standard display of the version information for the '--version'
    option.  NAME is the canonical program name, and AUTHORS is a NULL-
    terminated array of author names. At least one author name must be
    given.
 
    If NAME is NULL, the package name (as given by the PACKAGE macro)
-   is asumed to be the name of the program.
+   is assumed to be the name of the program.
 
    This function is intended to be called before argp_parse().
 */

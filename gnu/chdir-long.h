@@ -1,7 +1,7 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* provide a chdir function that tries not to fail due to ENAMETOOLONG
-   Copyright (C) 2004-2005, 2009-2011 Free Software Foundation, Inc.
+   Copyright (C) 2004-2005, 2009-2014 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -21,11 +21,7 @@
 #include <unistd.h>
 #include <limits.h>
 
-#ifndef PATH_MAX
-# ifdef MAXPATHLEN
-#  define PATH_MAX MAXPATHLEN
-# endif
-#endif
+#include "pathmax.h"
 
 /* On systems without PATH_MAX, presume that chdir accepts
    arbitrarily long directory names.  */

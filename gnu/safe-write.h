@@ -1,7 +1,7 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* An interface to write() that retries after interrupts.
-   Copyright (C) 2002, 2009-2011 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2009-2014 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -15,6 +15,19 @@
 
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+
+/* Some system calls may be interrupted and fail with errno = EINTR in the
+   following situations:
+     - The process is stopped and restarted (signal SIGSTOP and SIGCONT, user
+       types Ctrl-Z) on some platforms: Mac OS X.
+     - The process receives a signal for which a signal handler was installed
+       with sigaction() with an sa_flags field that does not contain
+       SA_RESTART.
+     - The process receives a signal for which a signal handler was installed
+       with signal() and for which no call to siginterrupt(sig,0) was done,
+       on some platforms: AIX, HP-UX, IRIX, OSF/1, Solaris.
+
+   This module provides a wrapper around write() that handles EINTR.  */
 
 #include <stddef.h>
 

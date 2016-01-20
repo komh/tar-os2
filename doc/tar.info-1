@@ -1,22 +1,22 @@
 This is tar.info, produced by makeinfo version 4.13 from tar.texi.
 
-This manual is for GNU `tar' (version 1.26, 12 March 2011), which
+This manual is for GNU `tar' (version 1.28, 22 July 2014), which
 creates and extracts files from archives.
 
-   Copyright (C) 1992, 1994, 1995, 1996, 1997, 1999, 2000, 2001, 2003,
-2004, 2005, 2006, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
+   Copyright (C) 1992, 1994-1997, 1999-2001, 2003-2013 Free Software
+Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
      Version 1.3 or any later version published by the Free Software
-     Foundation; with no Invariant Sections, with the Front-Cover Texts
-     being "A GNU Manual", and with the Back-Cover Texts as in (a)
-     below.  A copy of the license is included in the section entitled
-     "GNU Free Documentation License".
+     Foundation; with the Invariant Sections being "GNU General Public
+     License", with the Front-Cover Texts being "A GNU Manual", and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled "GNU Free Documentation
+     License".
 
      (a) The FSF's Back-Cover Text is: "You have the freedom to copy
-     and modify this GNU manual.  Buying copies from the FSF supports
-     it in developing GNU and promoting software freedom."
+     and modify this GNU manual."
 
 INFO-DIR-SECTION Archiving
 START-INFO-DIR-ENTRY
@@ -34,23 +34,23 @@ File: tar.info,  Node: Top,  Next: Introduction,  Up: (dir)
 GNU tar: an archiver tool
 *************************
 
-This manual is for GNU `tar' (version 1.26, 12 March 2011), which
+This manual is for GNU `tar' (version 1.28, 22 July 2014), which
 creates and extracts files from archives.
 
-   Copyright (C) 1992, 1994, 1995, 1996, 1997, 1999, 2000, 2001, 2003,
-2004, 2005, 2006, 2007, 2008, 2009, 2010 Free Software Foundation, Inc.
+   Copyright (C) 1992, 1994-1997, 1999-2001, 2003-2013 Free Software
+Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
      Version 1.3 or any later version published by the Free Software
-     Foundation; with no Invariant Sections, with the Front-Cover Texts
-     being "A GNU Manual", and with the Back-Cover Texts as in (a)
-     below.  A copy of the license is included in the section entitled
-     "GNU Free Documentation License".
+     Foundation; with the Invariant Sections being "GNU General Public
+     License", with the Front-Cover Texts being "A GNU Manual", and
+     with the Back-Cover Texts as in (a) below.  A copy of the license
+     is included in the section entitled "GNU Free Documentation
+     License".
 
      (a) The FSF's Back-Cover Text is: "You have the freedom to copy
-     and modify this GNU manual.  Buying copies from the FSF supports
-     it in developing GNU and promoting software freedom."
+     and modify this GNU manual."
 
    The first part of this master menu lists the major nodes in this Info
 document.  The rest of the menu lists all the lower level nodes.
@@ -567,7 +567,7 @@ in version 1.11.  Thomas Bushnell, n/BSG and Amy Gorin worked on a
 tutorial and manual for GNU `tar'.  Franc,ois Pinard put version 1.11.8
 of the manual together by taking information from all these sources and
 merging them.  Melissa Weisshaus finally edited and redesigned the book
-to create version 1.12.  The book for versions from 1.14 up to 1.26
+to create version 1.12.  The book for versions from 1.14 up to 1.28
 were edited by the current maintainer, Sergey Poznyakoff.
 
    For version 1.12, Daniel Hagerty contributed a great deal of
@@ -1296,7 +1296,7 @@ names" when creating an archive and "member names" when listing it.
 Consider this example:
 
      $ tar --create --verbose --file archive /etc/mail
-     tar: Removing leading `/' from member names
+     tar: Removing leading '/' from member names
      /etc/mail/
      /etc/mail/sendmail.cf
      /etc/mail/aliases
@@ -1629,13 +1629,14 @@ receives about what is going on.  These are the `--help' and
 * Synopsis::
 * using tar options::
 * Styles::
-* All Options::
-* help::
-* defaults::
-* verbose::
-* checkpoints::
-* warnings::
-* interactive::
+* All Options::           All `tar' Options.
+* help::                  Where to Get Help.
+* defaults::              What are the Default Values.
+* verbose::               Checking `tar' progress.
+* checkpoints::           Checkpoints.
+* warnings::              Controlling Warning Messages.
+* interactive::           Asking for Confirmation During Operations.
+* external::              Running External Commands.
 
 
 File: tar.info,  Node: Synopsis,  Next: using tar options,  Up: tar invocation
@@ -1929,16 +1930,24 @@ File: tar.info,  Node: Old Options,  Next: Mixing,  Prev: Short Options,  Up: St
 3.3.3 Old Option Style
 ----------------------
 
-Like short options, "old options" are single letters.  However, old
+As far as we know, all `tar' programs, GNU and non-GNU, support "old
+options": that is, if the first argument does not start with `-', it is
+assumed to specify option letters.  GNU `tar' supports old options not
+only for historical reasons, but also because many people are used to
+them.  If the first argument does not start with a dash, you are
+announcing the old option style instead of the short option style; old
+options are decoded differently.
+
+   Like short options, old options are single letters.  However, old
 options must be written together as a single clumped set, without
-spaces separating them or dashes preceding them(1).  This set of
-letters must be the first to appear on the command line, after the
-`tar' program name and some white space; old options cannot appear
-anywhere else.  The letter of an old option is exactly the same letter
-as the corresponding short option.  For example, the old option `t' is
-the same as the short option `-t', and consequently, the same as the
-long option `--list'.  So for example, the command `tar cv' specifies
-the option `-v' in addition to the operation `-c'.
+spaces separating them or dashes preceding them.  This set of letters
+must be the first to appear on the command line, after the `tar'
+program name and some white space; old options cannot appear anywhere
+else.  The letter of an old option is exactly the same letter as the
+corresponding short option.  For example, the old option `t' is the
+same as the short option `-t', and consequently, the same as the long
+option `--list'.  So for example, the command `tar cv' specifies the
+option `-v' in addition to the operation `-c'.
 
    When options that need arguments are given together with the command,
 all the associated arguments follow, in the same order as the options.
@@ -1950,13 +1959,13 @@ style as follows:
 Here, `20' is the argument of `-b' and `/dev/rmt0' is the argument of
 `-f'.
 
-   On the other hand, this old style syntax makes it difficult to match
-option letters with their corresponding arguments, and is often
-confusing.  In the command `tar cvbf 20 /dev/rmt0', for example, `20'
-is the argument for `-b', `/dev/rmt0' is the argument for `-f', and
-`-v' does not have a corresponding argument.  Even using short options
-like in `tar -c -v -b 20 -f /dev/rmt0' is clearer, putting all
-arguments next to the option they pertain to.
+   The old style syntax can make it difficult to match option letters
+with their corresponding arguments, and is often confusing.  In the
+command `tar cvbf 20 /dev/rmt0', for example, `20' is the argument for
+`-b', `/dev/rmt0' is the argument for `-f', and `-v' does not have a
+corresponding argument.  Even using short options like in
+`tar -c -v -b 20 -f /dev/rmt0' is clearer, putting all arguments next
+to the option they pertain to.
 
    If you want to reorder the letters in the old option argument, be
 sure to reorder any corresponding argument appropriately.
@@ -1972,28 +1981,12 @@ value for option `f' and recognizes the option `z'.  The second
 example, however, uses `z' as the value for option `f' -- probably not
 what was intended.
 
-   Old options are kept for compatibility with old versions of `tar'.
-
    This second example could be corrected in many ways, among which the
 following are equivalent:
 
      tar -czf archive.tar.gz file
      tar -cf archive.tar.gz -z file
      tar cf archive.tar.gz -z file
-
-   As far as we know, all `tar' programs, GNU and non-GNU, support old
-options.  GNU `tar' supports them not only for historical reasons, but
-also because many people are used to them.  For compatibility with Unix
-`tar', the first argument is always treated as containing command and
-option letters even if it doesn't start with `-'.  Thus, `tar c' is
-equivalent to `tar -c': both of them specify the `--create' (`-c')
-command to create an archive.
-
-   ---------- Footnotes ----------
-
-   (1) Beware that if you precede options with a dash, you are
-announcing the short option style instead of the old option style;
-short options are decoded differently.
 
 
 File: tar.info,  Node: Mixing,  Prev: Old Options,  Up: Styles
@@ -2146,8 +2139,9 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
 `--absolute-names'
 `-P'
      Normally when creating an archive, `tar' strips an initial `/'
-     from member names.  This option disables that behavior.  *Note
-     absolute::.
+     from member names, and when extracting from an archive `tar'
+     treats names specially if they have initial `/' or internal `..'.
+     This option disables that behavior.  *Note absolute::.
 
 `--after-date'
      (See `--newer', *note after::)
@@ -2346,6 +2340,16 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
      Exclude from dump any directory containing a valid cache directory
      tag file.  *Note exclude::.
 
+`--exclude-ignore=FILE'
+     Before dumping a directory, `tar' checks if it contains FILE.  If
+     so, exclusion patterns are read from this file.  The patterns
+     affect only the directory itself.  *Note exclude::.
+
+`--exclude-ignore-recursive=FILE'
+     Before dumping a directory, `tar' checks if it contains FILE.  If
+     so, exclusion patterns are read from this file.  The patterns
+     affect the directory and all itssubdirectories.  *Note exclude::.
+
 `--exclude-tag=FILE'
      Exclude from dump any directory containing file named FILE, but
      dump the directory node and FILE itself.  *Note exclude-tag:
@@ -2364,7 +2368,15 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
      Exclude from dump directories and files, that are internal for some
      widely used version control systems.
 
-     *Note exclude-vcs: exclude.
+     *Note exclude-vcs::.
+
+`--exclude-vcs-ignores'
+     Exclude files that match patterns read from VCS-specific ignore
+     files.  Supported files are: `.cvsignore', `.gitignore',
+     `.bzrignore', and `.hgignore'.  The semantics of each file is the
+     same as for the corresponding VCS, e.g. patterns read from
+     `.gitignore' affect the directory and all its subdirectories.
+     *Note exclude-vcs-ignores::.
 
 `--file=ARCHIVE'
 `-f ARCHIVE'
@@ -2428,9 +2440,9 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
 
 `--group=GROUP'
      Files added to the `tar' archive will have a group ID of GROUP,
-     rather than the group from the source file.  GROUP is first decoded
-     as a group symbolic name, but if this interpretation fails, it has
-     to be a decimal numeric group ID.  *Note override::.
+     rather than the group from the source file.  GROUP can specify a
+     symbolic name, or a numeric ID, or both as NAME:ID.  *Note
+     override::.
 
      Also see the comments for the `--owner=USER' option.
 
@@ -2463,7 +2475,7 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
 
 `--ignore-failed-read'
      Do not exit unsuccessfully merely because an unreadable file was
-     encountered.  *Note Reading::.
+     encountered.  *Note Ignore Failed Read::.
 
 `--ignore-zeros'
 `-i'
@@ -2480,13 +2492,13 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
 `--index-file=FILE'
      Send verbose output to FILE instead of to standard output.
 
-`--info-script=SCRIPT-FILE'
-`--new-volume-script=SCRIPT-FILE'
-`-F SCRIPT-FILE'
-     When `tar' is performing multi-tape backups, SCRIPT-FILE is run at
-     the end of each tape.  If SCRIPT-FILE exits with nonzero status,
-     `tar' fails immediately.  *Note info-script::, for a detailed
-     discussion of SCRIPT-FILE.
+`--info-script=COMMAND'
+`--new-volume-script=COMMAND'
+`-F COMMAND'
+     When `tar' is performing multi-tape backups, COMMAND is run at the
+     end of each tape.  If it exits with nonzero status, `tar' fails
+     immediately.  *Note info-script::, for a detailed discussion of
+     this feature.
 
 `--interactive'
 `--confirmation'
@@ -2495,6 +2507,19 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
      performing potentially destructive options, such as overwriting
      files.  *Note interactive::.
 
+`--keep-directory-symlink'
+     This option changes the behavior of tar when it encounters a
+     symlink with the same name as the directory that it is about to
+     extract.  By default, in this case tar would first remove the
+     symlink and then proceed extracting the directory.
+
+     The `--keep-directory-symlink' option disables this behavior and
+     instructs tar to follow symlinks to directories when extracting
+     from the archive.
+
+     It is mainly intended to provide compatibility with the Slackware
+     installation scripts.
+
 `--keep-newer-files'
      Do not replace existing files that are newer than their archive
      copies when extracting files from an archive.
@@ -2502,7 +2527,10 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
 `--keep-old-files'
 `-k'
      Do not overwrite existing files when extracting files from an
-     archive.  *Note Keep Old Files::.
+     archive.  Return error if such files exist.  See also *note
+     --skip-old-files::.
+
+     *Note Keep Old Files::.
 
 `--label=NAME'
 `-V NAME'
@@ -2513,7 +2541,7 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
 
 `--level=N'
      Force incremental backup of level N.  As of GNU `tar' version
-     1.26, the option `--level=0' truncates the snapshot file, thereby
+     1.28, the option `--level=0' truncates the snapshot file, thereby
      forcing the level 0 dump.  Other values of N are effectively
      ignored.  *Note --level=0::, for details and examples.
 
@@ -2692,6 +2720,17 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
      directories that are on different file systems from the current
      directory.
 
+`--one-top-level[=DIR]'
+     Tells `tar' to create a new directory beneath the extraction
+     directory (or the one passed to `-C') and use it to guard against
+     tarbombs.  In the absence of DIR argument, the name of the new
+     directory will be equal to the base name of the archive (file name
+     minus the archive suffix, if recognized).  Any member names that
+     do not begin with that directory name (after transformations from
+     `--transform' and `--strip-components') will be prefixed with it.
+     Recognized file name suffixes are `.tar', and any compression
+     suffixes recognizable by *Note --auto-compress::.
+
 `--overwrite'
      Overwrite existing files and directory metadata when extracting
      files from an archive.  *Note Overwrite Old Files::.
@@ -2703,9 +2742,8 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
 `--owner=USER'
      Specifies that `tar' should use USER as the owner of members when
      creating archives, instead of the user associated with the source
-     file.  USER is first decoded as a user symbolic name, but if this
-     interpretation fails, it has to be a decimal numeric user ID.
-     *Note override::.
+     file.  USER can specify a symbolic name, or a numeric ID, or both
+     as NAME:ID.  *Note override::.
 
      This option does not affect extraction from archives.
 
@@ -2824,11 +2862,16 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
           --rmt-command=/usr/libexec/rmt --rsh-command=/usr/bin/rsh
 
      Notice, that this option outputs only one line.  The example output
-     above has been split to fit page boundaries.
+     above has been split to fit page boundaries. *Note defaults::.
 
 `--show-omitted-dirs'
      Instructs `tar' to mention the directories it is skipping when
      operating on a `tar' archive.  *Note show-omitted-dirs::.
+
+`--show-snapshot-field-ranges'
+     Displays the range of values allowed by this version of `tar' for
+     each field in the snapshot file, then exits successfully.  *Note
+     Snapshot Files::.
 
 `--show-transformed-names'
 `--show-stored-names'
@@ -2837,6 +2880,37 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
      one of the archive creation operations it instructs `tar' to list
      the member names stored in the archive, as opposed to the actual
      file names.  *Note listing member and file names::.
+
+`--skip-old-files'
+     Do not overwrite existing files when extracting files from an
+     archive.  *Note Keep Old Files::.
+
+     This option differs from `--keep-old-files' in that it does not
+     treat such files as an error, instead it just silently avoids
+     overwriting them.
+
+     The `--warning=existing-file' option can be used together with
+     this option to produce warning messages about existing old files
+     (*note warnings::).
+
+`--sort=ORDER'
+     Specify the directory sorting order when reading directories.
+     ORDER may be one of the following:
+
+    `none'
+          No directory sorting is performed. This is the default.
+
+    `name'
+          Sort the directory entries on name. The operating system may
+          deliver directory entries in a more or less random order, and
+          sorting them makes archive creation reproducible.
+
+    `inode'
+          Sort the directory entries on inode number. Sorting
+          directories on inode number may reduce the amount of disk
+          seek operations when creating an archive for some file
+          systems.
+
 
 `--sparse'
 `-S'
@@ -3057,9 +3131,8 @@ information about its name, version, origin and legal status, all on
 standard output, and then exit successfully.  For example,
 `tar --version' might print:
 
-     tar (GNU tar) 1.26
-     Copyright (C) 2010 Free Software Foundation, Inc.
-     Copyright (C) 2010 Free Software Foundation, Inc.
+     tar (GNU tar) 1.28
+     Copyright (C) 2013-2014 Free Software Foundation, Inc.
      License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
      This is free software: you are free to change and redistribute it.
      There is NO WARRANTY, to the extent permitted by law.
@@ -3195,7 +3268,7 @@ list output:
 
    Verbose output appears on the standard output except when an archive
 is being written to the standard output, as with `tar --create --file=-
---verbose' (`tar cfv -', or even `tar cv'--if the installer let
+--verbose' (`tar cvf -', or even `tar cv'--if the installer let
 standard output be the default archive).  In that case `tar' writes
 verbose output to the standard error stream.
 
@@ -3339,18 +3412,59 @@ do so by placing an equals sign and the message right after it, e.g.:
 
      --checkpoint-action="echo=Hit %s checkpoint #%u"
 
-   The `%s' and `%u' in the above example are "meta-characters".  The
-`%s' meta-character is replaced with the "type" of the checkpoint:
-`write' or `read' (or a corresponding translated version in locales
-other than POSIX).  The `%u' meta-character is replaced with the
-ordinal number of the checkpoint.  Thus, the above example could
-produce the following output when used with the `--create' option:
+   The `%s' and `%u' in the above example are "format specifiers".  The
+`%s' specifier is replaced with the "type" of the checkpoint: `write' or
+`read' (or a corresponding translated version in locales other than
+POSIX).  The `%u' specifier is replaced with the ordinal number of the
+checkpoint.  Thus, the above example could produce the following output
+when used with the `--create' option:
 
      tar: Hit write checkpoint #10
      tar: Hit write checkpoint #20
      tar: Hit write checkpoint #30
 
-   Aside from meta-character expansion, the message string is subject to
+   The complete list of available format specifiers follows.  Some of
+them can take optional arguments.  These arguments, if given, are
+supplied in curly braces between the percent sign and the specifier
+letter.
+
+`%s'
+     Print type of the checkpoint (`write' or `read').
+
+`%u'
+     Print number of the checkpoint.
+
+`%{r,w,d}T'
+     Print number of bytes transferred so far and approximate transfer
+     speed.  Optional arguments supply prefixes to be used before number
+     of bytes read, written and deleted, correspondingly.  If absent,
+     they default to `R'. `W', `D'.  Any or all of them can be omitted,
+     so, that e.g. `%{}T' means to print corresponding statistics
+     without any prefixes.  Any surplus arguments, if present, are
+     silently ignored.
+
+          $ tar --delete -f f.tar --checkpoint-action=echo="#%u: %T" main.c
+          tar: #1: R: 0 (0B, 0B/s),W: 0 (0B, 0B/s),D: 0
+          tar: #2: R: 10240 (10KiB, 19MiB/s),W: 0 (0B, 0B/s),D: 10240
+
+     See also the `totals' action, described below.
+
+`%{FMT}t'
+     Output current local time using FMT as format for `strftime'
+     (*note strftime: (strftime(3))strftime.).  The `{FMT}' part is
+     optional.  If not present, the default format is `%c', i.e. the
+     preferred date and time representation for the current locale.
+
+`%{N}*'
+     Pad output with spaces to the Nth column.  If the `{N}' part is
+     omitted, the current screen width is assumed.
+
+`%c'
+     This is a shortcut for `%{%Y-%m-%d %H:%M:%S}t: %ds,
+     %{read,wrote}T%*\r', intended mainly for use with `ttyout' action
+     (see below).
+
+   Aside from format expansion, the message string is subject to
 "unquoting", during which the backslash "escape sequences" are replaced
 with their corresponding ASCII characters (*note escape sequences::).
 E.g. the following action will produce an audible bell and the message
@@ -3371,7 +3485,16 @@ to the string, nor does it output a newline after it.  For example, the
 following action will print the checkpoint message at the same screen
 line, overwriting any previous message:
 
-     --checkpoint-action="ttyout=\rHit %s checkpoint #%u"
+     --checkpoint-action="ttyout=Hit %s checkpoint #%u%*\r"
+
+Notice the use of `%*' specifier to clear out any eventual remains of
+the prior output line.  As as more complex example, consider this:
+
+     --checkpoint-action=ttyout='%{%Y-%m-%d %H:%M:%S}t (%d sec): #%u, %T%*\r'
+
+This prints the current local time, number of seconds expired since tar
+was started, the checkpoint ordinal number, transferred bytes and
+average computed I/O speed.
 
    Another available checkpoint action is `dot' (or `.').  It instructs
 `tar' to print a single dot on the standard listing stream, e.g.:
@@ -3383,20 +3506,29 @@ line, overwriting any previous message:
 be abbreviated by placing a dot in front of the checkpoint frequency,
 as shown in the previous section.
 
+   The `totals' action prints the total number of bytes transferred so
+far.  The format of the data is the same as for the `--totals' option
+(*note totals::).  See also `%T' format specifier of the `echo' or
+`ttyout' action.
+
    Yet another action, `sleep', pauses `tar' for a specified amount of
 seconds.  The following example will stop for 30 seconds at each
 checkpoint:
 
      $ tar -c --checkpoint=1000 --checkpoint-action=sleep=30
 
-   Finally, the `exec' action executes a given external program.  For
+   Finally, the `exec' action executes a given external command.  For
 example:
 
      $ tar -c --checkpoint=1000 --checkpoint-action=exec=/sbin/cpoint
 
-   This program is executed using `/bin/sh -c', with no additional
-arguments.  Its exit code is ignored.  It gets a copy of `tar''s
-environment plus the following variables:
+   The supplied command can be any valid command invocation, with or
+without additional command line arguments.  If it does contain
+arguments, don't forget to quote it to prevent it from being split by
+the shell.  *Note Running External Commands: external, for more detail.
+
+   The command gets a copy of `tar''s environment plus the following
+variables:
 
 `TAR_VERSION'
      GNU `tar' version number.
@@ -3417,6 +3549,15 @@ environment plus the following variables:
 `TAR_FORMAT'
      Format of the archive being processed. *Note Formats::, for a
      complete list of archive format names.
+
+   These environment variables can also be passed as arguments to the
+command, provided that they are properly escaped, for example:
+
+     tar -c -f arc.tar \
+          --checkpoint-action='exec=/sbin/cpoint $TAR_FILENAME'
+
+Notice single quotes to prevent variable names from being expanded by
+the shell when invoking `tar'.
 
    Any number of actions can be defined, by supplying several
 `--checkpoint-action' options in the command line.  For example, the
@@ -3516,13 +3657,13 @@ symlink-cast
      `Attempting extraction of symbolic links as hard links' 
 
 unknown-cast
-     `%s: Unknown file type `%c', extracted as normal file' 
+     `%s: Unknown file type '%c', extracted as normal file' 
 
 ignore-newer
      `Current %s is newer or same age' 
 
 unknown-keyword
-     `Ignoring unknown extended header keyword `%s'' 
+     `Ignoring unknown extended header keyword '%s'' 
 
 decompress-program
      Controls verbose description of failures occurring when trying to
@@ -3536,7 +3677,10 @@ decompress-program
           tar (child): trying gzip
 
      This means that `tar' first tried to decompress `archive.Z' using
-     `compress', and, when that failed, switched to `gzip'.
+     `compress', and, when that failed, switched to `gzip'.  
+
+record-size
+     `Record size = %lu blocks'
 
 Keywords controlling incremental extraction:
 --------------------------------------------
@@ -3555,7 +3699,7 @@ bad-dumpdir
      `Malformed dumpdir: 'X' never used'
 
 
-File: tar.info,  Node: interactive,  Prev: warnings,  Up: tar invocation
+File: tar.info,  Node: interactive,  Next: external,  Prev: warnings,  Up: tar invocation
 
 3.10 Asking for Confirmation During Operations
 ==============================================
@@ -3592,6 +3736,42 @@ and error output.  A possible approach would be using a named pipe to
 receive the archive, and having the consumer process to read from that
 named pipe.  This has the advantage of letting standard output free to
 receive verbose output, all separate from errors.
+
+
+File: tar.info,  Node: external,  Prev: interactive,  Up: tar invocation
+
+3.11 Running External Commands
+==============================
+
+Certain GNU `tar' operations imply running external commands that you
+supply on the command line.  One of such operations is checkpointing,
+described above (*note checkpoint exec::).  Another example of this
+feature is the `-I' option, which allows you to supply the program to
+use for compressing or decompressing the archive (*note
+use-compress-program::).
+
+   Whenever such operation is requested, `tar' first splits the
+supplied command into words much like the shell does.  It then treats
+the first word as the name of the program or the shell script to execute
+and the rest of words as its command line arguments.  The program,
+unless given as an absolute file name, is searched in the shell's
+`PATH'.
+
+   Any additional information is normally supplied to external commands
+in environment variables, specific to each particular operation.  For
+example, the `--checkpoint-action=exec' option, defines the
+`TAR_ARCHIVE' variable to the name of the archive being worked upon.
+You can, should the need be, use these variables in the command line of
+the external command.  For example:
+
+     $ tar -x -f archive.tar \
+         --checkpoint=exec='printf "%04d in %32s\r" $TAR_CHECKPOINT $TAR_ARCHIVE'
+
+This command prints for each checkpoint its number and the name of the
+archive, using the same output line on the screen.
+
+   Notice the use of single quotes to prevent variable names from being
+expanded by the shell when invoking `tar'.
 
 
 File: tar.info,  Node: operations,  Next: Backups,  Prev: tar invocation,  Up: Top
@@ -3655,7 +3835,7 @@ complementary notes for these operations.
      file with no names in it, as shown in the following commands:
 
           tar --create --file=empty-archive.tar --files-from=/dev/null
-          tar cfT empty-archive.tar /dev/null
+          tar -cf empty-archive.tar -T /dev/null
 
 `--extract'
 `--get'
@@ -3824,9 +4004,9 @@ Media::, for more information.)
 
    ---------- Footnotes ----------
 
-   (1) Unless you give it `--keep-old-files' option, or the disk copy
-is newer than the one in the archive and you invoke `tar' with
-`--keep-newer-files' option.
+   (1) Unless you give it `--keep-old-files' (or `--skip-old-files')
+option, or the disk copy is newer than the one in the archive and you
+invoke `tar' with `--keep-newer-files' option.
 
 
 File: tar.info,  Node: appending files,  Next: multiple,  Up: append
@@ -4221,15 +4401,28 @@ stored in the archive.
      For example:
 
           $ tar -c -f archive.tar -v --mtime=yesterday .
-          tar: Option --mtime: Treating date `yesterday' as 2006-06-20
+          tar: Option --mtime: Treating date 'yesterday' as 2006-06-20
           13:06:29.152478
           ...
 
 `--owner=USER'
      Specifies that `tar' should use USER as the owner of members when
      creating archives, instead of the user associated with the source
-     file.  The argument USER can be either an existing user symbolic
-     name, or a decimal numeric user ID.
+     file.
+
+     If USER contains a colon, it is taken to be of the form NAME:ID
+     where a nonempty NAME specifies the user name and a nonempty ID
+     specifies the decimal numeric user ID.  If USER does not contain a
+     colon, it is taken to be a user number if it is one or more
+     decimal digits; otherwise it is taken to be a user name.
+
+     If a name is given but no number, the number is inferred from the
+     current host's user database if possible, and the file's user
+     number is used otherwise.  If a number is given but no name, the
+     name is inferred from the number if possible, and an empty name is
+     used otherwise.  If both name and number are given, the user
+     database is not consulted, and the name and number need not be
+     valid on the current host.
 
      There is no value indicating a missing number, and `0' usually
      means `root'.  Some people like to force `0' as the value to offer
@@ -4245,9 +4438,9 @@ stored in the archive.
 
 `--group=GROUP'
      Files added to the `tar' archive will have a group ID of GROUP,
-     rather than the group from the source file.  The argument GROUP
-     can be either an existing group symbolic name, or a decimal
-     numeric group ID.
+     rather than the group from the source file.  As with `--owner',
+     the argument GROUP can be an existing group symbolic name, or a
+     decimal numeric group ID, or NAME:ID.
 
 
 File: tar.info,  Node: Ignore Failed Read,  Prev: override,  Up: create options
@@ -4394,7 +4587,17 @@ directory, use the `--no-overwrite-dir' option.
 replaced, use the `--keep-old-files' (`-k') option.  It causes `tar' to
 refuse to replace or update a file that already exists, i.e., a file
 with the same name as an archive member prevents extraction of that
-archive member.  Instead, it reports an error.
+archive member.  Instead, it reports an error.  For example:
+
+     $ ls
+     blues
+     $ tar -x -k -f archive.tar
+     tar: blues: Cannot open: File exists
+     tar: Exiting with failure status due to previous errors
+
+   If you wish to preserve old files untouched, but don't want `tar' to
+treat them as errors, use the `--skip-old-files' option.  This option
+causes `tar' to silently skip extracting over existing files.
 
    To be more aggressive about altering existing files, use the
 `--overwrite' option.  It causes `tar' to overwrite existing files and
@@ -4458,14 +4661,23 @@ File: tar.info,  Node: Keep Old Files,  Next: Keep Newer Files,  Prev: Overwrite
 Keep Old Files
 ..............
 
+GNU `tar' provides two options to control its actions in a situation
+when it is about to extract a file which already exists on disk.
+
 `--keep-old-files'
 `-k'
-     Do not replace existing files from archive.  The
-     `--keep-old-files' (`-k') option prevents `tar' from replacing
-     existing files with files with the same name from the archive. The
-     `--keep-old-files' option is meaningless with `--list' (`-t').
-     Prevents `tar' from replacing files in the file system during
-     extraction.
+     Do not replace existing files from archive.  When such a file is
+     encountered, `tar' issues an error message.  Upon end of
+     extraction, `tar' exits with code 2 (*note exit status::).
+
+`--skip-old-files'
+     Do not replace existing files from archive, but do not treat that
+     as error.  Such files are silently skipped and do not affect `tar'
+     exit status.
+
+     Additional verbosity can be obtained using
+     `--warning=existing-file' together with that option (*note
+     warnings::).
 
 
 File: tar.info,  Node: Keep Newer Files,  Next: Unlink First,  Prev: Keep Old Files,  Up: Writing
@@ -4666,13 +4878,15 @@ the standard input of an external program:
 
 `--to-command=COMMAND'
      Extract files and pipe their contents to the standard input of
-     COMMAND. When this option is used, instead of creating the files
+     COMMAND.  When this option is used, instead of creating the files
      specified, `tar' invokes COMMAND and pipes the contents of the
-     files to its standard output. The COMMAND may contain command line
-     arguments. The program is executed via `sh -c'. Notice, that
-     COMMAND is executed once for each regular file extracted.
-     Non-regular files (directories, etc.) are ignored when this option
-     is used.
+     files to its standard output.  The COMMAND may contain command
+     line arguments (see *note Running External Commands: external, for
+     more detail).
+
+     Notice, that COMMAND is executed once for each regular file
+     extracted. Non-regular files (directories, etc.) are ignored when
+     this option is used.
 
    The command can obtain the information about the file it processes
 from the following environment variables:
@@ -4743,6 +4957,16 @@ mode and the archive being processed:
 `TAR_FORMAT'
      Format of the archive being processed. *Note Formats::, for a
      complete list of archive format names.
+
+   These variables are defined prior to executing the command, so you
+can pass them as arguments, if you prefer.  For example, if the command
+PROC takes the member name and size as its arguments, then you could do:
+
+     $ tar -x -f archive.tar \
+            --to-command='proc $TAR_FILENAME $TAR_SIZE'
+
+Notice single quotes to prevent variable names from being expanded by
+the shell when invoking `tar'.
 
    If COMMAND exits with a non-0 status, `tar' will print an error
 message similar to the following:
@@ -5907,7 +6131,7 @@ immediately, reporting the following:
 
      $ tar cf a.tar
      tar: Cowardly refusing to create an empty archive
-     Try `tar --help' or `tar --usage' for more information.
+     Try 'tar --help' or 'tar --usage' for more information.
 
    If you specify either `--list' (`-t') or `--extract' (`--get',
 `-x'), `tar' operates on all the archive members in the archive.
@@ -5983,30 +6207,6 @@ resulting archive `foo.tar' will contain:
      hosts
      libc.a
 
-
-   Notice that the option parsing algorithm used with `-T' is stricter
-than the one used by shell.  Namely, when specifying option arguments,
-you should observe the following rules:
-
-   * When using short (single-letter) option form, its argument must
-     immediately follow the option letter, without any intervening
-     whitespace.  For example: `-Cdir'.
-
-   * When using long option form, the option argument must be separated
-     from the option by a single equal sign.  No whitespace is allowed
-     on any side of the equal sign.  For example: `--directory=dir'.
-
-   * For both short and long option forms, the option argument can be
-     given on the next line after the option name, e.g.:
-
-          --directory
-          dir
-
-     and
-
-          -C
-          dir
-
    If you happen to have a file whose name starts with `-', precede it
 with `--add-file' option to prevent it from being recognized as an
 option.  For example: `--add-file=--my-file'.
@@ -6067,10 +6267,10 @@ following command can be used to combine it with the above command:
    This example uses short options for typographic reasons, to avoid
 very long lines.
 
-   GNU `tar' is able to automatically detect `NUL'-terminated file
-lists, so it is safe to use them even without the `--null' option.  In
-this case `tar' will print a warning and continue reading such a file
-as if `--null' were actually given:
+   GNU `tar' is tries to automatically detect `NUL'-terminated file
+lists, so in many cases it is safe to use them even without the
+`--null' option.  In this case `tar' will print a warning and continue
+reading such a file as if `--null' were actually given:
 
      $ find . -size +800 -print0 | tar -c -f big.tar -T -
      tar: -: file name read contains nul character
@@ -6117,12 +6317,60 @@ difficult to catch using text editors.
 
    However, empty lines are OK.
 
+   When archiving directories that are under some version control
+system (VCS), it is often convenient to read exclusion patterns from
+this VCS' ignore files (e.g. `.cvsignore', `.gitignore', etc.)  The
+following options provide such possibilty:
+
+`--exclude-vcs-ignores'
+     Before archiving a directory, see if it contains any of the
+     following files: `cvsignore', `.gitignore', `.bzrignore', or
+     `.hgignore'.  If so, read ignore patterns from these files.
+
+     The patterns are treated much as the corresponding VCS would treat
+     them, i.e.:
+
+    `.cvsignore'
+          Contains shell-style globbing patterns that apply only to the
+          directory where this file resides.  No comments are allowed
+          in the file.  Empty lines are ignored.
+
+    `.gitignore'
+          Contains shell-style globbing patterns.  Applies to the
+          directory where `.gitfile' is located and all its
+          subdirectories.
+
+          Any line beginning with a `#' is a comment.  Backslash escapes
+          the comment character.
+
+    `.bzrignore'
+          Contains shell globbing-patterns and regular expressions (if
+          prefixed with `RE:'(1).  Patterns affect the directory and
+          all its subdirectories.
+
+          Any line beginning with a `#' is a comment.
+
+    `.hgignore'
+          Contains posix regular expressions(2).  The line `syntax:
+          glob' switches to shell globbing patterns.  The line `syntax:
+          regexp' switches back.  Comments begin with a `#'.  Patterns
+          affect the directory and all its subdirectories.
+
+`--exclude-ignore=FILE'
+     Before dumping a directory, `tar' checks if it contains FILE.  If
+     so, exclusion patterns are read from this file.  The patterns
+     affect only the directory itself.
+
+`--exclude-ignore-recursive=FILE'
+     Same as `--exclude-ignore', except that the patterns read affect
+     both the directory where FILE resides and all its subdirectories.
+
 `--exclude-vcs'
      Exclude files and directories used by following version control
      systems: `CVS', `RCS', `SCCS', `SVN', `Arch', `Bazaar',
      `Mercurial', and `Darcs'.
 
-     As of version 1.26, the following files are excluded:
+     As of version 1.28, the following files are excluded:
 
         * `CVS/', and everything under it
 
@@ -6265,6 +6513,15 @@ entirely:
 * Menu:
 
 * problems with exclude::
+
+   ---------- Footnotes ----------
+
+   (1) According to the Bazaar docs, globbing-patterns are Korn-shell
+style and regular expressions are perl-style.  As of GNU `tar' version
+1.28, these are treated as shell-style globs and posix extended
+regexps.  This will be fixed in future releases.
+
+   (2) Support for perl-style regexps will appear in future releases.
 
 
 File: tar.info,  Node: problems with exclude,  Up: exclude
@@ -6640,20 +6897,20 @@ existed in the current working directory:
      Control characters, single quote and backslash are printed using
      backslash notation.  All names are quoted using left and right
      quotation marks, appropriate to the current locale.  If it does not
-     define quotation marks, use ``' as left and `'' as right quotation
+     define quotation marks, use `'' as left and as right quotation
      marks.  Any occurrences of the right quotation mark in a name are
      escaped with `\', for example:
 
      For example:
 
           $ tar tf arch.tar --quoting-style=locale
-          `./'
-          `./a space'
-          `./a\'single\'quote'
-          `./a"double"quote'
-          `./a\\backslash'
-          `./a\ttab'
-          `./a\nnewline'
+          './'
+          './a space'
+          './a\'single\'quote'
+          './a"double"quote'
+          './a\\backslash'
+          './a\ttab'
+          './a\nnewline'
 
 `clocale'
      Same as `locale', but `"' is used for both left and right
@@ -7004,7 +7261,7 @@ saying what date it will use.  This is to help user ensure he is using
 the right date.  For example:
 
      $ tar -c -f archive.tar --after-date='10 days ago' .
-     tar: Option --after-date: Treating date `10 days ago' as 2006-06-11
+     tar: Option --after-date: Treating date '10 days ago' as 2006-06-11
      13:19:37.232434
 
      *Please Note:* `--after-date' and `--newer-mtime' should not be
@@ -7225,6 +7482,10 @@ members into the archive.  For example, if you ask `tar' to add the file
 `/bin/ls' to an archive, it will do so, but the member name will be
 `bin/ls'(1).
 
+   Symbolic links containing `..' or leading `/' can also cause
+problems when extracting, so `tar' normally extracts them last; it may
+create empty files as placeholders during extraction.
+
    If you use the `--absolute-names' (`-P') option, `tar' will do none
 of these transformations.
 
@@ -7243,7 +7504,7 @@ convenient than switching to root.
 
 `--absolute-names'
      Preserves full file names (including superior directory names) when
-     archiving files.  Preserves leading slash when extracting files.
+     archiving and extracting files.
 
 
    `tar' prints out a message about removing the `/' from file names.
@@ -7304,7 +7565,7 @@ First, a quote:
      future, last Tuesday or a week from Sunday, with feelings of
      helpless confusion.  ...
 
-     -- Robert Grudin, `Time and the Art of Living'.
+     --Robert Grudin, `Time and the Art of Living'.
 
    This section describes the textual date representations that GNU
 programs accept.  These are the strings you, as a user, can supply as
@@ -7316,7 +7577,8 @@ arguments to the various programs.  The C interface (via the
 * General date syntax::            Common rules.
 * Calendar date items::            19 Dec 1994.
 * Time of day items::              9:20pm.
-* Time zone items::                EST, PDT, GMT.
+* Time zone items::                EST, PDT, UTC, ...
+* Combined date and time of day items:: 1972-09-24T20:02:00,000000-0500.
 * Day of week items::              Monday and others.
 * Relative items in date strings:: next tuesday, 2 years ago.
 * Pure numbers in date strings::   19931219, 1440.
@@ -7341,6 +7603,8 @@ items:
    * time of day items
 
    * time zone items
+
+   * combined date and time of day items
 
    * day of the week items
 
@@ -7379,8 +7643,8 @@ zone items other than `UTC' and `Z'.  Here are some ways to do this:
      Mon Mar  1 00:21:42 UTC 2004
      $ TZ=UTC0 date +'%Y-%m-%d %H:%M:%SZ'
      2004-03-01 00:21:42Z
-     $ date --iso-8601=ns | tr T ' '  # --iso-8601 is a GNU extension.
-     2004-02-29 16:21:42,692722128-0800
+     $ date --rfc-3339=ns  # --rfc-3339 is a GNU extension.
+     2004-02-29 16:21:42.692722128-08:00
      $ date --rfc-2822  # a GNU extension
      Sun, 29 Feb 2004 16:21:42 -0800
      $ date +'%Y-%m-%d %H:%M:%S %z'  # %z is a GNU extension.
@@ -7453,289 +7717,4 @@ any of the following:
    Or, omitting the year:
 
      MONTH DAY
-
-
-File: tar.info,  Node: Time of day items,  Next: Time zone items,  Prev: Calendar date items,  Up: Date input formats
-
-7.3 Time of day items
-=====================
-
-A "time of day item" in date strings specifies the time on a given day.
-Here are some examples, all of which represent the same time:
-
-     20:02:00.000000
-     20:02
-     8:02pm
-     20:02-0500      # In EST (U.S. Eastern Standard Time).
-
-   More generally, the time of day may be given as
-`HOUR:MINUTE:SECOND', where HOUR is a number between 0 and 23, MINUTE
-is a number between 0 and 59, and SECOND is a number between 0 and 59
-possibly followed by `.' or `,' and a fraction containing one or more
-digits.  Alternatively, `:SECOND' can be omitted, in which case it is
-taken to be zero.  On the rare hosts that support leap seconds, SECOND
-may be 60.
-
-   If the time is followed by `am' or `pm' (or `a.m.' or `p.m.'), HOUR
-is restricted to run from 1 to 12, and `:MINUTE' may be omitted (taken
-to be zero).  `am' indicates the first half of the day, `pm' indicates
-the second half of the day.  In this notation, 12 is the predecessor of
-1: midnight is `12am' while noon is `12pm'.  (This is the zero-oriented
-interpretation of `12am' and `12pm', as opposed to the old tradition
-derived from Latin which uses `12m' for noon and `12pm' for midnight.)
-
-   The time may alternatively be followed by a time zone correction,
-expressed as `SHHMM', where S is `+' or `-', HH is a number of zone
-hours and MM is a number of zone minutes.  The zone minutes term, MM,
-may be omitted, in which case the one- or two-digit correction is
-interpreted as a number of hours.  You can also separate HH from MM
-with a colon.  When a time zone correction is given this way, it forces
-interpretation of the time relative to Coordinated Universal Time
-(UTC), overriding any previous specification for the time zone or the
-local time zone.  For example, `+0530' and `+05:30' both stand for the
-time zone 5.5 hours ahead of UTC (e.g., India).  This is the best way to
-specify a time zone correction by fractional parts of an hour.  The
-maximum zone correction is 24 hours.
-
-   Either `am'/`pm' or a time zone correction may be specified, but not
-both.
-
-
-File: tar.info,  Node: Time zone items,  Next: Day of week items,  Prev: Time of day items,  Up: Date input formats
-
-7.4 Time zone items
-===================
-
-A "time zone item" specifies an international time zone, indicated by a
-small set of letters, e.g., `UTC' or `Z' for Coordinated Universal
-Time.  Any included periods are ignored.  By following a
-non-daylight-saving time zone by the string `DST' in a separate word
-(that is, separated by some white space), the corresponding daylight
-saving time zone may be specified.  Alternatively, a
-non-daylight-saving time zone can be followed by a time zone
-correction, to add the two values.  This is normally done only for
-`UTC'; for example, `UTC+05:30' is equivalent to `+05:30'.
-
-   Time zone items other than `UTC' and `Z' are obsolescent and are not
-recommended, because they are ambiguous; for example, `EST' has a
-different meaning in Australia than in the United States.  Instead,
-it's better to use unambiguous numeric time zone corrections like
-`-0500', as described in the previous section.
-
-   If neither a time zone item nor a time zone correction is supplied,
-time stamps are interpreted using the rules of the default time zone
-(*note Specifying time zone rules::).
-
-
-File: tar.info,  Node: Day of week items,  Next: Relative items in date strings,  Prev: Time zone items,  Up: Date input formats
-
-7.5 Day of week items
-=====================
-
-The explicit mention of a day of the week will forward the date (only
-if necessary) to reach that day of the week in the future.
-
-   Days of the week may be spelled out in full: `Sunday', `Monday',
-`Tuesday', `Wednesday', `Thursday', `Friday' or `Saturday'.  Days may
-be abbreviated to their first three letters, optionally followed by a
-period.  The special abbreviations `Tues' for `Tuesday', `Wednes' for
-`Wednesday' and `Thur' or `Thurs' for `Thursday' are also allowed.
-
-   A number may precede a day of the week item to move forward
-supplementary weeks.  It is best used in expression like `third
-monday'.  In this context, `last DAY' or `next DAY' is also acceptable;
-they move one week before or after the day that DAY by itself would
-represent.
-
-   A comma following a day of the week item is ignored.
-
-
-File: tar.info,  Node: Relative items in date strings,  Next: Pure numbers in date strings,  Prev: Day of week items,  Up: Date input formats
-
-7.6 Relative items in date strings
-==================================
-
-"Relative items" adjust a date (or the current date if none) forward or
-backward.  The effects of relative items accumulate.  Here are some
-examples:
-
-     1 year
-     1 year ago
-     3 years
-     2 days
-
-   The unit of time displacement may be selected by the string `year'
-or `month' for moving by whole years or months.  These are fuzzy units,
-as years and months are not all of equal duration.  More precise units
-are `fortnight' which is worth 14 days, `week' worth 7 days, `day'
-worth 24 hours, `hour' worth 60 minutes, `minute' or `min' worth 60
-seconds, and `second' or `sec' worth one second.  An `s' suffix on
-these units is accepted and ignored.
-
-   The unit of time may be preceded by a multiplier, given as an
-optionally signed number.  Unsigned numbers are taken as positively
-signed.  No number at all implies 1 for a multiplier.  Following a
-relative item by the string `ago' is equivalent to preceding the unit
-by a multiplier with value -1.
-
-   The string `tomorrow' is worth one day in the future (equivalent to
-`day'), the string `yesterday' is worth one day in the past (equivalent
-to `day ago').
-
-   The strings `now' or `today' are relative items corresponding to
-zero-valued time displacement, these strings come from the fact a
-zero-valued time displacement represents the current time when not
-otherwise changed by previous items.  They may be used to stress other
-items, like in `12:00 today'.  The string `this' also has the meaning
-of a zero-valued time displacement, but is preferred in date strings
-like `this thursday'.
-
-   When a relative item causes the resulting date to cross a boundary
-where the clocks were adjusted, typically for daylight saving time, the
-resulting date and time are adjusted accordingly.
-
-   The fuzz in units can cause problems with relative items.  For
-example, `2003-07-31 -1 month' might evaluate to 2003-07-01, because
-2003-06-31 is an invalid date.  To determine the previous month more
-reliably, you can ask for the month before the 15th of the current
-month.  For example:
-
-     $ date -R
-     Thu, 31 Jul 2003 13:02:39 -0700
-     $ date --date='-1 month' +'Last month was %B?'
-     Last month was July?
-     $ date --date="$(date +%Y-%m-15) -1 month" +'Last month was %B!'
-     Last month was June!
-
-   Also, take care when manipulating dates around clock changes such as
-daylight saving leaps.  In a few cases these have added or subtracted
-as much as 24 hours from the clock, so it is often wise to adopt
-universal time by setting the `TZ' environment variable to `UTC0'
-before embarking on calendrical calculations.
-
-
-File: tar.info,  Node: Pure numbers in date strings,  Next: Seconds since the Epoch,  Prev: Relative items in date strings,  Up: Date input formats
-
-7.7 Pure numbers in date strings
-================================
-
-The precise interpretation of a pure decimal number depends on the
-context in the date string.
-
-   If the decimal number is of the form YYYYMMDD and no other calendar
-date item (*note Calendar date items::) appears before it in the date
-string, then YYYY is read as the year, MM as the month number and DD as
-the day of the month, for the specified calendar date.
-
-   If the decimal number is of the form HHMM and no other time of day
-item appears before it in the date string, then HH is read as the hour
-of the day and MM as the minute of the hour, for the specified time of
-day.  MM can also be omitted.
-
-   If both a calendar date and a time of day appear to the left of a
-number in the date string, but no relative item, then the number
-overrides the year.
-
-
-File: tar.info,  Node: Seconds since the Epoch,  Next: Specifying time zone rules,  Prev: Pure numbers in date strings,  Up: Date input formats
-
-7.8 Seconds since the Epoch
-===========================
-
-If you precede a number with `@', it represents an internal time stamp
-as a count of seconds.  The number can contain an internal decimal
-point (either `.' or `,'); any excess precision not supported by the
-internal representation is truncated toward minus infinity.  Such a
-number cannot be combined with any other date item, as it specifies a
-complete time stamp.
-
-   Internally, computer times are represented as a count of seconds
-since an epoch--a well-defined point of time.  On GNU and POSIX
-systems, the epoch is 1970-01-01 00:00:00 UTC, so `@0' represents this
-time, `@1' represents 1970-01-01 00:00:01 UTC, and so forth.  GNU and
-most other POSIX-compliant systems support such times as an extension
-to POSIX, using negative counts, so that `@-1' represents 1969-12-31
-23:59:59 UTC.
-
-   Traditional Unix systems count seconds with 32-bit two's-complement
-integers and can represent times from 1901-12-13 20:45:52 through
-2038-01-19 03:14:07 UTC.  More modern systems use 64-bit counts of
-seconds with nanosecond subcounts, and can represent all the times in
-the known lifetime of the universe to a resolution of 1 nanosecond.
-
-   On most hosts, these counts ignore the presence of leap seconds.
-For example, on most hosts `@915148799' represents 1998-12-31 23:59:59
-UTC, `@915148800' represents 1999-01-01 00:00:00 UTC, and there is no
-way to represent the intervening leap second 1998-12-31 23:59:60 UTC.
-
-
-File: tar.info,  Node: Specifying time zone rules,  Next: Authors of parse_datetime,  Prev: Seconds since the Epoch,  Up: Date input formats
-
-7.9 Specifying time zone rules
-==============================
-
-Normally, dates are interpreted using the rules of the current time
-zone, which in turn are specified by the `TZ' environment variable, or
-by a system default if `TZ' is not set.  To specify a different set of
-default time zone rules that apply just to one date, start the date
-with a string of the form `TZ="RULE"'.  The two quote characters (`"')
-must be present in the date, and any quotes or backslashes within RULE
-must be escaped by a backslash.
-
-   For example, with the GNU `date' command you can answer the question
-"What time is it in New York when a Paris clock shows 6:30am on October
-31, 2004?" by using a date beginning with `TZ="Europe/Paris"' as shown
-in the following shell transcript:
-
-     $ export TZ="America/New_York"
-     $ date --date='TZ="Europe/Paris" 2004-10-31 06:30'
-     Sun Oct 31 01:30:00 EDT 2004
-
-   In this example, the `--date' operand begins with its own `TZ'
-setting, so the rest of that operand is processed according to
-`Europe/Paris' rules, treating the string `2004-10-31 06:30' as if it
-were in Paris.  However, since the output of the `date' command is
-processed according to the overall time zone rules, it uses New York
-time.  (Paris was normally six hours ahead of New York in 2004, but
-this example refers to a brief Halloween period when the gap was five
-hours.)
-
-   A `TZ' value is a rule that typically names a location in the `tz'
-database (http://www.twinsun.com/tz/tz-link.htm).  A recent catalog of
-location names appears in the TWiki Date and Time Gateway
-(http://twiki.org/cgi-bin/xtra/tzdate).  A few non-GNU hosts require a
-colon before a location name in a `TZ' setting, e.g.,
-`TZ=":America/New_York"'.
-
-   The `tz' database includes a wide variety of locations ranging from
-`Arctic/Longyearbyen' to `Antarctica/South_Pole', but if you are at sea
-and have your own private time zone, or if you are using a non-GNU host
-that does not support the `tz' database, you may need to use a POSIX
-rule instead.  Simple POSIX rules like `UTC0' specify a time zone
-without daylight saving time; other rules can specify simple daylight
-saving regimes.  *Note Specifying the Time Zone with `TZ': (libc)TZ
-Variable.
-
-
-File: tar.info,  Node: Authors of parse_datetime,  Prev: Specifying time zone rules,  Up: Date input formats
-
-7.10 Authors of `parse_datetime'
-================================
-
-`parse_datetime' started life as `getdate', as originally implemented
-by Steven M. Bellovin (<smb@research.att.com>) while at the University
-of North Carolina at Chapel Hill.  The code was later tweaked by a
-couple of people on Usenet, then completely overhauled by Rich $alz
-(<rsalz@bbn.com>) and Jim Berets (<jberets@bbn.com>) in August, 1990.
-Various revisions for the GNU system were made by David MacKenzie, Jim
-Meyering, Paul Eggert and others, including renaming it to `get_date' to
-avoid a conflict with the alternative Posix function `getdate', and a
-later rename to `parse_datetime'.  The Posix function `getdate' can
-parse more locale-specific dates using `strptime', but relies on an
-environment variable and external file, and lacks the thread-safety of
-`parse_datetime'.
-
-   This chapter was originally produced by Franc,ois Pinard
-(<pinard@iro.umontreal.ca>) from the `parse_datetime.y' source code,
-and then edited by K. Berry (<kb@cs.umb.edu>).
 

@@ -1,24 +1,24 @@
 /* Buffer management for tar.
 
-   Copyright (C) 1988, 1992, 1993, 1994, 1996, 1997, 1999, 2000, 2001,
-   2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010 Free Software
-   Foundation, Inc.
+   Copyright 1988, 1992-1994, 1996-1997, 1999-2010, 2013-2014 Free
+   Software Foundation, Inc.
 
-   Written by John Gilmore, on 1985-08-25.
+   This file is part of GNU tar.
 
-   This program is free software; you can redistribute it and/or modify it
-   under the terms of the GNU General Public License as published by the
-   Free Software Foundation; either version 3, or (at your option) any later
-   version.
+   GNU tar is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
 
-   This program is distributed in the hope that it will be useful, but
-   WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-   Public License for more details.
+   GNU tar is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+   Written by John Gilmore, on 1985-08-25.  */
 
 #include <system.h>
 #include <system-ioctl.h>
@@ -41,7 +41,7 @@
 static tarlong prev_written;    /* bytes written on previous volumes */
 static tarlong bytes_written;   /* bytes written on this volume */
 static void *record_buffer[2];  /* allocated memory */
-union block *record_buffer_aligned[2];
+static union block *record_buffer_aligned[2];
 static int record_index;
 
 /* FIXME: The following variables should ideally be static to this
@@ -83,8 +83,8 @@ extern bool time_to_start_writing;
 
 bool write_archive_to_stdout;
 
-void (*flush_write_ptr) (size_t);
-void (*flush_read_ptr) (void);
+static void (*flush_write_ptr) (size_t);
+static void (*flush_read_ptr) (void);
 
 
 char *volume_label;
@@ -103,7 +103,7 @@ bool write_archive_to_stdout;
 
 /* Multi-volume tracking support */
 
-/* When creating a multi-volume archive, each `bufmap' represents
+/* When creating a multi-volume archive, each 'bufmap' represents
    a member stored (perhaps partly) in the current record buffer.
    After flushing the record to the output media, all bufmaps that
    represent fully written members are removed from the list, then
@@ -193,7 +193,7 @@ bufmap_reset (struct bufmap *map, ssize_t fixup)
 static struct tar_stat_info dummy;
 
 void
-buffer_write_global_xheader ()
+buffer_write_global_xheader (void)
 {
   xheader_write_global (&dummy.xhdr);
 }
@@ -205,7 +205,7 @@ mv_begin_read (struct tar_stat_info *st)
 }
 
 void
-mv_end ()
+mv_end (void)
 {
   if (multi_volume_option)
     bufmap_free (NULL);
@@ -230,10 +230,10 @@ clear_read_error_count (void)
 
 /* Time-related functions */
 
-double duration;
+static double duration;
 
 void
-set_start_time ()
+set_start_time (void)
 {
   gettime (&start_time);
   volume_start_time = start_time;
@@ -247,14 +247,15 @@ set_volume_start_time (void)
   last_stat_time = volume_start_time;
 }
 
-void
-compute_duration ()
+double
+compute_duration (void)
 {
   struct timespec now;
   gettime (&now);
   duration += ((now.tv_sec - last_stat_time.tv_sec)
                + (now.tv_nsec - last_stat_time.tv_nsec) / 1e9);
   gettime (&last_stat_time);
+  return duration;
 }
 
 
@@ -289,8 +290,8 @@ struct zip_program
 };
 
 static struct zip_magic const magic[] = {
-  { ct_none, },
-  { ct_tar },
+  { ct_none,     0, 0 },
+  { ct_tar,      0, 0 },
   { ct_compress, 2, "\037\235" },
   { ct_gzip,     2, "\037\213" },
   { ct_bzip2,    3, "BZh" },
@@ -337,23 +338,23 @@ const char *
 first_decompress_program (int *pstate)
 {
   struct zip_program const *zp;
-  
+
   if (use_compress_program_option)
     return use_compress_program_option;
 
   if (archive_compression_type == ct_none)
     return NULL;
 
-  *pstate = 0; 
+  *pstate = 0;
   zp = find_zip_program (archive_compression_type, pstate);
   return zp ? zp->program : NULL;
 }
-    
+
 const char *
 next_decompress_program (int *pstate)
 {
   struct zip_program const *zp;
-  
+
   if (use_compress_program_option)
     return NULL;
   zp = find_zip_program (archive_compression_type, pstate);
@@ -488,64 +489,98 @@ open_compressed_archive (void)
   return archive;
 }
 
-
-static void
+static int
 print_stats (FILE *fp, const char *text, tarlong numbytes)
 {
-  char bytes[sizeof (tarlong) * CHAR_BIT];
   char abbr[LONGEST_HUMAN_READABLE + 1];
   char rate[LONGEST_HUMAN_READABLE + 1];
-
+  int n = 0;
+  
   int human_opts = human_autoscale | human_base_1024 | human_SI | human_B;
 
-  sprintf (bytes, TARLONG_FORMAT, numbytes);
-
-  fprintf (fp, "%s: %s (%s, %s/s)\n",
-           text, bytes,
-           human_readable (numbytes, abbr, human_opts, 1, 1),
-           (0 < duration && numbytes / duration < (uintmax_t) -1
-            ? human_readable (numbytes / duration, rate, human_opts, 1, 1)
-            : "?"));
+  if (text && text[0])
+    n += fprintf (fp, "%s: ", gettext (text));
+  return n + fprintf (fp, TARLONG_FORMAT " (%s, %s/s)",
+		      numbytes,
+		      human_readable (numbytes, abbr, human_opts, 1, 1),
+		      (0 < duration && numbytes / duration < (uintmax_t) -1
+		       ? human_readable (numbytes / duration, rate, human_opts, 1, 1)
+		       : "?"));
 }
 
-void
-print_total_stats ()
+/* Format totals to file FP.  FORMATS is an array of strings to output
+   before each data item (bytes read, written, deleted, in that order).
+   EOR is a delimiter to output after each item (used only if deleting
+   from the archive), EOL is a delimiter to add at the end of the output
+   line. */ 
+int
+format_total_stats (FILE *fp, const char **formats, int eor, int eol)
 {
+  int n;
+  
   switch (subcommand_option)
     {
     case CREATE_SUBCOMMAND:
     case CAT_SUBCOMMAND:
     case UPDATE_SUBCOMMAND:
     case APPEND_SUBCOMMAND:
-      /* Amanda 2.4.1p1 looks for "Total bytes written: [0-9][0-9]*".  */
-      print_stats (stderr, _("Total bytes written"),
-                   prev_written + bytes_written);
+      n = print_stats (fp, formats[TF_WRITE],
+		       prev_written + bytes_written);
       break;
 
     case DELETE_SUBCOMMAND:
       {
         char buf[UINTMAX_STRSIZE_BOUND];
-        print_stats (stderr, _("Total bytes read"),
-                     records_read * record_size);
-        print_stats (stderr, _("Total bytes written"),
-                     prev_written + bytes_written);
-        fprintf (stderr, _("Total bytes deleted: %s\n"),
-                 STRINGIFY_BIGINT ((records_read - records_skipped)
-                                    * record_size
-                                   - (prev_written + bytes_written), buf));
+        n = print_stats (fp, formats[TF_READ],
+			 records_read * record_size);
+
+	fputc (eor, fp);
+	n++;
+	
+        n += print_stats (fp, formats[TF_WRITE],
+			  prev_written + bytes_written);
+
+	fputc (eor, fp);
+	n++;
+
+	if (formats[TF_DELETED] && formats[TF_DELETED][0])
+	  n += fprintf (fp, "%s: ", gettext (formats[TF_DELETED]));
+        n += fprintf (fp, "%s",
+		      STRINGIFY_BIGINT ((records_read - records_skipped)
+					* record_size
+					- (prev_written + bytes_written), buf));
       }
       break;
 
     case EXTRACT_SUBCOMMAND:
     case LIST_SUBCOMMAND:
     case DIFF_SUBCOMMAND:
-      print_stats (stderr, _("Total bytes read"),
-                   records_read * record_size);
+      n = print_stats (fp, _(formats[TF_READ]),
+		       records_read * record_size);
       break;
 
     default:
       abort ();
     }
+  if (eol)
+    {
+      fputc (eol, fp);
+      n++;
+    }
+  return n;
+}
+
+const char *default_total_format[] = {
+  N_("Total bytes read"),
+  /* Amanda 2.4.1p1 looks for "Total bytes written: [0-9][0-9]*".  */
+  N_("Total bytes written"),
+  N_("Total bytes deleted")
+};
+
+void
+print_total_stats (void)
+{
+  format_total_stats (stderr, default_total_format, '\n', '\n');
 }
 
 /* Compute and return the block ordinal at current_block.  */
@@ -633,6 +668,22 @@ init_buffer (void)
   record_end = record_start + blocking_factor;
 }
 
+static void
+check_tty (enum access_mode mode)
+{
+  /* Refuse to read archive from and write it to a tty. */
+  if (strcmp (archive_name_array[0], "-") == 0
+      && isatty (mode == ACCESS_READ ? STDIN_FILENO : STDOUT_FILENO))
+    {
+      FATAL_ERROR ((0, 0,
+		    mode == ACCESS_READ
+		    ? _("Refusing to read archive contents from terminal "
+			"(missing -f option?)")
+		    : _("Refusing to write archive contents to terminal "
+			"(missing -f option?)")));
+    }
+}
+
 /* Open an archive file.  The argument specifies whether we are
    reading or writing, or both.  */
 static void
@@ -653,6 +704,7 @@ _open_archive (enum access_mode wanted_access)
 
   /* When updating the archive, we start with reading.  */
   access_mode = wanted_access == ACCESS_UPDATE ? ACCESS_READ : wanted_access;
+  check_tty (access_mode);
 
   read_full_records = read_full_records_option;
 
@@ -696,7 +748,6 @@ _open_archive (enum access_mode wanted_access)
             enum compress_type type;
 
             archive = STDIN_FILENO;
-
             type = check_compressed_archive (&shortfile);
             if (type != ct_tar && type != ct_none)
               FATAL_ERROR ((0, 0,
@@ -722,9 +773,6 @@ _open_archive (enum access_mode wanted_access)
           break;
         }
     }
-  else if (verify_option)
-    archive = rmtopen (archive_name_array[0], O_RDWR | O_CREAT | O_BINARY,
-                       MODE_RW, rsh_command_option);
   else
     switch (wanted_access)
       {
@@ -740,8 +788,12 @@ _open_archive (enum access_mode wanted_access)
             maybe_backup_file (archive_name_array[0], 1);
             backed_up_flag = 1;
           }
-        archive = rmtcreat (archive_name_array[0], MODE_RW,
-                            rsh_command_option);
+	if (verify_option)
+	  archive = rmtopen (archive_name_array[0], O_RDWR | O_CREAT | O_BINARY,
+			     MODE_RW, rsh_command_option);
+	else
+	  archive = rmtcreat (archive_name_array[0], MODE_RW,
+			      rsh_command_option);
         break;
 
       case ACCESS_UPDATE:
@@ -883,16 +935,16 @@ short_read (size_t status)
   left = record_size - status;
 
   if (left && left % BLOCKSIZE == 0
-      && verbose_option
+      && (warning_option & WARN_RECORD_SIZE)
       && record_start_block == 0 && status != 0
       && archive_is_dev ())
     {
       unsigned long rsize = status / BLOCKSIZE;
       WARN ((0, 0,
-             ngettext ("Record size = %lu block",
-                       "Record size = %lu blocks",
-                       rsize),
-             rsize));
+	     ngettext ("Record size = %lu block",
+		       "Record size = %lu blocks",
+		       rsize),
+	     rsize));
     }
 
   while (left % BLOCKSIZE != 0
@@ -1928,13 +1980,13 @@ gnu_flush_write (size_t buffer_level)
 }
 
 void
-flush_read ()
+flush_read (void)
 {
   flush_read_ptr ();
 }
 
 void
-flush_write ()
+flush_write (void)
 {
   flush_write_ptr (record_size);
 }

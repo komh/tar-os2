@@ -1,19 +1,21 @@
-/* This file is part of GNU tar.
-   Copyright (C) 2009 Free Software Foundation, Inc.
+/* Unlink files.
 
-   This program is free software; you can redistribute it and/or modify it
-   under the terms of the GNU General Public License as published by the
-   Free Software Foundation; either version 3, or (at your option) any later
-   version.
+   Copyright 2009, 2013-2014 Free Software Foundation, Inc.
 
-   This program is distributed in the hope that it will be useful, but
-   WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General
-   Public License for more details.
+   This file is part of GNU tar.
 
-   You should have received a copy of the GNU General Public License along
-   with this program; if not, write to the Free Software Foundation, Inc.,
-   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
+   GNU tar is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 3 of the License, or
+   (at your option) any later version.
+
+   GNU tar is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 #include <system.h>
 #include "common.h"
@@ -22,7 +24,9 @@
 struct deferred_unlink
   {
     struct deferred_unlink *next;   /* Next unlink in the queue */
-    char *file_name;                /* Absolute name of the file to unlink */
+    int dir_idx;                    /* Directory index in wd */
+    char *file_name;                /* Name of the file to unlink, relative
+				       to dir_idx */
     bool is_dir;                    /* True if file_name is a directory */
     off_t records_written;          /* Number of records written when this
 				       entry got added to the queue */
@@ -39,7 +43,7 @@ static struct deferred_unlink *dunlink_avail;
 
 /* Delay (number of records written) between adding entry to the
    list and its actual removal. */
-size_t deferred_unlink_delay = 0;
+static size_t deferred_unlink_delay = 0;
 
 static struct deferred_unlink *
 dunlink_alloc (void)
@@ -68,16 +72,31 @@ static void
 flush_deferred_unlinks (bool force)
 {
   struct deferred_unlink *p, *prev = NULL;
+  int saved_chdir = chdir_current;
 
   for (p = dunlink_head; p; )
     {
       struct deferred_unlink *next = p->next;
+
       if (force
 	  || records_written > p->records_written + deferred_unlink_delay)
 	{
+	  chdir_do (p->dir_idx);
 	  if (p->is_dir)
 	    {
-	      if (unlinkat (chdir_fd, p->file_name, AT_REMOVEDIR) != 0)
+	      const char *fname;
+
+	      if (p->dir_idx
+		  && (p->file_name[0] == 0
+		      || strcmp (p->file_name, ".") == 0))
+		{
+		  fname = tar_dirname ();
+		  chdir_do (p->dir_idx - 1);
+		}
+	      else
+		fname = p->file_name;
+
+	      if (unlinkat (chdir_fd, fname, AT_REMOVEDIR) != 0)
 		{
 		  switch (errno)
 		    {
@@ -95,7 +114,7 @@ flush_deferred_unlinks (bool force)
 			}
 		      /* fall through */
 		    default:
-		      rmdir_error (p->file_name);
+		      rmdir_error (fname);
 		    }
 		}
 	    }
@@ -120,10 +139,11 @@ flush_deferred_unlinks (bool force)
     }
   if (!dunlink_head)
     dunlink_tail = NULL;
+  chdir_do (saved_chdir);
 }
 
 void
-finish_deferred_unlinks ()
+finish_deferred_unlinks (void)
 {
   flush_deferred_unlinks (true);
   while (dunlink_avail)
@@ -145,7 +165,9 @@ queue_deferred_unlink (const char *name, bool is_dir)
 
   p = dunlink_alloc ();
   p->next = NULL;
-  p->file_name = normalize_filename (name);
+  p->dir_idx = chdir_current;
+  p->file_name = xstrdup (name);
+  normalize_filename_x (p->file_name);
   p->is_dir = is_dir;
   p->records_written = records_written;
 

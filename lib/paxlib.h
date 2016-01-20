@@ -32,6 +32,8 @@
 #define PAXEXIT_DIFFERS 1
 #define PAXEXIT_FAILURE 2
 
+extern void (*error_hook) (void);
+
 /* Both WARN and ERROR write a message on stderr and continue processing,
    however ERROR manages so tar will exit unsuccessfully.  FATAL_ERROR
    writes a message on stderr and aborts immediately, with another message
@@ -41,13 +43,31 @@
    is zero when the error is not being detected by the system.  */
 
 #define WARN(Args) \
-  error Args
+  do { if (error_hook) error_hook (); error Args; } while (0)
 #define ERROR(Args) \
-  (error Args, exit_status = PAXEXIT_FAILURE)
+  do						\
+    {						\
+      if (error_hook) error_hook ();		\
+      error Args;				\
+      exit_status = PAXEXIT_FAILURE;		\
+    }						\
+  while (0)
 #define FATAL_ERROR(Args) \
-  (error Args, fatal_exit ())
+  do						\
+    {						\
+      if (error_hook) error_hook ();		\
+      error Args;				\
+      fatal_exit ();				\
+    }						\
+  while (0)
 #define USAGE_ERROR(Args) \
-  (error Args, usage (PAXEXIT_FAILURE))
+  do						\
+    {						\
+      if (error_hook) error_hook ();		\
+      error Args;				\
+      usage (PAXEXIT_FAILURE);			\
+    }						\
+  while (0)
 
 extern int exit_status;
 

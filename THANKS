@@ -36,6 +36,7 @@ Andrew Torda		torda@igc.chem.ethz.ch
 Andrey A. Chernov	ache@astral.msk.su
 Andy Gay		andy@rdl.co.uk
 Antonio Jose Coutinho	ajc@di.uminho.pt
+Anthony G. Basile	blueness@gentoo.org
 Ariel Faigon		ariel@engr.sgi.com
 Arne Wichmann		aw@math.uni-sb.de
 Arnold Robbins		arnold@gnu.org
@@ -91,6 +92,7 @@ Christian Kirsch	ck@held.mind.de
 Christian Laubscher	christian.laubscher@tiscalinet.ch
 Christian T. Dum	ctd@mpe-garching.mpg.de
 Christian von Roques	roques@pond.sub.org
+Christian Wetzel	wetzel@phoenix-pacs.de
 Christoph Litauer	litauer@mailhost.uni-koblenz.de
 Christophe Colle	colle@krtkg1.rug.ac.be
 Christophe Kalt		Christophe.Kalt@kbcfp.com
@@ -100,6 +102,7 @@ Claude Scarpelli	claude@genethon.fr
 Claus Heine		Claus_Heine@ac2.maus.de
 Cliff Krumvieda		cliff@cs.cornell.edu
 Clinton Carr		clint@netcom.com
+Connor Behan 		connor.behan@gmail.com
 Conrad Hughes		chughes@maths.tcd.ie
 Constantin Belous	const@cris.net
 Coranth Gryphon		gryphon@bur.visidyne.com
@@ -118,6 +121,7 @@ Danny R. Johnston	danny@cs.weber.edu
 Dave Barr		barr@math.psu.edu
 Dave Gentzel		gentzel@nova.enet.dec.com
 Dave Gregorich		dtg@ipac.caltech.edu
+David Barri		japgolly@gmail.com
 David Brown		davidb@davidb.org
 David J. MacKenzie	djm@uunet.uu.net
 David Johnson		David.W.Johnson@colorado.edu
@@ -241,6 +245,7 @@ Jim Clausing		jac@postbox.acs.ohio-state.edu
 Jim Farrell		jwf@platinum.com
 Jim Meyering		meyering@na-net.ornl.gov
 Jim Murray		jjm@jjm.com
+Jivko Angelov		jivko@siteground.com
 Joachim Holzfuss	Joachim.Holzfuss@iap.physik.th-darmstadt.de
 Joachim Seelig		joachim@kruemel.han.de
 Joe DeBattista		joed@itsa.ucsf.edu
@@ -296,6 +301,7 @@ Kimmy Posey		kimmyd@bnr.ca
 Koji Kishi		kis@rqa.sony.co.jp
 Konno Hiroharu		konno@pac.co.jp
 Kurt Jaeger		pi@lf.net
+James Antill            jantill@redhat.com
 Larry Creech		lcreech@lonestar.rcclub.org
 Larry Schwimmer		rosebud@cyclone.stanford.edu
 Lasse Collin 		lasse.collin@tukaani.org
@@ -349,6 +355,7 @@ Michael P Urban		urban@cobra.jpl.nasa.gov
 Michael Schmidt		michael@muc.de
 Michael Schwingen	m.schwingen@stochastik.rwth-aachen.de
 Michael Smolsky		fnsiguc@astro.weizmann.ac.il
+Michal Žejdl		zejdl@suas.cz
 Mike Muuss		mike@brl.mil
 Mike Nolan		nolan@lpl.arizona.edu
 Mike Rogers		mike@demon.net
@@ -357,11 +364,14 @@ Mike Walker		M.D.Walker@larc.nasa.gov
 Milan Hodoscek		milan@kihp6.ki.si
 Minh Tran-Le		tranle@intellicorp.com
 Mitsuaki Masuhara	masuhara@mcprv.mec.mei.co.jp
+Natalie Alifanova	na@nxc.no
 Nate Eldredge		nate@cs.hmc.edu
+Nathan Stratton Treadway nathanst+bugtar@ontko.com
 Neil Faulks		neil@dcs.kcl.ac.uk
 Neil Jerram		nj104@cus.cam.ac.uk
 Nelson H.F. Beebe	beebe@math.utah.edu
 Nick Barron		nikb@cix.compulink.co.uk
+Nicolas Dudebout	nicolas.dudebout@gmail.com
 Noah Friedman		friedman@gnu.org
 Noel Cragg		noel@red-bean.com
 Norbert Kiesel		norbert@rwthi3.informatik.rwth-aachen.de
@@ -374,6 +384,7 @@ Oswald P. Backus IV	backus@lks.csi.com
 Pascal Meheut		pascal@cnam.cnam.fr
 Patrick Fulconis	fulco@sig.uvsq.fr
 Patrick Timmons		timmons@electech.polymtl.ca
+Pavel Raiskup           praiskup@redhat.com
 Paul Eggert		eggert@twinsun.com
 Paul Kanz		paul@icx.com
 Paul Mitchell		P.Mitchell@surrey.ac.uk
@@ -395,6 +406,7 @@ Phil Proudman		phil@proudman51.freeserve.co.uk
 Philippe Defert		defert@cern.ch
 Piercarlo Grandi	piercarl@sabi.demon.co.uk
 Pierce Cantrell		cantrell@ee.tamu.edu
+Piotr Rotter 		piotr.rotter@active24.pl
 R. Kent Dybvig		dyb@cadence.bloomington.in.us
 R. Scott Butler		butler@prism.es.dupont.com
 Rainer Orth		ro@TechFak.Uni-Bielefeld.DE

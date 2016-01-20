@@ -1,7 +1,7 @@
 /* -*- buffer-read-only: t -*- vi: set ro: */
 /* DO NOT EDIT! GENERATED AUTOMATICALLY! */
-/* Function to parse a `long long int' from text.
-   Copyright (C) 1995-1997, 1999, 2001, 2009-2011 Free Software Foundation,
+/* Function to parse a 'long long int' from text.
+   Copyright (C) 1995-1997, 1999, 2001, 2009-2014 Free Software Foundation,
    Inc.
    This file is part of the GNU C Library.
 
