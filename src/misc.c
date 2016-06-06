@@ -1,7 +1,7 @@
 /* Miscellaneous functions, not really specific to GNU tar.
 
    Copyright 1988, 1992, 1994-1997, 1999-2001, 2003-2007, 2009-2010,
-   2012-2014 Free Software Foundation, Inc.
+   2012-2014, 2016 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -29,6 +29,8 @@
 # define DOUBLE_SLASH_IS_DISTINCT_ROOT 0
 #endif
 
+static void namebuf_add_dir (namebuf_t, char const *);
+static char *namebuf_finish (namebuf_t);
 static const char *tar_getcdpath (int);
 
 
@@ -586,7 +588,12 @@ safer_rmdir (const char *file_name)
       return -1;
     }
 
-  return unlinkat (chdir_fd, file_name, AT_REMOVEDIR);
+  if (unlinkat (chdir_fd, file_name, AT_REMOVEDIR) == 0)
+    {
+      remove_delayed_set_stat (file_name);
+      return 0;
+    }
+  return -1;
 }
 
 /* Remove FILE_NAME, returning 1 on success.  If FILE_NAME is a directory,
@@ -650,7 +657,7 @@ remove_any_file (const char *file_name, enum remove_option option)
 		 (entrylen = strlen (entry)) != 0;
 		 entry += entrylen + 1)
 	      {
-		char *file_name_buffer = new_name (file_name, entry);
+		char *file_name_buffer = make_file_name (file_name, entry);
 		int r = remove_any_file (file_name_buffer,
                                          RECURSIVE_REMOVE_OPTION);
 		int e = errno;
@@ -1106,13 +1113,6 @@ file_removed_diag (const char *name, bool top_level,
     diagfn (name);
 }
 
-void
-write_fatal_details (char const *name, ssize_t status, size_t size)
-{
-  write_error_details (name, status, size);
-  fatal_exit ();
-}
-
 /* Fork, aborting if unsuccessful.  */
 pid_t
 xfork (void)
@@ -1197,7 +1197,7 @@ namebuf_name (namebuf_t buf, const char *name)
   return buf->buffer;
 }
 
-void
+static void
 namebuf_add_dir (namebuf_t buf, const char *name)
 {
   static char dirsep[] = { DIRECTORY_SEPARATOR, 0 };
@@ -1210,7 +1210,7 @@ namebuf_add_dir (namebuf_t buf, const char *name)
   buf->dir_length += strlen (name);
 }
 
-char *
+static char *
 namebuf_finish (namebuf_t buf)
 {
   char *res = buf->buffer;

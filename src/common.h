@@ -1,6 +1,6 @@
 /* Common declarations for the tar program.
 
-   Copyright 1988, 1992-1994, 1996-1997, 1999-2010, 2012-2014 Free
+   Copyright 1988, 1992-1994, 1996-1997, 1999-2010, 2012-2016 Free
    Software Foundation, Inc.
 
    This file is part of GNU tar.
@@ -211,13 +211,20 @@ GLOBAL bool multi_volume_option;
    do not get archived (also see after_date_option above).  */
 GLOBAL struct timespec newer_mtime_option;
 
-/* If true, override actual mtime (see below) */
-GLOBAL bool set_mtime_option;
-/* Value to be put in mtime header field instead of the actual mtime */
+enum set_mtime_option_mode
+{
+  USE_FILE_MTIME,
+  FORCE_MTIME,
+  CLAMP_MTIME,
+};
+
+/* Override actual mtime if set to FORCE_MTIME or CLAMP_MTIME */
+GLOBAL enum set_mtime_option_mode set_mtime_option;
+/* Value to use when forcing or clamping the mtime header field. */
 GLOBAL struct timespec mtime_option;
 
-/* Return true if newer_mtime_option is initialized.  */
-#define NEWER_OPTION_INITIALIZED(opt) (0 <= (opt).tv_nsec)
+/* Return true if mtime_option or newer_mtime_option is initialized.  */
+#define TIME_OPTION_INITIALIZED(opt) (0 <= (opt).tv_nsec)
 
 /* Return true if the struct stat ST's M time is less than
    newer_mtime_option.  */
@@ -279,6 +286,15 @@ GLOBAL bool show_omitted_dirs_option;
 GLOBAL bool sparse_option;
 GLOBAL unsigned tar_sparse_major;
 GLOBAL unsigned tar_sparse_minor;
+
+enum hole_detection_method
+  {
+    HOLE_DETECTION_DEFAULT,
+    HOLE_DETECTION_RAW,
+    HOLE_DETECTION_SEEK
+  };
+
+GLOBAL enum hole_detection_method hole_detection;
 
 GLOBAL bool starting_file_option;
 
@@ -399,9 +415,8 @@ GLOBAL bool show_transformed_names_option;
    set for incremental archives. */
 GLOBAL bool delay_directory_restore_option;
 
-/* Warn about implicit use of the wildcards in command line arguments.
-   (Default for tar prior to 1.15.91, but changed afterwards */
-GLOBAL bool warn_regex_usage;
+/* When set, tar will not refuse to create empty archives */
+GLOBAL bool files_from_option;
 
 /* Declarations for each module.  */
 
@@ -453,7 +468,7 @@ void set_start_time (void);
 #define TF_READ    0
 #define TF_WRITE   1
 #define TF_DELETED 2
-int format_total_stats (FILE *fp, const char **formats, int eor, int eol);
+int format_total_stats (FILE *fp, char const *const *formats, int eor, int eol);
 void print_total_stats (void);
 
 void mv_begin_write (const char *file_name, off_t totsize, off_t sizeleft);
@@ -522,6 +537,8 @@ void extr_init (void);
 void extract_archive (void);
 void extract_finish (void);
 bool rename_directory (char *src, char *dst);
+
+void remove_delayed_set_stat (const char *fname);
 
 /* Module delete.c.  */
 
@@ -618,8 +635,6 @@ typedef struct namebuf *namebuf_t;
 namebuf_t namebuf_create (const char *dir);
 void namebuf_free (namebuf_t buf);
 char *namebuf_name (namebuf_t buf, const char *name);
-void namebuf_add_dir (namebuf_t buf, const char *name);
-char *namebuf_finish (namebuf_t buf);
 
 const char *tar_dirname (void);
 
@@ -723,9 +738,7 @@ void uid_to_uname (uid_t uid, char **uname);
 int uname_to_uid (char const *uname, uid_t *puid);
 
 void name_init (void);
-void name_add_name (const char *name, int matching_flags);
-void name_add_dir (const char *name);
-void name_add_file (const char *name, int term);
+void name_add_name (const char *name);
 void name_term (void);
 const char *name_next (int change_dirs);
 void name_gather (void);
@@ -739,7 +752,7 @@ void collect_and_sort_names (void);
 struct name *name_scan (const char *name);
 struct name const *name_from_list (void);
 void blank_name_list (void);
-char *new_name (const char *dir_name, const char *name);
+char *make_file_name (const char *dir_name, const char *name);
 size_t stripped_prefix_len (char const *file_name, size_t num);
 bool all_names_found (struct tar_stat_info *st);
 
@@ -748,10 +761,12 @@ bool is_avoided_name (char const *name);
 
 bool contains_dot_dot (char const *name);
 
-#define ISFOUND(c) ((occurrence_option == 0) ? (c)->found_count : \
-                    (c)->found_count == occurrence_option)
-#define WASFOUND(c) ((occurrence_option == 0) ? (c)->found_count : \
-                     (c)->found_count >= occurrence_option)
+#define ISFOUND(c) (occurrence_option == 0			\
+		    ? (c)->found_count != 0			\
+		    : (c)->found_count == occurrence_option)
+#define WASFOUND(c) (occurrence_option == 0			\
+		     ? (c)->found_count != 0			\
+		     : (c)->found_count >= occurrence_option)
 
 /* Module tar.c.  */
 
@@ -769,7 +784,26 @@ const char *subcommand_string (enum subcommand c);
 void set_exit_status (int val);
 
 void request_stdin (const char *option);
-void more_options (int argc, char **argv);
+
+/* Where an option comes from: */
+enum option_source
+  {
+    OPTS_ENVIRON,        /* Environment variable TAR_OPTIONS */
+    OPTS_COMMAND_LINE,   /* Command line */
+    OPTS_FILE            /* File supplied by --files-from */
+  };
+
+/* Option location */
+struct option_locus
+{
+  enum option_source source;  /* Option origin */
+  char const *name;           /* File or variable name */
+  size_t line;                /* Number of input line if source is OPTS_FILE */
+  struct option_locus *prev;  /* Previous occurrence of the option of same
+				 class */
+};
+
+void more_options (int argc, char **argv, struct option_locus *loc);
 
 /* Module update.c.  */
 
@@ -926,9 +960,15 @@ extern void (*fatal_exit_hook) (void);
 
 void excfile_add (const char *name, int flags);
 void info_attach_exclist (struct tar_stat_info *dir);
-void info_cleanup_exclist (struct tar_stat_info *dir);
 void info_free_exclist (struct tar_stat_info *dir);
 bool excluded_name (char const *name, struct tar_stat_info *st);
 void exclude_vcs_ignores (void);
+
+/* Module map.c */
+void owner_map_read (char const *name);
+int owner_map_translate (uid_t uid, uid_t *new_uid, char const **new_name);
+void group_map_read (char const *file);
+int group_map_translate (gid_t gid, gid_t *new_gid, char const **new_name);
+
 
 _GL_INLINE_HEADER_END

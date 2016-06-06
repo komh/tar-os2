@@ -1,5 +1,87 @@
-GNU tar NEWS - User visible changes. 2014-07-27
+GNU tar NEWS - User visible changes. 2016-05-16
 Please send GNU tar bug reports to <bug-tar@gnu.org>
+
+
+version 1.29 - Sergey Poznyakoff, 2016-05-16
+
+* New options: --verbatim-files-from, --no-verbatim-files-from
+
+The --verbatim-files-from option instructs tar to treat each line read
+from a file list as a file name, even if it starts with a dash.
+
+File lists are supplied with the --files-from (-T) option.  By
+default, each line read from a file list is first stripped off the
+leading and trailing whitespace and, if the result begins with a dash,
+it is treated as tar command line option.
+
+Use the --verbatim-files-from option to disable this special handling.
+This facilitates the use of tar with file lists created automatically
+(e.g. by find(1) command).
+
+This option affects all --files-from options that occur after it in
+the command line.  Its effect is reverted by the
+--no-verbatim-files-from option.
+
+* --null option reads file names verbatim
+
+The --null option implies --verbatim-files-from.  I.e. each line 
+read from null-delimited file lists is treated as a file name.
+
+This restores the documented behavior, which was broken in version
+1.27.
+
+* New options: --owner-map=FILE and --group-map=FILE
+
+These two options provide fine-grained control over what user/group
+names (or IDs) should be mapped when adding files to archive.
+
+For both options, FILE is a plain text file with user or group
+mappings.  Empty lines are ignored.  Comments are introduced with
+# sign (unless quoted) and extend to the end of the corresponding
+line.  Each non-empty line defines translation for a single UID (GID).
+It must consist of two fields, delimited by any amount of whitespace:
+
+     OLDNAME NEWNAME[:NEWID]
+
+OLDNAME is either a valid user (group) name or a ID prefixed with +.  Unless
+NEWID is supplied, NEWNAME must also be either a valid name or a
++ID.  Otherwise, both NEWNAME and NEWID need not be listed in the
+system user database.
+
+* New option --clamp-mtime
+
+The new --clamp-mtime option changes the behavior of --mtime to only
+use the time specified if the file mtime is newer than the given time.
+The --clamp-mtime option can only be used together with	--mtime.
+
+Typical use case is to make builds reproducible: to loose less
+information, it's better to keep the original date of an archive, 
+except for files modified during the build process. In that case, using
+reference (and thus reproducible) timestamps for the latter is good
+enough.
+
+See <https://wiki.debian.org/ReproducibleBuilds> for more information.
+
+* Deprecated --preserve option removed
+
+* Sparse file detection
+
+Tar now uses SEEK_DATA/SEEK_HOLE on systems that support it.  This
+allows for considerable speed-up in sparse-file detection.
+
+New option --hole-detection is provided, that allows the user to
+select the algorithm used for hole detection.  Available arguments
+are:
+
+  --hole-detection=seek
+     Use lseek(2) SEEK_DATA and SEEK_HOLE "whence" parameters.
+
+  --hole-detection=raw
+     Scan entire file before storing it to determine where holes
+     are located.
+
+The default is to use "seek" whenever possible, and fall back to
+"raw" otherwise.
 
 
 version 1.28, 2014-07-28
@@ -369,7 +451,7 @@ Modification times in ustar header blocks of extended headers
 are set to mtimes of the corresponding archive members.  This
 can be overridden by the
 
-  --pax-opion='exthdr.mtime=STRING'
+  --pax-option='exthdr.mtime=STRING'
 
 command line option.  The STRING is either number of seconds since
 the Epoch or a "Time reference" (see below).
@@ -379,7 +461,7 @@ headers are set to the time when tar was invoked.
 
 This can be overridden by the
 
-  --pax-opion='globexthdr.mtime=STRING'
+  --pax-option='globexthdr.mtime=STRING'
 
 command line option.  The STRING is either number of seconds since
 the Epoch or a "Time reference" (see below).
@@ -1505,7 +1587,7 @@ Versions 1.07 back to 1.00 by Jay Fenlason.
 
 
 
-Copyright 1994-2001, 2003-2010, 2013-2014 Free Software Foundation, Inc.
+Copyright 1994-2001, 2003-2010, 2013-2016 Free Software Foundation, Inc.
 
 This file is part of GNU tar.
 

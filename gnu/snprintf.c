@@ -1,7 +1,5 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Formatted output to strings.
-   Copyright (C) 2004, 2006-2014 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2006-2015 Free Software Foundation, Inc.
    Written by Simon Josefsson and Paul Eggert.
 
    This program is free software; you can redistribute it and/or modify

@@ -1,5 +1,5 @@
 /* wordsplit - a word splitter
-   Copyright (C) 2009-2014 Free Software Foundation, Inc.
+   Copyright (C) 2009-2014, 2016 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -61,7 +61,7 @@ _wsplt_alloc_die (struct wordsplit *wsp)
   abort ();
 }
 
-static void __attribute__ ((__format__ (__printf__, 1, 2)))
+static void __WORDSPLIT_ATTRIBUTE_FORMAT ((__printf__, 1, 2))
 _wsplt_error (const char *fmt, ...)
 {
   va_list ap;
@@ -221,7 +221,7 @@ struct wordsplit_node
 {
   struct wordsplit_node *prev;	/* Previous element */
   struct wordsplit_node *next;	/* Next element */
-  int flags;			/* Node flags */
+  unsigned flags;		/* Node flags */
   union
   {
     struct

@@ -1,6 +1,6 @@
 # Main Makefile for GNU tar.
 
-# Copyright 1994-1997, 1999-2001, 2003, 2007, 2009, 2013-2014 Free
+# Copyright 1994-1997, 1999-2001, 2003, 2007, 2009, 2013-2014, 2016 Free
 # Software Foundation, Inc.
 
 # This file is part of GNU tar.
@@ -26,7 +26,7 @@ dist-hook:
 	$(MAKE) changelog_dir=$(distdir) ChangeLog
 	-rm -f $(distdir).cpio
 	find $(distdir) | cpio -Hcrc -o | \
-          GZIP=$(GZIP_ENV) gzip -c > $(distdir).cpio.gz
+          eval GZIP= gzip $(GZIP_ENV) -c > $(distdir).cpio.gz
 
 distclean-local:
 	-rm -f $(distdir).cpio.gz

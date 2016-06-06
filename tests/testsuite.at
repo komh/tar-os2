@@ -1,7 +1,7 @@
 # Process this file with autom4te to create testsuite. -*- Autotest -*-
 
 # Test suite for GNU tar.
-# Copyright 2004-2008, 2010-2014 Free Software Foundation, Inc.
+# Copyright 2004-2008, 2010-2016 Free Software Foundation, Inc.
 
 # This file is part of GNU tar.
 
@@ -112,6 +112,19 @@ rm -f $[]$
 test $result -eq 0 || AT_SKIP_TEST
 ])
 
+dnl AT_SEEKHOLE_PREREQ
+m4_define([AT_SEEKHOLE_PREREQ],[
+checkseekhole || AT_SKIP_TEST
+])
+
+m4_define([AT_TIMEOUT_PREREQ],[
+timeout 100 true
+if test $? -ne 0; then
+    echo >&2 "the 'timeout' utility not found"
+    AT_SKIP_TEST
+fi
+])
+
 m4_define([AT_TAR_MKHIER],[
 install-sh -d $1 >/dev/null dnl
 m4_if([$2],,,&& genfile --file [$1]/[$2]) || AT_SKIP_TEST])
@@ -175,6 +188,10 @@ m4_define([AT_ACLS_PREREQ],[
   fi
 ])
 
+dnl Check whether a newly created file has timestamp consistent with the
+dnl local time.  Skip the test if not.
+m4_define([AT_CHECK_TIMESTAMP],[ckmtime || AT_SKIP_TEST])
+
 m4_include([sparsemvp.at])
 
 AT_INIT
@@ -200,11 +217,15 @@ AT_BANNER([The -T option])
 m4_include([T-mult.at])
 m4_include([T-nest.at])
 m4_include([T-rec.at])
+m4_include([T-recurse.at])
 m4_include([T-cd.at])
 m4_include([T-empty.at])
 m4_include([T-null.at])
+m4_include([T-null2.at])
 m4_include([T-zfile.at])
 m4_include([T-nonl.at])
+m4_include([T-dir00.at])
+m4_include([T-dir01.at])
 
 AT_BANNER([Various options])
 m4_include([indexfile.at])
@@ -213,7 +234,7 @@ m4_include([gzip.at])
 m4_include([recurse.at])
 m4_include([recurs02.at])
 m4_include([shortrec.at])
-m4_include([iotty.at])
+m4_include([numeric.at])
 
 AT_BANNER([The --same-order option])
 m4_include([same-order01.at])
@@ -225,10 +246,12 @@ m4_include([append01.at])
 m4_include([append02.at])
 m4_include([append03.at])
 m4_include([append04.at])
+m4_include([append05.at])
 
 AT_BANNER([Transforms])
 m4_include([xform-h.at])
 m4_include([xform01.at])
+m4_include([xform02.at])
 
 AT_BANNER([Exclude])
 m4_include([exclude.at])
@@ -301,6 +324,8 @@ m4_include([incr06.at])
 m4_include([incr07.at])
 m4_include([incr08.at])
 m4_include([incr09.at])
+m4_include([incr10.at])
+m4_include([incr11.at])
 
 AT_BANNER([Files removed while archiving])
 m4_include([filerem01.at])
@@ -332,6 +357,7 @@ m4_include([lustar03.at])
 m4_include([old.at])
 
 m4_include([time01.at])
+m4_include([time02.at])
 
 AT_BANNER([Multivolume archives])
 m4_include([multiv01.at])
@@ -342,15 +368,19 @@ m4_include([multiv05.at])
 m4_include([multiv06.at])
 m4_include([multiv07.at])
 m4_include([multiv08.at])
+m4_include([multiv09.at])
 
 AT_BANNER([Owner and Groups])
 m4_include([owner.at])
+m4_include([map.at])
 
 AT_BANNER([Sparse files])
 m4_include([sparse01.at])
 m4_include([sparse02.at])
 m4_include([sparse03.at])
 m4_include([sparse04.at])
+m4_include([sparse05.at])
+m4_include([sparse06.at])
 m4_include([sparsemv.at])
 m4_include([spmvp00.at])
 m4_include([spmvp01.at])
@@ -376,6 +406,7 @@ m4_include([shortupd.at])
 m4_include([truncate.at])
 m4_include([grow.at])
 m4_include([sigpipe.at])
+m4_include([comperr.at])
 
 AT_BANNER([Removing files after archiving])
 m4_include([remfiles01.at])
@@ -422,6 +453,7 @@ m4_include([onetop01.at])
 m4_include([onetop02.at])
 m4_include([onetop03.at])
 m4_include([onetop04.at])
+m4_include([onetop05.at])
 
 AT_BANNER([Star tests])
 m4_include([star/gtarfail.at])
@@ -433,3 +465,4 @@ m4_include([star/ustar-big-2g.at])
 m4_include([star/ustar-big-8g.at])
 
 m4_include([star/pax-big-10g.at])
+

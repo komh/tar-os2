@@ -1,7 +1,7 @@
 /* GNU tar Archive Format description.
 
-   Copyright 1988-1989, 1991-1997, 2000-2001, 2003-2007, 2012-2014 Free
-   Software Foundation, Inc.
+   Copyright 1988-1989, 1991-1997, 2000-2001, 2003-2007, 2012-2014, 2016
+   Free Software Foundation, Inc.
 
    This file is part of GNU tar.
 
@@ -326,6 +326,10 @@ struct tar_stat_info
 			       not sparse */
   size_t sparse_map_size;   /* Size of the sparse map */
   struct sp_array *sparse_map;
+
+  off_t real_size;          /* The real size of sparse file */
+  int   real_size_set;      /* True when GNU.sparse.realsize is set in
+			       archived file */
 
   size_t xattr_map_size;   /* Size of the xattr map */
   struct xattr_array *xattr_map;

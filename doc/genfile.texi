@@ -124,9 +124,8 @@ the rest of the command line specifies a so-called @dfn{file map}.
 descriptors}. Each descriptor is composed of two values: a number,
 specifying fragment offset from the end of the previous fragment or,
 for the very first fragment, from the beginning of the file, and
-@dfn{contents string}, i.e., a string of characters, specifying the
-pattern to fill the fragment with. File offset can be suffixed with
-the following quantifiers:
+@dfn{contents string}, that specifies the pattern to fill the fragment
+with. File offset can be suffixed with the following quantifiers:
 
 @table @samp
 @item k
@@ -140,16 +139,28 @@ The number is expressed in megabytes.
 The number is expressed in gigabytes.
 @end table
 
-    For each letter in contents string @command{genfile} will generate
-a @dfn{block} of data, filled with this letter and will write it to
-the fragment. The size of block is given by @option{--block-size}
-option. It defaults to 512. Thus, if the string consists of @var{n}
-characters, the resulting file fragment will contain
-@code{@var{n}*@var{block-size}} of data.
+    Contents string can be either a fragment size or a pattern.
+Fragment size is a decimal number, prefixed with an equals sign.  It
+can be suffixed with a quantifier, as discussed above.  If fragment
+size is given, the fragment of that size will be filled with the
+currently selected pattern (@pxref{Generate Mode, --pattern}) and
+written to the file.  
 
-    Last fragment descriptor can have only file offset part. In this
+    A pattern is a string of arbitrary ASCII characters.  For each
+of them, @command{genfile} will generate a @dfn{block} of data,
+filled with that character and will write it to the fragment. The size
+of block is given by @option{--block-size} option. It defaults to 512.
+Thus, if pattern consists of @var{n} characters, the resulting file
+fragment will contain @code{@var{n}*@var{block-size}} bytes of data.
+
+    The last fragment descriptor can have only file offset part. In this
 case @command{genfile} will create a hole at the end of the file up to
 the given offset.
+
+    A dash appearing as a fragment descriptor instructs
+@command{genfile} to read file map from the standard input.  Each line
+of input should consist of fragment offset and contents string,
+separated by any amount of whitespace.
 
     For example, consider the following invocation:
 
@@ -170,8 +181,14 @@ letters @samp{A}, @samp{B}, @samp{C} and @samp{D}.
 @item 1053184  @tab 2048000     @tab Zero bytes
 @end multitable
 
-    The exit code of @command{genfile --status} command is @code{0}
-only if created file is actually sparse.
+@cindex --quite, option
+    The exit code of @command{genfile --sparse} command is @code{0}
+only if created file is actually sparse.  If it is not, the
+appropriate error message is displayed and the command exists with
+code @code{1}.  The @option{--quite} (@option{-q}) option suppresses
+this behavior.  If @option{--quite} is given, @command{genfile
+--sparse} exits with code @code{0} if it was able to create the file,
+whether the resulting file is sparse or not.
 
 @node Status Mode
 @appendixsec Status Mode

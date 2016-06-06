@@ -1,7 +1,7 @@
 /* Create a tar archive.
 
    Copyright 1985, 1992-1994, 1996-1997, 1999-2001, 2003-2007,
-   2009-2010, 2012-2014 Free Software Foundation, Inc.
+   2009-2010, 2012-2014, 2016 Free Software Foundation, Inc.
 
    This file is part of GNU tar.
 
@@ -22,6 +22,7 @@
 
 #include <system.h>
 
+#include <areadlink.h>
 #include <quotearg.h>
 
 #include "common.h"
@@ -706,7 +707,7 @@ write_extended (bool global, struct tar_stat_info *st, union block *old_header)
     {
       type = XHDTYPE;
       p = xheader_xhdr_name (st);
-      t = st->stat.st_mtime;
+      t = set_mtime_option ? mtime_option.tv_sec : st->stat.st_mtime;
     }
   xheader_write (type, p, t, &st->xhdr);
   free (p);
@@ -740,17 +741,17 @@ union block *
 start_header (struct tar_stat_info *st)
 {
   union block *header;
-
+  char const *uname = NULL;
+  char const *gname = NULL;
+  
   header = write_header_name (st);
   if (!header)
     return NULL;
 
   /* Override some stat fields, if requested to do so.  */
+  owner_map_translate (st->stat.st_uid, &st->stat.st_uid, &uname);
+  group_map_translate (st->stat.st_gid, &st->stat.st_gid, &gname);
 
-  if (owner_option != (uid_t) -1)
-    st->stat.st_uid = owner_option;
-  if (group_option != (gid_t) -1)
-    st->stat.st_gid = group_option;
   if (mode_option)
     st->stat.st_mode =
       ((st->stat.st_mode & ~MODE_ALL)
@@ -822,7 +823,24 @@ start_header (struct tar_stat_info *st)
   }
 
   {
-    struct timespec mtime = set_mtime_option ? mtime_option : st->mtime;
+    struct timespec mtime;
+
+    switch (set_mtime_option)
+      {
+      case USE_FILE_MTIME:
+	mtime = st->mtime;
+	break;
+	  
+      case FORCE_MTIME:
+	mtime = mtime_option;
+	break;
+	  
+      case CLAMP_MTIME:
+	mtime = timespec_cmp (st->mtime, mtime_option) > 0
+	           ? mtime_option : st->mtime;
+	break;
+      }
+
     if (archive_format == POSIX_FORMAT)
       {
 	if (MAX_OCTAL_VAL (header->header.mtime) < mtime.tv_sec
@@ -909,13 +927,13 @@ start_header (struct tar_stat_info *st)
     }
   else
     {
-      if (owner_name_option)
-	st->uname = xstrdup (owner_name_option);
+      if (uname)
+	st->uname = xstrdup (uname);
       else
 	uid_to_uname (st->stat.st_uid, &st->uname);
 
-      if (group_name_option)
-	st->gname = xstrdup (group_name_option);
+      if (gname)
+	st->gname = xstrdup (gname);
       else
 	gid_to_gname (st->stat.st_gid, &st->gname);
 
@@ -1114,7 +1132,7 @@ dump_dir0 (struct tar_stat_info *st, char const *directory)
     return;
 
   info_attach_exclist (st);
-  
+
   if (incremental_option && archive_format != POSIX_FORMAT)
     blk->header.typeflag = GNUTYPE_DUMPDIR;
   else /* if (standard_option) */
@@ -1198,7 +1216,7 @@ dump_dir0 (struct tar_stat_info *st, char const *directory)
 	    char const *entry;
 	    size_t entry_len;
 	    size_t name_len;
-	    
+
 	    name_buf = xstrdup (st->orig_file_name);
 	    name_size = name_len = strlen (name_buf);
 
@@ -1472,8 +1490,8 @@ dump_hard_link (struct tar_stat_info *st)
 	  /* We found a link.  */
 	  char const *link_name = safer_name_suffix (duplicate->name, true,
 	                                             absolute_names_option);
-
-	  duplicate->nlink--;
+	  if (duplicate->nlink)
+	    duplicate->nlink--;
 
 	  block_ordinal = current_block_ordinal ();
 	  assign_string (&st->link_name, link_name);
@@ -1837,22 +1855,17 @@ dump_file0 (struct tar_stat_info *st, char const *name, char const *p)
 #ifdef HAVE_READLINK
   else if (S_ISLNK (st->stat.st_mode))
     {
-      char *buffer;
-      int size;
-      size_t linklen = st->stat.st_size;
-      if (linklen != st->stat.st_size || linklen + 1 == 0)
-	xalloc_die ();
-      buffer = (char *) alloca (linklen + 1);
-      size = readlinkat (parentfd, name, buffer, linklen + 1);
-      if (size < 0)
+      st->link_name = areadlinkat_with_size (parentfd, name, st->stat.st_size);
+      if (!st->link_name)
 	{
+	  if (errno == ENOMEM)
+	    xalloc_die ();
 	  file_removed_diag (p, top_level, readlink_diag);
 	  return;
 	}
-      buffer[size] = '\0';
-      assign_string (&st->link_name, buffer);
       transform_name (&st->link_name, XFORM_SYMLINK);
-      if (NAME_FIELD_SIZE - (archive_format == OLDGNU_FORMAT) < size)
+      if (NAME_FIELD_SIZE - (archive_format == OLDGNU_FORMAT)
+	  < strlen (st->link_name))
 	write_long_link (st);
 
       xattrs_selinux_get (parentfd, name, st, 0);

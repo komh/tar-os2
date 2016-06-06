@@ -1,8 +1,6 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Convert string representation of a number into an intmax_t value.
 
-   Copyright (C) 1999, 2001-2004, 2006, 2009-2014 Free Software Foundation,
+   Copyright (C) 1999, 2001-2004, 2006, 2009-2015 Free Software Foundation,
    Inc.
 
    This program is free software: you can redistribute it and/or modify

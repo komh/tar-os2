@@ -1,8 +1,6 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Reentrant time functions like localtime_r.
 
-   Copyright (C) 2003, 2006-2007, 2010-2014 Free Software Foundation, Inc.
+   Copyright (C) 2003, 2006-2007, 2010-2015 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by

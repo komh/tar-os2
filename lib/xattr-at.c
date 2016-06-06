@@ -1,7 +1,7 @@
 /* openat-style fd-relative functions for operating with extended file
    attributes.
 
-   Copyright 2012-2014 Free Software Foundation, Inc.
+   Copyright 2012-2014, 2016 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -30,6 +30,8 @@
 #include "save-cwd.h"
 
 #include "openat-priv.h"
+
+#ifdef HAVE_XATTRS
 
 /* setxattrat */
 #define AT_FUNC_NAME setxattrat
@@ -108,3 +110,5 @@
 #undef AT_FUNC_RESULT
 #undef AT_FUNC_POST_FILE_PARAM_DECLS
 #undef AT_FUNC_POST_FILE_ARGS
+
+#endif /* HAVE_XATTRS */

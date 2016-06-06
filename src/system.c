@@ -1,6 +1,7 @@
 /* System-dependent calls for tar.
 
-   Copyright 2003-2008, 2010, 2013-2014 Free Software Foundation, Inc.
+   Copyright 2003-2008, 2010, 2013-2014, 2016 Free Software Foundation,
+   Inc.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -26,13 +27,14 @@
 static _Noreturn void
 xexec (const char *cmd)
 {
-  struct wordsplit ws;
+  char *argv[4];
 
-  ws.ws_env = (const char **) environ;
-  if (wordsplit (cmd, &ws, (WRDSF_DEFFLAGS | WRDSF_ENV) & ~WRDSF_NOVAR))
-    FATAL_ERROR ((0, 0, _("cannot split string '%s': %s"),
-		  cmd, wordsplit_strerror (&ws)));
-  execvp (ws.ws_wordv[0], ws.ws_wordv);
+  argv[0] = (char *) "/bin/sh";
+  argv[1] = (char *) "-c";
+  argv[2] = (char *) cmd;
+  argv[3] = NULL;
+
+  execv ("/bin/sh", argv);
   exec_fatal (cmd);
 }
 
@@ -330,6 +332,7 @@ sys_child_open_for_compress (void)
   pid_t grandchild_pid;
   pid_t child_pid;
 
+  signal (SIGPIPE, SIG_IGN);
   xpipe (parent_pipe);
   child_pid = xfork ();
 

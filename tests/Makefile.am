@@ -1,6 +1,6 @@
 # Makefile for GNU tar regression tests.
 
-# Copyright 1996-1997, 1999-2001, 2003-2007, 2009, 2012-2013 Free Software
+# Copyright 1996-1997, 1999-2001, 2003-2007, 2009, 2012-2015 Free Software
 
 # This file is part of GNU tar.
 
@@ -43,9 +43,13 @@ $(srcdir)/package.m4: $(top_srcdir)/configure.ac
 
 TESTSUITE_AT = \
  T-cd.at\
+ T-dir00.at\
+ T-dir01.at\
  T-empty.at\
  T-null.at\
+ T-null2.at\
  T-rec.at\
+ T-recurse.at\
  T-zfile.at\
  T-nonl.at\
  T-mult.at\
@@ -56,9 +60,11 @@ TESTSUITE_AT = \
  append02.at\
  append03.at\
  append04.at\
+ append05.at\
  backup01.at\
  chtype.at\
  comprec.at\
+ comperr.at\
  delete01.at\
  delete02.at\
  delete03.at\
@@ -114,9 +120,10 @@ TESTSUITE_AT = \
  incr07.at\
  incr08.at\
  incr09.at\
+ incr10.at\
+ incr11.at\
  indexfile.at\
  ignfail.at\
- iotty.at\
  label01.at\
  label02.at\
  label03.at\
@@ -136,6 +143,7 @@ TESTSUITE_AT = \
  lustar01.at\
  lustar02.at\
  lustar03.at\
+ map.at\
  multiv01.at\
  multiv02.at\
  multiv03.at\
@@ -144,11 +152,14 @@ TESTSUITE_AT = \
  multiv06.at\
  multiv07.at\
  multiv08.at\
+ multiv09.at\
+ numeric.at\
  old.at\
  onetop01.at\
  onetop02.at\
  onetop03.at\
  onetop04.at\
+ onetop05.at\
  opcomp01.at\
  opcomp02.at\
  opcomp03.at\
@@ -198,12 +209,15 @@ TESTSUITE_AT = \
  sparse02.at\
  sparse03.at\
  sparse04.at\
+ sparse05.at\
+ sparse06.at\
  sparsemv.at\
  sparsemvp.at\
  spmvp00.at\
  spmvp01.at\
  spmvp10.at\
  time01.at\
+ time02.at\
  truncate.at\
  update.at\
  update01.at\
@@ -215,6 +229,7 @@ TESTSUITE_AT = \
  version.at\
  xform-h.at\
  xform01.at\
+ xform02.at\
  star/gtarfail.at\
  star/gtarfail2.at\
  star/multi-fail.at\
@@ -232,6 +247,9 @@ TESTSUITE_AT = \
  selnx01.at\
  selacl01.at\
  capabs_raw01.at
+
+distclean-local:
+	-rm -rf download
 
 TESTSUITE = $(srcdir)/testsuite
 
@@ -255,7 +273,7 @@ check-full:
 #check_SCRIPTS = tar
 
 # Run the test suite on the *installed* tree.
-installcheck-local:
+installcheck-local: $(check_PROGRAMS)
 	$(SHELL) $(TESTSUITE) $(TESTSUITEFLAGS) AUTOTEST_PATH=$(exec_prefix)/bin
 
 
@@ -263,15 +281,10 @@ installcheck-local:
 ## genfile      ##
 ## ------------ ##
 
-check_PROGRAMS = genfile
-
-if TAR_COND_GRANTPT
-check_PROGRAMS += ttyemu
-endif
+check_PROGRAMS = genfile checkseekhole ckmtime
 
 genfile_SOURCES = genfile.c argcv.c argcv.h
-
-ttyemu_SOURCES = ttyemu.c
+checkseekhole_SOURCES = checkseekhole.c
 
 localedir = $(datadir)/locale
 AM_CPPFLAGS = \

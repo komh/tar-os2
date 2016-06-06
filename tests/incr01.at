@@ -1,7 +1,7 @@
 # Process this file with autom4te to create testsuite. -*- Autotest -*-
 
 # Test suite for GNU tar.
-# Copyright 2005, 2007, 2013-2014 Free Software Foundation, Inc.
+# Copyright 2005, 2007, 2013-2014, 2016 Free Software Foundation, Inc.
 
 # This file is part of GNU tar.
 
@@ -28,6 +28,8 @@ AT_SETUP([restore broken symlinks from incremental])
 AT_KEYWORDS([incremental incr01])
 
 AT_TAR_CHECK([
+AT_CHECK_TIMESTAMP
+
 mkdir directory
 $as_ln_s foo directory/bar
 

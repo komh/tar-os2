@@ -1,8 +1,6 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* quotearg.h - quote arguments for output
 
-   Copyright (C) 1998-2002, 2004, 2006, 2008-2014 Free Software Foundation,
+   Copyright (C) 1998-2002, 2004, 2006, 2008-2015 Free Software Foundation,
    Inc.
 
    This program is free software: you can redistribute it and/or modify

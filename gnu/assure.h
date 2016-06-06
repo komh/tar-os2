@@ -1,7 +1,6 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
-/* Determine name of the slave side of a pseudo-terminal.
-   Copyright (C) 1998, 2002, 2010-2014 Free Software Foundation, Inc.
+/* Run-time assert-like macros.
+
+   Copyright (C) 2014-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -16,19 +15,23 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-#include <config.h>
+/* Written by Paul Eggert.  */
 
-#include <stdlib.h>
+#ifndef _GL_ASSURE_H
+#define _GL_ASSURE_H
 
-/* Static buffer for 'ptsname'.  */
-static char buffer[64];
+#include <assert.h>
 
+/* Check E's value at runtime, and report an error and abort if not.
+   However, do nothng if NDEBUG is defined.
 
-/* Return the pathname of the pseudo terminal slave associated with
-   the master FD is open on, or NULL on errors.
-   The returned storage is good until the next call to this function.  */
-char *
-ptsname (int fd)
-{
-  return ptsname_r (fd, buffer, sizeof (buffer)) != 0 ? NULL : buffer;
-}
+   Unlike standard 'assert', this macro always compiles E even when NDEBUG
+   is defined, so as to catch typos and avoid some GCC warnings.  */
+
+#ifdef NDEBUG
+# define assure(E) ((void) (0 && (E)))
+#else
+# define assure(E) assert (E)
+#endif
+
+#endif

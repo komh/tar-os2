@@ -1,7 +1,5 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Function to parse an 'unsigned long long int' from text.
-   Copyright (C) 1995-1997, 1999, 2009-2014 Free Software Foundation, Inc.
+   Copyright (C) 1995-1997, 1999, 2009-2015 Free Software Foundation, Inc.
    NOTE: The canonical source of this file is maintained with the GNU C
    Library.  Bugs can be reported to bug-glibc@gnu.org.
 

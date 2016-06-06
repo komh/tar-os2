@@ -1,5 +1,3 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 #define __strtol strtoul
 #define __strtol_t unsigned long int
 #define __xstrtol xstrtoul

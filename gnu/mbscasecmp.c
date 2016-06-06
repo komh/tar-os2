@@ -1,7 +1,5 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Case-insensitive string comparison function.
-   Copyright (C) 1998-1999, 2005-2014 Free Software Foundation, Inc.
+   Copyright (C) 1998-1999, 2005-2015 Free Software Foundation, Inc.
    Written by Bruno Haible <bruno@clisp.org>, 2005,
    based on earlier glibc code.
 

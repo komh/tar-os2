@@ -1,7 +1,5 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* A GNU-like <dirent.h>.
-   Copyright (C) 2006-2014 Free Software Foundation, Inc.
+   Copyright (C) 2006-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -79,6 +77,7 @@ typedef struct gl_directory DIR;
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #   undef opendir
 #   define opendir rpl_opendir
+#   define GNULIB_defined_opendir 1
 #  endif
 _GL_FUNCDECL_RPL (opendir, DIR *, (const char *dir_name) _GL_ARG_NONNULL ((1)));
 _GL_CXXALIAS_RPL (opendir, DIR *, (const char *dir_name));
@@ -130,6 +129,7 @@ _GL_WARN_ON_USE (rewinddir, "rewinddir is not portable - "
 #  if !(defined __cplusplus && defined GNULIB_NAMESPACE)
 #   undef closedir
 #   define closedir rpl_closedir
+#   define GNULIB_defined_closedir 1
 #  endif
 _GL_FUNCDECL_RPL (closedir, int, (DIR *dirp) _GL_ARG_NONNULL ((1)));
 _GL_CXXALIAS_RPL (closedir, int, (DIR *dirp));

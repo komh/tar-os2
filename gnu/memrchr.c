@@ -1,8 +1,6 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* memrchr -- find the last occurrence of a byte in a memory block
 
-   Copyright (C) 1991, 1993, 1996-1997, 1999-2000, 2003-2014 Free Software
+   Copyright (C) 1991, 1993, 1996-1997, 1999-2000, 2003-2015 Free Software
    Foundation, Inc.
 
    Based on strlen implementation by Torbjorn Granlund (tege@sics.se),

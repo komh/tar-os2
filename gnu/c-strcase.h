@@ -1,7 +1,5 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* Case-insensitive string comparison functions in C locale.
-   Copyright (C) 1995-1996, 2001, 2003, 2005, 2009-2014 Free Software
+   Copyright (C) 1995-1996, 2001, 2003, 2005, 2009-2015 Free Software
    Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify

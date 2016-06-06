@@ -1,6 +1,6 @@
 /* POSIX extended headers for tar.
 
-   Copyright (C) 2003-2007, 2009-2010, 2012-2014 Free Software
+   Copyright (C) 2003-2007, 2009-2010, 2012-2014, 2016 Free Software
    Foundation, Inc.
 
    This file is part of GNU tar.
@@ -755,6 +755,16 @@ xheader_decode (struct tar_stat_info *st)
 	continue;
     }
   run_override_list (keyword_override_list, st);
+
+  /* The archived (effective) file size is always set directly in tar header
+     field, possibly overridden by "size" extended header - in both cases,
+     result is now decoded in st->stat.st_size */
+  st->archive_file_size = st->stat.st_size;
+
+  /* The real file size (given by stat()) may be redefined for sparse
+     files in "GNU.sparse.realsize" extended header */
+  if (st->real_size_set)
+    st->stat.st_size = st->real_size;
 }
 
 static void
@@ -803,11 +813,11 @@ xheader_store (char const *keyword, struct tar_stat_info *st,
   t = locate_handler (keyword);
   if (!t || !t->coder)
     return;
-  if (xheader_keyword_deleted_p (keyword)
-      || xheader_keyword_override_p (keyword))
+  if (xheader_keyword_deleted_p (keyword))
     return;
   xheader_init (&st->xhdr);
-  t->coder (st, keyword, &st->xhdr, data);
+  if (!xheader_keyword_override_p (keyword))
+    t->coder (st, keyword, &st->xhdr, data);
 }
 
 void
@@ -1017,7 +1027,7 @@ xheader_string_end (struct xheader *xhdr, char const *keyword)
     }
   x_obstack_blank (xhdr, p);
   x_obstack_1grow (xhdr, '\n');
-  cp = obstack_next_free (xhdr->stk) - xhdr->string_length - p - 1;
+  cp = (char*) obstack_next_free (xhdr->stk) - xhdr->string_length - p - 1;
   memmove (cp + p, cp, xhdr->string_length);
   cp = stpcpy (cp, np);
   *cp++ = ' ';
@@ -1360,7 +1370,10 @@ sparse_size_decoder (struct tar_stat_info *st,
 {
   uintmax_t u;
   if (decode_num (&u, arg, TYPE_MAXIMUM (off_t), keyword))
-    st->stat.st_size = u;
+    {
+      st->real_size_set = 1;
+      st->real_size = u;
+    }
 }
 
 static void
@@ -1443,13 +1456,13 @@ sparse_map_decoder (struct tar_stat_info *st,
 		    size_t size __attribute__((unused)))
 {
   int offset = 1;
+  struct sp_array e;
 
   st->sparse_map_avail = 0;
   while (1)
     {
       intmax_t u;
       char *delim;
-      struct sp_array e;
 
       if (!ISDIGIT (*arg))
 	{

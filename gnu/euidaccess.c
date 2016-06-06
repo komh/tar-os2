@@ -1,8 +1,6 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* euidaccess -- check if effective user id can access file
 
-   Copyright (C) 1990-1991, 1995, 1998, 2000, 2003-2006, 2008-2014 Free
+   Copyright (C) 1990-1991, 1995, 1998, 2000, 2003-2006, 2008-2015 Free
    Software Foundation, Inc.
 
    This file is part of the GNU C Library.

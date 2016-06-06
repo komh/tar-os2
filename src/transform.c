@@ -1,5 +1,5 @@
 /* This file is part of GNU tar.
-   Copyright 2006-2008, 2013-2014 Free Software Foundation, Inc.
+   Copyright 2006-2008, 2013-2014, 2016 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -378,13 +378,15 @@ parse_transform_expr (const char *expr)
 	      break;
 
 	    default:
-	      /* Try to be nice */
-	      {
-		char buf[2];
-		buf[0] = '\\';
-		buf[1] = *cur;
-		add_literal_segment (tf, buf, buf + 2);
-	      }
+	      if (*cur == delim)
+		add_char_segment (tf, delim);
+	      else
+		{
+		  char buf[2];
+		  buf[0] = '\\';
+		  buf[1] = *cur;
+		  add_literal_segment (tf, buf, buf + 2);
+		}
 	      cur++;
 	      break;
 	    }

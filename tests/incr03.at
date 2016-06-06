@@ -1,7 +1,8 @@
 # Process this file with autom4te to create testsuite. -*- Autotest -*-
 
 # Test suite for GNU tar.
-# Copyright 2006-2007, 2009, 2013-2014 Free Software Foundation, Inc.
+# Copyright 2006-2007, 2009, 2013-2014, 2016 Free Software Foundation,
+# Inc.
 
 # This file is part of GNU tar.
 
@@ -29,6 +30,7 @@ AT_SETUP([renamed files in incrementals])
 AT_KEYWORDS([incremental incr03 rename])
 
 AT_TAR_CHECK([
+AT_CHECK_TIMESTAMP
 AT_SORT_PREREQ
 mkdir directory
 genfile --file=directory/x

@@ -1,12 +1,10 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 /* This function serves as replacement for a missing fchownat function,
    as well as a work around for the fchownat bug in glibc-2.4:
     <http://lists.ubuntu.com/archives/ubuntu-users/2006-September/093218.html>
    when the buggy fchownat-with-AT_SYMLINK_NOFOLLOW operates on a symlink, it
    mistakenly affects the symlink referent, rather than the symlink itself.
 
-   Copyright (C) 2006-2007, 2009-2014 Free Software Foundation, Inc.
+   Copyright (C) 2006-2007, 2009-2015 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by

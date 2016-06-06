@@ -1,7 +1,7 @@
 /* GNU dump extensions to tar.
 
-   Copyright 1988, 1992-1994, 1996-1997, 1999-2001, 2003-2009, 2013-2014
-   Free Software Foundation, Inc.
+   Copyright 1988, 1992-1994, 1996-1997, 1999-2001, 2003-2009,
+   2013-2014, 2016 Free Software Foundation, Inc.
 
    This file is part of GNU tar.
 
@@ -735,7 +735,7 @@ scan_directory (struct tar_stat_info *st)
     savedir_error (dir);
 
   info_attach_exclist (st);
-  
+
   tmp = xstrdup (dir);
   zap_slashes (tmp);
 
@@ -1155,11 +1155,14 @@ read_num (FILE *fp, char const *fieldname,
     }
 
   if (c)
-    FATAL_ERROR ((0, 0,
-		  _("%s: byte %s: %s %s followed by invalid byte 0x%02x"),
-		  quotearg_colon (listed_incremental_option),
-		  offtostr (ftello (fp), offbuf),
-		  fieldname, buf, c));
+    {
+      unsigned uc = c;
+      FATAL_ERROR ((0, 0,
+		    _("%s: byte %s: %s %s followed by invalid byte 0x%02x"),
+		    quotearg_colon (listed_incremental_option),
+		    offtostr (ftello (fp), offbuf),
+		    fieldname, buf, uc));
+    }
 
   *pval = strtosysint (buf, NULL, min_val, max_val);
   conversion_errno = errno;
@@ -1541,9 +1544,10 @@ dumpdir_ok (char *dumpdir)
     {
       if (expect && *p != expect)
 	{
+	  unsigned char uc = *p;
 	  ERROR ((0, 0,
 		  _("Malformed dumpdir: expected '%c' but found %#3o"),
-		  expect, *p));
+		  expect, uc));
 	  return false;
 	}
       switch (*p)
@@ -1578,7 +1582,7 @@ dumpdir_ok (char *dumpdir)
 	  if (expect != 'T')
 	    {
 	      ERROR ((0, 0,
-		      _("Malformed dumpdir: 'T' not preceeded by 'R'")));
+		      _("Malformed dumpdir: 'T' not preceded by 'R'")));
 	      return false;
 	    }
 	  if (p[1] == 0 && !has_tempdir)
@@ -1708,7 +1712,7 @@ try_purge_directory (char const *directory_name)
       const char *entry;
       struct stat st;
       free (p);
-      p = new_name (directory_name, cur);
+      p = make_file_name (directory_name, cur);
 
       if (deref_stat (p, &st) != 0)
 	{

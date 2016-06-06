@@ -1,5 +1,3 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 #define __strtol strtoumax
 #define __strtol_t uintmax_t
 #define __xstrtol xstrtoumax

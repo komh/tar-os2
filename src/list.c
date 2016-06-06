@@ -1,6 +1,6 @@
 /* List a tar archive, with support routines for reading a tar archive.
 
-   Copyright 1988, 1992-1994, 1996-2001, 2003-2007, 2010, 2012-2014 Free
+   Copyright 1988, 1992-1994, 1996-2001, 2003-2007, 2010, 2012-2016 Free
    Software Foundation, Inc.
 
    This file is part of GNU tar.
@@ -124,18 +124,20 @@ enforce_one_top_level (char **pfile_name)
   for (p = file_name; *p && (ISSLASH (*p) || *p == '.'); p++)
     ;
 
-  if (!*p)
-    return;
-
-  if (strncmp (p, one_top_level_dir, strlen (one_top_level_dir)) == 0)
+  if (*p)
     {
       int pos = strlen (one_top_level_dir);
-      if (ISSLASH (p[pos]) || p[pos] == 0)
-	return;
+      if (strncmp (p, one_top_level_dir, pos) == 0)
+	{
+	  if (ISSLASH (p[pos]) || p[pos] == 0)
+	    return;
+	}
+    
+      *pfile_name = make_file_name (one_top_level_dir, file_name);
+      normalize_filename_x (*pfile_name);
     }
-
-  *pfile_name = new_name (one_top_level_dir, file_name);
-  normalize_filename_x (*pfile_name);
+  else
+    *pfile_name = xstrdup (one_top_level_dir);
   free (file_name);
 }
 
@@ -193,7 +195,7 @@ read_and (void (*do_something) (void))
 	  decode_header (current_header, &current_stat_info,
 			 &current_format, 1);
 	  if (! name_match (current_stat_info.file_name)
-	      || (NEWER_OPTION_INITIALIZED (newer_mtime_option)
+	      || (TIME_OPTION_INITIALIZED (newer_mtime_option)
 		  /* FIXME: We get mtime now, and again later; this causes
 		     duplicate diagnostics if header.mtime is bogus.  */
 		  && ((mtime.tv_sec
@@ -689,7 +691,6 @@ decode_header (union block *header, struct tar_stat_info *stat_info,
 	}
     }
 
-  stat_info->archive_file_size = stat_info->stat.st_size;
   xheader_decode (stat_info);
 
   if (sparse_member_p (stat_info))
@@ -1218,18 +1219,7 @@ simple_print_header (struct tar_stat_info *st, union block *blk,
 	  && !numeric_owner_option)
 	user = st->uname;
       else
-	{
-	  /* Try parsing it as an unsigned integer first, and as a
-	     uid_t if that fails.  This method can list positive user
-	     ids that are too large to fit in a uid_t.  */
-	  uintmax_t u = from_header (blk->header.uid,
-				     sizeof blk->header.uid, 0,
-				     0, UINTMAX_MAX,
-				     false, false);
-	  user = (u != -1
-		  ? STRINGIFY_BIGINT (u, uform)
-		  : imaxtostr (UID_FROM_HEADER (blk->header.uid), uform));
-	}
+	user = STRINGIFY_BIGINT (st->stat.st_uid, uform);
 
       if (st->gname
 	  && st->gname[0]
@@ -1237,18 +1227,7 @@ simple_print_header (struct tar_stat_info *st, union block *blk,
 	  && !numeric_owner_option)
 	group = st->gname;
       else
-	{
-	  /* Try parsing it as an unsigned integer first, and as a
-	     gid_t if that fails.  This method can list positive group
-	     ids that are too large to fit in a gid_t.  */
-	  uintmax_t g = from_header (blk->header.gid,
-				     sizeof blk->header.gid, 0,
-				     0, UINTMAX_MAX,
-				     false, false);
-	  group = (g != -1
-		   ? STRINGIFY_BIGINT (g, gform)
-		   : imaxtostr (GID_FROM_HEADER (blk->header.gid), gform));
-	}
+	group = STRINGIFY_BIGINT (st->stat.st_gid, gform);
 
       /* Format the file size or major/minor device numbers.  */
 

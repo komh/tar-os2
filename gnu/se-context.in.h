@@ -1,5 +1,3 @@
-/* -*- buffer-read-only: t -*- vi: set ro: */
-/* DO NOT EDIT! GENERATED AUTOMATICALLY! */
 #ifndef SELINUX_CONTEXT_H
 # define SELINUX_CONTEXT_H
 

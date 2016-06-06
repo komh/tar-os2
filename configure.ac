@@ -1,6 +1,6 @@
 # Configure template for GNU tar.  -*- autoconf -*-
 
-# Copyright 1991, 1994-2010, 2013-2014 Free Software Foundation, Inc.
+# Copyright 1991, 1994-2010, 2013-2016 Free Software Foundation, Inc.
 
 # This file is part of GNU tar.
 
@@ -17,7 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-AC_INIT([GNU tar], [1.28], [bug-tar@gnu.org])
+AC_INIT([GNU tar], [1.29], [bug-tar@gnu.org])
 AC_CONFIG_SRCDIR([src/tar.c])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_HEADERS([config.h])
@@ -150,6 +150,7 @@ if test "$gl_gcc_warnings" = yes; then
   nw="$nw -Winline"                 # It's OK to not inline.
   nw="$nw -Wstrict-overflow"	    # It's OK to optimize strictly.
   nw="$nw -Wsuggest-attribute=pure" # Too many warnings for now.
+  nw="$nw -Wstack-protector"
 
   gl_MANYWARN_ALL_GCC([ws])
   gl_MANYWARN_COMPLEMENT([ws], [$ws], [$nw])
@@ -160,9 +161,10 @@ if test "$gl_gcc_warnings" = yes; then
   gl_WARN_ADD([-Wno-type-limits])      # It's OK to optimize based on types.
   gl_WARN_ADD([-Wno-unused-parameter]) # Too many warnings for now
   gl_WARN_ADD([-Wno-format-nonliteral])
-
+  
   gl_WARN_ADD([-fdiagnostics-show-option])
   gl_WARN_ADD([-funit-at-a-time])
+  
 
   AC_SUBST([WARN_CFLAGS])
 
@@ -204,8 +206,7 @@ fi
 
 TAR_HEADERS_ATTR_XATTR_H
 
-AC_CHECK_FUNCS_ONCE([fchmod fchown fsync lstat mkfifo readlink symlink grantpt])
-AM_CONDITIONAL([TAR_COND_GRANTPT], [test $ac_cv_func_grantpt = yes])
+AC_CHECK_FUNCS_ONCE([fchmod fchown fsync lstat mkfifo readlink symlink])
 
 AC_CHECK_DECLS([getgrgid],,, [#include <grp.h>])
 AC_CHECK_DECLS([getpwuid],,, [#include <pwd.h>])

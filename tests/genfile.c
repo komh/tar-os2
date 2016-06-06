@@ -2,7 +2,7 @@
    Print statistics for existing files.
 
    Copyright (C) 1995, 1996, 1997, 2001, 2003, 2004, 2005, 2006, 2007,
-   2008, 2009 Free Software Foundation, Inc.
+   2008, 2009, 2016 Free Software Foundation, Inc.
 
    François Pinard <pinard@iro.umontreal.ca>, 1995.
    Sergey Poznyakoff <gray@mirddin.farlep.net>, 2004, 2005, 2006, 2007, 2008.
@@ -32,6 +32,7 @@
 #include <inttostr.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <c-ctype.h>
 #define obstack_chunk_alloc malloc
 #define obstack_chunk_free free
 #include <obstack.h>
@@ -106,6 +107,9 @@ struct timespec touch_time;
 /* Verbose mode */
 int verbose;
 
+/* Quiet mode */
+int quiet;
+
 const char *argp_program_version = "genfile (" PACKAGE ") " VERSION;
 const char *argp_program_bug_address = "<" PACKAGE_BUGREPORT ">";
 static char doc[] = N_("genfile manipulates data files for GNU paxutils test suite.\n"
@@ -144,7 +148,8 @@ static struct argp_option options[] = {
   {"seek", OPT_SEEK, N_("OFFSET"), 0,
    N_("Seek to the given offset before writing data"),
    GRP+1 },
-
+  {"quiet", 'q', NULL, 0,
+   N_("Suppress non-fatal diagnostic messages") },
 #undef GRP
 #define GRP 10
   {NULL, 0, NULL, 0,
@@ -265,11 +270,11 @@ verify_file (char *file_name)
 	error (0, errno, _("stat(%s) failed"), file_name);
 
       if (st.st_size != file_length + seek_offset)
-	error (1, 0, _("requested file length %lu, actual %lu"),
+	error (EXIT_FAILURE, 0, _("requested file length %lu, actual %lu"),
 	       (unsigned long)st.st_size, (unsigned long)file_length);
 
-      if (mode == mode_sparse && !ST_IS_SPARSE (st))
-	error (1, 0, _("created file is not sparse"));
+      if (!quiet && mode == mode_sparse && !ST_IS_SPARSE (st))
+	error (EXIT_FAILURE, 0, _("created file is not sparse"));
     }
 }
 
@@ -325,6 +330,10 @@ parse_opt (int key, char *arg, struct argp_state *state)
       block_size = get_size (arg, 0);
       break;
 
+    case 'q':
+      quiet = 1;
+      break;
+      
     case 's':
       mode = mode_sparse;
       break;
@@ -506,10 +515,56 @@ mksparse (int fd, off_t displ, char *marks)
     }
 }
 
+static int
+make_fragment (int fd, char *offstr, char *mapstr)
+{
+  int i;
+  off_t displ = get_size (offstr, 1);
+
+  file_length += displ;
+
+  if (!mapstr || !*mapstr)
+    {
+      mkhole (fd, displ);
+      return 1;
+    }
+  else if (*mapstr == '=')
+    {
+      off_t n = get_size (mapstr + 1, 1);
+
+      switch (pattern)
+	{
+	case DEFAULT_PATTERN:
+	  for (i = 0; i < block_size; i++)
+	    buffer[i] = i & 255;
+	  break;
+	  
+	case ZEROS_PATTERN:
+	  memset (buffer, 0, block_size);
+	  break;
+	}
+
+      if (lseek (fd, displ, SEEK_CUR) == -1)
+	error (EXIT_FAILURE, errno, "lseek");
+      
+      for (; n; n--)
+	{
+	  if (write (fd, buffer, block_size) != block_size)
+	    error (EXIT_FAILURE, errno, "write");
+	  file_length += block_size;
+	}
+    }
+  else
+    {
+      file_length += block_size * strlen (mapstr);
+      mksparse (fd, displ, mapstr);
+    }
+  return 0;
+}
+
 static void
 generate_sparse_file (int argc, char **argv)
 {
-  int i;
   int fd;
   int flags = O_CREAT | O_RDWR | O_BINARY;
 
@@ -526,20 +581,33 @@ generate_sparse_file (int argc, char **argv)
 
   file_length = 0;
 
-  for (i = 0; i < argc; i += 2)
+  while (argc)
     {
-      off_t displ = get_size (argv[i], 1);
-      file_length += displ;
-
-      if (i == argc-1)
+      if (argv[0][0] == '-' && argv[0][1] == 0)
 	{
-	  mkhole (fd, displ);
-	  break;
+	  char buf[256];
+	  while (fgets (buf, sizeof (buf), stdin))
+	    {
+	      size_t n = strlen (buf);
+
+	      while (n > 0 && c_isspace (buf[n-1]))
+		buf[--n] = 0;
+	      
+	      n = strcspn (buf, " \t");
+	      buf[n++] = 0;
+	      while (buf[n] && c_isblank (buf[n]))
+		++n;
+	      make_fragment (fd, buf, buf + n);
+	    }
+	  ++argv;
+	  --argc;
 	}
       else
 	{
-	  file_length += block_size * strlen (argv[i+1]);
-	  mksparse (fd, displ, argv[i+1]);
+	  if (make_fragment (fd, argv[0], argv[1]))
+	    break;
+	  argc -= 2;
+	  argv += 2;
 	}
     }
 

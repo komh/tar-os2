@@ -1,5 +1,5 @@
 .\" This file is part of GNU tar. -*- nroff -*-
-.\" Copyright 2013-2014 Free Software Foundation, Inc.
+.\" Copyright 2013-2014, 2016 Free Software Foundation, Inc.
 .\"
 .\" GNU tar is free software; you can redistribute it and/or modify
 .\" it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
 .\"
 .\" You should have received a copy of the GNU General Public License
 .\" along with this program.  If not, see <http://www.gnu.org/licenses/>.
-.TH TAR 1 "February 22, 2014" "TAR" "GNU TAR Manual"
+.TH TAR 1 "March 23, 2016" "TAR" "GNU TAR Manual"
 .SH NAME
 tar \- an archiving utility
 .SH SYNOPSIS
@@ -37,7 +37,7 @@ tar \- an archiving utility
 \fBtar\fR \fB\-x\fR [\fB\-f\fR \fIARCHIVE\fR] [\fIOPTIONS\fR] [\fIMEMBER\fR...]
 .SS GNU-style usage
 .sp
-\fBtar\fR {\fB\-\-catenate\fR|\fB\-\-concatenate} [\fIOPTIONS\fR] \fIARCHIVE\fR \fIARCHIVE\fR
+\fBtar\fR {\fB\-\-catenate\fR|\fB\-\-concatenate\fR} [\fIOPTIONS\fR] \fIARCHIVE\fR \fIARCHIVE\fR
 .sp
 \fBtar\fR \fB\-\-create\fR [\fB\-\-file\fR \fIARCHIVE\fR] [\fIOPTIONS\fR] [\fIFILE\fR...]
 .sp
@@ -175,7 +175,7 @@ resulting archive might be unusable with non-GNU implementations of
 \fBtar\fR.  Notice also that when more than one archive is given, the
 members from archives other than the first one will be accessible in
 the resulting archive only if using the \fB\-i\fR
-(\fB\-\-ignore\-zeros) option.
+(\fB\-\-ignore\-zeros\fR) option.
 
 Compressed archives cannot be concatenated.
 .TP
@@ -198,7 +198,7 @@ short option equivalent.
 .TP
 \fB\-r\fR, \fB\-\-append\fR
 Append files to the end of an archive.  Arguments have the same
-meaning as for \fB\-c\fR (\fB\-\-create).
+meaning as for \fB\-c\fR (\fB\-\-create\fR).
 .TP
 \fB\-t\fR, \fB\-\-list\fR
 List the contents of an archive.  Arguments are optional.  When given,
@@ -259,6 +259,12 @@ When listing or extracting, the actual contents of \fIFILE\fR is not
 inspected, it is needed only due to syntactical requirements.  It is
 therefore common practice to use \fB/dev/null\fR in its place.
 .TP
+\fB\-\-hole\-detection\fR=\fIMETHOD\fR
+Use \fIMETHOD\fR to detect holes in sparse files.  This option implies
+\fB\-\-sparse\fR.  Valid values for \fIMETHOD\fR are \fBseek\fR and
+\fBraw\fR.  Default is \fBseek\fR with fallback to \fBraw\fR when not
+applicable.
+.TP
 \fB\-G\fR, \fB\-\-incremental\fR
 Handle old GNU-format incremental backups.
 .TP
@@ -291,7 +297,7 @@ Process only the \fIN\fRth occurrence of each file in the
 archive.  This option is valid only when used with one of the
 following subcommands: \fB\-\-delete\fR, \fB\-\-diff\fR,
 \fB\-\-extract\fR or \fB\-\-list\fR and when a list of files is given
-either on the command line or via the \fB\-\fRT option.  The default
+either on the command line or via the \fB\-T\fR option.  The default
 \fIN\fR is \fB1\fR.
 .TP
 \fB\-\-restrict\fR
@@ -346,6 +352,9 @@ Recursively remove all files in the directory prior to extracting it.
 .TP
 \fB\-\-remove\-files\fR
 Remove files from disk after adding them to the archive.
+.TP
+\fB\-\-skip\-old\-files
+Don't replace existing files when extracting, silently skip over them.
 .TP
 \fB\-U\fR, \fB\-\-unlink\-first\fR
 Remove each file prior to extracting over it.
@@ -464,15 +473,40 @@ Delay setting modification times and permissions of extracted
 directories until the end of extraction.  Use this option when
 extracting from an archive which has unusual member ordering.
 .TP
-\fB\-\-group\fR=\fINAME\fR
-Force \fINAME\fR as group for added files.
+\fB\-\-group\fR=\fINAME\fR[:\fIGID\fR]
+Force \fINAME\fR as group for added files.  If \fIGID\fR is not
+supplied, \fINAME\fR can be either a user name or numeric GID.  In
+this case the missing part (GID or name) will be inferred from the
+current host's group database.
+
+When used with \fB\-\-group\-map\fR=\fIFILE\fR, affects only those
+files whose owner group is not listed in \fIFILE\fR.
+.TP
+\fB\-\-group\-map\fR=\fIFILE\fR
+Read group translation map from \fIFILE\fR.  Empty lines are ignored.
+Comments are introduced with \fB#\fR sign and extend to the end of line.
+Each non-empty line in \fIFILE\fR defines translation for a single
+group.  It must consist of two fields, delimited by any amount of whitespace:
+
+.EX
+\fIOLDGRP\fR \fINEWGRP\fR[\fB:\fINEWGID\fR]
+.EE
+
+\fIOLDGRP\fR is either a valid group name or a GID prefixed with
+\fB+\fR.  Unless \fINEWGID\fR is supplied, \fINEWGRP\fR must also be
+either a valid group name or a \fB+\fIGID\fR.  Otherwise, both
+\fINEWGRP\fR and \fINEWGID\fR need not be listed in the system group
+database.
+
+As a result, each input file with owner group \fIOLDGRP\fR will be
+stored in archive with owner group \fINEWGRP\fR and GID \fINEWGID\fR.
 .TP
 \fB\-\-mode\fR=\fICHANGES\fR
 Force symbolic mode \fICHANGES\fR for added files.
 .TP
 \fB\-\-mtime\fR=\fIDATE-OR-FILE\fR
 Set mtime for added files.  \fIDATE-OR-FILE\fR is either a date/time
-in almost arbitrary formate, or the name of an existing file.  In the
+in almost arbitrary format, or the name of an existing file.  In the
 latter case the mtime of that file will be used.
 .TP
 \fB\-m\fR, \fB\-\-touch\fR
@@ -491,8 +525,33 @@ Apply the user's umask when extracting permissions from the archive
 \fB\-\-numeric\-owner\fR
 Always use numbers for user/group names.
 .TP
-\fB\-\-owner\fR=\fINAME\fR
-Force \fINAME\fR as owner for added files.
+\fB\-\-owner\fR=\fINAME\fR[:\fIUID\fR]
+Force \fINAME\fR as owner for added files.  If \fIUID\fR is not
+supplied, \fINAME\fR can be either a user name or numeric UID.  In
+this case the missing part (UID or name) will be inferred from the
+current host's user database.
+
+When used with \fB\-\-owner\-map\fR=\fIFILE\fR, affects only those
+files whose owner is not listed in \fIFILE\fR.
+.TP
+\fB\-\-owner\-map\fR=\fIFILE\fR
+Read owner translation map from \fIFILE\fR.  Empty lines are ignored.
+Comments are introduced with \fB#\fR sign and extend to the end of line.
+Each non-empty line in \fIFILE\fR defines translation for a single
+UID.  It must consist of two fields, delimited by any amount of whitespace:
+
+.EX
+\fIOLDUSR\fR \fINEWUSR\fR[\fB:\fINEWUID\fR]
+.EE
+
+\fIOLDUSR\fR is either a valid user name or a UID prefixed with
+\fB+\fR.  Unless \fINEWUID\fR is supplied, \fINEWUSR\fR must also be
+either a valid user name or a \fB+\fIUID\fR.  Otherwise, both
+\fINEWUSR\fR and \fINEWUID\fR need not be listed in the system user
+database.
+
+As a result, each input file owned by \fIOLDUSR\fR will be
+stored in archive with owner name \fINEWUSR\fR and UID \fINEWUID\fR.
 .TP
 \fB\-p\fR, \fB\-\-preserve\-permissions\fR, \fB\-\-same\-permissions\fR
 extract information about file permissions (default for superuser)
@@ -524,6 +583,34 @@ Using \fB\-\-sort=inode\fR reduces the number of disk seeks made when
 creating the archive and thus can considerably speed up archivation.
 This sorting order is supported only if the underlying system provides
 the necessary information.
+.SS Extended file attributes
+.TP
+.B \-\-acls
+Enable POSIX ACLs support.
+.TP
+.B \-\-no\-acls
+Disable POSIX ACLs support.
+.TP
+.B \-\-selinux
+Enable SELinux context support.
+.TP
+.B \-\-no-selinux
+Disable SELinux context support.
+.TP
+.B \-\-xattrs
+Enable extended attributes support.
+.TP
+.B \-\-no\-xattrs
+Disable extended attributes support.
+.TP
+.BI \-\-xattrs\-exclude= PATTERN
+Specify the exclude pattern for xattr keys.  \fIPATTERN\fR is a POSIX
+regular expression, e.g. \fB\-\-xattrs\-exclude='^user\.'\fR, to exclude
+attributes from the user namespace.
+.TP
+.BI \-\-xattrs\-include= PATTERN
+Specify the include pattern for xattr keys.  \fIPATTERN\fR is a POSIX
+regular expression.
 .SS Device selection and switching
 .TP
 \fB\-f\fR, \fB\-\-file\fR=\fIARCHIVE\fR
@@ -557,7 +644,7 @@ instead.  You can do so by giving the following command line option:
 --rsh-command=/usr/bin/ssh
 .EE
 
-The remote mashine should have the
+The remote machine should have the
 .BR rmt (8)
 command installed.  If its pathname does not match \fBtar\fR's
 default, you can inform \fBtar\fR about the correct pathname using the
@@ -567,7 +654,7 @@ option.
 \fB\-\-force\-local\fR
 Archive file is local even if it has a colon.
 .TP
-\fB\-\fRF, \fB\-\-info\-script\fR=\fICOMMAND\fR, \fB\-\-new\-volume\-script\fR=\fICOMMAND\fR
+\fB\-F\fR, \fB\-\-info\-script\fR=\fICOMMAND\fR, \fB\-\-new\-volume\-script\fR=\fICOMMAND\fR
 Run \fICOMMAND\fR at the end of each tape (implies \fB\-M\fR).  The
 command can include arguments.  When started, it will inherit \fBtar\fR's
 environment plus the following variables:
@@ -609,7 +696,7 @@ If the info script fails, \fBtar\fR exits; otherwise, it begins writing
 the next volume.
 .RE
 .TP
-\fB\-L\fR, \fB\-\-tape\-length\fR=\fN\fR
+\fB\-L\fR, \fB\-\-tape\-length\fR=\fIN\fR
 Change tape after writing \fIN\fRx1024 bytes.  If \fIN\fR is followed
 by a size suffix (see the subsection
 .B Size suffixes
@@ -703,7 +790,7 @@ use \fITEXT\fR as a globbing pattern for volume name.
 \fB\-a\fR, \fB\-\-auto\-compress\fR
 Use archive suffix to determine the compression program.
 .TP
-\fB\-\fRI, \fB\-\-use\-compress\-program\fI=\fICOMMAND\fR
+\fB\-I\fR, \fB\-\-use\-compress\-program\fI=\fICOMMAND\fR
 Filter data through \fICOMMAND\fR.  It must accept the \fB\-d\fR
 option, for decompression.  The argument can contain command line
 options.
@@ -735,7 +822,7 @@ Do not use archive suffix to determine the compression program.
 Filter the archive through
 .BR gzip (1).
 .TP
-\fB\-\fRZ, \fB\-\-compress\fR, \fB\-\-uncompress\fR
+\fB\-Z\fR, \fB\-\-compress\fR, \fB\-\-uncompress\fR
 Filter the archive through
 .BR compress (1).
 .SS Local file selection
@@ -768,7 +855,8 @@ environment variable.  If it is not set, \fBexisting\fR is assumed.
 .RE
 .TP
 \fB\-C\fR, \fB\-\-directory\fR=\fIDIR\fR
-Change to directory DIR.
+Change to \fIDIR\fR before performing any operations.  This option is
+order-sensitive, i.e. it affects all options that follow.
 .TP
 \fB\-\-exclude\fR=\fIPATTERN\fR
 Exclude files matching \fIPATTERN\fR, a
@@ -841,9 +929,27 @@ Avoid descending automatically in directories.
 \fB\-\-no\-unquote\fR
 Do not unquote input file or member names.
 .TP
+\fB\-\-no\-verbatim\-files\-from\fR
+Treat each line read from a file list as if it were supplied in the
+command line.  I.e., leading and trailing whitespace is removed and,
+if the resulting string begins with a dash, it is treated as \fBtar\fR
+command line option.
+
+This is the default behavior.  The \fB\-\-no\-verbatim\-files\-from\fR
+option is provided as a way to restore it after
+\fB\-\-verbatim\-files\-from\fR option.
+
+This option is positional: it affects all \fB\-\-files\-from\fR
+options that occur after it in, until \fB\-\-verbatim\-files\-from\fR
+option or end of line, whichever occurs first.
+
+It is implied by the \fB\-\-no\-null\fR option.
+.TP
 \fB\-\-null\fR
-Instruct subsequent \fB\-T\fR options to read null-terminated names,
-disable handling of the \fB\-C\fR option read from the file.
+Instruct subsequent \fB\-T\fR options to read null-terminated names
+verbatim (disables special handling of names that start with a dash).
+
+See also \fB\-\-verbatim\-files\-from\fR.
 .TP
 \fB\-N\fR, \fB\-\-newer\fR=\fIDATE\fR, \fB\-\-after\-date\fR=\fIDATE\fR
 Only store files newer than DATE.  If \fIDATE\fR starts with \fB/\fR
@@ -865,9 +971,42 @@ unless overridden by environment variable \fBSIMPLE_BACKUP_SUFFIX\fR.
 .TP
 \fB\-T\fR, \fB\-\-files\-from\fR=\fIFILE\fR
 Get names to extract or create from \fIFILE\fR.
+
+Unless specified otherwise, the \fIFILE\fR must contain a list of
+names separated by ASCII \fBLF\fR (i.e. one name per line).  The
+names read are handled the same way as command line arguments.  They
+undergo quote removal and word splitting, and any string that starts
+with a \fB\-\fR is handled as \fBtar\fR command line option.
+
+If this behavior is undesirable, it can be turned off using the
+\fB\-\-verbatim\-files\-from\fR option.
+
+The \fB\-\-null\fR option instructs \fBtar\fR that the names in
+\fIFILE\fR are separated by ASCII \fBNUL\fR character, instead of
+\fBLF\fR.  It is useful if the list is generated by
+.BR find (1)
+.B \-print0
+predicate.
 .TP
 \fB\-\-unquote\fR
 Unquote file or member names (default).
+.TP
+\fB\-\-verbatim\-files\-from\fR
+Treat each line obtained from a file list as a file name, even if it
+starts with a dash.  File lists are supplied with the
+\fB\-\-files\-from\fR (\fB\-T\fR) option.  The default behavior is to
+handle names supplied in file lists as if they were typed in the
+command line, i.e. any names starting with a dash are treated as
+\fBtar\fR options.  The \fB\-\-verbatim\-files\-from\fR option
+disables this behavior.
+
+This option affects all \fB\-\-files\-from\fR options that occur after
+it in the command line.  Its effect is reverted by the
+\fB\-\-no\-verbatim\-files\-from} option.
+
+This option is implied by the \fB\-\-null\fR option.
+
+See also \fB\-\-add\-file\fR.
 .TP
 \fB\-X\fR, \fB\-\-exclude\-from\fR=\fIFILE\fR
 Exclude files matching patterns listed in FILE.
@@ -876,7 +1015,7 @@ Exclude files matching patterns listed in FILE.
 \fB\-\-strip\-components\fR=\fINUMBER\fR
 Strip \fINUMBER\fR leading components from file names on extraction.
 .TP
-\fB\-\-transform\fR=\fIEXPRESSION\dR, \fB\-\-xform\fR=\fIEXPRESSION\fR
+\fB\-\-transform\fR=\fIEXPRESSION\fR, \fB\-\-xform\fR=\fIEXPRESSION\fR
 Use sed replace \fIEXPRESSION\fR to transform file names.
 .SS File name matching options
 These options affect both exclude and include patterns.
@@ -911,6 +1050,9 @@ Display progress messages every \fIN\fRth record (default 10).
 .TP
 \fB\-\-checkpoint\-action\fR=\fIACTION\fR
 Run \fIACTION\fR on each checkpoint.
+.TP
+\fB\-\-clamp\-mtime\fR
+Only set time when the file is more recent than what was given with \-\-mtime.
 .TP
 \fB\-\-full\-time\fR
 Print file time to its full resolution.
@@ -1020,6 +1162,9 @@ Keywords applicable for \fBtar --create\fR:
 "%s: file changed as we read it"
 .HP
 Keywords applicable for \fBtar --extract\fR:
+.TP
+.B existing\-file
+"%s: skipping existing file"
 .TP
 .B timestamp
 "%s: implausibly old time stamp %s"

@@ -16,7 +16,7 @@
 
 # Makefile for GNU tar regression tests.
 
-# Copyright 1996-1997, 1999-2001, 2003-2007, 2009, 2012-2013 Free Software
+# Copyright 1996-1997, 1999-2001, 2003-2007, 2009, 2012-2015 Free Software
 
 # This file is part of GNU tar.
 
@@ -95,8 +95,8 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-check_PROGRAMS = genfile$(EXEEXT) $(am__EXEEXT_1)
-@TAR_COND_GRANTPT_TRUE@am__append_1 = ttyemu
+check_PROGRAMS = genfile$(EXEEXT) checkseekhole$(EXEEXT) \
+	ckmtime$(EXEEXT)
 subdir = tests
 DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/Makefile.am \
 	$(srcdir)/atlocal.in $(top_srcdir)/build-aux/depcomp
@@ -125,10 +125,11 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/fcntl-o.m4 $(top_srcdir)/m4/fcntl.m4 \
 	$(top_srcdir)/m4/fcntl_h.m4 $(top_srcdir)/m4/fdopendir.m4 \
 	$(top_srcdir)/m4/fileblocks.m4 $(top_srcdir)/m4/filenamecat.m4 \
-	$(top_srcdir)/m4/float_h.m4 $(top_srcdir)/m4/fnmatch.m4 \
-	$(top_srcdir)/m4/fpending.m4 $(top_srcdir)/m4/fseek.m4 \
-	$(top_srcdir)/m4/fseeko.m4 $(top_srcdir)/m4/fstat.m4 \
-	$(top_srcdir)/m4/fstatat.m4 $(top_srcdir)/m4/futimens.m4 \
+	$(top_srcdir)/m4/flexmember.m4 $(top_srcdir)/m4/float_h.m4 \
+	$(top_srcdir)/m4/fnmatch.m4 $(top_srcdir)/m4/fpending.m4 \
+	$(top_srcdir)/m4/fseek.m4 $(top_srcdir)/m4/fseeko.m4 \
+	$(top_srcdir)/m4/fstat.m4 $(top_srcdir)/m4/fstatat.m4 \
+	$(top_srcdir)/m4/futimens.m4 \
 	$(top_srcdir)/m4/getcwd-abort-bug.m4 \
 	$(top_srcdir)/m4/getcwd-path-max.m4 $(top_srcdir)/m4/getcwd.m4 \
 	$(top_srcdir)/m4/getdelim.m4 $(top_srcdir)/m4/getdtablesize.m4 \
@@ -143,10 +144,10 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/intlmacosx.m4 $(top_srcdir)/m4/intmax_t.m4 \
 	$(top_srcdir)/m4/inttostr.m4 $(top_srcdir)/m4/inttypes-pri.m4 \
 	$(top_srcdir)/m4/inttypes.m4 $(top_srcdir)/m4/inttypes_h.m4 \
-	$(top_srcdir)/m4/isatty.m4 $(top_srcdir)/m4/iswblank.m4 \
-	$(top_srcdir)/m4/langinfo_h.m4 $(top_srcdir)/m4/largefile.m4 \
-	$(top_srcdir)/m4/lchown.m4 $(top_srcdir)/m4/lib-ld.m4 \
-	$(top_srcdir)/m4/lib-link.m4 $(top_srcdir)/m4/lib-prefix.m4 \
+	$(top_srcdir)/m4/iswblank.m4 $(top_srcdir)/m4/langinfo_h.m4 \
+	$(top_srcdir)/m4/largefile.m4 $(top_srcdir)/m4/lchown.m4 \
+	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
+	$(top_srcdir)/m4/lib-prefix.m4 \
 	$(top_srcdir)/m4/libunistring-base.m4 \
 	$(top_srcdir)/m4/link-follow.m4 $(top_srcdir)/m4/link.m4 \
 	$(top_srcdir)/m4/linkat.m4 $(top_srcdir)/m4/localcharset.m4 \
@@ -168,14 +169,13 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/modechange.m4 $(top_srcdir)/m4/msvc-inval.m4 \
 	$(top_srcdir)/m4/msvc-nothrow.m4 $(top_srcdir)/m4/multiarch.m4 \
 	$(top_srcdir)/m4/nl_langinfo.m4 $(top_srcdir)/m4/nls.m4 \
-	$(top_srcdir)/m4/nocrash.m4 $(top_srcdir)/m4/off_t.m4 \
-	$(top_srcdir)/m4/open.m4 $(top_srcdir)/m4/openat.m4 \
-	$(top_srcdir)/m4/opendir.m4 $(top_srcdir)/m4/parse-datetime.m4 \
-	$(top_srcdir)/m4/pathmax.m4 $(top_srcdir)/m4/paxutils.m4 \
-	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/posix_openpt.m4 \
+	$(top_srcdir)/m4/nocrash.m4 $(top_srcdir)/m4/obstack.m4 \
+	$(top_srcdir)/m4/off_t.m4 $(top_srcdir)/m4/open.m4 \
+	$(top_srcdir)/m4/openat.m4 $(top_srcdir)/m4/opendir.m4 \
+	$(top_srcdir)/m4/parse-datetime.m4 $(top_srcdir)/m4/pathmax.m4 \
+	$(top_srcdir)/m4/paxutils.m4 $(top_srcdir)/m4/po.m4 \
 	$(top_srcdir)/m4/printf.m4 $(top_srcdir)/m4/priv-set.m4 \
-	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/m4/ptsname.m4 \
-	$(top_srcdir)/m4/ptsname_r.m4 $(top_srcdir)/m4/quote.m4 \
+	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/m4/quote.m4 \
 	$(top_srcdir)/m4/quotearg.m4 $(top_srcdir)/m4/raise.m4 \
 	$(top_srcdir)/m4/rawmemchr.m4 $(top_srcdir)/m4/read.m4 \
 	$(top_srcdir)/m4/readdir.m4 $(top_srcdir)/m4/readlink.m4 \
@@ -211,41 +211,45 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/00gnulib.m4 \
 	$(top_srcdir)/m4/sys_types_h.m4 $(top_srcdir)/m4/sysexits.m4 \
 	$(top_srcdir)/m4/system.m4 $(top_srcdir)/m4/tempname.m4 \
 	$(top_srcdir)/m4/time_h.m4 $(top_srcdir)/m4/time_r.m4 \
+	$(top_srcdir)/m4/time_rz.m4 $(top_srcdir)/m4/timegm.m4 \
 	$(top_srcdir)/m4/timespec.m4 $(top_srcdir)/m4/tm_gmtoff.m4 \
-	$(top_srcdir)/m4/ttyname_r.m4 $(top_srcdir)/m4/unistd-safer.m4 \
+	$(top_srcdir)/m4/ulonglong.m4 $(top_srcdir)/m4/unistd-safer.m4 \
 	$(top_srcdir)/m4/unistd_h.m4 $(top_srcdir)/m4/unlink.m4 \
 	$(top_srcdir)/m4/unlinkat.m4 $(top_srcdir)/m4/unlinkdir.m4 \
-	$(top_srcdir)/m4/unlocked-io.m4 $(top_srcdir)/m4/unlockpt.m4 \
-	$(top_srcdir)/m4/utimbuf.m4 $(top_srcdir)/m4/utimens.m4 \
-	$(top_srcdir)/m4/utimensat.m4 $(top_srcdir)/m4/utimes.m4 \
-	$(top_srcdir)/m4/vasnprintf.m4 $(top_srcdir)/m4/vasprintf.m4 \
-	$(top_srcdir)/m4/version-etc.m4 $(top_srcdir)/m4/vsnprintf.m4 \
-	$(top_srcdir)/m4/warn-on-use.m4 $(top_srcdir)/m4/warnings.m4 \
-	$(top_srcdir)/m4/wchar_h.m4 $(top_srcdir)/m4/wchar_t.m4 \
-	$(top_srcdir)/m4/wcrtomb.m4 $(top_srcdir)/m4/wctype_h.m4 \
-	$(top_srcdir)/m4/wcwidth.m4 $(top_srcdir)/m4/wint_t.m4 \
-	$(top_srcdir)/m4/write.m4 $(top_srcdir)/m4/xalloc.m4 \
-	$(top_srcdir)/m4/xgetcwd.m4 $(top_srcdir)/m4/xsize.m4 \
-	$(top_srcdir)/m4/xstrndup.m4 $(top_srcdir)/m4/xstrtol.m4 \
-	$(top_srcdir)/m4/xvasprintf.m4 $(top_srcdir)/acinclude.m4 \
-	$(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/unlocked-io.m4 $(top_srcdir)/m4/utimbuf.m4 \
+	$(top_srcdir)/m4/utimens.m4 $(top_srcdir)/m4/utimensat.m4 \
+	$(top_srcdir)/m4/utimes.m4 $(top_srcdir)/m4/vasnprintf.m4 \
+	$(top_srcdir)/m4/vasprintf.m4 $(top_srcdir)/m4/version-etc.m4 \
+	$(top_srcdir)/m4/vsnprintf.m4 $(top_srcdir)/m4/warn-on-use.m4 \
+	$(top_srcdir)/m4/warnings.m4 $(top_srcdir)/m4/wchar_h.m4 \
+	$(top_srcdir)/m4/wchar_t.m4 $(top_srcdir)/m4/wcrtomb.m4 \
+	$(top_srcdir)/m4/wctype_h.m4 $(top_srcdir)/m4/wcwidth.m4 \
+	$(top_srcdir)/m4/wint_t.m4 $(top_srcdir)/m4/write.m4 \
+	$(top_srcdir)/m4/xalloc.m4 $(top_srcdir)/m4/xgetcwd.m4 \
+	$(top_srcdir)/m4/xsize.m4 $(top_srcdir)/m4/xstrndup.m4 \
+	$(top_srcdir)/m4/xstrtol.m4 $(top_srcdir)/m4/xvasprintf.m4 \
+	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES = atlocal
 CONFIG_CLEAN_VPATH_FILES =
-@TAR_COND_GRANTPT_TRUE@am__EXEEXT_1 = ttyemu$(EXEEXT)
+am_checkseekhole_OBJECTS = checkseekhole.$(OBJEXT)
+checkseekhole_OBJECTS = $(am_checkseekhole_OBJECTS)
+checkseekhole_LDADD = $(LDADD)
+am__DEPENDENCIES_1 =
+checkseekhole_DEPENDENCIES = ../gnu/libgnu.a $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
+ckmtime_SOURCES = ckmtime.c
+ckmtime_OBJECTS = ckmtime.$(OBJEXT)
+ckmtime_LDADD = $(LDADD)
+ckmtime_DEPENDENCIES = ../gnu/libgnu.a $(am__DEPENDENCIES_1) \
+	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 am_genfile_OBJECTS = genfile.$(OBJEXT) argcv.$(OBJEXT)
 genfile_OBJECTS = $(am_genfile_OBJECTS)
 genfile_LDADD = $(LDADD)
-am__DEPENDENCIES_1 =
 genfile_DEPENDENCIES = ../gnu/libgnu.a $(am__DEPENDENCIES_1) \
-	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
-am_ttyemu_OBJECTS = ttyemu.$(OBJEXT)
-ttyemu_OBJECTS = $(am_ttyemu_OBJECTS)
-ttyemu_LDADD = $(LDADD)
-ttyemu_DEPENDENCIES = ../gnu/libgnu.a $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1) $(am__DEPENDENCIES_1)
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -275,8 +279,8 @@ AM_V_CCLD = $(am__v_CCLD_@AM_V@)
 am__v_CCLD_ = $(am__v_CCLD_@AM_DEFAULT_V@)
 am__v_CCLD_0 = @echo "  CCLD    " $@;
 am__v_CCLD_1 = 
-SOURCES = $(genfile_SOURCES) $(ttyemu_SOURCES)
-DIST_SOURCES = $(genfile_SOURCES) $(ttyemu_SOURCES)
+SOURCES = $(checkseekhole_SOURCES) ckmtime.c $(genfile_SOURCES)
+DIST_SOURCES = $(checkseekhole_SOURCES) ckmtime.c $(genfile_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -500,6 +504,7 @@ GNULIB_PUTCHAR = @GNULIB_PUTCHAR@
 GNULIB_PUTENV = @GNULIB_PUTENV@
 GNULIB_PUTS = @GNULIB_PUTS@
 GNULIB_PWRITE = @GNULIB_PWRITE@
+GNULIB_QSORT_R = @GNULIB_QSORT_R@
 GNULIB_RAISE = @GNULIB_RAISE@
 GNULIB_RANDOM = @GNULIB_RANDOM@
 GNULIB_RANDOM_R = @GNULIB_RANDOM_R@
@@ -559,6 +564,7 @@ GNULIB_SYSTEM_POSIX = @GNULIB_SYSTEM_POSIX@
 GNULIB_TEST_WARN_CFLAGS = @GNULIB_TEST_WARN_CFLAGS@
 GNULIB_TIMEGM = @GNULIB_TIMEGM@
 GNULIB_TIME_R = @GNULIB_TIME_R@
+GNULIB_TIME_RZ = @GNULIB_TIME_RZ@
 GNULIB_TMPFILE = @GNULIB_TMPFILE@
 GNULIB_TOWCTRANS = @GNULIB_TOWCTRANS@
 GNULIB_TTYNAME_R = @GNULIB_TTYNAME_R@
@@ -711,6 +717,7 @@ HAVE_LINK = @HAVE_LINK@
 HAVE_LINKAT = @HAVE_LINKAT@
 HAVE_LONG_LONG_INT = @HAVE_LONG_LONG_INT@
 HAVE_LSTAT = @HAVE_LSTAT@
+HAVE_MAX_ALIGN_T = @HAVE_MAX_ALIGN_T@
 HAVE_MBRLEN = @HAVE_MBRLEN@
 HAVE_MBRTOWC = @HAVE_MBRTOWC@
 HAVE_MBSINIT = @HAVE_MBSINIT@
@@ -797,6 +804,7 @@ HAVE_SYS_PARAM_H = @HAVE_SYS_PARAM_H@
 HAVE_SYS_TIME_H = @HAVE_SYS_TIME_H@
 HAVE_SYS_TYPES_H = @HAVE_SYS_TYPES_H@
 HAVE_TIMEGM = @HAVE_TIMEGM@
+HAVE_TIMEZONE_T = @HAVE_TIMEZONE_T@
 HAVE_TYPE_VOLATILE_SIG_ATOMIC_T = @HAVE_TYPE_VOLATILE_SIG_ATOMIC_T@
 HAVE_UNISTD_H = @HAVE_UNISTD_H@
 HAVE_UNLINKAT = @HAVE_UNLINKAT@
@@ -870,6 +878,7 @@ LIBUNISTRING_UNIWIDTH_H = @LIBUNISTRING_UNIWIDTH_H@
 LIB_ACL = @LIB_ACL@
 LIB_CLOCK_GETTIME = @LIB_CLOCK_GETTIME@
 LIB_EACCESS = @LIB_EACCESS@
+LIB_HAS_ACL = @LIB_HAS_ACL@
 LIB_SELINUX = @LIB_SELINUX@
 LIB_SETSOCKOPT = @LIB_SETSOCKOPT@
 LOCALCHARSET_TESTS_ENVIRONMENT = @LOCALCHARSET_TESTS_ENVIRONMENT@
@@ -1035,10 +1044,12 @@ REPLACE_PTSNAME = @REPLACE_PTSNAME@
 REPLACE_PTSNAME_R = @REPLACE_PTSNAME_R@
 REPLACE_PUTENV = @REPLACE_PUTENV@
 REPLACE_PWRITE = @REPLACE_PWRITE@
+REPLACE_QSORT_R = @REPLACE_QSORT_R@
 REPLACE_RAISE = @REPLACE_RAISE@
 REPLACE_RANDOM_R = @REPLACE_RANDOM_R@
 REPLACE_READ = @REPLACE_READ@
 REPLACE_READLINK = @REPLACE_READLINK@
+REPLACE_READLINKAT = @REPLACE_READLINKAT@
 REPLACE_REALLOC = @REPLACE_REALLOC@
 REPLACE_REALPATH = @REPLACE_REALPATH@
 REPLACE_REMOVE = @REPLACE_REMOVE@
@@ -1071,6 +1082,7 @@ REPLACE_STRTOUMAX = @REPLACE_STRTOUMAX@
 REPLACE_STRUCT_LCONV = @REPLACE_STRUCT_LCONV@
 REPLACE_STRUCT_TIMEVAL = @REPLACE_STRUCT_TIMEVAL@
 REPLACE_SYMLINK = @REPLACE_SYMLINK@
+REPLACE_SYMLINKAT = @REPLACE_SYMLINKAT@
 REPLACE_TIMEGM = @REPLACE_TIMEGM@
 REPLACE_TMPFILE = @REPLACE_TMPFILE@
 REPLACE_TOWLOWER = @REPLACE_TOWLOWER@
@@ -1113,6 +1125,7 @@ TIME_H_DEFINES_STRUCT_TIMESPEC = @TIME_H_DEFINES_STRUCT_TIMESPEC@
 UINT32_MAX_LT_UINTMAX_MAX = @UINT32_MAX_LT_UINTMAX_MAX@
 UINT64_MAX_EQ_ULONG_MAX = @UINT64_MAX_EQ_ULONG_MAX@
 UNDEFINE_STRTOK_R = @UNDEFINE_STRTOK_R@
+UNISTD_H_DEFINES_STRUCT_TIMESPEC = @UNISTD_H_DEFINES_STRUCT_TIMESPEC@
 UNISTD_H_HAVE_WINSOCK2_H = @UNISTD_H_HAVE_WINSOCK2_H@
 UNISTD_H_HAVE_WINSOCK2_H_AND_USE_SOCKETS = @UNISTD_H_HAVE_WINSOCK2_H_AND_USE_SOCKETS@
 USE_ACL = @USE_ACL@
@@ -1194,9 +1207,13 @@ MAINTAINERCLEANFILES = Makefile.in $(TESTSUITE)
 #
 TESTSUITE_AT = \
  T-cd.at\
+ T-dir00.at\
+ T-dir01.at\
  T-empty.at\
  T-null.at\
+ T-null2.at\
  T-rec.at\
+ T-recurse.at\
  T-zfile.at\
  T-nonl.at\
  T-mult.at\
@@ -1207,9 +1224,11 @@ TESTSUITE_AT = \
  append02.at\
  append03.at\
  append04.at\
+ append05.at\
  backup01.at\
  chtype.at\
  comprec.at\
+ comperr.at\
  delete01.at\
  delete02.at\
  delete03.at\
@@ -1265,9 +1284,10 @@ TESTSUITE_AT = \
  incr07.at\
  incr08.at\
  incr09.at\
+ incr10.at\
+ incr11.at\
  indexfile.at\
  ignfail.at\
- iotty.at\
  label01.at\
  label02.at\
  label03.at\
@@ -1287,6 +1307,7 @@ TESTSUITE_AT = \
  lustar01.at\
  lustar02.at\
  lustar03.at\
+ map.at\
  multiv01.at\
  multiv02.at\
  multiv03.at\
@@ -1295,11 +1316,14 @@ TESTSUITE_AT = \
  multiv06.at\
  multiv07.at\
  multiv08.at\
+ multiv09.at\
+ numeric.at\
  old.at\
  onetop01.at\
  onetop02.at\
  onetop03.at\
  onetop04.at\
+ onetop05.at\
  opcomp01.at\
  opcomp02.at\
  opcomp03.at\
@@ -1349,12 +1373,15 @@ TESTSUITE_AT = \
  sparse02.at\
  sparse03.at\
  sparse04.at\
+ sparse05.at\
+ sparse06.at\
  sparsemv.at\
  sparsemvp.at\
  spmvp00.at\
  spmvp01.at\
  spmvp10.at\
  time01.at\
+ time02.at\
  truncate.at\
  update.at\
  update01.at\
@@ -1366,6 +1393,7 @@ TESTSUITE_AT = \
  version.at\
  xform-h.at\
  xform01.at\
+ xform02.at\
  star/gtarfail.at\
  star/gtarfail2.at\
  star/multi-fail.at\
@@ -1387,7 +1415,7 @@ TESTSUITE_AT = \
 TESTSUITE = $(srcdir)/testsuite
 AUTOTEST = $(AUTOM4TE) --language=autotest
 genfile_SOURCES = genfile.c argcv.c argcv.h
-ttyemu_SOURCES = ttyemu.c
+checkseekhole_SOURCES = checkseekhole.c
 AM_CPPFLAGS = \
  -I$(top_srcdir)/gnu\
  -I../gnu\
@@ -1436,13 +1464,17 @@ atlocal: $(top_builddir)/config.status $(srcdir)/atlocal.in
 clean-checkPROGRAMS:
 	-test -z "$(check_PROGRAMS)" || rm -f $(check_PROGRAMS)
 
+checkseekhole$(EXEEXT): $(checkseekhole_OBJECTS) $(checkseekhole_DEPENDENCIES) $(EXTRA_checkseekhole_DEPENDENCIES) 
+	@rm -f checkseekhole$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(checkseekhole_OBJECTS) $(checkseekhole_LDADD) $(LIBS)
+
+ckmtime$(EXEEXT): $(ckmtime_OBJECTS) $(ckmtime_DEPENDENCIES) $(EXTRA_ckmtime_DEPENDENCIES) 
+	@rm -f ckmtime$(EXEEXT)
+	$(AM_V_CCLD)$(LINK) $(ckmtime_OBJECTS) $(ckmtime_LDADD) $(LIBS)
+
 genfile$(EXEEXT): $(genfile_OBJECTS) $(genfile_DEPENDENCIES) $(EXTRA_genfile_DEPENDENCIES) 
 	@rm -f genfile$(EXEEXT)
 	$(AM_V_CCLD)$(LINK) $(genfile_OBJECTS) $(genfile_LDADD) $(LIBS)
-
-ttyemu$(EXEEXT): $(ttyemu_OBJECTS) $(ttyemu_DEPENDENCIES) $(EXTRA_ttyemu_DEPENDENCIES) 
-	@rm -f ttyemu$(EXEEXT)
-	$(AM_V_CCLD)$(LINK) $(ttyemu_OBJECTS) $(ttyemu_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -1451,8 +1483,9 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/argcv.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/checkseekhole.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ckmtime.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/genfile.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ttyemu.Po@am__quote@
 
 .c.o:
 @am__fastdepCC_TRUE@	$(AM_V_CC)$(COMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -1596,7 +1629,7 @@ distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
-	distclean-tags
+	distclean-local distclean-tags
 
 dvi: dvi-am
 
@@ -1662,15 +1695,16 @@ uninstall-am:
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am check-local clean \
 	clean-checkPROGRAMS clean-generic clean-local cscopelist-am \
 	ctags ctags-am distclean distclean-compile distclean-generic \
-	distclean-tags distdir dvi dvi-am html html-am info info-am \
-	install install-am install-data install-data-am install-dvi \
-	install-dvi-am install-exec install-exec-am install-html \
-	install-html-am install-info install-info-am install-man \
-	install-pdf install-pdf-am install-ps install-ps-am \
-	install-strip installcheck installcheck-am installcheck-local \
-	installdirs maintainer-clean maintainer-clean-generic \
-	mostlyclean mostlyclean-compile mostlyclean-generic pdf pdf-am \
-	ps ps-am tags tags-am uninstall uninstall-am
+	distclean-local distclean-tags distdir dvi dvi-am html html-am \
+	info info-am install install-am install-data install-data-am \
+	install-dvi install-dvi-am install-exec install-exec-am \
+	install-html install-html-am install-info install-info-am \
+	install-man install-pdf install-pdf-am install-ps \
+	install-ps-am install-strip installcheck installcheck-am \
+	installcheck-local installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic pdf pdf-am ps ps-am tags tags-am uninstall \
+	uninstall-am
 
 
 $(srcdir)/package.m4: $(top_srcdir)/configure.ac
@@ -1682,6 +1716,9 @@ $(srcdir)/package.m4: $(top_srcdir)/configure.ac
 	  echo 'm4_define([AT_PACKAGE_STRING],    [@PACKAGE_STRING@])'; \
 	  echo 'm4_define([AT_PACKAGE_BUGREPORT], [@PACKAGE_BUGREPORT@])'; \
 	} >$(srcdir)/package.m4
+
+distclean-local:
+	-rm -rf download
 $(TESTSUITE): package.m4 $(TESTSUITE_AT)
 	$(AUTOTEST) -I $(srcdir) testsuite.at -o $@.tmp
 	mv $@.tmp $@
@@ -1701,7 +1738,7 @@ check-full:
 #check_SCRIPTS = tar
 
 # Run the test suite on the *installed* tree.
-installcheck-local:
+installcheck-local: $(check_PROGRAMS)
 	$(SHELL) $(TESTSUITE) $(TESTSUITEFLAGS) AUTOTEST_PATH=$(exec_prefix)/bin
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

@@ -1,7 +1,7 @@
 # Process this file with autom4te to create testsuite. -*- Autotest -*-
 
 # Test suite for GNU tar.
-# Copyright 2014 Free Software Foundation, Inc.
+# Copyright 2014, 2016 Free Software Foundation, Inc.
 
 # This file is part of GNU tar.
 
@@ -37,9 +37,16 @@ tar --create --file archive \
     --no-recursion directory1 \
     --recursion directory2 || exit 1
 tar tf archive
+tar cf archive directory1 directory2
+tar tf archive \
+    --no-recursion directory1 \
+    --recursion directory2 || exit 1
 ],
 [0],
 [directory1/
+directory2/
+directory2/file
+directory1/
 directory2/
 directory2/file
 ])
