@@ -2694,6 +2694,11 @@ tar_print_progname (void)
 int
 main (int argc, char **argv)
 {
+#ifdef __OS2__
+  /* Expand wildcards. */
+  _wildcard (&argc, &argv);
+#endif
+
   set_start_time ();
   set_program_name (argv[0]);
 #ifdef ENABLE_ERROR_PRINT_PROGNAME
