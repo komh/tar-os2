@@ -1,5 +1,5 @@
 /* wordsplit - a word splitter
-   Copyright (C) 2009-2014, 2016 Free Software Foundation, Inc.
+   Copyright (C) 2009-2014, 2016-2017 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -1584,6 +1584,7 @@ wordsplit_perror (struct wordsplit *wsp)
 
     case WRDSE_NOSUPP:
       wsp->ws_error (_("command substitution is not yet supported"));
+      break;
 
     case WRDSE_USAGE:
       wsp->ws_error (_("invalid wordsplit usage"));

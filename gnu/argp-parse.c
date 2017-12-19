@@ -1,5 +1,5 @@
 /* Hierarchical argument parsing, layered over getopt
-   Copyright (C) 1995-2000, 2002-2004, 2009-2015 Free Software Foundation, Inc.
+   Copyright (C) 1995-2017 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Written by Miles Bader <miles@gnu.ai.mit.edu>.
 
@@ -14,7 +14,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
 #ifdef HAVE_CONFIG_H
 # include <config.h>
@@ -34,7 +34,7 @@
 # include <libintl.h>
 # undef dgettext
 # define dgettext(domain, msgid) \
-   INTUSE(__dcgettext) (domain, msgid, LC_MESSAGES)
+   __dcgettext (domain, msgid, LC_MESSAGES)
 #else
 # include "gettext.h"
 #endif
@@ -80,9 +80,10 @@ static const struct argp_option argp_default_options[] =
 {
   {"help",        '?',          0, 0,  N_("give this help list"), -1},
   {"usage",       OPT_USAGE,    0, 0,  N_("give a short usage message"), 0},
-  {"program-name",OPT_PROGNAME,N_("NAME"), OPTION_HIDDEN, N_("set the program name"), 0},
+  {"program-name",OPT_PROGNAME, N_("NAME"), OPTION_HIDDEN,
+   N_("set the program name"), 0},
   {"HANG",        OPT_HANG,    N_("SECS"), OPTION_ARG_OPTIONAL | OPTION_HIDDEN,
-     N_("hang for SECS seconds (default 3600)"), 0},
+   N_("hang for SECS seconds (default 3600)"), 0},
   {NULL, 0, 0, 0, NULL, 0}
 };
 
@@ -739,12 +740,15 @@ parser_parse_opt (struct parser *parser, int opt, char *val)
             }
     }
   else
-    /* A long option.  We use shifts instead of masking for extracting
-       the user value in order to preserve the sign.  */
-    err =
-      group_parse (&parser->groups[group_key - 1], &parser->state,
-                   (opt << GROUP_BITS) >> GROUP_BITS,
-                   parser->opt_data.optarg);
+    /* A long option.  Preserve the sign in the user key, without
+       invoking undefined behavior.  Assume two's complement.  */
+    {
+      int user_key =
+        ((opt & (1 << (USER_BITS - 1))) ? ~USER_MASK : 0) | (opt & USER_MASK);
+      err =
+        group_parse (&parser->groups[group_key - 1], &parser->state,
+                     user_key, parser->opt_data.optarg);
+    }
 
   if (err == EBADKEY)
     /* At least currently, an option not recognized is an error in the

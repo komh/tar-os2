@@ -1,7 +1,7 @@
 # Process this file with autom4te to create testsuite. -*- Autotest -*-
 
 # Test suite for GNU tar.
-# Copyright 2010, 2013-2014, 2016 Free Software Foundation, Inc.
+# Copyright 2010, 2013-2014, 2016-2017 Free Software Foundation, Inc.
 
 # This file is part of GNU tar.
 
@@ -24,7 +24,7 @@
 # unless --dereference is specified.
 
 AT_SETUP([extract over symlinks])
-AT_KEYWORDS([extract extrac13])
+AT_KEYWORDS([extract extrac13 chdir])
 
 AT_TAR_CHECK([
 mkdir src dst1 dst2 dst3

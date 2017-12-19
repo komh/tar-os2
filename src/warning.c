@@ -1,6 +1,6 @@
 /* Warnings for GNU tar.
 
-   Copyright 2009, 2012-2014, 2016 Free Software Foundation, Inc.
+   Copyright 2009, 2012-2014, 2016-2017 Free Software Foundation, Inc.
 
    This file is part of GNU tar.
 
@@ -47,6 +47,7 @@ static char const *const warning_args[] = {
   "existing-file",
   "xattr-write",
   "record-size",
+  "failed-read",
   NULL
 };
 
@@ -74,7 +75,8 @@ static int warning_types[] = {
   WARN_DECOMPRESS_PROGRAM,
   WARN_EXISTING_FILE,
   WARN_XATTR_WRITE,
-  WARN_RECORD_SIZE
+  WARN_RECORD_SIZE,
+  WARN_FAILED_READ
 };
 
 ARGMATCH_VERIFY (warning_args, warning_types);

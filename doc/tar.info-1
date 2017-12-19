@@ -1,9 +1,9 @@
-This is tar.info, produced by makeinfo version 5.9.93 from tar.texi.
+This is tar.info, produced by makeinfo version 5.2 from tar.texi.
 
-This manual is for GNU 'tar' (version 1.29, 14 April 2016), which
+This manual is for GNU 'tar' (version 1.30, 16 December 2017), which
 creates and extracts files from archives.
 
-   Copyright (C) 1992, 1994-1997, 1999-2001, 2003-2016 Free Software
+   Copyright (C) 1992, 1994-1997, 1999-2001, 2003-2017 Free Software
 Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
@@ -32,10 +32,10 @@ File: tar.info,  Node: Top,  Next: Introduction,  Up: (dir)
 GNU tar: an archiver tool
 *************************
 
-This manual is for GNU 'tar' (version 1.29, 14 April 2016), which
+This manual is for GNU 'tar' (version 1.30, 16 December 2017), which
 creates and extracts files from archives.
 
-   Copyright (C) 1992, 1994-1997, 1999-2001, 2003-2016 Free Software
+   Copyright (C) 1992, 1994-1997, 1999-2001, 2003-2017 Free Software
 Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
@@ -68,6 +68,7 @@ document.  The rest of the menu lists all the lower level nodes.
 Appendices
 
 * Changes::
+* Recipes:: Frequently used tar recipes
 * Configuring Help Summary::
 * Fixing Snapshot Files::
 * Tar Internals::
@@ -160,7 +161,6 @@ GNU 'tar' Operations
 * create options::
 * extract options::
 * backup::
-* Applications::
 * looking ahead::
 
 Advanced GNU 'tar' Operations
@@ -566,7 +566,7 @@ in version 1.11.  Thomas Bushnell, n/BSG and Amy Gorin worked on a
 tutorial and manual for GNU 'tar'.  Franc,ois Pinard put version 1.11.8
 of the manual together by taking information from all these sources and
 merging them.  Melissa Weisshaus finally edited and redesigned the book
-to create version 1.12.  The book for versions from 1.14 up to 1.29 were
+to create version 1.12.  The book for versions from 1.14 up to 1.30 were
 edited by the current maintainer, Sergey Poznyakoff.
 
    For version 1.12, Daniel Hagerty contributed a great deal of
@@ -1910,11 +1910,10 @@ function; they are interchangeable.
    Short options which require arguments take their arguments
 immediately following the option, usually separated by white space.  It
 is also possible to stick the argument right after the short option
-name, using no intervening space.  For example, you might write
-'-f archive.tar' or '-farchive.tar' instead of using
-'--file=archive.tar'.  Both '--file=ARCHIVE-NAME' and '-f ARCHIVE-NAME'
-denote the option which indicates a specific archive, here named
-'archive.tar'.
+name, using no intervening space.  For example, you might write '-f archive.tar'
+or '-farchive.tar' instead of using '--file=archive.tar'.  Both
+'--file=ARCHIVE-NAME' and '-f ARCHIVE-NAME' denote the option which
+indicates a specific archive, here named 'archive.tar'.
 
    Short options which take optional arguments take their arguments
 immediately following the option letter, _without any intervening white
@@ -1981,9 +1980,8 @@ Here, '20' is the argument of '-b' and '/dev/rmt0' is the argument of
 with their corresponding arguments, and is often confusing.  In the
 command 'tar cvbf 20 /dev/rmt0', for example, '20' is the argument for
 '-b', '/dev/rmt0' is the argument for '-f', and '-v' does not have a
-corresponding argument.  Even using short options like in
-'tar -c -v -b 20 -f /dev/rmt0' is clearer, putting all arguments next to
-the option they pertain to.
+corresponding argument.  Even using short options like in 'tar -c -v -b 20 -f /dev/rmt0'
+is clearer, putting all arguments next to the option they pertain to.
 
    If you want to reorder the letters in the old option argument, be
 sure to reorder any corresponding argument appropriately.
@@ -2630,7 +2628,7 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
      pattern specified in NAME.  *Note Tape Files::.
 
 '--level=N'
-     Force incremental backup of level N.  As of GNU 'tar' version 1.29,
+     Force incremental backup of level N.  As of GNU 'tar' version 1.30,
      the option '--level=0' truncates the snapshot file, thereby forcing
      the level 0 dump.  Other values of N are effectively ignored.
      *Note --level=0::, for details and examples.
@@ -3127,8 +3125,8 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
 '--tape-length=NUM[SUF]'
 '-L NUM[SUF]'
 
-     Specifies the length of tapes that 'tar' is writing as being
-     NUM x 1024 bytes long.  If optional SUF is given, it specifies a
+     Specifies the length of tapes that 'tar' is writing as being NUM x 1024
+     bytes long.  If optional SUF is given, it specifies a
      multiplicative factor to be used instead of 1024.  For example,
      '-L2M' means 2 megabytes.  *Note Table 9.1: size-suffixes, for a
      list of allowed suffixes.  *Note Using Multiple Tapes::, for a
@@ -3276,8 +3274,8 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
      Extended File Attributes.
 
 '--xattrs-include=PATTERN.'
-     Specify include pattern for xattr keys.  PATTERN is a POSIX regular
-     expression, e.g.  '--xattrs-exclude='^user\.'' to include only
+     Specify include pattern for xattr keys.  PATTERN is a globbing
+     pattern, e.g.  '--xattrs-include='user.*'' to include only
      attributes from the user namespace.  *Note xattrs-include: Extended
      File Attributes.
 
@@ -3444,6 +3442,19 @@ any files and directories in '/var', without recursing into them(1):
 
      tar -cf a.tar --recursion /usr --no-recursion /var/*
 
+   During archive creation, GNU 'tar' keeps track of positional options
+used and arguments affected by them.  If it finds out that any such
+options are used in an obviously erroneous way, the fact is reported and
+exit code is set to 2.  E.g.:
+
+     $ tar -cf a.tar . --exclude '*.o'
+     tar: The following options were used after any non-optional
+     arguments in archive create or update mode.  These options are
+     positional and affect only arguments that follow them.  Please,
+     rearrange them properly.
+     tar: --exclude '*.o' has no effect
+     tar: Exiting with failure status due to previous errors
+
    The following table summarizes all position-sensitive options.
 
 '--directory=DIR'
@@ -3519,8 +3530,8 @@ about its name, version, origin and legal status, all on standard
 output, and then exit successfully.  For example, 'tar --version' might
 print:
 
-     tar (GNU tar) 1.29
-     Copyright (C) 2013-2016 Free Software Foundation, Inc.
+     tar (GNU tar) 1.30
+     Copyright (C) 2013-2017 Free Software Foundation, Inc.
      License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
      This is free software: you are free to change and redistribute it.
      There is NO WARRANTY, to the extent permitted by law.
@@ -4016,6 +4027,10 @@ file-removed
      '%s: File removed before we read it'
 file-changed
      '%s: file changed as we read it'
+failed-read
+     Suppresses warnings about unreadable files or directories.  This
+     keyword applies only if used together with the
+     '--ignore-failed-read' option.  *Note Ignore Failed Read::.
 
 Keywords applicable for 'tar --extract'
 ---------------------------------------
@@ -4151,7 +4166,6 @@ File: tar.info,  Node: operations,  Next: Backups,  Prev: tar invocation,  Up: T
 * create options::
 * extract options::
 * backup::
-* Applications::
 * looking ahead::
 
 
@@ -4524,7 +4538,7 @@ will be a total of two versions of the member 'blues'; the one at the
 end will be newer and larger, since you added text before updating it.
 
    The reason 'tar' does not overwrite the older file when updating it
-is because writing to the middle of a section of tape is a difficult
+is that writing to the middle of a section of tape is a difficult
 process.  Tapes are not designed to go backward.  *Note Media::, for
 more information about tapes.
 
@@ -4910,10 +4924,10 @@ controlled using the following options:
 '--xattrs-include=PATTERN'
      Specify include pattern for extended attributes.
 
-   Here, the PATTERN is POSIX regular expression.  For example, the
-following command:
+   Here, the PATTERN is a globbing pattern.  For example, the following
+command:
 
-     $ tar --xattrs --xattrs-exclude='^user\.' -c a.tar .
+     $ tar --xattrs --xattrs-exclude='user.*' -c a.tar .
 
    will include in the archive 'a.tar' all attributes, except those from
 the 'user' namespace.
@@ -4921,11 +4935,11 @@ the 'user' namespace.
    Any number of these options can be given, thereby creating lists of
 include and exclude patterns.
 
-   When both options are used, first '--xattrs-inlcude' is applied to
+   When both options are used, first '--xattrs-include' is applied to
 select the set of attribute names to keep, and then '--xattrs-exclude'
 is applied to the resulting set.  In other words, only those attributes
 will be stored, whose names match one of the regexps in
-'--xattrs-inlcude' and don't match any of the regexps from
+'--xattrs-include' and don't match any of the regexps from
 '--xattrs-exclude'.
 
    When listing the archive, if both '--xattrs' and '--verbose' options
@@ -4992,11 +5006,18 @@ command line options:
 
 File: tar.info,  Node: Ignore Failed Read,  Prev: Extended File Attributes,  Up: create options
 
-4.3.3 Ignore Fail Read
-----------------------
+4.3.3 Ignore Failed Read
+------------------------
 
 '--ignore-failed-read'
      Do not exit with nonzero on unreadable files or directories.
+
+   This option has effect only during creation.  It instructs tar to
+treat as mild conditions any missing or unreadable files (directories).
+Such failures don't affect the program exit code, and the corresponding
+diagnostic messages are marked as warnings, not errors.  These warnings
+can be suppressed using the '--warning=failed-read' option (*note
+warnings::).
 
 
 File: tar.info,  Node: extract options,  Next: backup,  Prev: create options,  Up: operations
@@ -5598,7 +5619,7 @@ output.
    This option is probably never needed on modern computer systems.
 
 
-File: tar.info,  Node: backup,  Next: Applications,  Prev: extract options,  Up: operations
+File: tar.info,  Node: backup,  Next: looking ahead,  Prev: extract options,  Up: operations
 
 4.5 Backup options
 ==================
@@ -5670,49 +5691,9 @@ partially extracted file are kept.
      set, the default is '~', just as in Emacs.
 
 
-File: tar.info,  Node: Applications,  Next: looking ahead,  Prev: backup,  Up: operations
+File: tar.info,  Node: looking ahead,  Prev: backup,  Up: operations
 
-4.6 Notable 'tar' Usages
-========================
-
-     _(This message will disappear, once this node revised.)_
-
-   You can easily use archive files to transport a group of files from
-one system to another: put all relevant files into an archive on one
-computer system, transfer the archive to another system, and extract the
-contents there.  The basic transfer medium might be magnetic tape,
-Internet FTP, or even electronic mail (though you must encode the
-archive with 'uuencode' in order to transport it properly by mail).
-Both machines do not have to use the same operating system, as long as
-they both support the 'tar' program.
-
-   For example, here is how you might copy a directory's contents from
-one disk to another, while preserving the dates, modes, owners and
-link-structure of all the files therein.  In this case, the transfer
-medium is a "pipe":
-
-     $ (cd sourcedir; tar -cf - .) | (cd targetdir; tar -xf -)
-
-You can avoid subshells by using '-C' option:
-
-     $ tar -C sourcedir -cf - . | tar -C targetdir -xf -
-
-The command also works using long option forms:
-
-     $ (cd sourcedir; tar --create --file=- . ) \
-            | (cd targetdir; tar --extract --file=-)
-
-or
-
-     $ tar --directory sourcedir --create --file=- . \
-            | tar --directory targetdir --extract --file=-
-
-This is one of the easiest methods to transfer a 'tar' archive.
-
-
-File: tar.info,  Node: looking ahead,  Prev: Applications,  Up: operations
-
-4.7 Looking Ahead: The Rest of this Manual
+4.6 Looking Ahead: The Rest of this Manual
 ==========================================
 
 You have now seen how to use all eight of the operations available to
@@ -6948,7 +6929,7 @@ options provide such possibility:
      systems: 'CVS', 'RCS', 'SCCS', 'SVN', 'Arch', 'Bazaar',
      'Mercurial', and 'Darcs'.
 
-     As of version 1.29, the following files are excluded:
+     As of version 1.30, the following files are excluded:
 
         * 'CVS/', and everything under it
         * 'RCS/', and everything under it
@@ -7077,7 +7058,7 @@ entirely:
 
    (1) According to the Bazaar docs, globbing-patterns are Korn-shell
 style and regular expressions are perl-style.  As of GNU 'tar' version
-1.29, these are treated as shell-style globs and posix extended regexps.
+1.30, these are treated as shell-style globs and posix extended regexps.
 This will be fixed in future releases.
 
    (2) Support for perl-style regexps will appear in future releases.
@@ -7331,10 +7312,8 @@ characters in question are:
 
    The exact way 'tar' uses to quote these characters depends on the
 "quoting style".  The default quoting style, called "escape" (see
-below), uses backslash notation to represent control characters, space
-and backslash.  Using this quoting style, control characters are
-represented as listed in column 'Character' in the above table, a space
-is printed as '\ ' and a backslash as '\\'.
+below), uses backslash notation to represent control characters and
+backslash.
 
    GNU 'tar' offers seven distinct quoting styles, which can be selected
 using '--quoting-style' option:
@@ -7437,9 +7416,9 @@ existed in the current working directory:
           "./a\nnewline"
 
 'escape'
-     Control characters are printed using backslash notation, a space is
-     printed as '\ ' and a backslash as '\\'.  This is the default
-     quoting style, unless it was changed when configured the package.
+     Control characters are printed using backslash notation, and a
+     backslash as '\\'.  This is the default quoting style, unless it
+     was changed when configured the package.
 
           $ tar tf arch.tar --quoting-style=escape
           ./
@@ -7711,7 +7690,7 @@ this case, '/lib/libc.so.6' would become:
 which excludes symbolic link targets from filename transformations.  The
 result is:
 
-     $ tar --transform 's,^,/usr/local/,S', -c -v -f arch.tar \
+     $ tar --transform 's,^,/usr/local/,S' -c -v -f arch.tar \
             --show-transformed /lib
      drwxr-xr-x root/root       0 2008-07-08 16:20 /usr/local/lib/
      -rwxr-xr-x root/root 1250840 2008-05-25 07:44 /usr/local/lib/libc-2.3.2.so
@@ -7869,7 +7848,7 @@ you use 'find' to create a list of files to be stored in an archive, use
 it as follows:
 
      $ find DIR TESTS | \
-       tar -cf ARCHIVE -T - --no-recursion
+       tar -cf ARCHIVE --no-recursion -T -
 
    The '--no-recursion' option also applies when extracting: it causes
 'tar' to extract only the matched directory entries, not the files under

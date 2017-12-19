@@ -1,22 +1,22 @@
-/* Copyright (C) 1991-2001, 2003-2007, 2009-2015 Free Software Foundation, Inc.
+/* Copyright (C) 1991-2017 Free Software Foundation, Inc.
+   This file is part of the GNU C Library.
 
-   NOTE: The canonical source of this file is maintained with the GNU C Library.
-   Bugs can be reported to bug-glibc@prep.ai.mit.edu.
+   The GNU C Library is free software; you can redistribute it and/or
+   modify it under the terms of the GNU General Public
+   License as published by the Free Software Foundation; either
+   version 3 of the License, or (at your option) any later version.
 
-   This program is free software: you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 3 of the License, or
-   (at your option) any later version.
-
-   This program is distributed in the hope that it will be useful,
+   The GNU C Library is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
 
-   You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+   You should have received a copy of the GNU General Public
+   License along with the GNU C Library; if not, see
+   <https://www.gnu.org/licenses/>.  */
 
 #ifdef _LIBC
+# define USE_IN_EXTENDED_LOCALE_MODEL 1
 # define HAVE_STRUCT_ERA_ENTRY 1
 # define HAVE_TM_GMTOFF 1
 # define HAVE_TM_ZONE 1
@@ -63,10 +63,18 @@ extern char *tzname[];
 #endif
 
 #include <limits.h>
-#include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
+
+#ifndef FALLTHROUGH
+# if __GNUC__ < 7
+#  define FALLTHROUGH ((void) 0)
+# else
+#  define FALLTHROUGH __attribute__ ((__fallthrough__))
+# endif
+#endif
 
 #ifdef COMPILE_WIDE
 # include <endian.h>
@@ -247,11 +255,11 @@ extern char *tzname[];
 # undef _NL_CURRENT
 # define _NL_CURRENT(category, item) \
   (current->values[_NL_ITEM_INDEX (item)].string)
+# define LOCALE_PARAM , __locale_t loc
 # define LOCALE_ARG , loc
-# define LOCALE_PARAM_PROTO , __locale_t loc
 # define HELPER_LOCALE_ARG  , current
 #else
-# define LOCALE_PARAM_PROTO
+# define LOCALE_PARAM
 # define LOCALE_ARG
 # ifdef _LIBC
 #  define HELPER_LOCALE_ARG , _NL_CURRENT_DATA (LC_TIME)
@@ -304,18 +312,22 @@ fwrite_uppcase (FILE *fp, const CHAR_T *src, size_t len)
     }
 }
 #else
+static CHAR_T *memcpy_lowcase (CHAR_T *dest, const CHAR_T *src,
+                               size_t len LOCALE_PARAM);
+
 static CHAR_T *
-memcpy_lowcase (CHAR_T *dest, const CHAR_T *src,
-                size_t len LOCALE_PARAM_PROTO)
+memcpy_lowcase (CHAR_T *dest, const CHAR_T *src, size_t len LOCALE_PARAM)
 {
   while (len-- > 0)
     dest[len] = TOLOWER ((UCHAR_T) src[len], loc);
   return dest;
 }
 
+static CHAR_T *memcpy_uppcase (CHAR_T *dest, const CHAR_T *src,
+                               size_t len LOCALE_PARAM);
+
 static CHAR_T *
-memcpy_uppcase (CHAR_T *dest, const CHAR_T *src,
-                size_t len LOCALE_PARAM_PROTO)
+memcpy_uppcase (CHAR_T *dest, const CHAR_T *src, size_t len LOCALE_PARAM)
 {
   while (len-- > 0)
     dest[len] = TOUPPER ((UCHAR_T) src[len], loc);
@@ -328,6 +340,7 @@ memcpy_uppcase (CHAR_T *dest, const CHAR_T *src,
 /* Yield the difference between *A and *B,
    measured in seconds, ignoring leap seconds.  */
 # define tm_diff ftime_tm_diff
+static int tm_diff (const struct tm *, const struct tm *);
 static int
 tm_diff (const struct tm *a, const struct tm *b)
 {
@@ -359,6 +372,7 @@ tm_diff (const struct tm *a, const struct tm *b)
 #define ISO_WEEK_START_WDAY 1 /* Monday */
 #define ISO_WEEK1_WDAY 4 /* Thursday */
 #define YDAY_MINIMUM (-366)
+static int iso_week_days (int, int);
 #ifdef __GNUC__
 __inline__
 #endif
@@ -401,17 +415,41 @@ iso_week_days (int yday, int wday)
 # define ns 0
 #endif
 
+static size_t __strftime_internal (STREAM_OR_CHAR_T *, STRFTIME_ARG (size_t)
+                                   const CHAR_T *, const struct tm *,
+                                   bool, bool *
+                                   extra_args_spec LOCALE_PARAM);
 
-/* Just like my_strftime, below, but with one more parameter, UPCASE,
-   to indicate that the result should be converted to upper case.  */
+/* Write information from TP into S according to the format
+   string FORMAT, writing no more that MAXSIZE characters
+   (including the terminating '\0') and returning number of
+   characters written.  If S is NULL, nothing will be written
+   anywhere, so to determine how many characters would be
+   written, use NULL for S and (size_t) -1 for MAXSIZE.  */
+size_t
+my_strftime (STREAM_OR_CHAR_T *s, STRFTIME_ARG (size_t maxsize)
+             const CHAR_T *format,
+             const struct tm *tp extra_args_spec LOCALE_PARAM)
+{
+  bool tzset_called = false;
+  return __strftime_internal (s, STRFTIME_ARG (maxsize) format, tp,
+                              false, &tzset_called extra_args LOCALE_ARG);
+}
+#if defined _LIBC && ! FPRINTFTIME
+libc_hidden_def (my_strftime)
+#endif
+
+/* Just like my_strftime, above, but with two more parameters.
+   UPCASE indicate that the result should be converted to upper case,
+   and *TZSET_CALLED indicates whether tzset has been called here.  */
 static size_t
-strftime_case_ (bool upcase, STREAM_OR_CHAR_T *s,
-                STRFTIME_ARG (size_t maxsize)
-                const CHAR_T *format,
-                const struct tm *tp extra_args_spec LOCALE_PARAM_PROTO)
+__strftime_internal (STREAM_OR_CHAR_T *s, STRFTIME_ARG (size_t maxsize)
+                     const CHAR_T *format,
+                     const struct tm *tp, bool upcase, bool *tzset_called
+                     extra_args_spec LOCALE_PARAM)
 {
 #if defined _LIBC && defined USE_IN_EXTENDED_LOCALE_MODEL
-  struct locale_data *const current = loc->__locales[LC_TIME];
+  struct __locale_data *const current = loc->__locales[LC_TIME];
 #endif
 #if FPRINTFTIME
   size_t maxsize = (size_t) -1;
@@ -426,13 +464,17 @@ strftime_case_ (bool upcase, STREAM_OR_CHAR_T *s,
      only a few elements.  Dereference the pointers only if the format
      requires this.  Then it is ok to fail if the pointers are invalid.  */
 # define a_wkday \
-  ((const CHAR_T *) _NL_CURRENT (LC_TIME, NLW(ABDAY_1) + tp->tm_wday))
+  ((const CHAR_T *) (tp->tm_wday < 0 || tp->tm_wday > 6                      \
+                     ? "?" : _NL_CURRENT (LC_TIME, NLW(ABDAY_1) + tp->tm_wday)))
 # define f_wkday \
-  ((const CHAR_T *) _NL_CURRENT (LC_TIME, NLW(DAY_1) + tp->tm_wday))
+  ((const CHAR_T *) (tp->tm_wday < 0 || tp->tm_wday > 6                      \
+                     ? "?" : _NL_CURRENT (LC_TIME, NLW(DAY_1) + tp->tm_wday)))
 # define a_month \
-  ((const CHAR_T *) _NL_CURRENT (LC_TIME, NLW(ABMON_1) + tp->tm_mon))
+  ((const CHAR_T *) (tp->tm_mon < 0 || tp->tm_mon > 11                       \
+                     ? "?" : _NL_CURRENT (LC_TIME, NLW(ABMON_1) + tp->tm_mon)))
 # define f_month \
-  ((const CHAR_T *) _NL_CURRENT (LC_TIME, NLW(MON_1) + tp->tm_mon))
+  ((const CHAR_T *) (tp->tm_mon < 0 || tp->tm_mon > 11                       \
+                     ? "?" : _NL_CURRENT (LC_TIME, NLW(MON_1) + tp->tm_mon)))
 # define ampm \
   ((const CHAR_T *) _NL_CURRENT (LC_TIME, tp->tm_hour > 11                    \
                                  ? NLW(PM_STR) : NLW(AM_STR)))
@@ -483,15 +525,21 @@ strftime_case_ (bool upcase, STREAM_OR_CHAR_T *s,
       /* Infer the zone name from *TZ instead of from TZNAME.  */
       tzname_vec = tz->tzname_copy;
 # endif
-      /* POSIX.1 requires that local time zone information be used as
-         though strftime called tzset.  */
-# if HAVE_TZSET
-      tzset ();
-# endif
     }
   /* The tzset() call might have changed the value.  */
   if (!(zone && *zone) && tp->tm_isdst >= 0)
-    zone = tzname_vec[tp->tm_isdst != 0];
+    {
+      /* POSIX.1 requires that local time zone information be used as
+         though strftime called tzset.  */
+# if HAVE_TZSET
+      if (!*tzset_called)
+        {
+          tzset ();
+          *tzset_called = true;
+        }
+# endif
+      zone = tzname_vec[tp->tm_isdst != 0];
+    }
 #endif
   if (! zone)
     zone = "";
@@ -641,7 +689,7 @@ strftime_case_ (bool upcase, STREAM_OR_CHAR_T *s,
           break;
         }
 
-      /* As a GNU extension we allow to specify the field width.  */
+      /* As a GNU extension we allow the field width to be specified.  */
       if (ISDIGIT (*f))
         {
           width = 0;
@@ -699,11 +747,10 @@ strftime_case_ (bool upcase, STREAM_OR_CHAR_T *s,
           /* The mask is not what you might think.
              When the ordinal i'th bit is set, insert a colon
              before the i'th digit of the time zone representation.  */
-#define DO_TZ_OFFSET(d, negative, mask, v) \
+#define DO_TZ_OFFSET(d, mask, v) \
           do                                                                  \
             {                                                                 \
               digits = d;                                                     \
-              negative_number = negative;                                     \
               tz_colon_mask = mask;                                           \
               u_number_value = v;                                             \
               goto do_tz_offset;                                              \
@@ -801,14 +848,15 @@ strftime_case_ (bool upcase, STREAM_OR_CHAR_T *s,
 
         subformat:
           {
-            size_t len = strftime_case_ (to_uppcase,
-                                         NULL, STRFTIME_ARG ((size_t) -1)
-                                         subfmt,
-                                         tp extra_args LOCALE_ARG);
-            add (len, strftime_case_ (to_uppcase, p,
-                                      STRFTIME_ARG (maxsize - i)
-                                      subfmt,
-                                      tp extra_args LOCALE_ARG));
+            size_t len = __strftime_internal (NULL, STRFTIME_ARG ((size_t) -1)
+                                              subfmt,
+                                              tp, to_uppcase, tzset_called
+                                              extra_args LOCALE_ARG);
+            add (len, __strftime_internal (p,
+                                           STRFTIME_ARG (maxsize - i)
+                                           subfmt,
+                                           tp, to_uppcase, tzset_called
+                                           extra_args LOCALE_ARG));
           }
           break;
 
@@ -845,8 +893,6 @@ strftime_case_ (bool upcase, STREAM_OR_CHAR_T *s,
 #endif
 
         case L_('C'):
-          if (modifier == L_('O'))
-            goto bad_format;
           if (modifier == L_('E'))
             {
 #if HAVE_STRUCT_ERA_ENTRY
@@ -1100,8 +1146,7 @@ strftime_case_ (bool upcase, STREAM_OR_CHAR_T *s,
 #ifndef _NL_CURRENT
           format_char = L_('p');
 #endif
-          /* FALLTHROUGH */
-
+          FALLTHROUGH;
         case L_('p'):
           if (change_case)
             {
@@ -1114,6 +1159,10 @@ strftime_case_ (bool upcase, STREAM_OR_CHAR_T *s,
 #else
           goto underlying_strftime;
 #endif
+
+        case L_('q'):           /* GNU extension.  */
+          DO_SIGNED_NUMBER (1, false, ((tp->tm_mon * 11) >> 5) + 1);
+          break;
 
         case L_('R'):
           subfmt = L_("%H:%M");
@@ -1364,6 +1413,16 @@ strftime_case_ (bool upcase, STREAM_OR_CHAR_T *s,
                 struct tm ltm;
                 time_t lt;
 
+                /* POSIX.1 requires that local time zone information be used as
+                   though strftime called tzset.  */
+# if HAVE_TZSET
+                if (!*tzset_called)
+                  {
+                    tzset ();
+                    *tzset_called = true;
+                  }
+# endif
+
                 ltm = *tp;
                 lt = mktime_z (tz, &ltm);
 
@@ -1391,6 +1450,7 @@ strftime_case_ (bool upcase, STREAM_OR_CHAR_T *s,
               }
 #endif
 
+            negative_number = diff < 0 || (diff == 0 && *zone == '-');
             hour_diff = diff / 60 / 60;
             min_diff = diff / 60 % 60;
             sec_diff = diff % 60;
@@ -1398,13 +1458,13 @@ strftime_case_ (bool upcase, STREAM_OR_CHAR_T *s,
             switch (colons)
               {
               case 0: /* +hhmm */
-                DO_TZ_OFFSET (5, diff < 0, 0, hour_diff * 100 + min_diff);
+                DO_TZ_OFFSET (5, 0, hour_diff * 100 + min_diff);
 
               case 1: tz_hh_mm: /* +hh:mm */
-                DO_TZ_OFFSET (6, diff < 0, 04, hour_diff * 100 + min_diff);
+                DO_TZ_OFFSET (6, 04, hour_diff * 100 + min_diff);
 
               case 2: tz_hh_mm_ss: /* +hh:mm:ss */
-                DO_TZ_OFFSET (9, diff < 0, 024,
+                DO_TZ_OFFSET (9, 024,
                               hour_diff * 10000 + min_diff * 100 + sec_diff);
 
               case 3: /* +hh if possible, else +hh:mm, else +hh:mm:ss */
@@ -1412,7 +1472,7 @@ strftime_case_ (bool upcase, STREAM_OR_CHAR_T *s,
                   goto tz_hh_mm_ss;
                 if (min_diff != 0)
                   goto tz_hh_mm;
-                DO_TZ_OFFSET (3, diff < 0, 0, hour_diff);
+                DO_TZ_OFFSET (3, 0, hour_diff);
 
               default:
                 goto bad_format;
@@ -1421,7 +1481,7 @@ strftime_case_ (bool upcase, STREAM_OR_CHAR_T *s,
 
         case L_('\0'):          /* GNU extension: % at end of format.  */
             --f;
-            /* Fall through.  */
+            FALLTHROUGH;
         default:
           /* Unknown format; output the format, including the '%',
              since this is most likely the right thing to do if a
@@ -1444,22 +1504,3 @@ strftime_case_ (bool upcase, STREAM_OR_CHAR_T *s,
 
   return i;
 }
-
-/* Write information from TP into S according to the format
-   string FORMAT, writing no more that MAXSIZE characters
-   (including the terminating '\0') and returning number of
-   characters written.  If S is NULL, nothing will be written
-   anywhere, so to determine how many characters would be
-   written, use NULL for S and (size_t) -1 for MAXSIZE.  */
-size_t
-my_strftime (STREAM_OR_CHAR_T *s, STRFTIME_ARG (size_t maxsize)
-             const CHAR_T *format,
-             const struct tm *tp extra_args_spec LOCALE_PARAM_PROTO)
-{
-  return strftime_case_ (false, s, STRFTIME_ARG (maxsize)
-                         format, tp extra_args LOCALE_ARG);
-}
-
-#if defined _LIBC && ! FPRINTFTIME
-libc_hidden_def (my_strftime)
-#endif

@@ -1,6 +1,6 @@
 /* Functions for dealing with sparse files
 
-   Copyright 2003-2007, 2010, 2013-2016 Free Software Foundation, Inc.
+   Copyright 2003-2007, 2010, 2013-2017 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -361,11 +361,12 @@ sparse_scan_file (struct tar_sparse_file *file)
       /* fall back to "raw" for this and all other files */
       hole_detection = HOLE_DETECTION_RAW;
 #endif
+      FALLTHROUGH;
     case HOLE_DETECTION_RAW:
       if (sparse_scan_file_raw (file))
 	return true;
     }
-  
+
   return false;
 }
 

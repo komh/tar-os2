@@ -2,7 +2,7 @@
    Print statistics for existing files.
 
    Copyright (C) 1995, 1996, 1997, 2001, 2003, 2004, 2005, 2006, 2007,
-   2008, 2009, 2016 Free Software Foundation, Inc.
+   2008, 2009 Free Software Foundation, Inc.
 
    François Pinard <pinard@iro.umontreal.ca>, 1995.
    Sergey Poznyakoff <gray@mirddin.farlep.net>, 2004, 2005, 2006, 2007, 2008.
@@ -123,7 +123,7 @@ static char doc[] = N_("genfile manipulates data files for GNU paxutils test sui
 #define OPT_DATE       261
 #define OPT_VERBOSE    262
 #define OPT_SEEK       263
-#define OPT_UNLINK     264
+#define OPT_DELETE     264
 
 static struct argp_option options[] = {
 #define GRP 0
@@ -195,9 +195,10 @@ static struct argp_option options[] = {
   {"exec", OPT_EXEC, N_("COMMAND"), 0,
    N_("Execute COMMAND"),
    GRP+1 },
-  {"unlink", OPT_UNLINK, N_("FILE"), 0,
-   N_("Unlink FILE"),
+  {"delete", OPT_DELETE, N_("FILE"), 0,
+   N_("Delete FILE"),
    GRP+1 },
+  {"unlink", 0, 0, OPTION_ALIAS, NULL, GRP+1},
 #undef GRP
   { NULL, }
 };
@@ -289,7 +290,7 @@ struct action
   struct timespec ts;
 };
 
-static struct action *action_list;
+static struct action *action_head, *action_tail;
 
 void
 reg_action (int action, char *arg)
@@ -301,8 +302,12 @@ reg_action (int action, char *arg)
   act->ts = touch_time;
   act->size = file_length;
   act->name = arg;
-  act->next = action_list;
-  action_list = act;
+  act->next = NULL;
+  if (action_tail)
+    action_tail->next = act;
+  else
+    action_head = act;
+  action_tail = act;
 }
 
 static error_t
@@ -380,7 +385,7 @@ parse_opt (int key, char *arg, struct argp_state *state)
     case OPT_TRUNCATE:
     case OPT_TOUCH:
     case OPT_EXEC:
-    case OPT_UNLINK:
+    case OPT_DELETE:
       reg_action (key, arg);
       break;
 
@@ -769,9 +774,19 @@ exec_checkpoint (struct action *p)
 	error (0, 0, _("command failed: %s"), p->name);
       break;
 
-    case OPT_UNLINK:
-      if (unlink (p->name))
-	error (0, errno, _("cannot unlink `%s'"), p->name);
+    case OPT_DELETE:
+      {
+	struct stat st;
+	if (stat (p->name, &st))
+	  error (0, errno, _("cannot stat `%s'"), p->name);
+	else if (S_ISDIR (st.st_mode))
+	  {
+	    if (rmdir (p->name))
+	      error (0, errno, _("cannot remove directory `%s'"), p->name);
+	  }
+	else if (unlink (p->name))
+	  error (0, errno, _("cannot unlink `%s'"), p->name);
+      }
       break;
 
     default:
@@ -784,7 +799,7 @@ process_checkpoint (size_t n)
 {
   struct action *p, *prev = NULL;
 
-  for (p = action_list; p; )
+  for (p = action_head; p; )
     {
       struct action *next = p->next;
 
@@ -795,7 +810,9 @@ process_checkpoint (size_t n)
 	  if (prev)
 	    prev->next = next;
 	  else
-	    action_list = next;
+	    action_head = next;
+	  if (next == NULL)
+	    action_tail = prev;
 	  free (p);
 	}
       else

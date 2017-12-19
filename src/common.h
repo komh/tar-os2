@@ -1,6 +1,6 @@
 /* Common declarations for the tar program.
 
-   Copyright 1988, 1992-1994, 1996-1997, 1999-2010, 2012-2016 Free
+   Copyright 1988, 1992-1994, 1996-1997, 1999-2010, 2012-2017 Free
    Software Foundation, Inc.
 
    This file is part of GNU tar.
@@ -42,6 +42,12 @@
    neutral (or zero) values, explicit initialization is usually not done.  */
 #ifndef GLOBAL
 # define GLOBAL extern
+#endif
+
+#if 7 <= __GNUC__
+# define FALLTHROUGH __attribute__ ((__fallthrough__))
+#else
+# define FALLTHROUGH ((void) 0)
 #endif
 
 #define TAREXIT_SUCCESS PAXEXIT_SUCCESS
@@ -414,9 +420,6 @@ GLOBAL bool show_transformed_names_option;
    timestamps from archives with an unusual member order. It is automatically
    set for incremental archives. */
 GLOBAL bool delay_directory_restore_option;
-
-/* When set, tar will not refuse to create empty archives */
-GLOBAL bool files_from_option;
 
 /* Declarations for each module.  */
 
@@ -622,6 +625,8 @@ void skip_member (void);
 
 #define min(a, b) ((a) < (b) ? (a) : (b))
 #define max(a, b) ((a) < (b) ? (b) : (a))
+
+char const *quote_n_colon (int n, char const *arg);
 void assign_string (char **dest, const char *src);
 int unquote_string (char *str);
 char *zap_slashes (char *name);
@@ -738,6 +743,7 @@ void uid_to_uname (uid_t uid, char **uname);
 int uname_to_uid (char const *uname, uid_t *puid);
 
 void name_init (void);
+bool name_more_files (void);
 void name_add_name (const char *name);
 void name_term (void);
 const char *name_next (int change_dirs);
@@ -927,6 +933,7 @@ void checkpoint_flush_actions (void);
 #define WARN_EXISTING_FILE       0x00100000
 #define WARN_XATTR_WRITE         0x00200000
 #define WARN_RECORD_SIZE         0x00400000
+#define WARN_FAILED_READ         0x00800000
 
 /* These warnings are enabled by default in verbose mode: */
 #define WARN_VERBOSE_WARNINGS    (WARN_RENAME_DIRECTORY|WARN_NEW_DIRECTORY|\
@@ -938,10 +945,12 @@ void set_warning_option (const char *arg);
 
 extern int warning_option;
 
+#define WARNING_ENABLED(opt) (warning_option & (opt))
+
 #define WARNOPT(opt,args)			\
   do						\
     {						\
-      if (warning_option & opt) WARN (args);	\
+      if (WARNING_ENABLED(opt)) WARN (args);	\
     }						\
   while (0)
 

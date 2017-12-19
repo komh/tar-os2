@@ -1,7 +1,7 @@
 /* Diff files from a tar archive.
 
    Copyright 1988, 1992-1994, 1996-1997, 1999-2001, 2003-2007,
-   2009-2010, 2012-2014, 2016 Free Software Foundation, Inc.
+   2009-2010, 2012-2014, 2016-2017 Free Software Foundation, Inc.
 
    This file is part of GNU tar.
 
@@ -51,6 +51,8 @@ diff_init (void)
     read_directory_file ();
 }
 
+enum { QUOTE_ARG, QUOTE_NAME };
+
 /* Sigh about something that differs by writing a MESSAGE to stdlis,
    given MESSAGE is nonzero.  Also set the exit status if not already.  */
 void
@@ -60,7 +62,7 @@ report_difference (struct tar_stat_info *st, const char *fmt, ...)
     {
       va_list ap;
 
-      fprintf (stdlis, "%s: ", quotearg_colon (st->file_name));
+      fprintf (stdlis, "%s: ", quote_n_colon (QUOTE_NAME, st->file_name));
       va_start (ap, fmt);
       vfprintf (stdlis, fmt, ap);
       va_end (ap);
@@ -263,7 +265,8 @@ diff_link (void)
       && !sys_compare_links (&file_data, &link_data))
     report_difference (&current_stat_info,
 		       _("Not linked to %s"),
-		       quote (current_stat_info.link_name));
+		       quote_n_colon (QUOTE_ARG,
+				      current_stat_info.link_name));
 }
 
 #ifdef HAVE_READLINK
@@ -477,8 +480,7 @@ diff_archive (void)
       ERROR ((0, 0, _("%s: Unknown file type '%c', diffed as normal file"),
 	      quotearg_colon (current_stat_info.file_name),
 	      current_header->header.typeflag));
-      /* Fall through.  */
-
+      FALLTHROUGH;
     case AREGTYPE:
     case REGTYPE:
     case GNUTYPE_SPARSE:

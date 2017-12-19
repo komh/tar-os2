@@ -1,7 +1,7 @@
 /* Create a tar archive.
 
    Copyright 1985, 1992-1994, 1996-1997, 1999-2001, 2003-2007,
-   2009-2010, 2012-2014, 2016 Free Software Foundation, Inc.
+   2009-2010, 2012-2014, 2016-2017 Free Software Foundation, Inc.
 
    This file is part of GNU tar.
 
@@ -202,8 +202,8 @@ to_base256 (int negative, uintmax_t value, char *where, size_t size)
 #define MODE_TO_CHARS(val, where) mode_to_chars (val, where, sizeof (where))
 #define UID_TO_CHARS(val, where) uid_to_chars (val, where, sizeof (where))
 
-#define UNAME_TO_CHARS(name,buf) string_to_chars (name, buf, sizeof(buf))
-#define GNAME_TO_CHARS(name,buf) string_to_chars (name, buf, sizeof(buf))
+#define UNAME_TO_CHARS(name, buf) string_to_chars (name, buf, sizeof (buf))
+#define GNAME_TO_CHARS(name, buf) string_to_chars (name, buf, sizeof (buf))
 
 static bool
 to_chars (int negative, uintmax_t value, size_t valsize,
@@ -542,15 +542,19 @@ write_gnu_long_link (struct tar_stat_info *st, const char *p, char type)
   size_t size = strlen (p) + 1;
   size_t bufsize;
   union block *header;
-  char *tmpname;
 
   header = start_private_header ("././@LongLink", size, 0);
-  uid_to_uname (0, &tmpname);
-  UNAME_TO_CHARS (tmpname, header->header.uname);
-  free (tmpname);
-  gid_to_gname (0, &tmpname);
-  GNAME_TO_CHARS (tmpname, header->header.gname);
-  free (tmpname);
+  if (! numeric_owner_option)
+    {
+      static char *uname, *gname;
+      if (!uname)
+	{
+	  uid_to_uname (0, &uname);
+	  gid_to_gname (0, &gname);
+	}
+      UNAME_TO_CHARS (uname, header->header.uname);
+      GNAME_TO_CHARS (gname, header->header.gname);
+    }
 
   strcpy (header->buffer + offsetof (struct posix_header, magic),
 	  OLDGNU_MAGIC);
@@ -743,7 +747,7 @@ start_header (struct tar_stat_info *st)
   union block *header;
   char const *uname = NULL;
   char const *gname = NULL;
-  
+
   header = write_header_name (st);
   if (!header)
     return NULL;
@@ -830,11 +834,11 @@ start_header (struct tar_stat_info *st)
       case USE_FILE_MTIME:
 	mtime = st->mtime;
 	break;
-	  
+
       case FORCE_MTIME:
 	mtime = mtime_option;
 	break;
-	  
+
       case CLAMP_MTIME:
 	mtime = timespec_cmp (st->mtime, mtime_option) > 0
 	           ? mtime_option : st->mtime;
@@ -1391,13 +1395,15 @@ create_archive (void)
 					   open_searchdir_flags);
 			  if (fd < 0)
 			    {
-			      open_diag (p->name);
+			      file_removed_diag (p->name, !p->parent,
+						 open_diag);
 			      break;
 			    }
 			  st.fd = fd;
 			  if (fstat (fd, &st.stat) != 0)
 			    {
-			      stat_diag (p->name);
+			      file_removed_diag (p->name, !p->parent,
+						 stat_diag);
 			      break;
 			    }
 			  st.orig_file_name = xstrdup (p->name);
@@ -1528,7 +1534,8 @@ file_count_links (struct tar_stat_info *st)
       char *linkname = NULL;
       struct link *lp;
 
-      assign_string (&linkname, st->orig_file_name);
+      assign_string (&linkname, safer_name_suffix (st->orig_file_name, true,
+						   absolute_names_option));
       transform_name (&linkname, XFORM_LINK);
 
       lp = xmalloc (offsetof (struct link, name)

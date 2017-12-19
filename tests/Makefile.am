@@ -42,6 +42,7 @@ $(srcdir)/package.m4: $(top_srcdir)/configure.ac
 ## ------------ ##
 
 TESTSUITE_AT = \
+ testsuite.at\
  T-cd.at\
  T-dir00.at\
  T-dir01.at\
@@ -54,7 +55,7 @@ TESTSUITE_AT = \
  T-nonl.at\
  T-mult.at\
  T-nest.at\
- testsuite.at\
+ add-file.at\
  append.at\
  append01.at\
  append02.at\
@@ -70,6 +71,7 @@ TESTSUITE_AT = \
  delete03.at\
  delete04.at\
  delete05.at\
+ difflink.at\
  exclude.at\
  exclude01.at\
  exclude02.at\
@@ -106,8 +108,12 @@ TESTSUITE_AT = \
  extrac17.at\
  extrac18.at\
  extrac19.at\
+ extrac20.at\
+ extrac21.at\
  filerem01.at\
  filerem02.at\
+ dirrem01.at\
+ dirrem02.at\
  gzip.at\
  grow.at\
  incremental.at\
@@ -153,6 +159,7 @@ TESTSUITE_AT = \
  multiv07.at\
  multiv08.at\
  multiv09.at\
+ multiv10.at\
  numeric.at\
  old.at\
  onetop01.at\
@@ -166,8 +173,12 @@ TESTSUITE_AT = \
  opcomp04.at\
  opcomp05.at\
  opcomp06.at\
+ positional01.at\
+ positional02.at\
+ positional03.at\
  options.at\
  options02.at\
+ options03.at\
  owner.at\
  pipe.at\
  recurse.at\
@@ -211,6 +222,7 @@ TESTSUITE_AT = \
  sparse04.at\
  sparse05.at\
  sparse06.at\
+ sparse07.at\
  sparsemv.at\
  sparsemvp.at\
  spmvp00.at\
@@ -222,6 +234,7 @@ TESTSUITE_AT = \
  update.at\
  update01.at\
  update02.at\
+ update03.at\
  volsize.at\
  volume.at\
  verbose.at\
@@ -230,6 +243,7 @@ TESTSUITE_AT = \
  xform-h.at\
  xform01.at\
  xform02.at\
+ xform03.at\
  star/gtarfail.at\
  star/gtarfail2.at\
  star/multi-fail.at\
@@ -241,6 +255,8 @@ TESTSUITE_AT = \
  xattr03.at\
  xattr04.at\
  xattr05.at\
+ xattr06.at\
+ xattr07.at\
  acls01.at\
  acls02.at\
  acls03.at\

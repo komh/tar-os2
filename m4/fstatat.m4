@@ -1,5 +1,5 @@
 # fstatat.m4 serial 3
-dnl Copyright (C) 2004-2015 Free Software Foundation, Inc.
+dnl Copyright (C) 2004-2017 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -20,7 +20,7 @@ AC_DEFUN([gl_FUNC_FSTATAT],
     HAVE_FSTATAT=0
   else
     dnl Test for an AIX 7.1 bug; see
-    dnl <http://lists.gnu.org/archive/html/bug-tar/2011-09/msg00015.html>.
+    dnl <https://lists.gnu.org/r/bug-tar/2011-09/msg00015.html>.
     AC_CACHE_CHECK([whether fstatat (..., 0) works],
       [gl_cv_func_fstatat_zero_flag],
       [AC_RUN_IFELSE(

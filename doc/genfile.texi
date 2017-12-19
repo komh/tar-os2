@@ -319,8 +319,10 @@ an almost arbitrary format (@pxref{Date input formats}).
 @item --exec @var{command}
     Execute given shell command.
 
-@item --unlink @var{file}
-    Unlink the @var{file}.
+@item --delete @var{file}
+@itemx --unlink @var{file}
+    Delete the named file or directory.  If deleting the directory, it
+must be empty.    
 @end table
 
     Option @option{--verbose} instructs @command{genfile} to print on

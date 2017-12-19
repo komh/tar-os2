@@ -1,7 +1,7 @@
 # Process this file with autom4te to create testsuite. -*- Autotest -*-
 
 # Test suite for GNU tar.
-# Copyright 2004-2008, 2010-2016 Free Software Foundation, Inc.
+# Copyright 2004-2008, 2010-2017 Free Software Foundation, Inc.
 
 # This file is part of GNU tar.
 
@@ -204,6 +204,7 @@ m4_include([pipe.at])
 
 m4_include([options.at])
 m4_include([options02.at])
+m4_include([options03.at])
 
 AT_BANNER([Option compatibility])
 m4_include([opcomp01.at])
@@ -212,6 +213,12 @@ m4_include([opcomp03.at])
 m4_include([opcomp04.at])
 m4_include([opcomp05.at])
 m4_include([opcomp06.at])
+
+AT_BANNER([Positional options])
+m4_include([positional01.at])
+m4_include([positional02.at])
+m4_include([positional03.at])
+m4_include([add-file.at])
 
 AT_BANNER([The -T option])
 m4_include([T-mult.at])
@@ -252,6 +259,7 @@ AT_BANNER([Transforms])
 m4_include([xform-h.at])
 m4_include([xform01.at])
 m4_include([xform02.at])
+m4_include([xform03.at])
 
 AT_BANNER([Exclude])
 m4_include([exclude.at])
@@ -299,7 +307,13 @@ m4_include([extrac16.at])
 m4_include([extrac17.at])
 m4_include([extrac18.at])
 m4_include([extrac19.at])
+m4_include([extrac20.at])
+m4_include([extrac21.at])
+
 m4_include([backup01.at])
+
+AT_BANNER([Comparing])
+m4_include([difflink.at])
 
 AT_BANNER([Volume label operations])
 m4_include([label01.at])
@@ -330,6 +344,10 @@ m4_include([incr11.at])
 AT_BANNER([Files removed while archiving])
 m4_include([filerem01.at])
 m4_include([filerem02.at])
+
+AT_BANNER([Directories removed while archiving])
+m4_include([dirrem01.at])
+m4_include([dirrem02.at])
 
 AT_BANNER([Renames])
 m4_include([rename01.at])
@@ -369,6 +387,7 @@ m4_include([multiv06.at])
 m4_include([multiv07.at])
 m4_include([multiv08.at])
 m4_include([multiv09.at])
+m4_include([multiv10.at])
 
 AT_BANNER([Owner and Groups])
 m4_include([owner.at])
@@ -381,6 +400,7 @@ m4_include([sparse03.at])
 m4_include([sparse04.at])
 m4_include([sparse05.at])
 m4_include([sparse06.at])
+m4_include([sparse07.at])
 m4_include([sparsemv.at])
 m4_include([spmvp00.at])
 m4_include([spmvp01.at])
@@ -390,6 +410,7 @@ AT_BANNER([Updates])
 m4_include([update.at])
 m4_include([update01.at])
 m4_include([update02.at])
+m4_include([update03.at])
 
 AT_BANNER([Verifying the archive])
 m4_include([verify.at])
@@ -438,6 +459,8 @@ m4_include([xattr02.at])
 m4_include([xattr03.at])
 m4_include([xattr04.at])
 m4_include([xattr05.at])
+m4_include([xattr06.at])
+m4_include([xattr07.at])
 
 m4_include([acls01.at])
 m4_include([acls02.at])

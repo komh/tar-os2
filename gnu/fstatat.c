@@ -1,6 +1,6 @@
 /* Work around an fstatat bug on Solaris 9.
 
-   Copyright (C) 2006, 2009-2015 Free Software Foundation, Inc.
+   Copyright (C) 2006, 2009-2017 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
 /* Written by Paul Eggert and Jim Meyering.  */
 
@@ -28,7 +28,7 @@
 #include <sys/stat.h>
 #undef __need_system_sys_stat_h
 
-#if HAVE_FSTATAT
+#if HAVE_FSTATAT && HAVE_WORKING_FSTATAT_ZERO_FLAG
 static int
 orig_fstatat (int fd, char const *filename, struct stat *buf, int flags)
 {
@@ -111,7 +111,7 @@ stat_func (char const *name, struct stat *st)
 # endif
 
 /* Replacement for Solaris' function by the same name.
-   <http://www.google.com/search?q=fstatat+site:docs.sun.com>
+   <https://www.google.com/search?q=fstatat+site:docs.oracle.com>
    First, try to simulate it via l?stat ("/proc/self/fd/FD/FILE").
    Failing that, simulate it via save_cwd/fchdir/(stat|lstat)/restore_cwd.
    If either the save_cwd or the restore_cwd fails (relatively unlikely),

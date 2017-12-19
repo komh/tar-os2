@@ -36,7 +36,7 @@ This manual is for @acronym{GNU} @command{tar} (version
 @value{VERSION}, @value{UPDATED}), which creates and extracts files
 from archives.
 
-Copyright @copyright{} 1992, 1994--1997, 1999--2001, 2003--2016 Free
+Copyright @copyright{} 1992, 1994--1997, 1999--2001, 2003--2017 Free
 Software Foundation, Inc.
 
 @quotation
@@ -111,6 +111,7 @@ document.  The rest of the menu lists all the lower level nodes.
 Appendices
 
 * Changes::
+* Recipes:: Frequently used tar recipes
 * Configuring Help Summary::
 * Fixing Snapshot Files::
 * Tar Internals::
@@ -204,7 +205,6 @@ All @command{tar} Options
 * create options::
 * extract options::
 * backup::
-* Applications::
 * looking ahead::
 
 Advanced @GNUTAR{} Operations
@@ -1521,7 +1521,7 @@ the error message is produced because there is no member named
 @file{folk}, only one named @file{home/myself/folk}.
 
 If you are not sure of the exact file name, use @dfn{globbing
-patterns}, for example: 
+patterns}, for example:
 
 @smallexample
 $ @kbd{tar --list --file=practice.tar --wildcards '*/folk'}
@@ -3155,7 +3155,7 @@ Disable extended attributes support.  @xref{Extended File Attributes, xattrs}.
 
 When @command{tar} is using the @option{--files-from} option, this option
 instructs @command{tar} to expect file names terminated with
-@acronym{NUL}, and to process file names verbatim.  
+@acronym{NUL}, and to process file names verbatim.
 
 This means that @command{tar} correctly works with file names that
 contain newlines or begin with a dash.
@@ -3703,8 +3703,8 @@ Specify exclude pattern for xattr keys.
 
 @opsummary{xattrs-include}
 @item --xattrs-include=@var{pattern}.
-Specify include pattern for xattr keys.  @var{pattern} is a POSIX
-regular expression, e.g. @samp{--xattrs-exclude='^user\.'} to include
+Specify include pattern for xattr keys.  @var{pattern} is a globbing
+pattern, e.g. @samp{--xattrs-include='user.*'} to include
 only attributes from the user namespace.
 @xref{Extended File Attributes, xattrs-include}.
 
@@ -3879,7 +3879,24 @@ tar -cf a.tar /usr --no-recursion /var/*
 tar -cf a.tar --recursion /usr --no-recursion /var/*
 @end example
 
-The following table summarizes all position-sensitive options. 
+During archive creation, @GNUTAR{} keeps track of positional options
+used and arguments affected by them.  If it finds out that any such
+options are used in an obviously erroneous way, the fact is reported
+and exit code is set to 2.  E.g.:
+
+@example
+@group
+$ @kbd{tar -cf a.tar . --exclude '*.o'}
+tar: The following options were used after any non-optional
+arguments in archive create or update mode.  These options are
+positional and affect only arguments that follow them.  Please,
+rearrange them properly.
+tar: --exclude '*.o' has no effect
+tar: Exiting with failure status due to previous errors
+@end group
+@end example
+
+The following table summarizes all position-sensitive options.
 
 @table @option
 @item --directory=@var{dir}
@@ -3898,24 +3915,24 @@ The following table summarizes all position-sensitive options.
 @itemx --no-verbatim-files-from
 @xref{verbatim-files-from}.
 
-@item --recursion 
+@item --recursion
 @itemx --no-recursion
 @xref{recurse}.
 
-@item --anchored 
-@itemx --no-anchored 
+@item --anchored
+@itemx --no-anchored
 @xref{anchored patterns}.
 
-@item --ignore-case 
-@itemx --no-ignore-case 
+@item --ignore-case
+@itemx --no-ignore-case
 @xref{case-insensitive matches}.
 
 @item --wildcards
 @itemx --no-wildcards
 @xref{controlling pattern-matching}.
 
-@item --wildcards-match-slash 
-@itemx --no-wildcards-match-slash 
+@item --wildcards-match-slash
+@itemx --no-wildcards-match-slash
 @xref{controlling pattern-matching}.
 
 @item --exclude
@@ -3951,7 +3968,7 @@ successfully.  For example, @w{@samp{tar --version}} might print:
 
 @smallexample
 tar (GNU tar) @value{VERSION}
-Copyright (C) 2013-2016 Free Software Foundation, Inc.
+Copyright (C) 2013-2017 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
@@ -4593,6 +4610,10 @@ Disable all warning messages.
 @cindex @samp{file changed as we read it}, warning message
 @item file-changed
 @samp{%s: file changed as we read it}
+@item failed-read
+Suppresses warnings about unreadable files or directories. This
+keyword applies only if used together with the @option{--ignore-failed-read}
+option. @xref{Ignore Failed Read}.
 @end table
 
 @subheading Keywords applicable for @command{tar --extract}
@@ -4756,7 +4777,6 @@ expanded by the shell when invoking @command{tar}.
 * create options::
 * extract options::
 * backup::
-* Applications::
 * looking ahead::
 @end menu
 
@@ -5174,7 +5194,7 @@ the one at the end will be newer and larger, since you added text before
 updating it.
 
 The reason @command{tar} does not overwrite the older file when updating
-it is because writing to the middle of a section of tape is a difficult
+it is that writing to the middle of a section of tape is a difficult
 process.  Tapes are not designed to go backward.  @xref{Media}, for more
 information about tapes.
 
@@ -5576,7 +5596,7 @@ map file.
 @subsection Extended File Attributes
 
 Extended file attributes are name-value pairs that can be
-associated with each node in a file system.  Despite the fact that 
+associated with each node in a file system.  Despite the fact that
 POSIX.1e draft which proposed them has been withdrawn, the extended
 file attributes are supported by many file systems.  @GNUTAR{} can
 store extended file attributes along with the files.  This feature is
@@ -5612,11 +5632,11 @@ Specify exclude pattern for extended attributes.
 Specify include pattern for extended attributes.
 @end table
 
-Here, the @var{pattern} is POSIX regular expression.  For example, the
+Here, the @var{pattern} is a globbing pattern.  For example, the
 following command:
 
 @example
-$ @kbd{tar --xattrs --xattrs-exclude='^user\.' -c a.tar .}
+$ @kbd{tar --xattrs --xattrs-exclude='user.*' -c a.tar .}
 @end example
 
 will include in the archive @file{a.tar} all attributes, except those
@@ -5625,11 +5645,11 @@ from the @samp{user} namespace.
 Any number of these options can be given, thereby creating lists of
 include and exclude patterns.
 
-When both options are used, first @option{--xattrs-inlcude} is applied
+When both options are used, first @option{--xattrs-include} is applied
 to select the set of attribute names to keep, and then
 @option{--xattrs-exclude} is applied to the resulting set.  In other
 words, only those attributes will be stored, whose names match one
-of the regexps in @option{--xattrs-inlcude} and don't match any of
+of the regexps in @option{--xattrs-include} and don't match any of
 the regexps from @option{--xattrs-exclude}.
 
 When listing the archive, if both @option{--xattrs} and
@@ -5691,7 +5711,7 @@ listing of ACL is printed after each file entry:
 @group
 -rw-r--r--+ smith/users      110 2016-03-16 16:07 file
   a: user::rw-,user:gray:-w-,group::r--,mask::rw-,other::r--
-@end group  
+@end group
 @end example
 
 @dfn{Security-Enhanced Linux} (@dfn{SELinux} for short) is a Linux
@@ -5709,13 +5729,20 @@ Disable SELinux context support.
 @end table
 
 @node Ignore Failed Read
-@subsection Ignore Fail Read
+@subsection Ignore Failed Read
 
 @table @option
 @item --ignore-failed-read
 @opindex ignore-failed-read
 Do not exit with nonzero on unreadable files or directories.
 @end table
+
+This option has effect only during creation.  It instructs tar to
+treat as mild conditions any missing or unreadable files (directories).
+Such failures don't affect the program exit code, and the
+corresponding diagnostic messages are marked as warnings, not errors.
+These warnings can be suppressed using the
+@option{--warning=failed-read} option (@pxref{warnings}).
 
 @node extract options
 @section Options Used by @option{--extract}
@@ -6472,65 +6499,6 @@ environment variable is used.  And if @env{SIMPLE_BACKUP_SUFFIX} is not
 set, the default is @samp{~}, just as in Emacs.
 
 @end table
-
-@node Applications
-@section Notable @command{tar} Usages
-@UNREVISED
-
-@FIXME{Using Unix file linking capability to recreate directory
-structures---linking files into one subdirectory and then
-@command{tar}ring that directory.}
-
-@FIXME{Nice hairy example using absolute-names, newer, etc.}
-
-@findex uuencode
-You can easily use archive files to transport a group of files from
-one system to another: put all relevant files into an archive on one
-computer system, transfer the archive to another system, and extract
-the contents there.  The basic transfer medium might be magnetic tape,
-Internet FTP, or even electronic mail (though you must encode the
-archive with @command{uuencode} in order to transport it properly by
-mail).  Both machines do not have to use the same operating system, as
-long as they both support the @command{tar} program.
-
-For example, here is how you might copy a directory's contents from
-one disk to another, while preserving the dates, modes, owners and
-link-structure of all the files therein.  In this case, the transfer
-medium is a @dfn{pipe}:
-
-@smallexample
-$ @kbd{(cd sourcedir; tar -cf - .) | (cd targetdir; tar -xf -)}
-@end smallexample
-
-@noindent
-You can avoid subshells by using @option{-C} option:
-
-@smallexample
-$ @kbd{tar -C sourcedir -cf - . | tar -C targetdir -xf -}
-@end smallexample
-
-@noindent
-The command also works using long option forms:
-
-@smallexample
-@group
-$ @kbd{(cd sourcedir; tar --create --file=- . ) \
-       | (cd targetdir; tar --extract --file=-)}
-@end group
-@end smallexample
-
-@noindent
-or
-
-@smallexample
-@group
-$ @kbd{tar --directory sourcedir --create --file=- . \
-       | tar --directory targetdir --extract --file=-}
-@end group
-@end smallexample
-
-@noindent
-This is one of the easiest methods to transfer a @command{tar} archive.
 
 @node looking ahead
 @section Looking Ahead: The Rest of this Manual
@@ -8474,9 +8442,7 @@ quoting}.  The characters in question are:
 The exact way @command{tar} uses to quote these characters depends on
 the @dfn{quoting style}.  The default quoting style, called
 @dfn{escape} (see below), uses backslash notation to represent control
-characters, space and backslash.  Using this quoting style, control
-characters are represented as listed in column @samp{Character} in the
-above table, a space is printed as @samp{\ } and a backslash as @samp{\\}.
+characters and backslash.
 
 @GNUTAR{} offers seven distinct quoting styles, which can be selected
 using @option{--quoting-style} option:
@@ -8607,10 +8573,9 @@ $ @kbd{tar tf arch.tar --quoting-style=c}
 @end smallexample
 
 @item escape
-Control characters are printed using backslash notation, a space is
-printed as @samp{\ } and a backslash as @samp{\\}.  This is the
-default quoting style, unless it was changed when configured the
-package.
+Control characters are printed using backslash notation, and a
+backslash as @samp{\\}.  This is the default quoting style, unless it
+was changed when configured the package.
 
 @smallexample
 @group
@@ -8964,7 +8929,7 @@ is used, which excludes symbolic link targets from filename
 transformations.  The result is:
 
 @smallexample
-$ @kbd{tar --transform 's,^,/usr/local/,S', -c -v -f arch.tar \
+$ @kbd{tar --transform 's,^,/usr/local/,S' -c -v -f arch.tar \
        --show-transformed /lib}
 drwxr-xr-x root/root       0 2008-07-08 16:20 /usr/local/lib/
 -rwxr-xr-x root/root 1250840 2008-05-25 07:44 /usr/local/lib/libc-2.3.2.so
@@ -9157,7 +9122,7 @@ create a list of files to be stored in an archive, use it as follows:
 @smallexample
 @group
 $ @kbd{find @var{dir} @var{tests} | \
-  tar -cf @var{archive} -T - --no-recursion}
+  tar -cf @var{archive} --no-recursion -T -}
 @end group
 @end smallexample
 
@@ -9571,7 +9536,7 @@ create a @command{gzip} compressed archive, @option{-j}
 @option{--lzip} to create an @asis{lzip} compressed archive,
 @option{-J} (@option{--xz}) to create an @asis{XZ} archive,
 @option{--lzma} to create an @asis{LZMA} compressed
-archive, @option{--lzop} to create an @asis{LSOP} archive, and
+archive, @option{--lzop} to create an @asis{LZOP} archive, and
 @option{-Z} (@option{--compress}) to use @command{compress} program.
 For example:
 
@@ -10891,7 +10856,7 @@ Done
 @end group
 @end smallexample
 
-@anchor{extracting sparse v.0.x}
+@anchor{extracting sparse v0x}
 @cindex sparse files v.0.1, extracting with non-GNU tars
 @cindex sparse files v.0.0, extracting with non-GNU tars
 An @dfn{extended header} is a special @command{tar} archive header
@@ -12907,8 +12872,8 @@ understand their security implications.
 @appendix Changes
 
 This appendix lists some important user-visible changes between
-version @GNUTAR{} @value{VERSION} and previous versions. An up-to-date
-version of this document is available at
+various versions of @GNUTAR{}. An up-to-date version of this document
+is available at
 @uref{http://www.gnu.org/@/software/@/tar/manual/changes.html,the
 @GNUTAR{} documentation page}.
 
@@ -12993,6 +12958,10 @@ These options are deprecated.  Please use @option{--format=v7} instead.
 
 This option is deprecated.  Please use @option{--format=posix} instead.
 @end table
+
+@node Recipes
+@appendix Recipes
+@include recipes.texi
 
 @node Configuring Help Summary
 @appendix Configuring Help Summary

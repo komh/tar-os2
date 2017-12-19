@@ -1,6 +1,6 @@
-# serial 33
+# serial 34
 
-# Copyright (C) 1996-1997, 1999-2007, 2009-2015 Free Software Foundation, Inc.
+# Copyright (C) 1996-1997, 1999-2007, 2009-2017 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -9,12 +9,6 @@
 # Written by Jim Meyering and Paul Eggert.
 
 AC_DEFUN([gl_FUNC_GNU_STRFTIME],
-[
-  gl_FUNC_STRFTIME
-])
-
-# These are the prerequisite macros for GNU's strftime.c replacement.
-AC_DEFUN([gl_FUNC_STRFTIME],
 [
  # This defines (or not) HAVE_TZNAME and HAVE_TM_ZONE.
  AC_REQUIRE([AC_STRUCT_TIMEZONE])

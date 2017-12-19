@@ -1,7 +1,7 @@
 /* Miscellaneous functions, not really specific to GNU tar.
 
    Copyright 1988, 1992, 1994-1997, 1999-2001, 2003-2007, 2009-2010,
-   2012-2014, 2016 Free Software Foundation, Inc.
+   2012-2014, 2016-2017 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -33,6 +33,11 @@ static void namebuf_add_dir (namebuf_t, char const *);
 static char *namebuf_finish (namebuf_t);
 static const char *tar_getcdpath (int);
 
+char const *
+quote_n_colon (int n, char const *arg)
+{
+  return quotearg_n_style_colon (n, get_quoting_style (NULL), arg);
+}
 
 /* Handling strings.  */
 
@@ -1039,7 +1044,10 @@ void
 close_diag (char const *name)
 {
   if (ignore_failed_read_option)
-    close_warn (name);
+    {
+      if (WARNING_ENABLED(WARN_FAILED_READ))
+	close_warn (name);
+    }
   else
     close_error (name);
 }
@@ -1048,7 +1056,10 @@ void
 open_diag (char const *name)
 {
   if (ignore_failed_read_option)
-    open_warn (name);
+    {
+      if (WARNING_ENABLED(WARN_FAILED_READ))
+	open_warn (name);
+    }
   else
     open_error (name);
 }
@@ -1057,7 +1068,10 @@ void
 read_diag_details (char const *name, off_t offset, size_t size)
 {
   if (ignore_failed_read_option)
-    read_warn_details (name, offset, size);
+    {
+      if (WARNING_ENABLED(WARN_FAILED_READ))
+	read_warn_details (name, offset, size);
+    }
   else
     read_error_details (name, offset, size);
 }
@@ -1066,7 +1080,10 @@ void
 readlink_diag (char const *name)
 {
   if (ignore_failed_read_option)
-    readlink_warn (name);
+    {
+      if (WARNING_ENABLED(WARN_FAILED_READ))
+	readlink_warn (name);
+    }
   else
     readlink_error (name);
 }
@@ -1075,7 +1092,10 @@ void
 savedir_diag (char const *name)
 {
   if (ignore_failed_read_option)
-    savedir_warn (name);
+    {
+      if (WARNING_ENABLED(WARN_FAILED_READ))
+	savedir_warn (name);
+    }
   else
     savedir_error (name);
 }
@@ -1084,7 +1104,10 @@ void
 seek_diag_details (char const *name, off_t offset)
 {
   if (ignore_failed_read_option)
-    seek_warn_details (name, offset);
+    {
+      if (WARNING_ENABLED(WARN_FAILED_READ))
+	seek_warn_details (name, offset);
+    }
   else
     seek_error_details (name, offset);
 }
@@ -1093,7 +1116,10 @@ void
 stat_diag (char const *name)
 {
   if (ignore_failed_read_option)
-    stat_warn (name);
+    {
+      if (WARNING_ENABLED(WARN_FAILED_READ))
+	stat_warn (name);
+    }
   else
     stat_error (name);
 }

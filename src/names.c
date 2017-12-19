@@ -1,6 +1,6 @@
 /* Various processing of names.
 
-   Copyright 1988, 1992, 1994, 1996-2001, 2003-2007, 2009, 2013-2016
+   Copyright 1988, 1992, 1994, 1996-2001, 2003-2007, 2009, 2013-2017
    Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
@@ -32,7 +32,8 @@ static void name_add_file (const char *name);
 
 enum
   {
-    EXCLUDE_BACKUPS_OPTION = 256,
+    ADD_FILE_OPTION = 256,
+    EXCLUDE_BACKUPS_OPTION,
     EXCLUDE_CACHES_OPTION,
     EXCLUDE_CACHES_UNDER_OPTION,
     EXCLUDE_CACHES_ALL_OPTION,
@@ -67,7 +68,7 @@ static struct argp_option names_options[] = {
   {NULL, 0, NULL, 0,
    N_("Local file name selection:"), GRID },
 
-  {"add-file", ARGP_KEY_ARG, N_("FILE"), 0,
+  {"add-file", ADD_FILE_OPTION, N_("FILE"), 0,
    N_("add given FILE to the archive (useful if its name starts with a dash)"), GRID+1 },
   {"directory", 'C', N_("DIR"), 0,
    N_("change to directory DIR"), GRID+1 },
@@ -83,7 +84,7 @@ static struct argp_option names_options[] = {
   {"no-unquote", NO_UNQUOTE_OPTION, 0, 0,
    N_("do not unquote input file or member names"), GRID+1 },
   {"verbatim-files-from", VERBATIM_FILES_FROM_OPTION, 0, 0,
-   N_("-T reads file names verbatim (no option handling)"), GRID+1 },
+   N_("-T reads file names verbatim (no escape or option handling)"), GRID+1 },
   {"no-verbatim-files-from", NO_VERBATIM_FILES_FROM_OPTION, 0, 0,
    N_("-T treats file names starting with dash as options (default)"),
       GRID+1 },
@@ -145,21 +146,34 @@ static struct argp_option names_options[] = {
   {"no-wildcards-match-slash", NO_WILDCARDS_MATCH_SLASH_OPTION, 0, 0,
    N_("wildcards do not match '/'"), GRID+1 },
 #undef GRID
-  
+
   {NULL}
 };
 
-static bool
-is_file_selection_option (int key)
+static struct argp_option const *
+file_selection_option (int key)
 {
   struct argp_option *p;
 
   for (p = names_options;
        !(p->name == NULL && p->key == 0 && p->doc == NULL); p++)
     if (p->key == key)
-      return true;
-  return false;
-}  
+      return p;
+  return NULL;
+}
+
+static char const *
+file_selection_option_name (int key)
+{
+  struct argp_option const *opt = file_selection_option (key);
+  return opt ? opt->name : NULL;
+}
+
+static bool
+is_file_selection_option (int key)
+{
+  return file_selection_option (key) != NULL;
+}
 
 /* Either NL or NUL, as decided by the --null option.  */
 static char filename_terminator = '\n';
@@ -177,10 +191,10 @@ names_parse_opt (int key, char *arg, struct argp_state *state)
 
     case 'T':
       name_add_file (arg);
-      /* Indicate we've been given -T option. This is for backward
-	 compatibility only, so that `tar cfT archive /dev/null will
-	 succeed */
-      files_from_option = true;
+      break;
+
+    case ADD_FILE_OPTION:
+      name_add_name (arg);
       break;
 
     default:
@@ -207,7 +221,7 @@ static int matching_flags = 0;
   /* exclude_fnmatch options */
 static int include_anchored = EXCLUDE_ANCHORED;
   /* Pattern anchoring options used for file inclusion */
-  
+
 #define EXCLUDE_OPTIONS						\
   (((wildcards != disable_wildcards) ? EXCLUDE_WILDCARDS : 0)	\
   | matching_flags						\
@@ -638,8 +652,8 @@ struct name_elt        /* A name_array element. */
   } v;
 };
 
-static struct name_elt *name_head;  /* store a list of names */
-size_t name_count;	 	    /* how many of the entries are names? */
+static struct name_elt *name_head;/* store a list of names */
+size_t name_count;	 	  /* how many of the entries are file names? */
 
 static struct name_elt *
 name_elt_alloc (void)
@@ -670,7 +684,86 @@ name_list_adjust (void)
     while (name_head->prev)
       name_head = name_head->prev;
 }
+
+/* For error-reporting purposes, keep a doubly-linked list of unconsumed file
+   selection options.  The option is deemed unconsumed unless followed by one
+   or more file/member name arguments.  When archive creation is requested,
+   each file selection option encountered is pushed into the list.  The list
+   is cleared upon encountering a file name argument.
 
+   If the list is not empty when all arguments have been processed, an error
+   message is issued reporting the options that had no effect.
+
+   For simplicity, only a tail pointer of the list is maintained.
+*/
+
+struct name_elt *unconsumed_option_tail;
+
+/* Push an option to the list */
+static void
+unconsumed_option_push (struct name_elt *elt)
+{
+  elt->next = NULL;
+  elt->prev = unconsumed_option_tail;
+  if (unconsumed_option_tail)
+    unconsumed_option_tail->next = elt;
+  unconsumed_option_tail = elt;
+}
+
+/* Clear the unconsumed option list */
+static void
+unconsumed_option_free (void)
+{
+  while (unconsumed_option_tail)
+    {
+      struct name_elt *elt = unconsumed_option_tail;
+      unconsumed_option_tail = unconsumed_option_tail->prev;
+      free (elt);
+    }
+}
+
+/* Report any options that have not been consumed */
+static void
+unconsumed_option_report (void)
+{
+  if (unconsumed_option_tail)
+    {
+      struct name_elt *elt;
+
+      ERROR ((0, 0, _("The following options were used after any non-optional arguments in archive create or update mode.  These options are positional and affect only arguments that follow them.  Please, rearrange them properly.")));
+
+      elt = unconsumed_option_tail;
+      while (elt->prev)
+	elt = elt->prev;
+
+      while (elt)
+	{
+	  switch (elt->type)
+	    {
+	    case NELT_CHDIR:
+	      ERROR ((0, 0, _("-C %s has no effect"), quote (elt->v.name)));
+	      break;
+
+	    case NELT_OPTION:
+	      if (elt->v.opt.arg)
+		ERROR ((0, 0, _("--%s %s has no effect"),
+			file_selection_option_name (elt->v.opt.option),
+			quote (elt->v.opt.arg)));
+	      else
+		ERROR ((0, 0, _("--%s has no effect"),
+			file_selection_option_name (elt->v.opt.option)));
+	      break;
+
+	    default:
+	      break;
+	    }
+	  elt = elt->next;
+	}
+
+      unconsumed_option_free ();
+    }
+}
+
 static void
 name_list_advance (void)
 {
@@ -678,9 +771,26 @@ name_list_advance (void)
   name_head = elt->next;
   if (name_head)
     name_head->prev = NULL;
-  free (elt);
+  if (elt->type == NELT_OPTION || elt->type == NELT_CHDIR)
+    {
+      if (subcommand_option == CREATE_SUBCOMMAND
+	  || subcommand_option == UPDATE_SUBCOMMAND)
+	unconsumed_option_push (elt);
+    }
+  else
+    {
+      if (elt->type != NELT_NOOP)
+	unconsumed_option_free ();
+      free (elt);
+    }
 }
 
+/* Return true if there are names or options in the list */
+bool
+name_more_files (void)
+{
+  return name_count > 0;
+}
 
 /* Add to name_array the file NAME with fnmatch options MATFLAGS */
 void
@@ -720,6 +830,7 @@ name_add_file (const char *name)
   ep->v.file.name = name;
   ep->v.file.line = 0;
   ep->v.file.fp = NULL;
+  name_count++;
 }
 
 /* Names from external name file.  */
@@ -856,7 +967,7 @@ handle_option (const char *str, struct name_elt const *ent)
   struct wordsplit ws;
   int i;
   struct option_locus loc;
-  
+
   while (*str && isspace (*str))
     ++str;
   if (*str != '-')
@@ -914,14 +1025,17 @@ read_next_name (struct name_elt *ent, struct name_elt *ret)
 		   (0, 0, N_("%s: file name read contains nul character"),
 		    quotearg_colon (ent->v.file.name)));
 	  ent->v.file.term = 0;
-	  /* fall through */
+	  FALLTHROUGH;
 	case file_list_success:
-	  if (unquote_option)
-	    unquote_string (name_buffer);
-	  if (!ent->v.file.verbatim && handle_option (name_buffer, ent) == 0)
+	  if (!ent->v.file.verbatim)
 	    {
-	      name_list_adjust ();
-	      return 1;
+	      if (unquote_option)
+		unquote_string (name_buffer);
+	      if (handle_option (name_buffer, ent) == 0)
+		{
+		  name_list_adjust ();
+		  return 1;
+		}
 	    }
 	  ret->type = NELT_NAME;
 	  ret->v.name = name_buffer;
@@ -996,7 +1110,7 @@ name_next_elt (int change_dirs)
 	      name_list_advance ();
 	      break;
 	    }
-	  /* fall through */
+	  FALLTHROUGH;
 	case NELT_NAME:
 	  copy_name (ep);
 	  if (unquote_option)
@@ -1012,6 +1126,8 @@ name_next_elt (int change_dirs)
 	  continue;
 	}
     }
+
+  unconsumed_option_report ();
 
   return NULL;
 }

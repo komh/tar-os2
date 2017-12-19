@@ -1,6 +1,5 @@
 /* Default definition for ARGP_PROGRAM_VERSION.
-   Copyright (C) 1996-1997, 1999, 2006, 2009-2015 Free Software Foundation,
-   Inc.
+   Copyright (C) 1996-2017 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
    Written by Miles Bader <miles@gnu.ai.mit.edu>.
 
@@ -15,7 +14,7 @@
    GNU General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
 /* If set by the user program to a non-zero value, then a default option
    --version is added (unless the ARGP_NO_HELP flag is used), which will
@@ -24,8 +23,8 @@
 const char *argp_program_version
 /* This variable should be zero-initialized.  On most systems, putting it into
    BSS is sufficient.  Not so on Mac OS X 10.3 and 10.4, see
-   <http://lists.gnu.org/archive/html/bug-gnulib/2009-01/msg00329.html>
-   <http://lists.gnu.org/archive/html/bug-gnulib/2009-08/msg00096.html>.  */
+   <https://lists.gnu.org/r/bug-gnulib/2009-01/msg00329.html>
+   <https://lists.gnu.org/r/bug-gnulib/2009-08/msg00096.html>.  */
 #if defined __ELF__
   /* On ELF systems, variables in BSS behave well.  */
 #else

@@ -1,6 +1,6 @@
 /* A tar (tape archiver) program.
 
-   Copyright 1988, 1992-1997, 1999-2001, 2003-2007, 2012-2016 Free
+   Copyright 1988, 1992-1997, 1999-2001, 2003-2007, 2012-2017 Free
    Software Foundation, Inc.
 
    Written by John Gilmore, starting 1985-08-25.
@@ -548,11 +548,11 @@ static struct argp_option options[] = {
    N_("cancel the effect of --delay-directory-restore option"), GRID+1 },
   {"sort", SORT_OPTION, N_("ORDER"), 0,
 #if D_INO_IN_DIRENT
-   N_("directory sorting order: none (default), name or inode"
+   N_("directory sorting order: none (default), name or inode")
 #else
-   N_("directory sorting order: none (default) or name"
+   N_("directory sorting order: none (default) or name")
 #endif
-     ), GRID+1 },
+     , GRID+1 },
 #undef GRID
 
 #define GRID 55
@@ -813,7 +813,6 @@ struct tar_args        /* Variables used during option parsing */
   bool pax_option;                 /* True if --pax-option was given */
   char const *backup_suffix_string;   /* --suffix option argument */
   char const *version_control_string; /* --backup option argument */
-  bool input_files;                /* True if some input files where given */
   int compress_autodetect;         /* True if compression autodetection should
 				      be attempted when creating archives */
 };
@@ -1124,6 +1123,7 @@ tar_help_filter (int key, const char *text, void *input)
 
     case LZOP_OPTION:
       s = xasprintf (_("filter the archive through %s"), LZOP_PROGRAM);
+      break;
 
     case 'J':
       s = xasprintf (_("filter the archive through %s"), XZ_PROGRAM);
@@ -1241,7 +1241,7 @@ parse_owner_group (char *arg, uintmax_t field_max, char const **name_option)
 	      u = u1;
 	      break;
 	    }
-	  /* Fall through.  */
+	  FALLTHROUGH;
 	case LONGINT_OVERFLOW:
 	  invalid_num = arg;
 	  break;
@@ -1322,7 +1322,6 @@ parse_opt (int key, char *arg, struct argp_state *state)
     case ARGP_KEY_ARG:
       /* File name or non-parsed option, because of ARGP_IN_ORDER */
       name_add_name (arg);
-      args->input_files = true;
       break;
 
     case 'A':
@@ -1397,8 +1396,7 @@ parse_opt (int key, char *arg, struct argp_state *state)
       optloc_save (OC_LISTED_INCREMENTAL, args->loc);
       listed_incremental_option = arg;
       after_date_option = true;
-      /* Fall through.  */
-
+      FALLTHROUGH;
     case 'G':
       /* We are making an incremental dump (FIXME: are we?); save
 	 directories at the beginning of the archive, and include in each
@@ -1523,8 +1521,7 @@ parse_opt (int key, char *arg, struct argp_state *state)
 
     case 'N':
       after_date_option = true;
-      /* Fall through.  */
-
+      FALLTHROUGH;
     case NEWER_MTIME_OPTION:
       if (TIME_OPTION_INITIALIZED (newer_mtime_option))
 	USAGE_ERROR ((0, 0, _("More than one threshold date")));
@@ -1760,7 +1757,7 @@ parse_opt (int key, char *arg, struct argp_state *state)
     case GROUP_MAP_OPTION:
       group_map_read (arg);
       break;
-      
+
     case MODE_OPTION:
       mode_option = mode_compile (arg);
       if (!mode_option)
@@ -1831,7 +1828,7 @@ parse_opt (int key, char *arg, struct argp_state *state)
     case OWNER_MAP_OPTION:
       owner_map_read (arg);
       break;
-      
+
     case QUOTE_CHARS_OPTION:
       for (;*arg; arg++)
 	set_char_quoting (NULL, *arg, 1);
@@ -2067,6 +2064,7 @@ parse_opt (int key, char *arg, struct argp_state *state)
 
       argp_error (state,
 		  _("Options '-[0-7][lmh]' not supported by *this* tar"));
+      exit (EX_USAGE);
 
 #endif /* not DEVICE_PREFIX */
 
@@ -2125,7 +2123,7 @@ find_argp_option (struct argp *ap, int key)
 {
   struct argp_option const *p = NULL;
   struct argp_child const *child;
-  
+
   p = find_argp_option_key (ap->options, key);
   if (!p && ap->children)
     {
@@ -2138,7 +2136,7 @@ find_argp_option (struct argp *ap, int key)
     }
   return p;
 }
-  
+
 static const char *tar_authors[] = {
   "John Gilmore",
   "Jay Fenlason",
@@ -2179,7 +2177,7 @@ more_options (int argc, char **argv, struct option_locus *loc)
   args.loc = loc;
   if (argp_parse (&argp, argc, argv, ARGP_IN_ORDER|ARGP_NO_EXIT, &idx, &args))
     abort (); /* shouldn't happen */
-  if (loc->source == OPTS_ENVIRON && args.input_files)
+  if (loc->source == OPTS_ENVIRON && name_more_files ())
     USAGE_ERROR ((0, 0, _("non-option arguments in %s"), loc->name));
 }
 
@@ -2201,8 +2199,9 @@ parse_default_options (void)
     {
       ws.ws_wordv[0] = (char*) program_name;
       more_options (ws.ws_offs + ws.ws_wordc, ws.ws_wordv, &loc);
+      /* Don't free consumed words */
+      ws.ws_wordc = 0;
     }
-
   wordsplit_free (&ws);
 }
 
@@ -2220,7 +2219,6 @@ decode_options (int argc, char **argv)
   args.pax_option = false;
   args.backup_suffix_string = getenv ("SIMPLE_BACKUP_SUFFIX");
   args.version_control_string = 0;
-  args.input_files = false;
   args.compress_autodetect = false;
 
   subcommand_option = UNKNOWN_SUBCOMMAND;
@@ -2339,10 +2337,7 @@ decode_options (int argc, char **argv)
 
   /* Handle operands after any "--" argument.  */
   for (; idx < argc; idx++)
-    {
-      name_add_name (argv[idx]);
-      args.input_files = true;
-    }
+    name_add_name (argv[idx]);
 
   /* Derive option values and check option consistency.  */
 
@@ -2364,7 +2359,7 @@ decode_options (int argc, char **argv)
 
   if (occurrence_option)
     {
-      if (!args.input_files)
+      if (!name_more_files ())
 	USAGE_ERROR ((0, 0,
 		      _("--occurrence is meaningless without a file list")));
       if (!IS_SUBCOMMAND_CLASS (SUBCL_OCCUR))
@@ -2568,7 +2563,7 @@ decode_options (int argc, char **argv)
     {
       /* --test-label is silent if the user has specified the label name to
 	 compare against. */
-      if (!args.input_files)
+      if (!name_more_files ())
 	verbose_option++;
     }
   else if (utc_option)
@@ -2597,7 +2592,7 @@ decode_options (int argc, char **argv)
   switch (subcommand_option)
     {
     case CREATE_SUBCOMMAND:
-      if (!args.input_files && !files_from_option)
+      if (!name_more_files ())
 	USAGE_ERROR ((0, 0,
 		      _("Cowardly refusing to create an empty archive")));
       if (args.compress_autodetect && archive_names

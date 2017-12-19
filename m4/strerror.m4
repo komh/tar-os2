@@ -1,5 +1,5 @@
-# strerror.m4 serial 17
-dnl Copyright (C) 2002, 2007-2015 Free Software Foundation, Inc.
+# strerror.m4 serial 18
+dnl Copyright (C) 2002, 2007-2017 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -80,6 +80,8 @@ AC_DEFUN([gl_FUNC_STRERROR_0],
       [case "$host_os" in
                  # Guess yes on glibc systems.
          *-gnu*) gl_cv_func_strerror_0_works="guessing yes" ;;
+                 # Guess yes on native Windows.
+         mingw*) gl_cv_func_strerror_0_works="guessing yes" ;;
                  # If we don't know, assume the worst.
          *)      gl_cv_func_strerror_0_works="guessing no" ;;
        esac

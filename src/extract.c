@@ -1,7 +1,7 @@
 /* Extract files from a tar archive.
 
    Copyright 1988, 1992-1994, 1996-2001, 2003-2007, 2010, 2012-2014,
-   2016 Free Software Foundation, Inc.
+   2016-2017 Free Software Foundation, Inc.
 
    This file is part of GNU tar.
 
@@ -393,6 +393,24 @@ set_stat (char const *file_name,
   xattrs_selinux_set (st, file_name, typeflag);
 }
 
+/* Find the direct ancestor of FILE_NAME in the delayed_set_stat list.
+ */
+static struct delayed_set_stat *
+find_direct_ancestor (char const *file_name)
+{
+  struct delayed_set_stat *h = delayed_set_stat_head;
+  while (h)
+    {
+      if (h && ! h->after_links
+	  && strncmp (file_name, h->file_name, h->file_name_len) == 0
+	  && ISSLASH (file_name[h->file_name_len])
+	  && (last_component (file_name) == file_name + h->file_name_len + 1))
+	break;
+      h = h->next;
+    }
+  return h;
+}
+
 /* For each entry H in the leading prefix of entries in HEAD that do
    not have after_links marked, mark H and fill in its dev and ino
    members.  Assume HEAD && ! HEAD->after_links.  */
@@ -740,10 +758,9 @@ maybe_recoverable (char *file_name, bool regular, bool *interdir_made)
 	    break;
 	  stp = &st;
 	}
-
       /* The caller tried to open a symbolic link with O_NOFOLLOW.
 	 Fall through, treating it as an already-existing file.  */
-
+      FALLTHROUGH;
     case EEXIST:
       /* Remove an old file, if the options allow this.  */
 
@@ -760,8 +777,7 @@ maybe_recoverable (char *file_name, bool regular, bool *interdir_made)
 	case KEEP_NEWER_FILES:
 	  if (file_newer_p (file_name, stp, &current_stat_info))
 	    break;
-	  /* FALL THROUGH */
-
+	  FALLTHROUGH;
 	case DEFAULT_OLD_FILES:
 	case NO_OVERWRITE_DIR_OLD_FILES:
 	case OVERWRITE_OLD_FILES:
@@ -795,13 +811,13 @@ maybe_recoverable (char *file_name, bool regular, bool *interdir_made)
    in advance dramatically improves the following  performance of reading and
    writing a file).  If not restoring permissions, invert the INVERT_PERMISSIONS
    bits from the file's current permissions.  TYPEFLAG specifies the type of the
-   file.  FILE_CREATED indicates set_xattr has created the file */
+   file.  Returns non-zero when error occurs (while un-available xattrs is not
+   an error, rather no-op).  Non-zero FILE_CREATED indicates set_xattr has
+   created the file. */
 static int
 set_xattr (char const *file_name, struct tar_stat_info const *st,
            mode_t invert_permissions, char typeflag, int *file_created)
 {
-  int status = 0;
-
 #ifdef HAVE_XATTRS
   bool interdir_made = false;
 
@@ -809,17 +825,32 @@ set_xattr (char const *file_name, struct tar_stat_info const *st,
     {
       mode_t mode = current_stat_info.stat.st_mode & MODE_RWX & ~ current_umask;
 
-      do
-        status = mknodat (chdir_fd, file_name, mode ^ invert_permissions, 0);
-      while (status && maybe_recoverable ((char *)file_name, false,
-                                          &interdir_made));
+      for (;;)
+        {
+          if (!mknodat (chdir_fd, file_name, mode ^ invert_permissions, 0))
+            {
+              /* Successfully created file */
+              xattrs_xattrs_set (st, file_name, typeflag, 0);
+              *file_created = 1;
+              return 0;
+            }
 
-      xattrs_xattrs_set (st, file_name, typeflag, 0);
-      *file_created = 1;
+          switch (maybe_recoverable ((char *)file_name, false, &interdir_made))
+            {
+              case RECOVER_OK:
+                continue;
+              case RECOVER_NO:
+                skip_member ();
+                open_error (file_name);
+                return 1;
+              case RECOVER_SKIP:
+                return 0;
+            }
+        }
     }
 #endif
 
-  return(status);
+  return 0;
 }
 
 /* Fix the statuses of all directories whose statuses need fixing, and
@@ -906,7 +937,7 @@ is_directory_link (const char *file_name)
   struct stat st;
   int e = errno;
   int res;
-  
+
   res = (fstatat (chdir_fd, file_name, &st, AT_SYMLINK_NOFOLLOW) == 0 &&
 	 S_ISLNK (st.st_mode) &&
 	 fstatat (chdir_fd, file_name, &st, 0) == 0 &&
@@ -978,7 +1009,7 @@ extract_dir (char *file_name, int typeflag)
 
 	  if (keep_directory_symlink_option && is_directory_link (file_name))
 	    return 0;
-	  
+
 	  if (deref_stat (file_name, &st) == 0)
 	    {
 	      current_mode = st.st_mode;
@@ -1136,11 +1167,7 @@ extract_file (char *file_name, int typeflag)
       int file_created = 0;
       if (set_xattr (file_name, &current_stat_info, invert_permissions,
                      typeflag, &file_created))
-        {
-          skip_member ();
-          open_error (file_name);
-          return 1;
-        }
+        return 1;
 
       while ((fd = open_output_file (file_name, typeflag, mode,
                                      file_created, &current_mode,
@@ -1293,11 +1320,7 @@ create_placeholder_file (char *file_name, bool is_symlink, bool *interdir_made)
       xheader_xattr_copy (&current_stat_info, &p->xattr_map, &p->xattr_map_size);
       strcpy (p->target, current_stat_info.link_name);
 
-      h = delayed_set_stat_head;
-      if (h && ! h->after_links
-	  && strncmp (file_name, h->file_name, h->file_name_len) == 0
-	  && ISSLASH (file_name[h->file_name_len])
-	  && (last_component (file_name) == file_name + h->file_name_len + 1))
+      if ((h = find_direct_ancestor (file_name)) != NULL)
 	mark_after_links (h);
 
       return 0;
@@ -1629,12 +1652,20 @@ extract_archive (void)
 {
   char typeflag;
   tar_extractor_t fun;
+  bool skip_dotdot_name;
 
   fatal_exit_hook = extract_finish;
 
   set_next_block_after (current_header);
 
+  skip_dotdot_name = (!absolute_names_option
+		      && contains_dot_dot (current_stat_info.orig_file_name));
+  if (skip_dotdot_name)
+    ERROR ((0, 0, _("%s: Member name contains '..'"),
+	    quotearg_colon (current_stat_info.orig_file_name)));
+
   if (!current_stat_info.file_name[0]
+      || skip_dotdot_name
       || (interactive_option
 	  && !confirm ("extract", current_stat_info.file_name)))
     {

@@ -1,7 +1,7 @@
 /* Update a tar archive.
 
    Copyright 1988, 1992, 1994, 1996-1997, 1999-2001, 2003-2005, 2007,
-   2010, 2013-2014, 2016 Free Software Foundation, Inc.
+   2010, 2013-2014, 2016-2017 Free Software Foundation, Inc.
 
    This file is part of GNU tar.
 
@@ -152,7 +152,7 @@ update_archive (void)
 
 			    for (p = dirp; *p; p += strlen (p) + 1)
 			      addname (namebuf_name (nbuf, p),
-				       0, false, NULL);
+				       name->change_dir, false, NULL);
 
 			    namebuf_free (nbuf);
 			    free (dirp);
@@ -186,13 +186,11 @@ update_archive (void)
 	    {
 	    case HEADER_STILL_UNREAD:
 	      WARN ((0, 0, _("This does not look like a tar archive")));
-	      /* Fall through.  */
-
+	      FALLTHROUGH;
 	    case HEADER_SUCCESS:
 	    case HEADER_ZERO_BLOCK:
 	      ERROR ((0, 0, _("Skipping to next header")));
-	      /* Fall through.  */
-
+	      FALLTHROUGH;
 	    case HEADER_FAILURE:
 	      break;
 

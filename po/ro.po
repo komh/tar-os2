@@ -3,12 +3,12 @@
 # Laurentiu Buzdugan <lbuz@rolix.org>>, 2005.
 #
 #
-#: src/create.c:1592
+#: src/create.c:1599
 msgid ""
 msgstr ""
 "Project-Id-Version: tar 1.15.1\n"
 "Report-Msgid-Bugs-To: bug-tar@gnu.org\n"
-"POT-Creation-Date: 2016-05-16 09:55+0300\n"
+"POT-Creation-Date: 2017-12-17 12:31+0200\n"
 "PO-Revision-Date: 2005-07-15 12:00-0500\n"
 "Last-Translator: Laurentiu Buzdugan <lbuz@rolix.org>\n"
 "Language-Team: Romanian <translation-team-ro@lists.sourceforge.net>\n"
@@ -16,19 +16,20 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-2\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: gnu/argmatch.c:133
+#: gnu/argmatch.c:134
 #, c-format
 msgid "invalid argument %s for %s"
 msgstr "argument invalid %s pentru %s"
 
-#: gnu/argmatch.c:134
+#: gnu/argmatch.c:135
 #, c-format
 msgid "ambiguous argument %s for %s"
 msgstr "argument ambiguu %s pentru %s"
 
-#: gnu/argmatch.c:153
+#: gnu/argmatch.c:154
 msgid "Valid arguments are:"
 msgstr "Argumente valide sunt:"
 
@@ -37,27 +38,22 @@ msgstr "Argumente valide sunt:"
 msgid "ARGP_HELP_FMT: %s value is less than or equal to %s"
 msgstr ""
 
-#: gnu/argp-help.c:221
+#: gnu/argp-help.c:224
 #, c-format
 msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
 msgstr "%.*s: parametrul ARGP_HELP_FMT necesitã o valoare"
 
-#: gnu/argp-help.c:227
-#, fuzzy, c-format
-msgid "%.*s: ARGP_HELP_FMT parameter must be positive"
-msgstr "%.*s: parametrul ARGP_HELP_FMT necesitã o valoare"
-
-#: gnu/argp-help.c:236
+#: gnu/argp-help.c:234
 #, c-format
 msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
 msgstr "%.*s: parametru ARGP_HELP_FMT necunoscut"
 
-#: gnu/argp-help.c:248
+#: gnu/argp-help.c:247
 #, c-format
 msgid "Garbage in ARGP_HELP_FMT: %s"
 msgstr "Gunoi în ARGP_HELP_FMT: %s"
 
-#: gnu/argp-help.c:1248
+#: gnu/argp-help.c:1228
 msgid ""
 "Mandatory or optional arguments to long options are also mandatory or "
 "optional for any corresponding short options."
@@ -65,30 +61,30 @@ msgstr ""
 "Argumentele obligatorii sau opþionale pentru opþiunile lungi sunt "
 "obligatorii sau opþionale ºi pentru opþiunile corespunzãtoare scurte."
 
-#: gnu/argp-help.c:1645
+#: gnu/argp-help.c:1615
 msgid "Usage:"
 msgstr "Folosire:"
 
-#: gnu/argp-help.c:1649
+#: gnu/argp-help.c:1619
 msgid "  or: "
 msgstr " sau: "
 
-#: gnu/argp-help.c:1661
+#: gnu/argp-help.c:1631
 msgid " [OPTION...]"
 msgstr " [OPÞIUNE...]"
 
-#: gnu/argp-help.c:1688
+#: gnu/argp-help.c:1658
 #, fuzzy, c-format
 msgid "Try '%s --help' or '%s --usage' for more information.\n"
 msgstr ""
 "Încercaþi `%s --help' sau `%s --usage'  pentru informaþii suplimentare.\n"
 
-#: gnu/argp-help.c:1716
+#: gnu/argp-help.c:1686
 #, c-format
 msgid "Report bugs to %s.\n"
 msgstr "Raportaþi bug-uri la %s.\n"
 
-#: gnu/argp-help.c:1935 gnu/error.c:191
+#: gnu/argp-help.c:1887 gnu/error.c:195
 msgid "Unknown system error"
 msgstr "Eroare sistem necunoscutã"
 
@@ -107,99 +103,74 @@ msgstr "Afiºeazã un scurt mesaj despre folosire"
 msgid "NAME"
 msgstr "NUME"
 
-#: gnu/argp-parse.c:83
+#: gnu/argp-parse.c:84
 msgid "set the program name"
 msgstr ""
 
-#: gnu/argp-parse.c:84
+#: gnu/argp-parse.c:85
 msgid "SECS"
 msgstr ""
 
-#: gnu/argp-parse.c:85
+#: gnu/argp-parse.c:86
 msgid "hang for SECS seconds (default 3600)"
 msgstr ""
 
-#: gnu/argp-parse.c:142
+#: gnu/argp-parse.c:143
 #, fuzzy
 msgid "print program version"
 msgstr "Afiºeazã versiunea programului"
 
-#: gnu/argp-parse.c:159
+#: gnu/argp-parse.c:160
 msgid "(PROGRAM ERROR) No version known!?"
 msgstr ""
 
-#: gnu/argp-parse.c:612
+#: gnu/argp-parse.c:613
 #, fuzzy, c-format
 msgid "%s: Too many arguments\n"
 msgstr "%s: opþiunea `%s' necesitã un argument\n"
 
-#: gnu/argp-parse.c:755
+#: gnu/argp-parse.c:759
 msgid "(PROGRAM ERROR) Option should have been recognized!?"
 msgstr ""
 
-#: gnu/closeout.c:112
+#: gnu/closeout.c:122
 msgid "write error"
 msgstr ""
 
-#: gnu/getopt.c:575 gnu/getopt.c:604
+#: gnu/getopt.c:278
 #, fuzzy, c-format
-msgid "%s: option '%s' is ambiguous; possibilities:"
+msgid "%s: option '%s%s' is ambiguous\n"
 msgstr "%s: opþiunea `%s' este ambiguã\n"
 
-#: gnu/getopt.c:619
+#: gnu/getopt.c:284
 #, fuzzy, c-format
-msgid "%s: option '%s' is ambiguous\n"
-msgstr "%s: opþiunea `-W %s' este ambiguã\n"
+msgid "%s: option '%s%s' is ambiguous; possibilities:"
+msgstr "%s: opþiunea `%s' este ambiguã\n"
 
-#: gnu/getopt.c:654 gnu/getopt.c:658
+#: gnu/getopt.c:319
 #, fuzzy, c-format
-msgid "%s: option '--%s' doesn't allow an argument\n"
-msgstr "%s: opþiunea `--%s' nu permite un argument\n"
-
-#: gnu/getopt.c:667 gnu/getopt.c:672
-#, fuzzy, c-format
-msgid "%s: option '%c%s' doesn't allow an argument\n"
-msgstr "%s: opþiunea `%c%s' nu permite un argument\n"
-
-#: gnu/getopt.c:715 gnu/getopt.c:734
-#, fuzzy, c-format
-msgid "%s: option '--%s' requires an argument\n"
-msgstr "%s: opþiunea `%s' necesitã un argument\n"
-
-#: gnu/getopt.c:772 gnu/getopt.c:775
-#, fuzzy, c-format
-msgid "%s: unrecognized option '--%s'\n"
-msgstr "%s: opþiunea `--%s' nu este recunoscutã\n"
-
-#: gnu/getopt.c:783 gnu/getopt.c:786
-#, fuzzy, c-format
-msgid "%s: unrecognized option '%c%s'\n"
+msgid "%s: unrecognized option '%s%s'\n"
 msgstr "%s: opþiunea `%c%s' bu este recunoscutã\n"
 
-#: gnu/getopt.c:835 gnu/getopt.c:838
+#: gnu/getopt.c:345
+#, fuzzy, c-format
+msgid "%s: option '%s%s' doesn't allow an argument\n"
+msgstr "%s: opþiunea `%c%s' nu permite un argument\n"
+
+#: gnu/getopt.c:360
+#, fuzzy, c-format
+msgid "%s: option '%s%s' requires an argument\n"
+msgstr "%s: opþiunea `%s' necesitã un argument\n"
+
+#: gnu/getopt.c:621
 #, fuzzy, c-format
 msgid "%s: invalid option -- '%c'\n"
 msgstr "%s: opþiune invalidã -- %c\n"
 
-#: gnu/getopt.c:891 gnu/getopt.c:908 gnu/getopt.c:1118 gnu/getopt.c:1136
+#: gnu/getopt.c:636 gnu/getopt.c:682
 #, fuzzy, c-format
 msgid "%s: option requires an argument -- '%c'\n"
 msgstr "%s: opþiunea necesitã un argument -- %c\n"
-
-#: gnu/getopt.c:964 gnu/getopt.c:980
-#, fuzzy, c-format
-msgid "%s: option '-W %s' is ambiguous\n"
-msgstr "%s: opþiunea `-W %s' este ambiguã\n"
-
-#: gnu/getopt.c:1004 gnu/getopt.c:1022
-#, fuzzy, c-format
-msgid "%s: option '-W %s' doesn't allow an argument\n"
-msgstr "%s: opþiunea `-W %s' nu permite un argument\n"
-
-#: gnu/getopt.c:1043 gnu/getopt.c:1061
-#, fuzzy, c-format
-msgid "%s: option '-W %s' requires an argument\n"
-msgstr "%s: opþiunea `%s' necesitã un argument\n"
 
 #: gnu/obstack.c:338 gnu/obstack.c:340 gnu/xalloc-die.c:34
 msgid "memory exhausted"
@@ -234,13 +205,13 @@ msgstr "Nu pot salva directorul în care lucrez"
 #. for your locale.
 #.
 #. If you don't know what to put here, please see
-#. <http://en.wikipedia.org/wiki/Quotation_marks_in_other_languages>
+#. <https://en.wikipedia.org/wiki/Quotation_marks_in_other_languages>
 #. and use glyphs suitable for your language.
-#: gnu/quotearg.c:312
+#: gnu/quotearg.c:362
 msgid "`"
 msgstr "`"
 
-#: gnu/quotearg.c:313
+#: gnu/quotearg.c:363
 msgid "'"
 msgstr "'"
 
@@ -284,7 +255,7 @@ msgstr ""
 #: gnu/version-etc.c:86
 msgid ""
 "\n"
-"License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl."
+"License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl."
 "html>.\n"
 "This is free software: you are free to change and redistribute it.\n"
 "There is NO WARRANTY, to the extent permitted by law.\n"
@@ -405,11 +376,11 @@ msgstr ""
 
 #: gnu/version-etc.c:253
 #, c-format
-msgid "%s home page: <http://www.gnu.org/software/%s/>\n"
+msgid "%s home page: <https://www.gnu.org/software/%s/>\n"
 msgstr ""
 
 #: gnu/version-etc.c:256
-msgid "General help using GNU software: <http://www.gnu.org/gethelp/>\n"
+msgid "General help using GNU software: <https://www.gnu.org/gethelp/>\n"
 msgstr ""
 
 #. TRANSLATORS: %s after `Cannot' is a function name, e.g. `Cannot open'.
@@ -595,8 +566,8 @@ msgstr "NUMÃR"
 msgid "set debug level"
 msgstr ""
 
-#: rmt/rmt.c:698 src/names.c:70 src/names.c:74 src/names.c:92 src/names.c:102
-#: src/names.c:105 src/names.c:108 src/names.c:111 src/names.c:113
+#: rmt/rmt.c:698 src/names.c:71 src/names.c:75 src/names.c:93 src/names.c:103
+#: src/names.c:106 src/names.c:109 src/names.c:112 src/names.c:114
 #: src/tar.c:430 src/tar.c:511 src/tar.c:513 src/tar.c:615 src/tar.c:747
 #: tests/genfile.c:136 tests/genfile.c:185 tests/genfile.c:189
 #: tests/genfile.c:192 tests/genfile.c:198
@@ -612,7 +583,7 @@ msgstr ""
 msgid "cannot open %s"
 msgstr ""
 
-#: rmt/rmt.c:780 tests/genfile.c:960 tests/genfile.c:977
+#: rmt/rmt.c:780 tests/genfile.c:977 tests/genfile.c:994
 #, c-format
 msgid "too many arguments"
 msgstr ""
@@ -621,112 +592,112 @@ msgstr ""
 msgid "Garbage command"
 msgstr "Comandã gunoi"
 
-#: src/buffer.c:461 src/buffer.c:466 src/buffer.c:760 src/buffer.c:1396
-#: src/buffer.c:1433 src/buffer.c:1445 src/buffer.c:1474 src/delete.c:212
+#: src/buffer.c:474 src/buffer.c:479 src/buffer.c:773 src/buffer.c:1415
+#: src/buffer.c:1452 src/buffer.c:1464 src/buffer.c:1493 src/delete.c:211
 #: src/list.c:275 src/update.c:188
 msgid "This does not look like a tar archive"
 msgstr "Aceasta nu pare a fi o arhivã tar"
 
-#: src/buffer.c:577
+#: src/buffer.c:590
 msgid "Total bytes read"
 msgstr ""
 
-#: src/buffer.c:579
+#: src/buffer.c:592
 #, fuzzy
 msgid "Total bytes written"
 msgstr "Numãr total octeþi scriºi: %s (%s, %s/s)\n"
 
-#: src/buffer.c:580
+#: src/buffer.c:593
 msgid "Total bytes deleted"
 msgstr ""
 
-#: src/buffer.c:659
+#: src/buffer.c:672
 msgid "(pipe)"
 msgstr "(pipe)"
 
-#: src/buffer.c:683
+#: src/buffer.c:696
 msgid "Refusing to read archive contents from terminal (missing -f option?)"
 msgstr ""
 
-#: src/buffer.c:685
+#: src/buffer.c:698
 msgid "Refusing to write archive contents to terminal (missing -f option?)"
 msgstr ""
 
-#: src/buffer.c:698
+#: src/buffer.c:711
 msgid "Invalid value for record_size"
 msgstr "Valoare invalidã pentru record_size"
 
-#: src/buffer.c:701
+#: src/buffer.c:714
 msgid "No archive name given"
 msgstr "Nume arhivã nu a fost furnizat"
 
-#: src/buffer.c:744
+#: src/buffer.c:757
 msgid "Cannot verify stdin/stdout archive"
 msgstr "Nu pot verifica arhive atdin/stdout"
 
-#: src/buffer.c:757
+#: src/buffer.c:770
 #, c-format
 msgid "Archive is compressed. Use %s option"
 msgstr "Arhiva este compresatã. Folosiþi opþiunea %s."
 
-#: src/buffer.c:815 src/tar.c:2460
+#: src/buffer.c:828 src/tar.c:2455
 msgid "Cannot update compressed archives"
 msgstr "Nu pot actualiza arhive comprimate"
 
-#: src/buffer.c:908
+#: src/buffer.c:928
 msgid "At beginning of tape, quitting now"
 msgstr "La începutul benzii, ieºim acum"
 
-#: src/buffer.c:914
+#: src/buffer.c:934
 msgid "Too many errors, quitting"
 msgstr "Prea multe erori, ieºim"
 
-#: src/buffer.c:947
+#: src/buffer.c:967
 #, c-format
 msgid "Record size = %lu block"
 msgid_plural "Record size = %lu blocks"
 msgstr[0] "Dimensiune înregistrare = %lu bloc"
 msgstr[1] "Dimensiune înregistrare = %lu blocuri"
 
-#: src/buffer.c:968
+#: src/buffer.c:988
 #, c-format
 msgid "Unaligned block (%lu byte) in archive"
 msgid_plural "Unaligned block (%lu bytes) in archive"
 msgstr[0] "Bloc ne-aliniat (%lu octet) în arhivã"
 msgstr[1] "Bloc ne-aliniat (%lu octeþi) în arhivã"
 
-#: src/buffer.c:1055
+#: src/buffer.c:1075
 msgid "Cannot backspace archive file; it may be unreadable without -i"
 msgstr ""
 "Nu pot backspace fiºierul arhivã; acesta ar putea fi de necitit fãrã -i"
 
-#: src/buffer.c:1087
+#: src/buffer.c:1107
 msgid "rmtlseek not stopped at a record boundary"
 msgstr "rmtlseek nu s-a oprit la limita unei înregistrãri"
 
-#: src/buffer.c:1148
+#: src/buffer.c:1168
 #, c-format
 msgid "%s: contains invalid volume number"
 msgstr "%s: conþine numãr volum invalid"
 
-#: src/buffer.c:1183
+#: src/buffer.c:1203
 msgid "Volume number overflow"
 msgstr "Depãºire domeniu numãr volum"
 
-#: src/buffer.c:1198
+#: src/buffer.c:1218
 #, c-format
 msgid "Prepare volume #%d for %s and hit return: "
 msgstr "Preparã volum #%d pentru %s ºi apasã tasta return: "
 
-#: src/buffer.c:1204
+#: src/buffer.c:1224
 msgid "EOF where user reply was expected"
 msgstr "EOF unde era aºteptat rãspunsul utilizatorului"
 
-#: src/buffer.c:1209 src/buffer.c:1241
+#: src/buffer.c:1229 src/buffer.c:1261
 msgid "WARNING: Archive is incomplete"
 msgstr "AVERTISMENT: Arhiva este incompletã"
 
-#: src/buffer.c:1223
+#: src/buffer.c:1243
 #, fuzzy, c-format
 msgid ""
 " n name        Give a new file name for the next (and subsequent) volume(s)\n"
@@ -738,161 +709,161 @@ msgstr ""
 " !          Lanseazã un subshell\n"
 " ?          Afiºeazã aceastã listã de opþiuni\n"
 
-#: src/buffer.c:1228
+#: src/buffer.c:1248
 #, c-format
 msgid " !             Spawn a subshell\n"
 msgstr ""
 
-#: src/buffer.c:1229
+#: src/buffer.c:1249
 #, c-format
 msgid " ?             Print this list\n"
 msgstr ""
 
-#: src/buffer.c:1236
+#: src/buffer.c:1256
 msgid "No new volume; exiting.\n"
 msgstr "Nici un volum nou; terminãm.\n"
 
-#: src/buffer.c:1269
+#: src/buffer.c:1289
 msgid "File name not specified. Try again.\n"
 msgstr ""
 
-#: src/buffer.c:1282
+#: src/buffer.c:1301
 #, c-format
 msgid "Invalid input. Type ? for help.\n"
 msgstr ""
 
-#: src/buffer.c:1333
+#: src/buffer.c:1352
 #, fuzzy, c-format
 msgid "%s command failed"
 msgstr "`%s' comanda a eºuat"
 
-#: src/buffer.c:1511 src/buffer.c:1527
+#: src/buffer.c:1529 src/buffer.c:1545
 #, c-format
 msgid "%s is not continued on this volume"
 msgstr "%s nu este continuat pe acest volum"
 
-#: src/buffer.c:1523
+#: src/buffer.c:1541
 #, fuzzy, c-format
 msgid "%s is possibly continued on this volume: header contains truncated name"
 msgstr "%s nu este continuat pe acest volum"
 
-#: src/buffer.c:1541
+#: src/buffer.c:1559
 #, c-format
 msgid "%s is the wrong size (%s != %s + %s)"
 msgstr "%s este de dimensiune greºitã (%s != %s + %s)"
 
-#: src/buffer.c:1556
+#: src/buffer.c:1574
 #, fuzzy, c-format
 msgid "This volume is out of sequence (%s - %s != %s)"
 msgstr "Acest volum este în afara secvenþei"
 
-#: src/buffer.c:1634 src/buffer.c:1660
+#: src/buffer.c:1652 src/buffer.c:1678
 #, c-format
 msgid "Archive not labeled to match %s"
 msgstr "Arhiva nu este etichetatã sã se potriveascã cu %s"
 
-#: src/buffer.c:1664
+#: src/buffer.c:1682
 #, c-format
 msgid "Volume %s does not match %s"
 msgstr "Volumul %s nu se potriveºte cu %s"
 
-#: src/buffer.c:1758
+#: src/buffer.c:1774
 #, fuzzy, c-format
 msgid ""
 "%s: file name too long to be stored in a GNU multivolume header, truncated"
 msgstr ""
 "%s: nume fiºier prea lung pentru a fi storat într-un antet GNU multivolum"
 
-#: src/buffer.c:1949
+#: src/buffer.c:1965
 #, fuzzy
 msgid "write did not end on a block boundary"
 msgstr "rmtlseek nu s-a oprit la limita unei înregistrãri"
 
-#: src/compare.c:96
+#: src/compare.c:98
 #, c-format
 msgid "Could only read %lu of %lu byte"
 msgid_plural "Could only read %lu of %lu bytes"
 msgstr[0] "Am putut citi doar %lu din %lu octet"
 msgstr[1] "Am putut citi doar %lu din %lu octeþi"
 
-#: src/compare.c:106 src/compare.c:395
+#: src/compare.c:108 src/compare.c:398
 msgid "Contents differ"
 msgstr "Conþinuturile diferã"
 
-#: src/compare.c:132 src/extract.c:1177 src/incremen.c:1508 src/list.c:489
-#: src/list.c:1405 src/xheader.c:847
+#: src/compare.c:134 src/extract.c:1204 src/incremen.c:1508 src/list.c:488
+#: src/list.c:1404 src/xheader.c:847
 msgid "Unexpected EOF in archive"
 msgstr "EOF neaºteptat în arhivã"
 
-#: src/compare.c:180 src/compare.c:196 src/compare.c:314 src/compare.c:419
+#: src/compare.c:182 src/compare.c:198 src/compare.c:317 src/compare.c:422
 msgid "File type differs"
 msgstr "Tipul fiºierelor diferã"
 
-#: src/compare.c:183 src/compare.c:203 src/compare.c:328
+#: src/compare.c:185 src/compare.c:205 src/compare.c:331
 msgid "Mode differs"
 msgstr "Modurile diferã"
 
-#: src/compare.c:206
+#: src/compare.c:208
 msgid "Uid differs"
 msgstr "Uid diferã"
 
-#: src/compare.c:208
+#: src/compare.c:210
 msgid "Gid differs"
 msgstr "Gid diferã"
 
-#: src/compare.c:212
+#: src/compare.c:214
 msgid "Mod time differs"
 msgstr "Timp modificare diferã"
 
-#: src/compare.c:216 src/compare.c:429
+#: src/compare.c:218 src/compare.c:432
 msgid "Size differs"
 msgstr "Dimensiunea diferã"
 
-#: src/compare.c:265
+#: src/compare.c:267
 #, c-format
 msgid "Not linked to %s"
 msgstr "Nu este link-at cãtre %s"
 
-#: src/compare.c:290
+#: src/compare.c:293
 msgid "Symlink differs"
 msgstr "Symlink diferã"
 
-#: src/compare.c:322
+#: src/compare.c:325
 msgid "Device number differs"
 msgstr "Numãr dispozitiv diferã"
 
-#: src/compare.c:470
+#: src/compare.c:473
 #, c-format
 msgid "Verify "
 msgstr "Verificã "
 
-#: src/compare.c:477
+#: src/compare.c:480
 #, c-format
 msgid "%s: Unknown file type '%c', diffed as normal file"
 msgstr ""
 "%s: Tip de fiºier necunoscut '%c', folosesc diff ca pentru un fiºier normal"
 
-#: src/compare.c:533
+#: src/compare.c:535
 msgid "Archive contains file names with leading prefixes removed."
 msgstr "Arhiva conþine nume de fiºiere cu prefixele îndepãrtate."
 
-#: src/compare.c:539
+#: src/compare.c:541
 #, fuzzy
 msgid "Archive contains transformed file names."
 msgstr "Arhiva conþine antete în baza-64 depãºite"
 
-#: src/compare.c:544
+#: src/compare.c:546
 msgid "Verification may fail to locate original files."
 msgstr "Verificare ar putea eºua sã gãseascã fiºierele originale."
 
-#: src/compare.c:618
+#: src/compare.c:620
 #, c-format
 msgid "VERIFY FAILURE: %d invalid header detected"
 msgid_plural "VERIFY FAILURE: %d invalid headers detected"
 msgstr[0] "VERIFICÃ EªEC: detectat %d antet invalid"
 msgstr[1] "VERIFICÃ EªEC: detectat %d antete invalide"
 
-#: src/compare.c:636 src/list.c:252
+#: src/compare.c:638 src/list.c:252
 #, c-format
 msgid "A lone zero block at %s"
 msgstr "Un bloc zero singuratic la %s"
@@ -916,82 +887,82 @@ msgstr "valoarea %s în afara %s intervalului %s..%s"
 msgid "Generating negative octal headers"
 msgstr "Generez antete octale negative"
 
-#: src/create.c:602 src/create.c:665
+#: src/create.c:606 src/create.c:669
 #, c-format
 msgid "%s: file name is too long (max %d); not dumped"
 msgstr "%s: numele fiºierul este prea lung (maxim %d); nimic generat"
 
-#: src/create.c:612
+#: src/create.c:616
 #, c-format
 msgid "%s: file name is too long (cannot be split); not dumped"
 msgstr "%s: numele fiºierul este prea lung (nu poate fi spart); nimic generat"
 
-#: src/create.c:639
+#: src/create.c:643
 #, c-format
 msgid "%s: link name is too long; not dumped"
 msgstr "%s: numele link-ului este prea lung; nimic generat"
 
-#: src/create.c:1102
+#: src/create.c:1106
 #, c-format
 msgid "%s: File shrank by %s byte; padding with zeros"
 msgid_plural "%s: File shrank by %s bytes; padding with zeros"
 msgstr[0] "%s: Fiºier scurtat cu %s octet; completat cu zerouri"
 msgstr[1] "%s: Fiºier scurtat cu %s octeþi; completat cu zerouri"
 
-#: src/create.c:1200
+#: src/create.c:1204
 #, c-format
 msgid "%s: file is on a different filesystem; not dumped"
 msgstr "%s: fiºierul este pe un sistem de fiºiere diferit; nimic generat"
 
-#: src/create.c:1243 src/create.c:1254 src/incremen.c:610 src/incremen.c:617
+#: src/create.c:1247 src/create.c:1258 src/incremen.c:610 src/incremen.c:617
 msgid "contents not dumped"
 msgstr ""
 
-#: src/create.c:1458
+#: src/create.c:1464
 #, c-format
 msgid "%s: Unknown file type; file ignored"
 msgstr "%s: Tip de fiºier necunoscut; fiºier ignorat"
 
-#: src/create.c:1569
+#: src/create.c:1576
 #, fuzzy, c-format
 msgid "Missing links to %s."
 msgstr "Link lipsã cãtre '%s'.\n"
 
-#: src/create.c:1730
+#: src/create.c:1737
 #, c-format
 msgid "%s: file is unchanged; not dumped"
 msgstr "%s: fiºierul este neschimbat; nimic generat"
 
-#: src/create.c:1739
+#: src/create.c:1746
 #, c-format
 msgid "%s: file is the archive; not dumped"
 msgstr "%s: fiºierul este în arhivã; nimic generat"
 
-#: src/create.c:1767 src/incremen.c:603
+#: src/create.c:1774 src/incremen.c:603
 #, fuzzy
 msgid "directory not dumped"
 msgstr "%s: conþine o etichetã de director cache; nimic generat"
 
-#: src/create.c:1839
+#: src/create.c:1846
 #, c-format
 msgid "%s: file changed as we read it"
 msgstr "%s: fiºier schimbat în timp ce îl citeam"
 
-#: src/create.c:1915
+#: src/create.c:1922
 #, c-format
 msgid "%s: socket ignored"
 msgstr "%s: socket ignorat"
 
-#: src/create.c:1921
+#: src/create.c:1928
 #, c-format
 msgid "%s: door ignored"
 msgstr "%s: uºã ignoratã"
 
-#: src/delete.c:218 src/list.c:289 src/update.c:193
+#: src/delete.c:216 src/list.c:288 src/update.c:192
 msgid "Skipping to next header"
 msgstr "Sãrim la urmãtorul antet"
 
-#: src/delete.c:284
+#: src/delete.c:281
 msgid "Deleting non-header from archive"
 msgstr "ªtergem non-antet din arhivã"
 
@@ -1005,55 +976,60 @@ msgstr "%s: înregistrare de timp neverosimilã %s"
 msgid "%s: time stamp %s is %s s in the future"
 msgstr "%s: înregistrare timp %s este %lu sec în viitor"
 
-#: src/extract.c:535
+#: src/extract.c:553
 #, c-format
 msgid "%s: Unexpected inconsistency when making directory"
 msgstr "%s: Inconsistenþã neaºteptatã când cream directorul"
 
-#: src/extract.c:754
+#: src/extract.c:771
 #, c-format
 msgid "%s: skipping existing file"
 msgstr ""
 
-#: src/extract.c:870
+#: src/extract.c:901
 #, c-format
 msgid "%s: Directory renamed before its status could be extracted"
 msgstr "%s: Director redenumit înainte de a fi putut extrage starea sa"
 
-#: src/extract.c:1055
+#: src/extract.c:1086
 msgid "Extracting contiguous files as regular files"
 msgstr "Extragem fiºiere contigue ca fiºiere normale"
 
-#: src/extract.c:1410
+#: src/extract.c:1433
 msgid "Attempting extraction of symbolic links as hard links"
 msgstr "Încerc extragerea link-urilor simbolice ca link-uri hard"
 
-#: src/extract.c:1573
+#: src/extract.c:1596
 #, c-format
 msgid "%s: Cannot extract -- file is continued from another volume"
 msgstr "%s: Nu pot extrage -- fiºierul este continuat din altã arhivã"
 
-#: src/extract.c:1580 src/list.c:1168
+#: src/extract.c:1603 src/list.c:1167
 #, fuzzy
 msgid "Unexpected long name header"
 msgstr "EOF neaºteptat în numele amestecate"
 
-#: src/extract.c:1587
+#: src/extract.c:1610
 #, c-format
 msgid "%s: Unknown file type '%c', extracted as normal file"
 msgstr "%s: Tip de fiºier necunoscut '%c', extras ca fiºier normal"
 
-#: src/extract.c:1613
+#: src/extract.c:1636
 #, fuzzy, c-format
 msgid "Current %s is newer or same age"
 msgstr "`%s' curent este mai nou"
 
-#: src/extract.c:1665
+#: src/extract.c:1664
+#, c-format
+msgid "%s: Member name contains '..'"
+msgstr ""
+
+#: src/extract.c:1696
 #, c-format
 msgid "%s: Was unable to backup this file"
 msgstr "%s: Nu am putut arhiva (backup) acest fiºier"
 
-#: src/extract.c:1814
+#: src/extract.c:1845
 #, fuzzy, c-format
 msgid "Cannot rename %s to %s"
 msgstr "%s: Nu pot redenumi ca %s"
@@ -1159,9 +1135,8 @@ msgid "Malformed dumpdir: empty name in 'R'"
 msgstr "Argument densitate malformat: '%s'"
 
 #: src/incremen.c:1585
-#, fuzzy
 msgid "Malformed dumpdir: 'T' not preceded by 'R'"
-msgstr "Argument densitate malformat: '%s'"
+msgstr ""
 
 #: src/incremen.c:1591
 #, fuzzy
@@ -1217,20 +1192,20 @@ msgstr "bloc %s: ** Bloc de NUL-uri **\n"
 msgid "block %s: ** End of File **\n"
 msgstr "bloc %s: ** Sfârºit de fiºier **\n"
 
-#: src/list.c:286 src/list.c:1137 src/list.c:1373
+#: src/list.c:285 src/list.c:1136 src/list.c:1372
 #, c-format
 msgid "block %s: "
 msgstr "bloc %s: "
 
 #. TRANSLATORS: %s is type of the value (gid_t, uid_t,
 #. etc.)
-#: src/list.c:752
+#: src/list.c:751
 #, c-format
 msgid "Blanks in header where numeric %s value expected"
 msgstr "Spaþii libere în antet unde valoare %s numericã aºteptatã"
 
 #. TRANSLATORS: Second %s is a type name (gid_t,uid_t,etc.)
-#: src/list.c:807
+#: src/list.c:806
 #, c-format
 msgid "Archive octal value %.*s is out of %s range; assuming two's complement"
 msgstr ""
@@ -1238,314 +1213,336 @@ msgstr ""
 "lui doi"
 
 #. TRANSLATORS: Second %s is a type name (gid_t,uid_t,etc.)
-#: src/list.c:818
+#: src/list.c:817
 #, c-format
 msgid "Archive octal value %.*s is out of %s range"
 msgstr "Valoare octalã arhivã %.*s este în afara %s intervalului"
 
-#: src/list.c:839
+#: src/list.c:838
 msgid "Archive contains obsolescent base-64 headers"
 msgstr "Arhiva conþine antete în baza-64 depãºite"
 
-#: src/list.c:853
+#: src/list.c:852
 #, c-format
 msgid "Archive signed base-64 string %s is out of %s range"
 msgstr "ªir în baza-64 (semnãtura arhivei) %s este în afara %s intervalului"
 
-#: src/list.c:884
+#: src/list.c:883
 #, c-format
 msgid "Archive base-256 value is out of %s range"
 msgstr "Valoare baza-256 a arhivei este în afara %s intervalului"
 
 #. TRANSLATORS: Second %s is a type name (gid_t,uid_t,etc.)
-#: src/list.c:913
+#: src/list.c:912
 #, c-format
 msgid "Archive contains %.*s where numeric %s value expected"
 msgstr "Arhiva conþine %.*s unde valoare %s numericã aºteptatã"
 
 #. TRANSLATORS: Second %s is type name (gid_t,uid_t,etc.)
-#: src/list.c:935
+#: src/list.c:934
 #, fuzzy, c-format
 msgid "Archive value %s is out of %s range %s..%s"
 msgstr "Valoare arhivã %s este în afara %s intervalului %s.%s"
 
-#: src/list.c:1273
+#: src/list.c:1272
 #, c-format
 msgid " link to %s\n"
 msgstr " link cãtre %s\n"
 
-#: src/list.c:1281
+#: src/list.c:1280
 #, c-format
 msgid " unknown file type %s\n"
 msgstr " tip fiºier necunoscut %s\n"
 
-#: src/list.c:1299
+#: src/list.c:1298
 #, c-format
 msgid "--Long Link--\n"
 msgstr "--Link Lung--\n"
 
-#: src/list.c:1303
+#: src/list.c:1302
 #, c-format
 msgid "--Long Name--\n"
 msgstr "--Nume Lung--\n"
 
-#: src/list.c:1307
+#: src/list.c:1306
 #, c-format
 msgid "--Volume Header--\n"
 msgstr "--Antet Volum--\n"
 
-#: src/list.c:1315
+#: src/list.c:1314
 #, c-format
 msgid "--Continued at byte %s--\n"
 msgstr "--Continuat la octet %s--\n"
 
-#: src/list.c:1378
+#: src/list.c:1377
 msgid "Creating directory:"
 msgstr "Creez director:"
 
-#: src/misc.c:733
+#: src/misc.c:738
 #, c-format
 msgid "Renaming %s to %s\n"
 msgstr "Redenumesc %s ca %s\n"
 
-#: src/misc.c:742 src/misc.c:761
+#: src/misc.c:747 src/misc.c:766
 #, c-format
 msgid "%s: Cannot rename to %s"
 msgstr "%s: Nu pot redenumi ca %s"
 
-#: src/misc.c:766
+#: src/misc.c:771
 #, c-format
 msgid "Renaming %s back to %s\n"
 msgstr "Redenumesc %s înapoi ca %s\n"
 
-#: src/misc.c:1108
+#: src/misc.c:1134
 #, c-format
 msgid "%s: File removed before we read it"
 msgstr "%s: Fiºier ºters înainte de a-l putea citi"
 
-#: src/misc.c:1122
+#: src/misc.c:1148
 msgid "child process"
 msgstr "proces copil"
 
-#: src/misc.c:1131
+#: src/misc.c:1157
 msgid "interprocess channel"
 msgstr "canal între-procese"
 
-#: src/names.c:68
+#: src/names.c:69
 #, fuzzy
 msgid "Local file name selection:"
 msgstr "Selecþie fiºier local:"
 
-#: src/names.c:71
+#: src/names.c:72
 msgid "add given FILE to the archive (useful if its name starts with a dash)"
 msgstr ""
 
-#: src/names.c:72 src/tar.c:484
+#: src/names.c:73 src/tar.c:484
 msgid "DIR"
 msgstr "DIR"
 
-#: src/names.c:73
+#: src/names.c:74
 msgid "change to directory DIR"
 msgstr "schimbã în directorul DIR"
 
-#: src/names.c:75
+#: src/names.c:76
 #, fuzzy
 msgid "get names to extract or create from FILE"
 msgstr "obþine numele de extras sau creat din fiºierul NUME"
 
-#: src/names.c:77
+#: src/names.c:78
 #, fuzzy
 msgid "-T reads null-terminated names; implies --verbatim-files-from"
 msgstr "-T citeºte nume terminate cu null, deactiveazã cu -C"
 
-#: src/names.c:80
+#: src/names.c:81
 msgid "disable the effect of the previous --null option"
 msgstr ""
 
-#: src/names.c:82
+#: src/names.c:83
 msgid "unquote input file or member names (default)"
 msgstr ""
 
-#: src/names.c:84
+#: src/names.c:85
 msgid "do not unquote input file or member names"
 msgstr ""
 
-#: src/names.c:86
-msgid "-T reads file names verbatim (no option handling)"
+#: src/names.c:87
+msgid "-T reads file names verbatim (no escape or option handling)"
 msgstr ""
 
-#: src/names.c:88
+#: src/names.c:89
 msgid "-T treats file names starting with dash as options (default)"
 msgstr ""
 
-#: src/names.c:90 tests/genfile.c:140
+#: src/names.c:91 tests/genfile.c:140
 msgid "PATTERN"
 msgstr "PATTERN"
 
-#: src/names.c:91
+#: src/names.c:92
 msgid "exclude files, given as a PATTERN"
 msgstr "exclude fiºiere, date ca un PATTERN"
 
-#: src/names.c:93
+#: src/names.c:94
 msgid "exclude patterns listed in FILE"
 msgstr "pattern-urile de excludere sunt listate în FIªIER"
 
-#: src/names.c:95
+#: src/names.c:96
 #, fuzzy
 msgid ""
 "exclude contents of directories containing CACHEDIR.TAG, except for the tag "
 "file itself"
 msgstr "exclude directoarele ce conþin o etichetã cache"
 
-#: src/names.c:98
+#: src/names.c:99
 #, fuzzy
 msgid "exclude everything under directories containing CACHEDIR.TAG"
 msgstr "exclude directoarele ce conþin o etichetã cache"
 
-#: src/names.c:101
+#: src/names.c:102
 #, fuzzy
 msgid "exclude directories containing CACHEDIR.TAG"
 msgstr "exclude directoarele ce conþin o etichetã cache"
 
-#: src/names.c:103
+#: src/names.c:104
 #, fuzzy
 msgid "exclude contents of directories containing FILE, except for FILE itself"
 msgstr "exclude directoarele ce conþin o etichetã cache"
 
-#: src/names.c:106
+#: src/names.c:107
 msgid "read exclude patterns for each directory from FILE, if it exists"
 msgstr ""
 
-#: src/names.c:109
+#: src/names.c:110
 msgid ""
 "read exclude patterns for each directory and its subdirectories from FILE, "
 "if it exists"
 msgstr ""
 
-#: src/names.c:112
+#: src/names.c:113
 #, fuzzy
 msgid "exclude everything under directories containing FILE"
 msgstr "exclude directoarele ce conþin o etichetã cache"
 
-#: src/names.c:114
+#: src/names.c:115
 #, fuzzy
 msgid "exclude directories containing FILE"
 msgstr "exclude directoarele ce conþin o etichetã cache"
 
-#: src/names.c:116
+#: src/names.c:117
 msgid "exclude version control system directories"
 msgstr ""
 
-#: src/names.c:118
+#: src/names.c:119
 #, fuzzy
 msgid "read exclude patterns from the VCS ignore files"
 msgstr "pattern-urile de excludere sunt ºiruri simple"
 
-#: src/names.c:120
+#: src/names.c:121
 msgid "exclude backup and lock files"
 msgstr ""
 
-#: src/names.c:122
+#: src/names.c:123
 msgid "recurse into directories (default)"
 msgstr "coboarã recursiv în directoare (implicit)"
 
-#: src/names.c:124
+#: src/names.c:125
 msgid "avoid descending automatically in directories"
 msgstr "evitã coborârea automatã în directoare"
 
-#: src/names.c:129
+#: src/names.c:130
 msgid "File name matching options (affect both exclude and include patterns):"
 msgstr ""
 
-#: src/names.c:132
+#: src/names.c:133
 #, fuzzy
 msgid "patterns match file name start"
 msgstr "pattern-urile de excludere potrivesc începutul numelor de fiºiere"
 
-#: src/names.c:134
+#: src/names.c:135
 #, fuzzy
 msgid "patterns match after any '/' (default for exclusion)"
 msgstr "pattern-urile de excludere potrivesc dupã orice / (implicit)"
 
-#: src/names.c:136
+#: src/names.c:137
 #, fuzzy
 msgid "ignore case"
 msgstr "în excluderi ignorã cazul caracterelor (minuscule/majuscule)"
 
-#: src/names.c:138
+#: src/names.c:139
 #, fuzzy
 msgid "case sensitive matching (default)"
 msgstr "excluderea depinde de caz (minuscule/majuscule) (implicit)"
 
-#: src/names.c:140
+#: src/names.c:141
 msgid "use wildcards (default for exclusion)"
 msgstr ""
 
-#: src/names.c:142
+#: src/names.c:143
 msgid "verbatim string matching"
 msgstr ""
 
-#: src/names.c:144
+#: src/names.c:145
 #, fuzzy
 msgid "wildcards match '/' (default for exclusion)"
 msgstr "wildcard-urile din pattern-urile de excludere potrivesc '/' (implicit)"
 
-#: src/names.c:146
+#: src/names.c:147
 #, fuzzy
 msgid "wildcards do not match '/'"
 msgstr "wildcard-urile în pattern-urile de excludere nu potrivesc '/'"
 
-#: src/names.c:768
+#: src/names.c:733
+msgid ""
+"The following options were used after any non-optional arguments in archive "
+"create or update mode.  These options are positional and affect only "
+"arguments that follow them.  Please, rearrange them properly."
+msgstr ""
+
+#: src/names.c:744
+#, c-format
+msgid "-C %s has no effect"
+msgstr ""
+
+#: src/names.c:749
+#, c-format
+msgid "--%s %s has no effect"
+msgstr ""
+
+#: src/names.c:753
+#, c-format
+msgid "--%s has no effect"
+msgstr ""
+
+#: src/names.c:879
 #, fuzzy
 msgid "command line"
 msgstr "`%s' comanda a eºuat"
 
-#: src/names.c:786
+#: src/names.c:897
 #, c-format
 msgid "%s: file list requested from %s already read from %s"
 msgstr ""
 
-#: src/names.c:867 src/checkpoint.c:274
+#: src/names.c:978 src/checkpoint.c:274
 #, c-format
 msgid "cannot split string '%s': %s"
 msgstr ""
 
-#: src/names.c:914
+#: src/names.c:1025
 #, c-format
 msgid "%s: file name read contains nul character"
 msgstr ""
 
-#: src/names.c:1242
+#: src/names.c:1358
 msgid "Pattern matching characters used in file names"
 msgstr ""
 
-#: src/names.c:1244
+#: src/names.c:1360
 msgid ""
 "Use --wildcards to enable pattern matching, or --no-wildcards to suppress "
 "this warning"
 msgstr ""
 
-#: src/names.c:1262 src/names.c:1278
+#: src/names.c:1378 src/names.c:1394
 #, c-format
 msgid "%s: Not found in archive"
 msgstr "%s: Nu a fost gãsit în arhivã"
 
-#: src/names.c:1263
+#: src/names.c:1379
 #, c-format
 msgid "%s: Required occurrence not found in archive"
 msgstr "%s: Lucrul cerut nu a fost gãsit în arhivã"
 
-#: src/names.c:1297
+#: src/names.c:1413
 #, fuzzy, c-format
 msgid "Archive label mismatch"
 msgstr "Arhiva nu este etichetatã sã se potriveascã cu %s"
 
-#: src/names.c:1601
+#: src/names.c:1717
 msgid ""
 "Using -C option inside file list is not allowed with --listed-incremental"
 msgstr ""
 
-#: src/names.c:1607
+#: src/names.c:1723
 msgid "Only one -C option is allowed with --listed-incremental"
 msgstr ""
 
@@ -1920,6 +1917,10 @@ msgstr ""
 
 #: src/tar.c:549
 msgid "ORDER"
+msgstr ""
+
+#: src/tar.c:551
+msgid "directory sorting order: none (default), name or inode"
 msgstr ""
 
 #: src/tar.c:553
@@ -2335,44 +2336,44 @@ msgstr ""
 
 #. TRANSLATORS: Both %s in this statement are replaced with
 #. option names.
-#: src/tar.c:846
+#: src/tar.c:845
 #, fuzzy, c-format
 msgid "'%s' cannot be used with '%s'"
 msgstr "%s: Nu pot cãuta (seek) cãtre %s"
 
-#: src/tar.c:934
+#: src/tar.c:933
 #, fuzzy
 msgid ""
 "You may not specify more than one '-Acdtrux', '--delete' or  '--test-label' "
 "option"
 msgstr "Nu puteþi specifica mai mult de una dintre opþiunile `-Acdtrux'"
 
-#: src/tar.c:946
+#: src/tar.c:945
 msgid "Conflicting compression options"
 msgstr "Opþiunile de compresie sunt în conflict"
 
-#: src/tar.c:1005
+#: src/tar.c:1004
 #, fuzzy, c-format
 msgid "Unknown signal name: %s"
 msgstr " tip fiºier necunoscut %s\n"
 
-#: src/tar.c:1029
+#: src/tar.c:1028
 #, fuzzy
 msgid "Date sample file not found"
 msgstr "Fiºier date nu a fost gãsit"
 
-#: src/tar.c:1037
+#: src/tar.c:1036
 #, c-format
 msgid "Substituting %s for unknown date format %s"
 msgstr "Înlocuim %s pentru format de datã necunoscut %s"
 
-#: src/tar.c:1066
+#: src/tar.c:1065
 #, fuzzy, c-format
 msgid "Option %s: Treating date '%s' as %s"
 msgstr "Tratez data `%s' ca %s + %ld nanosecundã"
 
-#: src/tar.c:1106 src/tar.c:1110 src/tar.c:1114 src/tar.c:1118 src/tar.c:1122
-#: src/tar.c:1126 src/tar.c:1129
+#: src/tar.c:1105 src/tar.c:1109 src/tar.c:1113 src/tar.c:1117 src/tar.c:1121
+#: src/tar.c:1125 src/tar.c:1129
 #, fuzzy, c-format
 msgid "filter the archive through %s"
 msgstr "filtreazã arhiva prin gzip"
@@ -2394,196 +2395,192 @@ msgstr ""
 msgid "Invalid owner or group ID"
 msgstr "Proprietar invalid"
 
-#: src/tar.c:1348
+#: src/tar.c:1347
 msgid "Invalid blocking factor"
 msgstr "Factor blocuri invalid"
 
-#: src/tar.c:1469
+#: src/tar.c:1467
 msgid "Invalid tape length"
 msgstr "Lungime de bandã invalidã"
 
-#: src/tar.c:1483
+#: src/tar.c:1481
 msgid "Invalid incremental level value"
 msgstr ""
 
-#: src/tar.c:1530
+#: src/tar.c:1527
 msgid "More than one threshold date"
 msgstr "Mai mult de o singurã datã limitã"
 
-#: src/tar.c:1597 src/tar.c:1600
+#: src/tar.c:1594 src/tar.c:1597
 msgid "Invalid sparse version value"
 msgstr ""
 
-#: src/tar.c:1664
+#: src/tar.c:1661
 msgid "--atime-preserve='system' is not supported on this platform"
 msgstr ""
 
-#: src/tar.c:1689
+#: src/tar.c:1686
 msgid "--checkpoint value is not an integer"
 msgstr ""
 
-#: src/tar.c:1767
+#: src/tar.c:1764
 msgid "Invalid mode given on option"
 msgstr "Mod invalid furnizat ca opþiune"
 
-#: src/tar.c:1800
+#: src/tar.c:1797
 msgid "Invalid number"
 msgstr "Numãr invalid"
 
-#: src/tar.c:1864
+#: src/tar.c:1861
 msgid "Invalid record size"
 msgstr "Dimensiune înregistrare invalidã"
 
-#: src/tar.c:1867
+#: src/tar.c:1864
 #, c-format
 msgid "Record size must be a multiple of %d."
 msgstr "Dimensiune înregistrare trebuie sã fie un multiplu de %d."
 
-#: src/tar.c:1913
+#: src/tar.c:1910
 msgid "Invalid number of elements"
 msgstr "Numãr invalid de elemente"
 
-#: src/tar.c:1938
+#: src/tar.c:1935
 msgid "Only one --to-command option allowed"
 msgstr ""
 
-#: src/tar.c:2026
+#: src/tar.c:2023
 #, fuzzy, c-format
 msgid "Malformed density argument: %s"
 msgstr "Argument densitate malformat: '%s'"
 
-#: src/tar.c:2052
+#: src/tar.c:2049
 #, c-format
 msgid "Unknown density: '%c'"
 msgstr "Densitate necunoscutã: '%c'"
 
-#: src/tar.c:2069
+#: src/tar.c:2066
 #, fuzzy, c-format
 msgid "Options '-[0-7][lmh]' not supported by *this* tar"
 msgstr "Opþiunile `-[0-7][lmh]' nu sunt suportate de *acest* tar"
 
-#: src/tar.c:2075
+#: src/tar.c:2073
 #, c-format
 msgid "%s:%lu: location of the error"
 msgstr ""
 
-#: src/tar.c:2078
+#: src/tar.c:2076
 #, c-format
 msgid "error parsing %s"
 msgstr ""
 
-#: src/tar.c:2092
+#: src/tar.c:2090
 msgid "[FILE]..."
 msgstr "[FIªIER]..."
 
-#: src/tar.c:2183
+#: src/tar.c:2181
 #, fuzzy, c-format
 msgid "non-option arguments in %s"
 msgstr "argument invalid %s pentru %s"
 
-#: src/tar.c:2198
+#: src/tar.c:2196
 #, c-format
 msgid "cannot split TAR_OPTIONS: %s"
 msgstr ""
 
-#: src/tar.c:2293
+#: src/tar.c:2291
 #, fuzzy, c-format
 msgid "Old option '%c' requires an argument."
 msgstr "Vechea opþiune `%c' necesitã un argument."
 
-#: src/tar.c:2369
+#: src/tar.c:2364
 msgid "--occurrence is meaningless without a file list"
 msgstr "--occurrence n-are sens fãrã o listã de fiºiere"
 
-#: src/tar.c:2395
+#: src/tar.c:2390
 #, fuzzy
 msgid "Multiple archive files require '-M' option"
 msgstr "Fiºiere de arhivã multiple necesitã opþiunea `-M'"
 
-#: src/tar.c:2412
+#: src/tar.c:2407
 #, fuzzy
 msgid "--level is meaningless without --listed-incremental"
 msgstr "--occurrence n-are sens fãrã o listã de fiºiere"
 
-#: src/tar.c:2429
+#: src/tar.c:2424
 #, c-format
 msgid "%s: Volume label is too long (limit is %lu byte)"
 msgid_plural "%s: Volume label is too long (limit is %lu bytes)"
 msgstr[0] "%s: Eticheta volumului este prea lungã (limita este %lu octet)"
 msgstr[1] "%s: Eticheta volumului este prea lungã (limita este %lu octeþi)"
 
-#: src/tar.c:2442
+#: src/tar.c:2437
 msgid "Cannot verify multi-volume archives"
 msgstr "Nu pot verifica arhive pe volume multiple"
 
-#: src/tar.c:2444
+#: src/tar.c:2439
 msgid "Cannot verify compressed archives"
 msgstr "Nu pot verifica arhive comprimate"
 
-#: src/tar.c:2458
+#: src/tar.c:2453
 msgid "Cannot use multi-volume compressed archives"
 msgstr "Nu pot folosi arhive comprimate pe volume multiple"
 
-#: src/tar.c:2462
+#: src/tar.c:2457
 #, fuzzy
 msgid "Cannot concatenate compressed archives"
 msgstr "Nu pot actualiza arhive comprimate"
 
-#: src/tar.c:2469
+#: src/tar.c:2464
 msgid "--clamp-mtime needs a date specified using --mtime"
 msgstr ""
 
-#: src/tar.c:2479
+#: src/tar.c:2474
 msgid "--pax-option can be used only on POSIX archives"
 msgstr "--pax-option poate fi folosit numai pentru arhive POSIX"
 
-#: src/tar.c:2486
+#: src/tar.c:2481
 #, fuzzy
 msgid "--acls can be used only on POSIX archives"
 msgstr "--pax-option poate fi folosit numai pentru arhive POSIX"
 
-#: src/tar.c:2491
+#: src/tar.c:2486
 #, fuzzy
 msgid "--selinux can be used only on POSIX archives"
 msgstr "--pax-option poate fi folosit numai pentru arhive POSIX"
 
-#: src/tar.c:2496
+#: src/tar.c:2491
 #, fuzzy
 msgid "--xattrs can be used only on POSIX archives"
 msgstr "--pax-option poate fi folosit numai pentru arhive POSIX"
 
-#: src/tar.c:2545
+#: src/tar.c:2540
 msgid ""
 "Cannot deduce top-level directory name; please set it explicitly with --one-"
 "top-level=DIR"
 msgstr ""
 
-#: src/tar.c:2578
+#: src/tar.c:2573
 msgid "Volume length cannot be less than record size"
 msgstr ""
 
-#: src/tar.c:2602
+#: src/tar.c:2597
 msgid "Cowardly refusing to create an empty archive"
 msgstr "Refuz categoric sã creez o arhivã goalã"
 
-#: src/tar.c:2628
+#: src/tar.c:2623
 #, fuzzy
 msgid "Options '-Aru' are incompatible with '-f -'"
 msgstr "Opþiunile `-Aru' sunt incompatibile cu `-f -'"
 
-#: src/tar.c:2716
+#: src/tar.c:2711
 #, fuzzy
 msgid ""
 "You must specify one of the '-Acdtrux', '--delete' or '--test-label' options"
 msgstr "Trebuie sã specificaþi una din opþiunile `-Acdtrux'"
 
-#: src/tar.c:2773
+#: src/tar.c:2768
 #, c-format
 msgid "Exiting with failure status due to previous errors"
-msgstr ""
-
-#: src/tar.c:551
-msgid "directory sorting order: none (default), name or inode"
 msgstr ""
 
 #: src/update.c:87
@@ -2654,22 +2651,22 @@ msgstr ""
 msgid "Extended header %s=%s is out of range %s..%s"
 msgstr "Valoare arhivã %s este în afara %s intervalului %s.%s"
 
-#: src/xheader.c:1104 src/xheader.c:1137 src/xheader.c:1469
+#: src/xheader.c:1104 src/xheader.c:1137 src/xheader.c:1487
 #, fuzzy, c-format
 msgid "Malformed extended header: invalid %s=%s"
 msgstr "Antet extins malformat: lipseºte semnul egal"
 
-#: src/xheader.c:1422 src/xheader.c:1447 src/xheader.c:1502
+#: src/xheader.c:1440 src/xheader.c:1465 src/xheader.c:1520
 #, fuzzy, c-format
 msgid "Malformed extended header: excess %s=%s"
 msgstr "Antet extins malformat: lipseºte semnul egal"
 
-#: src/xheader.c:1515
+#: src/xheader.c:1533
 #, fuzzy, c-format
 msgid "Malformed extended header: invalid %s: unexpected delimiter %c"
 msgstr "Antet extins malformat: lipseºte semnul egal"
 
-#: src/xheader.c:1525
+#: src/xheader.c:1543
 #, fuzzy, c-format
 msgid "Malformed extended header: invalid %s: odd number of values"
 msgstr "Antet extins malformat: lipseºte semnul egal"
@@ -2831,144 +2828,163 @@ msgid "Execute COMMAND"
 msgstr "COMANDÃ"
 
 #: tests/genfile.c:199
-msgid "Unlink FILE"
+msgid "Delete FILE"
 msgstr ""
 
-#: tests/genfile.c:249
+#: tests/genfile.c:250
 #, fuzzy, c-format
 msgid "Invalid size: %s"
 msgstr "Înregistrare timp invalidã"
 
-#: tests/genfile.c:254
+#: tests/genfile.c:255
 #, fuzzy, c-format
 msgid "Number out of allowed range: %s"
 msgstr "Numãr inode în afara intervalului"
 
-#: tests/genfile.c:257
+#: tests/genfile.c:258
 #, c-format
 msgid "Negative size: %s"
 msgstr ""
 
-#: tests/genfile.c:270 tests/genfile.c:637
+#: tests/genfile.c:271 tests/genfile.c:642
 #, c-format
 msgid "stat(%s) failed"
 msgstr ""
 
-#: tests/genfile.c:273
+#: tests/genfile.c:274
 #, c-format
 msgid "requested file length %lu, actual %lu"
 msgstr ""
 
-#: tests/genfile.c:277
+#: tests/genfile.c:278
 #, c-format
 msgid "created file is not sparse"
 msgstr ""
 
-#: tests/genfile.c:370
+#: tests/genfile.c:375
 #, c-format
 msgid "Error parsing number near `%s'"
 msgstr ""
 
-#: tests/genfile.c:376
+#: tests/genfile.c:381
 #, fuzzy, c-format
 msgid "Unknown date format"
 msgstr "Eroare sistem necunoscutã"
 
-#: tests/genfile.c:400
+#: tests/genfile.c:405
 msgid "[ARGS...]"
 msgstr ""
 
-#: tests/genfile.c:437 tests/genfile.c:477 tests/genfile.c:578
-#: tests/genfile.c:741 tests/genfile.c:755
+#: tests/genfile.c:442 tests/genfile.c:482 tests/genfile.c:583
+#: tests/genfile.c:746 tests/genfile.c:760
 #, c-format
 msgid "cannot open `%s'"
 msgstr ""
 
-#: tests/genfile.c:443
+#: tests/genfile.c:448
 #, fuzzy
 msgid "cannot seek"
 msgstr "%s: Nu pot cãuta (seek) cãtre %s"
 
-#: tests/genfile.c:460
+#: tests/genfile.c:465
 #, c-format
 msgid "file name contains null character"
 msgstr ""
 
-#: tests/genfile.c:573
+#: tests/genfile.c:578
 #, c-format
 msgid "cannot generate sparse files on standard output, use --file option"
 msgstr ""
 
-#: tests/genfile.c:664
+#: tests/genfile.c:669
 #, c-format
 msgid "incorrect mask (near `%s')"
 msgstr ""
 
-#: tests/genfile.c:670 tests/genfile.c:703
+#: tests/genfile.c:675 tests/genfile.c:708
 #, fuzzy, c-format
 msgid "Unknown field `%s'"
 msgstr " tip fiºier necunoscut %s\n"
 
-#: tests/genfile.c:730
+#: tests/genfile.c:735
 #, fuzzy, c-format
 msgid "cannot set time on `%s'"
 msgstr "%s: Nu pot cãuta (seek) cãtre %s"
 
-#: tests/genfile.c:760
+#: tests/genfile.c:765
 #, fuzzy, c-format
 msgid "cannot truncate `%s'"
 msgstr "%s: Nu pot redenumi ca %s"
 
-#: tests/genfile.c:769
+#: tests/genfile.c:774
 #, fuzzy, c-format
 msgid "command failed: %s"
 msgstr "`%s' comanda a eºuat"
 
-#: tests/genfile.c:774
+#: tests/genfile.c:781
+#, c-format
+msgid "cannot stat `%s'"
+msgstr ""
+
+#: tests/genfile.c:785
+#, fuzzy, c-format
+msgid "cannot remove directory `%s'"
+msgstr "Nu pot salva directorul în care lucrez"
+
+#: tests/genfile.c:788
 #, fuzzy, c-format
 msgid "cannot unlink `%s'"
 msgstr "%s: Nu pot crea symlink cãtre %s"
 
-#: tests/genfile.c:901
+#: tests/genfile.c:918
 #, c-format
 msgid "Command exited successfully\n"
 msgstr ""
 
-#: tests/genfile.c:903
+#: tests/genfile.c:920
 #, c-format
 msgid "Command failed with status %d\n"
 msgstr ""
 
-#: tests/genfile.c:907
+#: tests/genfile.c:924
 #, c-format
 msgid "Command terminated on signal %d\n"
 msgstr ""
 
-#: tests/genfile.c:909
+#: tests/genfile.c:926
 #, c-format
 msgid "Command stopped on signal %d\n"
 msgstr ""
 
-#: tests/genfile.c:912
+#: tests/genfile.c:929
 #, c-format
 msgid "Command dumped core\n"
 msgstr ""
 
-#: tests/genfile.c:915
+#: tests/genfile.c:932
 #, c-format
 msgid "Command terminated\n"
 msgstr ""
 
-#: tests/genfile.c:947
+#: tests/genfile.c:964
 #, fuzzy, c-format
 msgid "--stat requires file names"
 msgstr "--Amestecat numele fiºierelor--\n"
 
-#~ msgid "same as both -p and -s"
-#~ msgstr "la fel ca -p ºi -s"
+#~ msgid "%s: option `--%s' doesn't allow an argument\n"
+#~ msgstr "%s: opþiunea `--%s' nu permite un argument\n"
+
+#~ msgid "%s: unrecognized option `--%s'\n"
+#~ msgstr "%s: opþiunea `--%s' nu este recunoscutã\n"
 
 #~ msgid "%s: illegal option -- %c\n"
 #~ msgstr "%s: opþiune ilegalã -- %c\n"
+
+#~ msgid "%s: option `-W %s' is ambiguous\n"
+#~ msgstr "%s: opþiunea `-W %s' este ambiguã\n"
+
+#~ msgid "%s: option `-W %s' doesn't allow an argument\n"
+#~ msgstr "%s: opþiunea `-W %s' nu permite un argument\n"
 
 #~ msgid "block size"
 #~ msgstr "dimensiune bloc"
@@ -3047,6 +3063,9 @@ msgstr "--Amestecat numele fiºierelor--\n"
 
 #~ msgid "sort names to extract to match archive"
 #~ msgstr "sorteazã numele de extras sã se potriveascã cu arhiva"
+
+#~ msgid "same as both -p and -s"
+#~ msgstr "la fel ca -p ºi -s"
 
 #~ msgid "filter the archive through bzip2"
 #~ msgstr "filtrazã arhiva prin bzip2"

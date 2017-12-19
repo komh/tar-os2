@@ -1,5 +1,5 @@
 .\" This file is part of GNU tar. -*- nroff -*-
-.\" Copyright 2013-2014, 2016 Free Software Foundation, Inc.
+.\" Copyright 2013-2014, 2016-2017 Free Software Foundation, Inc.
 .\"
 .\" GNU tar is free software; you can redistribute it and/or modify
 .\" it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
 .\"
 .\" You should have received a copy of the GNU General Public License
 .\" along with this program.  If not, see <http://www.gnu.org/licenses/>.
-.TH TAR 1 "March 23, 2016" "TAR" "GNU TAR Manual"
+.TH TAR 1 "November 16, 2017" "TAR" "GNU TAR Manual"
 .SH NAME
 tar \- an archiving utility
 .SH SYNOPSIS
@@ -219,7 +219,10 @@ There is no short option equivalent for this option.
 \fB\-u\fR, \fB\-\-update\fR
 Append files which are newer than the corresponding copy in the
 archive.  Arguments have the same meaning as with \fB\-c\fR and
-\fB\-r\fR options.
+\fB\-r\fR options.  Notice, that newer files don't replace their
+old archive copies, but instead are appended to the end of archive.
+The resulting archive can thus contain several members of the
+same name, corresponding to various versions of the same file.
 .TP
 \fB\-x\fR, \fB\-\-extract\fR, \fB\-\-get\fR
 Extract files from an archive.  Arguments are optional.  When given,
@@ -332,6 +335,9 @@ Don't replace existing files when extracting.
 .TP
 \fB\-\-keep\-newer\-files\fR
 Don't replace existing files that are newer than their archive copies.
+.TP
+\fB\-\-keep\-directory\-symlink\fR
+Don't replace existing symlinks to directories when extracting.
 .TP
 \fB\-\-no\-overwrite\-dir\fR
 Preserve metadata of existing directories.
@@ -1160,6 +1166,12 @@ Keywords applicable for \fBtar --create\fR:
 .TP
 .B file-changed
 "%s: file changed as we read it"
+.TP
+.B failed-read
+Suppresses warnings about unreadable files or directories. This
+keyword applies only if used together with the
+.B \-\-ignore\-failed\-read
+option.
 .HP
 Keywords applicable for \fBtar --extract\fR:
 .TP

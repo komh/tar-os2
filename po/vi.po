@@ -1,70 +1,66 @@
 # Vietnamese translation for Tar.
 # Bản dịch tiếng Việt dành cho tar.
-# Copyright © 2014 Free Software Foundation, Inc.
+# Copyright © 2016 Free Software Foundation, Inc.
 # This file is distributed under the same license as the tar package.
 # Phan Vinh Thinh <teppi82@gmail.com>, 2005.
 # Clytie Siddall <clytie@riverland.net.au>, 2007-2010.
-# Trần Ngọc Quân <vnwildman@gmail.com>, 2012-2014.
+# Trần Ngọc Quân <vnwildman@gmail.com>, 2012-2014, 2016.
 #
-#: src/create.c:1592
+#: src/create.c:1599
 msgid ""
 msgstr ""
-"Project-Id-Version: tar-1.28\n"
+"Project-Id-Version: tar 1.29\n"
 "Report-Msgid-Bugs-To: bug-tar@gnu.org\n"
-"POT-Creation-Date: 2016-05-16 09:55+0300\n"
-"PO-Revision-Date: 2014-07-29 07:49+0700\n"
+"POT-Creation-Date: 2017-12-17 12:31+0200\n"
+"PO-Revision-Date: 2016-05-17 07:14+0700\n"
 "Last-Translator: Trần Ngọc Quân <vnwildman@gmail.com>\n"
 "Language-Team: Vietnamese <translation-team-vi@lists.sourceforge.net>\n"
 "Language: vi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Bugs: Report translation errors to the Language-Team address.\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: LocFactoryEditor 1.8\n"
+"X-Generator: Gtranslator 2.91.7\n"
 "X-Poedit-Language: Vietnamese\n"
 "X-Poedit-Country: VIET NAM\n"
 "X-Poedit-SourceCharset: utf-8\n"
 
-#: gnu/argmatch.c:133
+#: gnu/argmatch.c:134
 #, c-format
 msgid "invalid argument %s for %s"
 msgstr "tham số %s không hợp lệ với %s"
 
-#: gnu/argmatch.c:134
+#: gnu/argmatch.c:135
 #, c-format
 msgid "ambiguous argument %s for %s"
 msgstr "tham số %s không rõ ràng với %s"
 
-#: gnu/argmatch.c:153
+#: gnu/argmatch.c:154
 msgid "Valid arguments are:"
-msgstr "Các tham số đúng là:"
+msgstr "Các tham số hợp lệ là:"
 
 #: gnu/argp-help.c:148
 #, c-format
 msgid "ARGP_HELP_FMT: %s value is less than or equal to %s"
 msgstr "ARGP_HELP_FMT: giá trị %s nhỏ hơn hay bằng %s"
 
-#: gnu/argp-help.c:221
+#: gnu/argp-help.c:224
 #, c-format
 msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
 msgstr "%.*s: tham số ARGP_HELP_FMT yêu cầu một giá trị"
 
-#: gnu/argp-help.c:227
-#, c-format
-msgid "%.*s: ARGP_HELP_FMT parameter must be positive"
-msgstr "%.*s: tham số ARGP_HELP_FMT phải là số dương"
-
-#: gnu/argp-help.c:236
+#: gnu/argp-help.c:234
 #, c-format
 msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
 msgstr "%.*s: Tham số không rõ ARGP_HELP_FMT"
 
-#: gnu/argp-help.c:248
+#: gnu/argp-help.c:247
 #, c-format
 msgid "Garbage in ARGP_HELP_FMT: %s"
 msgstr "Có rác trong ARGP_HELP_FMT: %s"
 
-#: gnu/argp-help.c:1248
+#: gnu/argp-help.c:1228
 msgid ""
 "Mandatory or optional arguments to long options are also mandatory or "
 "optional for any corresponding short options."
@@ -72,31 +68,31 @@ msgstr ""
 "Các tham số là bắt buộc hay không bắt buộc cho các tùy chọn dài thì cũng yêu "
 "cầu như thế khi dùng tùy chọn ngắn tương ứng."
 
-#: gnu/argp-help.c:1645
+#: gnu/argp-help.c:1615
 msgid "Usage:"
 msgstr "Cách dùng:"
 
-#: gnu/argp-help.c:1649
+#: gnu/argp-help.c:1619
 msgid "  or: "
 msgstr "     hoặc: "
 
-#: gnu/argp-help.c:1661
+#: gnu/argp-help.c:1631
 msgid " [OPTION...]"
-msgstr " [TÙY CHỌN...]"
+msgstr " [TÙY CHỌN…]"
 
-#: gnu/argp-help.c:1688
+#: gnu/argp-help.c:1658
 #, c-format
 msgid "Try '%s --help' or '%s --usage' for more information.\n"
 msgstr "Hãy chạy “%s --help” hoặc “%s --usage” để biết thêm thông tin.\n"
 
-#: gnu/argp-help.c:1716
+#: gnu/argp-help.c:1686
 #, c-format
 msgid "Report bugs to %s.\n"
 msgstr ""
 "Thông báo lỗi cho %s.\n"
 "Báo cáo lỗi dịch cho: <translation-team-vi@lists.sourceforge.net>.\n"
 
-#: gnu/argp-help.c:1935 gnu/error.c:191
+#: gnu/argp-help.c:1887 gnu/error.c:195
 msgid "Unknown system error"
 msgstr "Lỗi hệ thống không rõ"
 
@@ -113,98 +109,73 @@ msgstr "hiển thị cách sử dụng dạng ngắn gọn"
 msgid "NAME"
 msgstr "TÊN"
 
-#: gnu/argp-parse.c:83
+#: gnu/argp-parse.c:84
 msgid "set the program name"
 msgstr "đặt tên chương trình"
 
-#: gnu/argp-parse.c:84
+#: gnu/argp-parse.c:85
 msgid "SECS"
 msgstr "GIÂY"
 
-#: gnu/argp-parse.c:85
+#: gnu/argp-parse.c:86
 msgid "hang for SECS seconds (default 3600)"
 msgstr "treo trong vòng GIÂY giây (mặc định 3600)"
 
-#: gnu/argp-parse.c:142
+#: gnu/argp-parse.c:143
 msgid "print program version"
 msgstr "In ra phiên bản chương trình"
 
-#: gnu/argp-parse.c:159
+#: gnu/argp-parse.c:160
 msgid "(PROGRAM ERROR) No version known!?"
 msgstr "(LỖI CHƯƠNG TRÌNH) Không rõ phiên bản!?"
 
-#: gnu/argp-parse.c:612
+#: gnu/argp-parse.c:613
 #, c-format
 msgid "%s: Too many arguments\n"
 msgstr "%s: Quá nhiều đối số\n"
 
-#: gnu/argp-parse.c:755
+#: gnu/argp-parse.c:759
 msgid "(PROGRAM ERROR) Option should have been recognized!?"
 msgstr "(LỖI CHƯƠNG TRÌNH) Tùy chọn nên được nhận ra!?"
 
-#: gnu/closeout.c:112
+#: gnu/closeout.c:122
 msgid "write error"
 msgstr "lỗi ghi"
 
-#: gnu/getopt.c:575 gnu/getopt.c:604
-#, c-format
-msgid "%s: option '%s' is ambiguous; possibilities:"
+#: gnu/getopt.c:278
+#, fuzzy, c-format
+msgid "%s: option '%s%s' is ambiguous\n"
+msgstr "%s: tùy chọn “%s” chưa rõ ràng\n"
+
+#: gnu/getopt.c:284
+#, fuzzy, c-format
+msgid "%s: option '%s%s' is ambiguous; possibilities:"
 msgstr "%s: tùy chọn “%s” chưa rõ ràng; khả năng là:"
 
-#: gnu/getopt.c:619
+#: gnu/getopt.c:319
 #, fuzzy, c-format
-msgid "%s: option '%s' is ambiguous\n"
-msgstr "%s: tùy chọn “-W %s” vẫn chưa rõ ràng\n"
+msgid "%s: unrecognized option '%s%s'\n"
+msgstr "%s: không nhận ra tùy chọn “%c%s”\n"
 
-#: gnu/getopt.c:654 gnu/getopt.c:658
-#, c-format
-msgid "%s: option '--%s' doesn't allow an argument\n"
-msgstr "%s: tùy chọn “--%s” không cho phép đối số\n"
-
-#: gnu/getopt.c:667 gnu/getopt.c:672
-#, c-format
-msgid "%s: option '%c%s' doesn't allow an argument\n"
+#: gnu/getopt.c:345
+#, fuzzy, c-format
+msgid "%s: option '%s%s' doesn't allow an argument\n"
 msgstr "%s: tùy chọn “%c%s” không cho phép đối số\n"
 
-#: gnu/getopt.c:715 gnu/getopt.c:734
-#, c-format
-msgid "%s: option '--%s' requires an argument\n"
+#: gnu/getopt.c:360
+#, fuzzy, c-format
+msgid "%s: option '%s%s' requires an argument\n"
 msgstr "%s: tùy chọn “--%s” yêu cầu một đối số\n"
 
-#: gnu/getopt.c:772 gnu/getopt.c:775
-#, c-format
-msgid "%s: unrecognized option '--%s'\n"
-msgstr "%s: không nhận ra tuỳ chọn “--%s”\n"
-
-#: gnu/getopt.c:783 gnu/getopt.c:786
-#, c-format
-msgid "%s: unrecognized option '%c%s'\n"
-msgstr "%s: không nhận ra tuỳ chọn “%c%s”\n"
-
-#: gnu/getopt.c:835 gnu/getopt.c:838
+#: gnu/getopt.c:621
 #, c-format
 msgid "%s: invalid option -- '%c'\n"
 msgstr "%s: tùy chọn sai -- “%c”\n"
 
-#: gnu/getopt.c:891 gnu/getopt.c:908 gnu/getopt.c:1118 gnu/getopt.c:1136
+#: gnu/getopt.c:636 gnu/getopt.c:682
 #, c-format
 msgid "%s: option requires an argument -- '%c'\n"
 msgstr "%s: tùy chọn yêu cầu một đối số -- “%c”\n"
-
-#: gnu/getopt.c:964 gnu/getopt.c:980
-#, c-format
-msgid "%s: option '-W %s' is ambiguous\n"
-msgstr "%s: tùy chọn “-W %s” vẫn chưa rõ ràng\n"
-
-#: gnu/getopt.c:1004 gnu/getopt.c:1022
-#, c-format
-msgid "%s: option '-W %s' doesn't allow an argument\n"
-msgstr "%s: tùy chọn “-W %s” không cho phép đối số\n"
-
-#: gnu/getopt.c:1043 gnu/getopt.c:1061
-#, c-format
-msgid "%s: option '-W %s' requires an argument\n"
-msgstr "%s: tùy chọn “-W %s” yêu cầu một đối số\n"
 
 #: gnu/obstack.c:338 gnu/obstack.c:340 gnu/xalloc-die.c:34
 msgid "memory exhausted"
@@ -239,13 +210,13 @@ msgstr "không trở được về thư mục làm việc đầu tiên"
 #. for your locale.
 #.
 #. If you don't know what to put here, please see
-#. <http://en.wikipedia.org/wiki/Quotation_marks_in_other_languages>
+#. <https://en.wikipedia.org/wiki/Quotation_marks_in_other_languages>
 #. and use glyphs suitable for your language.
-#: gnu/quotearg.c:312
+#: gnu/quotearg.c:362
 msgid "`"
 msgstr "“"
 
-#: gnu/quotearg.c:313
+#: gnu/quotearg.c:363
 msgid "'"
 msgstr "”"
 
@@ -287,9 +258,10 @@ msgid "(C)"
 msgstr "©"
 
 #: gnu/version-etc.c:86
+#, fuzzy
 msgid ""
 "\n"
-"License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl."
+"License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl."
 "html>.\n"
 "This is free software: you are free to change and redistribute it.\n"
 "There is NO WARRANTY, to the extent permitted by law.\n"
@@ -437,12 +409,13 @@ msgid "%s home page: <%s>\n"
 msgstr "Trang chủ %s: <%s>\n"
 
 #: gnu/version-etc.c:253
-#, c-format
-msgid "%s home page: <http://www.gnu.org/software/%s/>\n"
+#, fuzzy, c-format
+msgid "%s home page: <https://www.gnu.org/software/%s/>\n"
 msgstr "Trang chủ %s: <http://www.gnu.org/software/%s/>\n"
 
 #: gnu/version-etc.c:256
-msgid "General help using GNU software: <http://www.gnu.org/gethelp/>\n"
+#, fuzzy
+msgid "General help using GNU software: <https://www.gnu.org/gethelp/>\n"
 msgstr ""
 "Trợ giúp chung về cách sử dụng phần mềm GNU: <http://www.gnu.org/gethelp/>\n"
 
@@ -613,8 +586,8 @@ msgstr "SỐ"
 msgid "set debug level"
 msgstr "đặt cấp gỡ rối"
 
-#: rmt/rmt.c:698 src/names.c:70 src/names.c:74 src/names.c:92 src/names.c:102
-#: src/names.c:105 src/names.c:108 src/names.c:111 src/names.c:113
+#: rmt/rmt.c:698 src/names.c:71 src/names.c:75 src/names.c:93 src/names.c:103
+#: src/names.c:106 src/names.c:109 src/names.c:112 src/names.c:114
 #: src/tar.c:430 src/tar.c:511 src/tar.c:513 src/tar.c:615 src/tar.c:747
 #: tests/genfile.c:136 tests/genfile.c:185 tests/genfile.c:189
 #: tests/genfile.c:192 tests/genfile.c:198
@@ -630,7 +603,7 @@ msgstr "đặt tên tập tin kết xuất gỡ rối"
 msgid "cannot open %s"
 msgstr "không thể mở %s"
 
-#: rmt/rmt.c:780 tests/genfile.c:960 tests/genfile.c:977
+#: rmt/rmt.c:780 tests/genfile.c:977 tests/genfile.c:994
 #, c-format
 msgid "too many arguments"
 msgstr "quá nhiều đối số"
@@ -639,110 +612,110 @@ msgstr "quá nhiều đối số"
 msgid "Garbage command"
 msgstr "Câu lệnh rác"
 
-#: src/buffer.c:461 src/buffer.c:466 src/buffer.c:760 src/buffer.c:1396
-#: src/buffer.c:1433 src/buffer.c:1445 src/buffer.c:1474 src/delete.c:212
+#: src/buffer.c:474 src/buffer.c:479 src/buffer.c:773 src/buffer.c:1415
+#: src/buffer.c:1452 src/buffer.c:1464 src/buffer.c:1493 src/delete.c:211
 #: src/list.c:275 src/update.c:188
 msgid "This does not look like a tar archive"
 msgstr "Đây có vẻ không phải là một kho lưu tar"
 
-#: src/buffer.c:577
+#: src/buffer.c:590
 msgid "Total bytes read"
 msgstr "Tổng số byte đã đọc"
 
-#: src/buffer.c:579
+#: src/buffer.c:592
 msgid "Total bytes written"
 msgstr "Tổng số byte đã ghi"
 
-#: src/buffer.c:580
+#: src/buffer.c:593
 msgid "Total bytes deleted"
-msgstr "Tổng số byte đã xoá"
+msgstr "Tổng số byte đã xóa"
 
-#: src/buffer.c:659
+#: src/buffer.c:672
 msgid "(pipe)"
 msgstr "(đường ống)"
 
-#: src/buffer.c:683
+#: src/buffer.c:696
 msgid "Refusing to read archive contents from terminal (missing -f option?)"
 msgstr "Từ chối đọc nội dung kho lưu từ thiết bị cuối (thiếu tùy chọn -f ?)"
 
-#: src/buffer.c:685
+#: src/buffer.c:698
 msgid "Refusing to write archive contents to terminal (missing -f option?)"
 msgstr "Từ chối ghi nội dung kho lưu vào thiết bị cuối (thiếu tùy chọn -f ?)"
 
-#: src/buffer.c:698
+#: src/buffer.c:711
 msgid "Invalid value for record_size"
 msgstr "Giá trị cho “record_size” không đúng"
 
-#: src/buffer.c:701
+#: src/buffer.c:714
 msgid "No archive name given"
 msgstr "Không đưa ra tên kho lưu"
 
-#: src/buffer.c:744
+#: src/buffer.c:757
 msgid "Cannot verify stdin/stdout archive"
 msgstr "Không kiểm tra được kho lưu stdin/stdout"
 
-#: src/buffer.c:757
+#: src/buffer.c:770
 #, c-format
 msgid "Archive is compressed. Use %s option"
 msgstr "Kho lưu được nén. Hãy sử dụng tùy chọn %s"
 
-#: src/buffer.c:815 src/tar.c:2460
+#: src/buffer.c:828 src/tar.c:2455
 msgid "Cannot update compressed archives"
 msgstr "Không cập nhật được kho lưu đã nén"
 
-#: src/buffer.c:908
+#: src/buffer.c:928
 msgid "At beginning of tape, quitting now"
 msgstr "Tại đầu băng từ, thoát ra bây giờ"
 
-#: src/buffer.c:914
+#: src/buffer.c:934
 msgid "Too many errors, quitting"
 msgstr "Quá nhiều lỗi, đang thoát"
 
-#: src/buffer.c:947
+#: src/buffer.c:967
 #, c-format
 msgid "Record size = %lu block"
 msgid_plural "Record size = %lu blocks"
 msgstr[0] "Kích cỡ mục ghi = %lu khối"
 
-#: src/buffer.c:968
+#: src/buffer.c:988
 #, c-format
 msgid "Unaligned block (%lu byte) in archive"
 msgid_plural "Unaligned block (%lu bytes) in archive"
 msgstr[0] "Khối chưa sắp hàng (%lu byte) trong kho lưu"
 
-#: src/buffer.c:1055
+#: src/buffer.c:1075
 msgid "Cannot backspace archive file; it may be unreadable without -i"
 msgstr ""
 "Không thể \"tua\" lại tập tin kho lưu; nó có thể không đọc được khi không có "
 "“-i”"
 
-#: src/buffer.c:1087
+#: src/buffer.c:1107
 msgid "rmtlseek not stopped at a record boundary"
 msgstr "rmtlseek không dừng lại tại một ranh giới bản ghi"
 
-#: src/buffer.c:1148
+#: src/buffer.c:1168
 #, c-format
 msgid "%s: contains invalid volume number"
 msgstr "%s: chứa số thứ tự khối không đúng"
 
-#: src/buffer.c:1183
+#: src/buffer.c:1203
 msgid "Volume number overflow"
 msgstr "Số thứ tự khối thừa ra"
 
-#: src/buffer.c:1198
+#: src/buffer.c:1218
 #, c-format
 msgid "Prepare volume #%d for %s and hit return: "
 msgstr "Chuẩn bị khối #%d cho %s và nhấn Enter: "
 
-#: src/buffer.c:1204
+#: src/buffer.c:1224
 msgid "EOF where user reply was expected"
 msgstr "Kết thúc tập tin (EOF) bất ngờ khi cần trả lời của người dùng"
 
-#: src/buffer.c:1209 src/buffer.c:1241
+#: src/buffer.c:1229 src/buffer.c:1261
 msgid "WARNING: Archive is incomplete"
 msgstr "CẢNH BÁO: Kho lưu không hoàn thành"
 
-#: src/buffer.c:1223
+#: src/buffer.c:1243
 #, c-format
 msgid ""
 " n name        Give a new file name for the next (and subsequent) volume(s)\n"
@@ -754,65 +727,65 @@ msgstr ""
 " q             Dừng tar\n"
 " y hay dòng mới Tiếp tục lại chạy tiến trình\n"
 
-#: src/buffer.c:1228
+#: src/buffer.c:1248
 #, c-format
 msgid " !             Spawn a subshell\n"
 msgstr " !             Sản sinh một hệ vỏ con\n"
 
-#: src/buffer.c:1229
+#: src/buffer.c:1249
 #, c-format
 msgid " ?             Print this list\n"
 msgstr " ?             In ra danh sách này\n"
 
-#: src/buffer.c:1236
+#: src/buffer.c:1256
 msgid "No new volume; exiting.\n"
 msgstr "Không có khối mới; đang thoát.\n"
 
-#: src/buffer.c:1269
+#: src/buffer.c:1289
 msgid "File name not specified. Try again.\n"
 msgstr "Chưa ghi rõ tên tập tin. Hãy thử lại.\n"
 
-#: src/buffer.c:1282
+#: src/buffer.c:1301
 #, c-format
 msgid "Invalid input. Type ? for help.\n"
 msgstr "Gõ sai. (Gõ ? để xem trợ giúp.)\n"
 
-#: src/buffer.c:1333
+#: src/buffer.c:1352
 #, c-format
 msgid "%s command failed"
 msgstr "Câu lệnh %s không thành công"
 
-#: src/buffer.c:1511 src/buffer.c:1527
+#: src/buffer.c:1529 src/buffer.c:1545
 #, c-format
 msgid "%s is not continued on this volume"
 msgstr "%s không tiếp tục trên khối này"
 
-#: src/buffer.c:1523
+#: src/buffer.c:1541
 #, c-format
 msgid "%s is possibly continued on this volume: header contains truncated name"
 msgstr "%s có thể tiếp tục trên khối tin này: phần đầu chứa tên bị cắt ngắn"
 
-#: src/buffer.c:1541
+#: src/buffer.c:1559
 #, c-format
 msgid "%s is the wrong size (%s != %s + %s)"
 msgstr "%s là kích thước sai (%s != %s + %s)"
 
-#: src/buffer.c:1556
+#: src/buffer.c:1574
 #, c-format
 msgid "This volume is out of sequence (%s - %s != %s)"
 msgstr "Khối tin này vượt quá dãy cho phép (%s - %s != %s)"
 
-#: src/buffer.c:1634 src/buffer.c:1660
+#: src/buffer.c:1652 src/buffer.c:1678
 #, c-format
 msgid "Archive not labeled to match %s"
 msgstr "Kho lưu không có nhãn tương ứng với %s"
 
-#: src/buffer.c:1664
+#: src/buffer.c:1682
 #, c-format
 msgid "Volume %s does not match %s"
 msgstr "Khối %s không tương ứng %s"
 
-#: src/buffer.c:1758
+#: src/buffer.c:1774
 #, c-format
 msgid ""
 "%s: file name too long to be stored in a GNU multivolume header, truncated"
@@ -820,92 +793,92 @@ msgstr ""
 "%s: tên tập tin quá dài để chứa trong một phần đầu đa khối GNU nên bị cắt "
 "ngắn"
 
-#: src/buffer.c:1949
+#: src/buffer.c:1965
 msgid "write did not end on a block boundary"
 msgstr "tiến trình ghi (write) không dừng lại tại một ranh giới khối"
 
-#: src/compare.c:96
+#: src/compare.c:98
 #, c-format
 msgid "Could only read %lu of %lu byte"
 msgid_plural "Could only read %lu of %lu bytes"
 msgstr[0] "Chỉ đọc được %lu từ %lu byte"
 
-#: src/compare.c:106 src/compare.c:395
+#: src/compare.c:108 src/compare.c:398
 msgid "Contents differ"
 msgstr "Diff nội dung"
 
-#: src/compare.c:132 src/extract.c:1177 src/incremen.c:1508 src/list.c:489
-#: src/list.c:1405 src/xheader.c:847
+#: src/compare.c:134 src/extract.c:1204 src/incremen.c:1508 src/list.c:488
+#: src/list.c:1404 src/xheader.c:847
 msgid "Unexpected EOF in archive"
 msgstr "Kết thúc tập tin bất ngờ trong kho lưu"
 
-#: src/compare.c:180 src/compare.c:196 src/compare.c:314 src/compare.c:419
+#: src/compare.c:182 src/compare.c:198 src/compare.c:317 src/compare.c:422
 msgid "File type differs"
 msgstr "Diff dạng tập tin"
 
-#: src/compare.c:183 src/compare.c:203 src/compare.c:328
+#: src/compare.c:185 src/compare.c:205 src/compare.c:331
 msgid "Mode differs"
 msgstr "Diff chế độ"
 
-#: src/compare.c:206
+#: src/compare.c:208
 msgid "Uid differs"
 msgstr "Khác biệt Uid"
 
-#: src/compare.c:208
+#: src/compare.c:210
 msgid "Gid differs"
 msgstr "Khác biệt Gid"
 
-#: src/compare.c:212
+#: src/compare.c:214
 msgid "Mod time differs"
 msgstr "Khác biệt thời gian sửa đổi"
 
-#: src/compare.c:216 src/compare.c:429
+#: src/compare.c:218 src/compare.c:432
 msgid "Size differs"
 msgstr "Khác biệt kích thước"
 
-#: src/compare.c:265
+#: src/compare.c:267
 #, c-format
 msgid "Not linked to %s"
 msgstr "Không liên kết tới %s"
 
-#: src/compare.c:290
+#: src/compare.c:293
 msgid "Symlink differs"
 msgstr "Khác biệt liên kết mềm"
 
-#: src/compare.c:322
+#: src/compare.c:325
 msgid "Device number differs"
 msgstr "Diff số thứ tự của thiết bị"
 
-#: src/compare.c:470
+#: src/compare.c:473
 #, c-format
 msgid "Verify "
 msgstr "Kiểm tra "
 
-#: src/compare.c:477
+#: src/compare.c:480
 #, c-format
 msgid "%s: Unknown file type '%c', diffed as normal file"
 msgstr ""
 "%s: Không rõ kiểu tập tin “%c” nên khác biệt (diff) như tập tin thông thường"
 
-#: src/compare.c:533
+#: src/compare.c:535
 msgid "Archive contains file names with leading prefixes removed."
 msgstr "Kho lưu chứa tên tập tin không có tiền tố ở đầu."
 
-#: src/compare.c:539
+#: src/compare.c:541
 msgid "Archive contains transformed file names."
 msgstr "Tài liệu được nén có chứa tên tệp tin chuyển đổi."
 
-#: src/compare.c:544
+#: src/compare.c:546
 msgid "Verification may fail to locate original files."
 msgstr "Sự kiểm tra có thể không định vị được các tập tin gốc."
 
-#: src/compare.c:618
+#: src/compare.c:620
 #, c-format
 msgid "VERIFY FAILURE: %d invalid header detected"
 msgid_plural "VERIFY FAILURE: %d invalid headers detected"
 msgstr[0] "LỖI KIỂM TRA: tìm thấy %d phần đầu không đúng"
 
-#: src/compare.c:636 src/list.c:252
+#: src/compare.c:638 src/list.c:252
 #, c-format
 msgid "A lone zero block at %s"
 msgstr "Một khối không đơn lẻ tại %s"
@@ -929,80 +902,80 @@ msgstr "giá trị %s vượt quá %s phạm vi %s..%s"
 msgid "Generating negative octal headers"
 msgstr "Đang tạo phần đầu hệ bát phân âm"
 
-#: src/create.c:602 src/create.c:665
+#: src/create.c:606 src/create.c:669
 #, c-format
 msgid "%s: file name is too long (max %d); not dumped"
 msgstr "%s: tên tập tin quá dài (tối đa là %d); không được dump"
 
-#: src/create.c:612
+#: src/create.c:616
 #, c-format
 msgid "%s: file name is too long (cannot be split); not dumped"
 msgstr "%s: tên tập tin quá dài (không chia được); không được dump"
 
-#: src/create.c:639
+#: src/create.c:643
 #, c-format
 msgid "%s: link name is too long; not dumped"
 msgstr "%s: tên liên kết quá dài; không được dump"
 
-#: src/create.c:1102
+#: src/create.c:1106
 #, c-format
 msgid "%s: File shrank by %s byte; padding with zeros"
 msgid_plural "%s: File shrank by %s bytes; padding with zeros"
 msgstr[0] "%s: Tập tin được rút ngắn %s byte; độn vào bắng các số không"
 
-#: src/create.c:1200
+#: src/create.c:1204
 #, c-format
 msgid "%s: file is on a different filesystem; not dumped"
 msgstr "%s: tập tin trên một hệ thống tập tin khác; không được dump"
 
-#: src/create.c:1243 src/create.c:1254 src/incremen.c:610 src/incremen.c:617
+#: src/create.c:1247 src/create.c:1258 src/incremen.c:610 src/incremen.c:617
 msgid "contents not dumped"
 msgstr "chưa đổ nội dung"
 
-#: src/create.c:1458
+#: src/create.c:1464
 #, c-format
 msgid "%s: Unknown file type; file ignored"
 msgstr "%s: Không hiểu kiểu tập tin; tập tin bị lờ đi"
 
-#: src/create.c:1569
+#: src/create.c:1576
 #, c-format
 msgid "Missing links to %s."
 msgstr "Thiếu liên kết tới %s."
 
-#: src/create.c:1730
+#: src/create.c:1737
 #, c-format
 msgid "%s: file is unchanged; not dumped"
 msgstr "%s: tập tin chưa thay đổi; không được dump"
 
-#: src/create.c:1739
+#: src/create.c:1746
 #, c-format
 msgid "%s: file is the archive; not dumped"
 msgstr "%s: tập tin là kho lưu; không được đổ"
 
-#: src/create.c:1767 src/incremen.c:603
+#: src/create.c:1774 src/incremen.c:603
 msgid "directory not dumped"
 msgstr "chưa đổ thư mục"
 
-#: src/create.c:1839
+#: src/create.c:1846
 #, c-format
 msgid "%s: file changed as we read it"
 msgstr "%s: tập tin đã thay đổi khi chúng ta đọc nó"
 
-#: src/create.c:1915
+#: src/create.c:1922
 #, c-format
 msgid "%s: socket ignored"
 msgstr "%s: socket bị lờ đi"
 
-#: src/create.c:1921
+#: src/create.c:1928
 #, c-format
 msgid "%s: door ignored"
 msgstr "%s: cửa (door) bị lờ đi"
 
-#: src/delete.c:218 src/list.c:289 src/update.c:193
+#: src/delete.c:216 src/list.c:288 src/update.c:192
 msgid "Skipping to next header"
 msgstr "Nhảy tới phần đầu tiếp theo"
 
-#: src/delete.c:284
+#: src/delete.c:281
 msgid "Deleting non-header from archive"
 msgstr "Xóa không phải phần đầu từ kho lưu"
 
@@ -1016,55 +989,60 @@ msgstr "%s: tem thời gian cũ không hợp lý %s"
 msgid "%s: time stamp %s is %s s in the future"
 msgstr "%s: dấu vết thời gian %s là %s giây trong tương lai"
 
-#: src/extract.c:535
+#: src/extract.c:553
 #, c-format
 msgid "%s: Unexpected inconsistency when making directory"
 msgstr "%s: Sự mâu thuẫn bất ngờ khi tạo thư mục"
 
-#: src/extract.c:754
+#: src/extract.c:771
 #, c-format
 msgid "%s: skipping existing file"
 msgstr "%s: bỏ qua tập tin sẵn có"
 
-#: src/extract.c:870
+#: src/extract.c:901
 #, c-format
 msgid "%s: Directory renamed before its status could be extracted"
 msgstr "%s: Đổi tên thư mục trước khi có thể rút trích trạng thái của nó"
 
-#: src/extract.c:1055
+#: src/extract.c:1086
 msgid "Extracting contiguous files as regular files"
 msgstr "Rút trích các tập tin liền nhau thành những tập tin thông thường"
 
-#: src/extract.c:1410
+#: src/extract.c:1433
 msgid "Attempting extraction of symbolic links as hard links"
 msgstr "Đang thử rút trích liên kết mềm thành liên kết cứng"
 
-#: src/extract.c:1573
+#: src/extract.c:1596
 #, c-format
 msgid "%s: Cannot extract -- file is continued from another volume"
 msgstr "%s: Không rút trích được -- tập tin tiếp tục từ khối khác"
 
-#: src/extract.c:1580 src/list.c:1168
+#: src/extract.c:1603 src/list.c:1167
 msgid "Unexpected long name header"
 msgstr "Gặp phần đầu tên dài bất ngờ"
 
-#: src/extract.c:1587
+#: src/extract.c:1610
 #, c-format
 msgid "%s: Unknown file type '%c', extracted as normal file"
 msgstr ""
 "%s: Không hiểu kiểu tập tin “%c” nên rút trích như tập tin thông thường"
 
-#: src/extract.c:1613
+#: src/extract.c:1636
 #, c-format
 msgid "Current %s is newer or same age"
 msgstr "%s hiện tại là mới hơn hoặc cùng tuổi"
 
-#: src/extract.c:1665
+#: src/extract.c:1664
+#, c-format
+msgid "%s: Member name contains '..'"
+msgstr ""
+
+#: src/extract.c:1696
 #, c-format
 msgid "%s: Was unable to backup this file"
 msgstr "%s: Không thể sao lưu tập tin này"
 
-#: src/extract.c:1814
+#: src/extract.c:1845
 #, c-format
 msgid "Cannot rename %s to %s"
 msgstr "Không thể đổi tên %s thành %s"
@@ -1112,7 +1090,7 @@ msgstr "Số thứ tự chỉ mục inode sai"
 #: src/incremen.c:1137
 #, c-format
 msgid "%s: byte %s: %s %.*s... too long"
-msgstr "%s: byte %s: %s %.*s... quá dài"
+msgstr "%s: byte %s: %s %.*s… quá dài"
 
 #: src/incremen.c:1153 src/incremen.c:1211 src/incremen.c:1273
 msgid "Unexpected EOF in snapshot file"
@@ -1169,7 +1147,6 @@ msgid "Malformed dumpdir: empty name in 'R'"
 msgstr "Thư mục đổ dạng sai: tên rỗng trong “R”"
 
 #: src/incremen.c:1585
-#, fuzzy
 msgid "Malformed dumpdir: 'T' not preceded by 'R'"
 msgstr "Thư mục đổ dạng sai: “T” không có “R” đi trước"
 
@@ -1226,179 +1203,178 @@ msgstr "khối %s: ** Khối của các số không (NUL) **\n"
 msgid "block %s: ** End of File **\n"
 msgstr "khối %s: ** Kết thúc tập tin **\n"
 
-#: src/list.c:286 src/list.c:1137 src/list.c:1373
+#: src/list.c:285 src/list.c:1136 src/list.c:1372
 #, c-format
 msgid "block %s: "
 msgstr "khối %s: "
 
 #. TRANSLATORS: %s is type of the value (gid_t, uid_t,
 #. etc.)
-#: src/list.c:752
+#: src/list.c:751
 #, c-format
 msgid "Blanks in header where numeric %s value expected"
 msgstr "Khoảng trống trong Phần đầu trong khi cần một giá trị số %s"
 
 #. TRANSLATORS: Second %s is a type name (gid_t,uid_t,etc.)
-#: src/list.c:807
+#: src/list.c:806
 #, c-format
 msgid "Archive octal value %.*s is out of %s range; assuming two's complement"
 msgstr ""
 "Giá trị hệ tám %.*s của kho lưu vượt ra phạm vi %s; coi như phần bù của hai"
 
 #. TRANSLATORS: Second %s is a type name (gid_t,uid_t,etc.)
-#: src/list.c:818
+#: src/list.c:817
 #, c-format
 msgid "Archive octal value %.*s is out of %s range"
 msgstr "Giá trị hệ tám %.*s của kho lưu vượt ra phạm vi %s"
 
-#: src/list.c:839
+#: src/list.c:838
 msgid "Archive contains obsolescent base-64 headers"
 msgstr "Kho lưu chứa phần đầu base-64 không còn dùng nữa"
 
-#: src/list.c:853
+#: src/list.c:852
 #, c-format
 msgid "Archive signed base-64 string %s is out of %s range"
 msgstr "Kho lưu ký chuỗi base-64 %s vượt ra ngoài vùng %s"
 
-#: src/list.c:884
+#: src/list.c:883
 #, c-format
 msgid "Archive base-256 value is out of %s range"
 msgstr "Giá trị base-256 của kho lưu vượt ra ngoài vùng %s"
 
 #. TRANSLATORS: Second %s is a type name (gid_t,uid_t,etc.)
-#: src/list.c:913
+#: src/list.c:912
 #, c-format
 msgid "Archive contains %.*s where numeric %s value expected"
 msgstr "Kho lưu chứa %.*s nơi mà cần giá trị số %s"
 
 #. TRANSLATORS: Second %s is type name (gid_t,uid_t,etc.)
-#: src/list.c:935
+#: src/list.c:934
 #, c-format
 msgid "Archive value %s is out of %s range %s..%s"
 msgstr "Giá trị kho lưu %s vượt quá phạm vi %s (%s..%s)"
 
-#: src/list.c:1273
+#: src/list.c:1272
 #, c-format
 msgid " link to %s\n"
 msgstr " liên kết tới %s\n"
 
-#: src/list.c:1281
+#: src/list.c:1280
 #, c-format
 msgid " unknown file type %s\n"
 msgstr " kiểu tập tin không rõ %s\n"
 
-#: src/list.c:1299
+#: src/list.c:1298
 #, c-format
 msgid "--Long Link--\n"
 msgstr "--Liên kết Dài--\n"
 
-#: src/list.c:1303
+#: src/list.c:1302
 #, c-format
 msgid "--Long Name--\n"
 msgstr "--Tên Dài--\n"
 
-#: src/list.c:1307
+#: src/list.c:1306
 #, c-format
 msgid "--Volume Header--\n"
 msgstr "--Phần đầu Khối--\n"
 
-#: src/list.c:1315
+#: src/list.c:1314
 #, c-format
 msgid "--Continued at byte %s--\n"
 msgstr "--Tiếp tục tại byte %s--\n"
 
-#: src/list.c:1378
+#: src/list.c:1377
 msgid "Creating directory:"
 msgstr "Đang tạo thư mục:"
 
-#: src/misc.c:733
+#: src/misc.c:738
 #, c-format
 msgid "Renaming %s to %s\n"
 msgstr "Đang đổi tên %s thành %s\n"
 
-#: src/misc.c:742 src/misc.c:761
+#: src/misc.c:747 src/misc.c:766
 #, c-format
 msgid "%s: Cannot rename to %s"
 msgstr "%s: Không thể đổi tên thành %s"
 
-#: src/misc.c:766
+#: src/misc.c:771
 #, c-format
 msgid "Renaming %s back to %s\n"
 msgstr "Đang đổi tên %s ngược lại thành %s\n"
 
-#: src/misc.c:1108
+#: src/misc.c:1134
 #, c-format
 msgid "%s: File removed before we read it"
 msgstr "%s: Tập tin bị xóa trước khi chúng ta đọc nó"
 
-#: src/misc.c:1122
+#: src/misc.c:1148
 msgid "child process"
 msgstr "tiến trình con"
 
-#: src/misc.c:1131
+#: src/misc.c:1157
 msgid "interprocess channel"
 msgstr "kênh liên tiến trình"
 
-#: src/names.c:68
-#, fuzzy
+#: src/names.c:69
 msgid "Local file name selection:"
 msgstr "Lựa chọn tập tin nội bộ:"
 
-#: src/names.c:71
+#: src/names.c:72
 msgid "add given FILE to the archive (useful if its name starts with a dash)"
 msgstr ""
 "thêm vào kho lưu TẬP-TIN đã cho (có ích nếu tên nó bắt đầu với dấu gạch)"
 
-#: src/names.c:72 src/tar.c:484
+#: src/names.c:73 src/tar.c:484
 msgid "DIR"
 msgstr "TMỤC"
 
-#: src/names.c:73
+#: src/names.c:74
 msgid "change to directory DIR"
 msgstr "thay đổi tới thư mục THƯ MỤC"
 
-#: src/names.c:75
+#: src/names.c:76
 msgid "get names to extract or create from FILE"
 msgstr "lấy các tên tập tin cần rút trích hay tạo từ TẬP-TIN"
 
-#: src/names.c:77
-#, fuzzy
+#: src/names.c:78
 msgid "-T reads null-terminated names; implies --verbatim-files-from"
-msgstr "-T đọc tên kết thúc bằng ký hiệu null, tắt -C"
+msgstr "-T đọc tên kết thúc bằng ký hiệu null, ý là --verbatim-files-from"
 
-#: src/names.c:80
+#: src/names.c:81
 msgid "disable the effect of the previous --null option"
 msgstr "tắt hiệu ứng của tùy chọn “--null” trước đây"
 
-#: src/names.c:82
+#: src/names.c:83
 msgid "unquote input file or member names (default)"
 msgstr "hủy trích dẫn các tên tập tin hay thành viên (mặc định)"
 
-#: src/names.c:84
+#: src/names.c:85
 msgid "do not unquote input file or member names"
 msgstr "đừng hủy trích dẫn các tên tập tin hay thành viên"
 
-#: src/names.c:86
-msgid "-T reads file names verbatim (no option handling)"
-msgstr ""
+#: src/names.c:87
+#, fuzzy
+msgid "-T reads file names verbatim (no escape or option handling)"
+msgstr "-T đọc các tên tập tin nguyên văn (không xử lý tùy chọn)"
 
-#: src/names.c:88
+#: src/names.c:89
 msgid "-T treats file names starting with dash as options (default)"
-msgstr ""
+msgstr "-T coi các tên tập tin bắt đầu bằng dấu - là tùy chọn (mặc định)"
 
-#: src/names.c:90 tests/genfile.c:140
+#: src/names.c:91 tests/genfile.c:140
 msgid "PATTERN"
 msgstr "MẪU"
 
-#: src/names.c:91
+#: src/names.c:92
 msgid "exclude files, given as a PATTERN"
 msgstr "loại trừ những tập tin tương ứng với MẪU"
 
-#: src/names.c:93
+#: src/names.c:94
 msgid "exclude patterns listed in FILE"
 msgstr "loại trừ những mẫu liệt kê trong TẬP-TIN"
 
-#: src/names.c:95
+#: src/names.c:96
 msgid ""
 "exclude contents of directories containing CACHEDIR.TAG, except for the tag "
 "file itself"
@@ -1406,24 +1382,24 @@ msgstr ""
 "loại trừ nội dung của thư mục chứa thẻ ghi nhớ tạm CACHEDIR.TAG, trừ tập tin "
 "thẻ chính nó"
 
-#: src/names.c:98
+#: src/names.c:99
 msgid "exclude everything under directories containing CACHEDIR.TAG"
 msgstr ""
 "loại trừ mọi thứ đều nằm dưới thư mục chứa thẻ ghi nhớ tạm CACHEDIR.TAG"
 
-#: src/names.c:101
+#: src/names.c:102
 msgid "exclude directories containing CACHEDIR.TAG"
 msgstr "loại trừ thư mục chứa thẻ ghi nhớ tạm CACHEDIR.TAG"
 
-#: src/names.c:103
+#: src/names.c:104
 msgid "exclude contents of directories containing FILE, except for FILE itself"
 msgstr "loại trừ nội dung của thư mục chứa TẬP-TIN, trừ TẬP-TIN chính nó"
 
-#: src/names.c:106
+#: src/names.c:107
 msgid "read exclude patterns for each directory from FILE, if it exists"
 msgstr "đọc các mẫu loại trừ cho từng thư mục từ TẬP-TIN, nếu có"
 
-#: src/names.c:109
+#: src/names.c:110
 msgid ""
 "read exclude patterns for each directory and its subdirectories from FILE, "
 "if it exists"
@@ -1431,95 +1407,117 @@ msgstr ""
 "đọc các mẫu loại trừ cho từng thư mục và những thư mục con của nó từ TẬP-"
 "TIN, nếu có"
 
-#: src/names.c:112
+#: src/names.c:113
 msgid "exclude everything under directories containing FILE"
 msgstr "loại trừ mọi thứ đều nằm dưới thư mục chứa TẬP-TIN"
 
-#: src/names.c:114
+#: src/names.c:115
 msgid "exclude directories containing FILE"
 msgstr "loại trừ thư mục chứa TẬP-TIN"
 
-#: src/names.c:116
+#: src/names.c:117
 msgid "exclude version control system directories"
 msgstr "loại trừ thư mục của hệ thống điều khiển phiên bản (v.d. “.svn”)"
 
-#: src/names.c:118
+#: src/names.c:119
 msgid "read exclude patterns from the VCS ignore files"
 msgstr "đọc các mẫu loại trừ từ tập tin bỏ qua của VSC"
 
-#: src/names.c:120
+#: src/names.c:121
 msgid "exclude backup and lock files"
-msgstr "loại trừ tập tin kiểu sao lưu và khoá"
+msgstr "loại trừ tập tin kiểu sao lưu và khóa"
 
-#: src/names.c:122
+#: src/names.c:123
 msgid "recurse into directories (default)"
 msgstr "đệ quy vào các thư mục (mặc định)"
 
-#: src/names.c:124
+#: src/names.c:125
 msgid "avoid descending automatically in directories"
 msgstr "tránh sự giảm dần một cách tự động trong các thư mục"
 
-#: src/names.c:129
+#: src/names.c:130
 msgid "File name matching options (affect both exclude and include patterns):"
 msgstr ""
 "Tùy chọn khớp tên tập tin (có tác động mẫu kiểu cả hai loại trừ và bao gồm):"
 
-#: src/names.c:132
+#: src/names.c:133
 msgid "patterns match file name start"
 msgstr "mẫu tương ứng với bắt đầu tên tập tin"
 
-#: src/names.c:134
+#: src/names.c:135
 msgid "patterns match after any '/' (default for exclusion)"
 msgstr "mẫu khớp sau bất kỳ “/” nào (mặc định để loại trừ)"
 
-#: src/names.c:136
+#: src/names.c:137
 msgid "ignore case"
 msgstr "không phân biệt HOA/thường"
 
-#: src/names.c:138
+#: src/names.c:139
 msgid "case sensitive matching (default)"
 msgstr "khớp mẫu phân biệt HOA/ thường (mặc định)"
 
-#: src/names.c:140
+#: src/names.c:141
 msgid "use wildcards (default for exclusion)"
 msgstr "dùng ký tự đại diện (mặc định để loại trừ)"
 
-#: src/names.c:142
+#: src/names.c:143
 msgid "verbatim string matching"
 msgstr "khớp đúng nguyên văn"
 
-#: src/names.c:144
+#: src/names.c:145
 msgid "wildcards match '/' (default for exclusion)"
 msgstr "ký tự đại khớp “/” (mặc định để loại trừ)"
 
-#: src/names.c:146
+#: src/names.c:147
 msgid "wildcards do not match '/'"
 msgstr "ký tự đại diện không khớp “/”"
 
-#: src/names.c:768
+#: src/names.c:733
+msgid ""
+"The following options were used after any non-optional arguments in archive "
+"create or update mode.  These options are positional and affect only "
+"arguments that follow them.  Please, rearrange them properly."
+msgstr ""
+
+#: src/names.c:744
+#, c-format
+msgid "-C %s has no effect"
+msgstr ""
+
+#: src/names.c:749
+#, c-format
+msgid "--%s %s has no effect"
+msgstr ""
+
+#: src/names.c:753
+#, c-format
+msgid "--%s has no effect"
+msgstr ""
+
+#: src/names.c:879
 msgid "command line"
 msgstr "dòng lệnh"
 
-#: src/names.c:786
+#: src/names.c:897
 #, c-format
 msgid "%s: file list requested from %s already read from %s"
 msgstr "%s: danh sách tập tin đã yêu cầu từ %s đã sẵn được đọc từ %s"
 
-#: src/names.c:867 src/checkpoint.c:274
+#: src/names.c:978 src/checkpoint.c:274
 #, c-format
 msgid "cannot split string '%s': %s"
 msgstr "không thể chia tách chuỗi “%s”: %s"
 
-#: src/names.c:914
+#: src/names.c:1025
 #, c-format
 msgid "%s: file name read contains nul character"
 msgstr "%s: đọc tên tập tin chứa ký tự vô giá trị"
 
-#: src/names.c:1242
+#: src/names.c:1358
 msgid "Pattern matching characters used in file names"
 msgstr "Tên tập tin chứa ký tự khớp mẫu"
 
-#: src/names.c:1244
+#: src/names.c:1360
 msgid ""
 "Use --wildcards to enable pattern matching, or --no-wildcards to suppress "
 "this warning"
@@ -1527,31 +1525,31 @@ msgstr ""
 "Dùng “--wildcards” (ký tự đặi diện) để hiệu lực chức năng khớp mẫu,\n"
 "hoặc “--no-wildcards” để thu hồi cảnh báo này."
 
-#: src/names.c:1262 src/names.c:1278
+#: src/names.c:1378 src/names.c:1394
 #, c-format
 msgid "%s: Not found in archive"
 msgstr "%s: Không tìm thấy trong kho lưu"
 
-#: src/names.c:1263
+#: src/names.c:1379
 #, c-format
 msgid "%s: Required occurrence not found in archive"
 msgstr "%s: Không tìm thấy phần tử yêu cầu trong kho lưu"
 
-#: src/names.c:1297
+#: src/names.c:1413
 #, c-format
 msgid "Archive label mismatch"
 msgstr "Sai khớp nhãn kho lưu"
 
-#: src/names.c:1601
+#: src/names.c:1717
 msgid ""
 "Using -C option inside file list is not allowed with --listed-incremental"
 msgstr ""
-"Sử dụng tuỳ chọn “-C” bên trong danh sách tập tin không được phép với “--"
+"Sử dụng tùy chọn “-C” bên trong danh sách tập tin không được phép với “--"
 "listed-incremental”"
 
-#: src/names.c:1607
+#: src/names.c:1723
 msgid "Only one -C option is allowed with --listed-incremental"
-msgstr "Chỉ cho phép một tuỳ chọn “-C” với “--listed-incremental”"
+msgstr "Chỉ cho phép một tùy chọn “-C” với “--listed-incremental”"
 
 #: src/tar.c:88
 #, c-format
@@ -1666,11 +1664,11 @@ msgstr "điều khiển các tập tin thưa thớt một cách có hiệu quả
 
 #: src/tar.c:424
 msgid "TYPE"
-msgstr ""
+msgstr "KIỂU"
 
 #: src/tar.c:425
 msgid "technique to detect holes"
-msgstr ""
+msgstr "kỹ thuật dò tìm lỗ trống"
 
 #: src/tar.c:426
 msgid "MAJOR[.MINOR]"
@@ -1705,7 +1703,7 @@ msgid ""
 msgstr ""
 "chỉ thực hiện trên lần xuất hiện thứ SỐ của mỗi tập tin trong kho lưu. Tùy "
 "chọn này chỉ có ý nghĩa khi kết hợp với một trong những câu lệnh con:\n"
-" --delete    xoá\n"
+" --delete    xóa\n"
 " --diff      khác biệt\n"
 " --extract   rút trích\n"
 " --list      liệt kê\n"
@@ -1715,11 +1713,11 @@ msgstr ""
 
 #: src/tar.c:443
 msgid "archive is seekable"
-msgstr "có thể tìm nơi trong kho lưu"
+msgstr "có thể di chuyển vị trí đọc trong kho lưu"
 
 #: src/tar.c:445
 msgid "archive is not seekable"
-msgstr "không thể tìm nơi trong kho lưu"
+msgstr "không thể di chuyển vị trí đọc trong kho lưu"
 
 #: src/tar.c:447
 msgid "do not check device numbers when creating incremental archives"
@@ -1823,11 +1821,11 @@ msgstr "bắt buộc dùng TÊN làm nhóm sở hữu cho những tập tin thê
 
 #: src/tar.c:512
 msgid "use FILE to map file owner UIDs and names"
-msgstr ""
+msgstr "sử dụng TẬP TIN để ánh xạ MÃ SỐ chủ sở hữu tập tin và các tên"
 
 #: src/tar.c:514
 msgid "use FILE to map file owner GIDs and names"
-msgstr ""
+msgstr "sử dụng TẬP TIN để ánh xạ MÃ SỐ NHÓM sở hữu tập tin và các tên"
 
 #: src/tar.c:515 src/tar.c:700
 msgid "DATE-OR-FILE"
@@ -1840,7 +1838,7 @@ msgstr "đặt từ NGÀY-CỦA-TẬP-TIN thời gian mtime cho các tập tin �
 #: src/tar.c:518
 msgid ""
 "only set time when the file is more recent than what was given with --mtime"
-msgstr ""
+msgstr "chỉ đặt thời gian khi tập tin gần đây hơn cái mà đưa ra với --mtime"
 
 #: src/tar.c:519
 msgid "CHANGES"
@@ -1921,6 +1919,10 @@ msgstr "hủy hiệu ứng của tùy chọn “--delay-directory-restore”"
 #: src/tar.c:549
 msgid "ORDER"
 msgstr "THỨ_TỰ"
+
+#: src/tar.c:551
+msgid "directory sorting order: none (default), name or inode"
+msgstr "thứ tự sắp xếp thư mục: không (mặc định), tên hoặc inode"
 
 #: src/tar.c:553
 msgid "directory sorting order: none (default) or name"
@@ -2084,7 +2086,7 @@ msgstr "giống như “--format=posix”"
 
 #: src/tar.c:658
 msgid "keyword[[:]=value][,keyword[[:]=value]]..."
-msgstr "từ_khoá[[:]=giá_trị][,từ_khoá[[:]=giá_trị]]..."
+msgstr "từ_khóa[[:]=giá_trị][,từ_khóa[[:]=giá_trị]]…"
 
 #: src/tar.c:659
 msgid "control pax keywords"
@@ -2208,7 +2210,7 @@ msgstr "liệt kê một cách tỉ mỉ những tập tin được xử lý"
 
 #: src/tar.c:728
 msgid "KEYWORD"
-msgstr "TỪKHOÁ"
+msgstr "TỪKHÓA"
 
 #: src/tar.c:729
 msgid "warning control"
@@ -2323,43 +2325,43 @@ msgstr "tắt sử dụng một số tùy chọn có thể gây tai hại"
 
 #. TRANSLATORS: Both %s in this statement are replaced with
 #. option names.
-#: src/tar.c:846
+#: src/tar.c:845
 #, c-format
 msgid "'%s' cannot be used with '%s'"
 msgstr "“%s” không được dùng cùng với “%s”"
 
-#: src/tar.c:934
+#: src/tar.c:933
 msgid ""
 "You may not specify more than one '-Acdtrux', '--delete' or  '--test-label' "
 "option"
 msgstr ""
 "Chỉ cho phép đưa ra một tùy chọn “-Acdtrux”, “--delete” hoặc “--test-label”"
 
-#: src/tar.c:946
+#: src/tar.c:945
 msgid "Conflicting compression options"
 msgstr "Mâu thuẫn giữa các tùy chọn nén"
 
-#: src/tar.c:1005
+#: src/tar.c:1004
 #, c-format
 msgid "Unknown signal name: %s"
 msgstr "Không rõ tên tín hiệu: %s"
 
-#: src/tar.c:1029
+#: src/tar.c:1028
 msgid "Date sample file not found"
 msgstr "Không tìm thấy tập tin mẫu ngày tháng"
 
-#: src/tar.c:1037
+#: src/tar.c:1036
 #, c-format
 msgid "Substituting %s for unknown date format %s"
 msgstr "Đang thay thế %s cho dạng ngày tháng không rõ %s"
 
-#: src/tar.c:1066
+#: src/tar.c:1065
 #, c-format
 msgid "Option %s: Treating date '%s' as %s"
 msgstr "Tùy chọn %s: Đang xử lý ngày tháng “%s” như là %s"
 
-#: src/tar.c:1106 src/tar.c:1110 src/tar.c:1114 src/tar.c:1118 src/tar.c:1122
-#: src/tar.c:1126 src/tar.c:1129
+#: src/tar.c:1105 src/tar.c:1109 src/tar.c:1113 src/tar.c:1117 src/tar.c:1121
+#: src/tar.c:1125 src/tar.c:1129
 #, c-format
 msgid "filter the archive through %s"
 msgstr "lọc kho lưu qua %s"
@@ -2380,158 +2382,158 @@ msgstr ""
 msgid "Invalid owner or group ID"
 msgstr "ID của chủ sở hữu hay nhóm không đúng"
 
-#: src/tar.c:1348
+#: src/tar.c:1347
 msgid "Invalid blocking factor"
 msgstr "Nhân tố khối không đúng"
 
-#: src/tar.c:1469
+#: src/tar.c:1467
 msgid "Invalid tape length"
 msgstr "Chiều dài băng từ không đúng"
 
-#: src/tar.c:1483
+#: src/tar.c:1481
 msgid "Invalid incremental level value"
 msgstr "Giá trị mức gia số không hợp lệ"
 
-#: src/tar.c:1530
+#: src/tar.c:1527
 msgid "More than one threshold date"
 msgstr "Có nhiều hơn một ngưỡng ngày tháng"
 
-#: src/tar.c:1597 src/tar.c:1600
+#: src/tar.c:1594 src/tar.c:1597
 msgid "Invalid sparse version value"
 msgstr "Giá trị phiên bản sparse không hợp lệ"
 
-#: src/tar.c:1664
+#: src/tar.c:1661
 msgid "--atime-preserve='system' is not supported on this platform"
 msgstr "--atime-preserve=\"system\" không được hỗ trợ trên nền tảng này"
 
-#: src/tar.c:1689
+#: src/tar.c:1686
 msgid "--checkpoint value is not an integer"
 msgstr "giá trị “--checkpoint” không phải số nguyên"
 
-#: src/tar.c:1767
+#: src/tar.c:1764
 msgid "Invalid mode given on option"
 msgstr "Đưa ra chế độ không đúng trên tùy chọn"
 
-#: src/tar.c:1800
+#: src/tar.c:1797
 msgid "Invalid number"
 msgstr "Số không đúng"
 
-#: src/tar.c:1864
+#: src/tar.c:1861
 msgid "Invalid record size"
 msgstr "Kích thước bản ghi không đúng"
 
-#: src/tar.c:1867
+#: src/tar.c:1864
 #, c-format
 msgid "Record size must be a multiple of %d."
 msgstr "Kích thước bản ghi phải là bội số của %d."
 
-#: src/tar.c:1913
+#: src/tar.c:1910
 msgid "Invalid number of elements"
 msgstr "Số thứ tự của nguyên tố không đúng"
 
-#: src/tar.c:1938
+#: src/tar.c:1935
 msgid "Only one --to-command option allowed"
 msgstr "Cho phép chỉ một tùy chọn “--to-command”"
 
-#: src/tar.c:2026
+#: src/tar.c:2023
 #, c-format
 msgid "Malformed density argument: %s"
 msgstr "Tham số mật độ sai dạng: %s"
 
-#: src/tar.c:2052
+#: src/tar.c:2049
 #, c-format
 msgid "Unknown density: '%c'"
 msgstr "Không hiểu mật độ: “%c”"
 
-#: src/tar.c:2069
+#: src/tar.c:2066
 #, c-format
 msgid "Options '-[0-7][lmh]' not supported by *this* tar"
 msgstr "tar *này* không hỗ trợ tùy chọn “-[0-7][lmh]”"
 
-#: src/tar.c:2075
+#: src/tar.c:2073
 #, c-format
 msgid "%s:%lu: location of the error"
-msgstr ""
+msgstr "%s:%lu: vị trí của lỗi"
 
-#: src/tar.c:2078
-#, fuzzy, c-format
+#: src/tar.c:2076
+#, c-format
 msgid "error parsing %s"
-msgstr "Lỗi phân tích số gần “%s”"
+msgstr "lỗi phân tích cú pháp %s"
 
-#: src/tar.c:2092
+#: src/tar.c:2090
 msgid "[FILE]..."
-msgstr "[TẬP-TIN]..."
+msgstr "[TẬP_TIN]…"
 
-#: src/tar.c:2183
-#, fuzzy, c-format
+#: src/tar.c:2181
+#, c-format
 msgid "non-option arguments in %s"
-msgstr "tham số %s không hợp lệ với %s"
+msgstr "đối số không phải tùy chọn trong %s"
 
-#: src/tar.c:2198
-#, fuzzy, c-format
+#: src/tar.c:2196
+#, c-format
 msgid "cannot split TAR_OPTIONS: %s"
-msgstr "không thể chia tách chuỗi “%s”: %s"
+msgstr "không thể chia tách CÁC_TÙY_CHỌN_TAR: %s"
 
-#: src/tar.c:2293
+#: src/tar.c:2291
 #, c-format
 msgid "Old option '%c' requires an argument."
 msgstr "Tùy chọn cũ “%c” yêu cầu một tham số."
 
-#: src/tar.c:2369
+#: src/tar.c:2364
 msgid "--occurrence is meaningless without a file list"
 msgstr "“--occurrence” không có giá trị khi không đưa ra một danh sách tập tin"
 
-#: src/tar.c:2395
+#: src/tar.c:2390
 msgid "Multiple archive files require '-M' option"
 msgstr "Tập tin nhiều kho lưu yêu cầu tùy chọn “-M”"
 
-#: src/tar.c:2412
+#: src/tar.c:2407
 msgid "--level is meaningless without --listed-incremental"
 msgstr "Tùy chọn “--level” vô ích nếu không có “--listed-incremental”"
 
-#: src/tar.c:2429
+#: src/tar.c:2424
 #, c-format
 msgid "%s: Volume label is too long (limit is %lu byte)"
 msgid_plural "%s: Volume label is too long (limit is %lu bytes)"
 msgstr[0] "%s: Nhãn khối quá dài (giới hạn là %lu byte)"
 
-#: src/tar.c:2442
+#: src/tar.c:2437
 msgid "Cannot verify multi-volume archives"
 msgstr "Không thể kiểm tra kho lưu nhiều khối"
 
-#: src/tar.c:2444
+#: src/tar.c:2439
 msgid "Cannot verify compressed archives"
 msgstr "Không thể kiểm tra kho lưu đã nén"
 
-#: src/tar.c:2458
+#: src/tar.c:2453
 msgid "Cannot use multi-volume compressed archives"
 msgstr "Không thể sử dụng kho lưu nhiều khối đã nén"
 
-#: src/tar.c:2462
+#: src/tar.c:2457
 msgid "Cannot concatenate compressed archives"
 msgstr "Không thể ghép nối các kho nén"
 
-#: src/tar.c:2469
+#: src/tar.c:2464
 msgid "--clamp-mtime needs a date specified using --mtime"
-msgstr ""
+msgstr "--clamp-mtime cần xác định thời gian sử dụng --mtime"
 
-#: src/tar.c:2479
+#: src/tar.c:2474
 msgid "--pax-option can be used only on POSIX archives"
 msgstr "“--pax-option” chỉ dùng được trên kho lưu POSIX"
 
-#: src/tar.c:2486
+#: src/tar.c:2481
 msgid "--acls can be used only on POSIX archives"
 msgstr "“--acls” chỉ dùng được trên kho lưu POSIX"
 
-#: src/tar.c:2491
+#: src/tar.c:2486
 msgid "--selinux can be used only on POSIX archives"
 msgstr "“--selinux” chỉ dùng được trên kho lưu POSIX"
 
-#: src/tar.c:2496
+#: src/tar.c:2491
 msgid "--xattrs can be used only on POSIX archives"
 msgstr "“--xattrs” chỉ dùng được trên kho lưu POSIX"
 
-#: src/tar.c:2545
+#: src/tar.c:2540
 msgid ""
 "Cannot deduce top-level directory name; please set it explicitly with --one-"
 "top-level=DIR"
@@ -2539,33 +2541,29 @@ msgstr ""
 "Không thể suy diễn tên thư mục cấp cao nhất; hãy đặt nó rõ ràng bằng tùy "
 "chọn --one-top-level=THƯ-MỤC"
 
-#: src/tar.c:2578
+#: src/tar.c:2573
 msgid "Volume length cannot be less than record size"
 msgstr "Chiều dài khối tin không thể nhỏ hơn kích cỡ mục ghi"
 
-#: src/tar.c:2602
+#: src/tar.c:2597
 msgid "Cowardly refusing to create an empty archive"
 msgstr "Từ chối tạo một kho lưu trống rỗng"
 
-#: src/tar.c:2628
+#: src/tar.c:2623
 msgid "Options '-Aru' are incompatible with '-f -'"
 msgstr "Các tùy chọn “-Aru” không tương thích với “-f -”"
 
-#: src/tar.c:2716
+#: src/tar.c:2711
 msgid ""
 "You must specify one of the '-Acdtrux', '--delete' or '--test-label' options"
 msgstr ""
 "Bạn phải chỉ ra một trong số các tùy chọn “-Acdtrux”, “--delete” hoặc “--"
 "test-label”"
 
-#: src/tar.c:2773
+#: src/tar.c:2768
 #, c-format
 msgid "Exiting with failure status due to previous errors"
 msgstr "Đang thoát với trạng thái thất bại do lỗi xảy ra trước"
-
-#: src/tar.c:551
-msgid "directory sorting order: none (default), name or inode"
-msgstr "thứ tự sắp xếp thư mục: không (mặc định), tên hoặc inode"
 
 #: src/update.c:87
 #, c-format
@@ -2616,12 +2614,12 @@ msgstr "Phần đầu mở rộng dạng sai: thiếu dòng mới"
 #: src/xheader.c:741
 #, c-format
 msgid "Ignoring unknown extended header keyword '%s'"
-msgstr "Bỏ qua từ khoá phần đầu mở rộng không rõ “%s”"
+msgstr "Bỏ qua từ khóa phần đầu mở rộng không rõ “%s”"
 
 #: src/xheader.c:1023
 #, c-format
 msgid "Generated keyword/value pair is too long (keyword=%s, length=%s)"
-msgstr "Cặp từ khoá/giá trị đã tạo ra quá dài (từ khoá=%s, chiều dài=%s)"
+msgstr "Cặp từ khóa/giá trị đã tạo ra quá dài (từ khóa=%s, chiều dài=%s)"
 
 #. TRANSLATORS: The first %s is the pax extended header keyword
 #. (atime, gid, etc.).
@@ -2630,22 +2628,22 @@ msgstr "Cặp từ khoá/giá trị đã tạo ra quá dài (từ khoá=%s, chi�
 msgid "Extended header %s=%s is out of range %s..%s"
 msgstr "Phần đầu mở rộng %s=%s nằm ngoài phạm vi (%s..%s)"
 
-#: src/xheader.c:1104 src/xheader.c:1137 src/xheader.c:1469
+#: src/xheader.c:1104 src/xheader.c:1137 src/xheader.c:1487
 #, c-format
 msgid "Malformed extended header: invalid %s=%s"
 msgstr "Phần đầu mở rộng dạng sai: %s=%s không hợp lệ"
 
-#: src/xheader.c:1422 src/xheader.c:1447 src/xheader.c:1502
+#: src/xheader.c:1440 src/xheader.c:1465 src/xheader.c:1520
 #, c-format
 msgid "Malformed extended header: excess %s=%s"
 msgstr "Phần đầu mở rộng dạng sai: %s=%s thừa"
 
-#: src/xheader.c:1515
+#: src/xheader.c:1533
 #, c-format
 msgid "Malformed extended header: invalid %s: unexpected delimiter %c"
 msgstr "Phần đầu mở rộng dạng sai: %s không hợp lệ: không cần dấu phân cách %c"
 
-#: src/xheader.c:1525
+#: src/xheader.c:1543
 #, c-format
 msgid "Malformed extended header: invalid %s: odd number of values"
 msgstr "Phần đầu mở rộng dạng sai: %s không hợp lệ: số giá trị lẻ"
@@ -2745,7 +2743,7 @@ msgstr "Di chuyển vị trí đọc tới hiệu số đã cho trước khi ghi
 
 #: tests/genfile.c:152
 msgid "Suppress non-fatal diagnostic messages"
-msgstr ""
+msgstr "Cấm các lời nhắn chuẩn đoán không nghiêm trọng"
 
 #: tests/genfile.c:156
 msgid "File statistics options:"
@@ -2753,7 +2751,9 @@ msgstr "Tùy chọn thống kê tập tin:"
 
 #: tests/genfile.c:159
 msgid "Print contents of struct stat for each given file. Default FORMAT is: "
-msgstr "In ra kết xuất struct stat về mỗi tập tin đã cho. ĐỊNH DẠNG mặc định: "
+msgstr ""
+"In nội dung của cấu trúc stat cho từng tập tin đã cho. ĐỊNH DẠNG mặc định "
+"là: "
 
 #: tests/genfile.c:166
 msgid "Synchronous execution options:"
@@ -2818,139 +2818,170 @@ msgid "Execute COMMAND"
 msgstr "Thực hiện LỆNH"
 
 #: tests/genfile.c:199
-msgid "Unlink FILE"
-msgstr "Bỏ liên kết TẬP_TIN"
+msgid "Delete FILE"
+msgstr ""
 
-#: tests/genfile.c:249
+#: tests/genfile.c:250
 #, c-format
 msgid "Invalid size: %s"
 msgstr "Kích cỡ không hợp lệ: %s"
 
-#: tests/genfile.c:254
+#: tests/genfile.c:255
 #, c-format
 msgid "Number out of allowed range: %s"
 msgstr "Số nằm ngoài phạm vi cho phép: %s"
 
-#: tests/genfile.c:257
+#: tests/genfile.c:258
 #, c-format
 msgid "Negative size: %s"
 msgstr "Kích cỡ bị âm: %s"
 
-#: tests/genfile.c:270 tests/genfile.c:637
+#: tests/genfile.c:271 tests/genfile.c:642
 #, c-format
 msgid "stat(%s) failed"
 msgstr "stat(%s) bị lỗi"
 
-#: tests/genfile.c:273
+#: tests/genfile.c:274
 #, c-format
 msgid "requested file length %lu, actual %lu"
 msgstr "yêu cầu chiều dài tập tin %lu mà có %lu"
 
-#: tests/genfile.c:277
+#: tests/genfile.c:278
 #, c-format
 msgid "created file is not sparse"
 msgstr "đã tạo tập tin không phải thưa thớt (sparse)"
 
-#: tests/genfile.c:370
+#: tests/genfile.c:375
 #, c-format
 msgid "Error parsing number near `%s'"
 msgstr "Lỗi phân tích số gần “%s”"
 
-#: tests/genfile.c:376
+#: tests/genfile.c:381
 #, c-format
 msgid "Unknown date format"
 msgstr "Không rõ định dạng ngày tháng"
 
-#: tests/genfile.c:400
+#: tests/genfile.c:405
 msgid "[ARGS...]"
-msgstr "[Đ.SỐ...]"
+msgstr "[ĐSỐ…]"
 
-#: tests/genfile.c:437 tests/genfile.c:477 tests/genfile.c:578
-#: tests/genfile.c:741 tests/genfile.c:755
+#: tests/genfile.c:442 tests/genfile.c:482 tests/genfile.c:583
+#: tests/genfile.c:746 tests/genfile.c:760
 #, c-format
 msgid "cannot open `%s'"
 msgstr "không thể mở “%s”"
 
-#: tests/genfile.c:443
+#: tests/genfile.c:448
 msgid "cannot seek"
-msgstr "không thể tìm nơi"
+msgstr "không thể di chuyển vị trí đọc"
 
-#: tests/genfile.c:460
+#: tests/genfile.c:465
 #, c-format
 msgid "file name contains null character"
 msgstr "tên tập tin chứa ký tự null"
 
-#: tests/genfile.c:573
+#: tests/genfile.c:578
 #, c-format
 msgid "cannot generate sparse files on standard output, use --file option"
 msgstr ""
 "không thể tạo ra tập tin sparse trên thiết bị gõ chuẩn: dùng tùy chọn “--"
 "file”"
 
-#: tests/genfile.c:664
+#: tests/genfile.c:669
 #, c-format
 msgid "incorrect mask (near `%s')"
 msgstr "mặt nạ không đúng (gần “%s”)"
 
-#: tests/genfile.c:670 tests/genfile.c:703
+#: tests/genfile.c:675 tests/genfile.c:708
 #, c-format
 msgid "Unknown field `%s'"
 msgstr "Không rõ trường “%s”"
 
-#: tests/genfile.c:730
+#: tests/genfile.c:735
 #, c-format
 msgid "cannot set time on `%s'"
 msgstr "không thể đặt thời gian trên “%s”"
 
-#: tests/genfile.c:760
+#: tests/genfile.c:765
 #, c-format
 msgid "cannot truncate `%s'"
 msgstr "không thể cắt ngắn “%s”"
 
-#: tests/genfile.c:769
+#: tests/genfile.c:774
 #, c-format
 msgid "command failed: %s"
 msgstr "Câu lệnh không thành công: %s"
 
-#: tests/genfile.c:774
+#: tests/genfile.c:781
+#, fuzzy, c-format
+msgid "cannot stat `%s'"
+msgstr "không thể cắt ngắn “%s”"
+
+#: tests/genfile.c:785
+#, fuzzy, c-format
+msgid "cannot remove directory `%s'"
+msgstr "không thể đặt thời gian trên “%s”"
+
+#: tests/genfile.c:788
 #, c-format
 msgid "cannot unlink `%s'"
 msgstr "không thể bỏ liên kết “%s”"
 
-#: tests/genfile.c:901
+#: tests/genfile.c:918
 #, c-format
 msgid "Command exited successfully\n"
 msgstr "Lệnh đã thoát thành công\n"
 
-#: tests/genfile.c:903
+#: tests/genfile.c:920
 #, c-format
 msgid "Command failed with status %d\n"
 msgstr "Lệnh bị lỗi với trạng thái thoát %d\n"
 
-#: tests/genfile.c:907
+#: tests/genfile.c:924
 #, c-format
 msgid "Command terminated on signal %d\n"
 msgstr "Lệnh đã chấm dứt khi nhận tín hiệu %d\n"
 
-#: tests/genfile.c:909
+#: tests/genfile.c:926
 #, c-format
 msgid "Command stopped on signal %d\n"
 msgstr "Lệnh đã dừng chạy khi nhận tín hiệu %d\n"
 
-#: tests/genfile.c:912
+#: tests/genfile.c:929
 #, c-format
 msgid "Command dumped core\n"
 msgstr "Lệnh đã đổ lõi\n"
 
-#: tests/genfile.c:915
+#: tests/genfile.c:932
 #, c-format
 msgid "Command terminated\n"
 msgstr "Lệnh đã chấm dứt\n"
 
-#: tests/genfile.c:947
+#: tests/genfile.c:964
 #, c-format
 msgid "--stat requires file names"
 msgstr "“--stat” cần tên tập tin"
+
+#~ msgid "%.*s: ARGP_HELP_FMT parameter must be positive"
+#~ msgstr "%.*s: tham số ARGP_HELP_FMT phải là số dương"
+
+#~ msgid "%s: option '--%s' doesn't allow an argument\n"
+#~ msgstr "%s: tùy chọn “--%s” không cho phép đối số\n"
+
+#~ msgid "%s: unrecognized option '--%s'\n"
+#~ msgstr "%s: không nhận ra tùy chọn “--%s”\n"
+
+#~ msgid "%s: option '-W %s' is ambiguous\n"
+#~ msgstr "%s: tùy chọn “-W %s” vẫn chưa rõ ràng\n"
+
+#~ msgid "%s: option '-W %s' doesn't allow an argument\n"
+#~ msgstr "%s: tùy chọn “-W %s” không cho phép đối số\n"
+
+#~ msgid "%s: option '-W %s' requires an argument\n"
+#~ msgstr "%s: tùy chọn “-W %s” yêu cầu một đối số\n"
+
+#~ msgid "Unlink FILE"
+#~ msgstr "Bỏ liên kết TẬP_TIN"
 
 #~ msgid "same as both -p and -s"
 #~ msgstr "giống như khi có hai tùy chọn -p và -s"
@@ -3000,4 +3031,4 @@ msgstr "“--stat” cần tên tập tin"
 #~ msgstr "Không thể ghi nhớ thư mục làm việc"
 
 #~ msgid "%s: Directory removed before we read it"
-#~ msgstr "%s: Thư mục bị xoá trước khi chúng ta đọc nó"
+#~ msgstr "%s: Thư mục bị xóa trước khi chúng ta đọc nó"
