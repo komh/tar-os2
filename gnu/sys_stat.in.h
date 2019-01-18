@@ -54,6 +54,13 @@
 
 /* The definition of _GL_WARN_ON_USE is copied here.  */
 
+/* Before doing "#define mknod rpl_mknod" below, we need to include all
+   headers that may declare mknod().  OS/2 kLIBC declares mknod() in
+   <unistd.h>, not in <sys/stat.h>.  */
+#ifdef __KLIBC__
+# include <unistd.h>
+#endif
+
 /* Before doing "#define mkdir rpl_mkdir" below, we need to include all
    headers that may declare mkdir().  Native Windows platforms declare mkdir
    in <io.h> and/or <direct.h>, not in <unistd.h>.  */
