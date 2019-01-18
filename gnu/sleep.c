@@ -1,5 +1,5 @@
 /* Pausing execution of the current thread.
-   Copyright (C) 2007, 2009-2017 Free Software Foundation, Inc.
+   Copyright (C) 2007, 2009-2019 Free Software Foundation, Inc.
    Written by Bruno Haible <bruno@clisp.org>, 2007.
 
    This program is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@
 
 #include "verify.h"
 
-#if (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
+#if defined _WIN32 && ! defined __CYGWIN__
 
 # define WIN32_LEAN_AND_MEAN  /* avoid including junk */
 # include <windows.h>

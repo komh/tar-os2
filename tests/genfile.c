@@ -1,11 +1,9 @@
-/* Generate a file containing some preset patterns.
-   Print statistics for existing files.
+/* Multi-purpose tool for tar and cpio testsuite.
 
-   Copyright (C) 1995, 1996, 1997, 2001, 2003, 2004, 2005, 2006, 2007,
-   2008, 2009 Free Software Foundation, Inc.
+   Copyright (C) 1995-1997, 2001-2018 Free Software Foundation, Inc.
 
    François Pinard <pinard@iro.umontreal.ca>, 1995.
-   Sergey Poznyakoff <gray@mirddin.farlep.net>, 2004, 2005, 2006, 2007, 2008.
+   Sergey Poznyakoff <gray@gnu.org>, 2004-2018.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -18,8 +16,7 @@
    General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software Foundation,
-   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
 #include <system.h>
@@ -96,10 +93,8 @@ size_t block_size = 512;
 /* Block buffer for sparse file */
 char *buffer;
 
-/* Number of arguments and argument vector for mode == mode_exec */
-int exec_argc;
-char **exec_argv;
-char *checkpoint_option;
+/* Checkpoint granularity for mode == mode_exec */
+char *checkpoint_granularity;
 
 /* Time for --touch option */
 struct timespec touch_time;
@@ -165,8 +160,8 @@ static struct argp_option options[] = {
   {NULL, 0, NULL, 0,
    N_("Synchronous execution options:"), GRP},
 
-  {"run", 'r', N_("OPTION"), OPTION_ARG_OPTIONAL,
-   N_("Execute ARGS. Useful with --checkpoint and one of --cut, --append, --touch, --unlink"),
+  {"run", 'r', N_("N"), OPTION_ARG_OPTIONAL,
+   N_("Execute ARGS. Trigger checkpoints every Nth record (default 1). Useful with --checkpoint and one of --cut, --append, --touch, --unlink"),
    GRP+1 },
   {"checkpoint", OPT_CHECKPOINT, N_("NUMBER"), 0,
    N_("Perform given action (see below) upon reaching checkpoint NUMBER"),
@@ -351,11 +346,7 @@ parse_opt (int key, char *arg, struct argp_state *state)
 
     case 'r':
       mode = mode_exec;
-      if (arg)
-	{
-	  argcv_get (arg, "", NULL, &exec_argc, &exec_argv);
-	  checkpoint_option = "--checkpoint";
-	}
+      checkpoint_granularity = arg ? arg : "1";
       break;
 
     case 'T':
@@ -822,10 +813,10 @@ process_checkpoint (size_t n)
     }
 }
 
-#define CHECKPOINT_TEXT "Write checkpoint"
+#define CHECKPOINT_TEXT "genfile checkpoint"
 
 void
-exec_command (void)
+exec_command (int argc, char **argv)
 {
   int status;
   pid_t pid;
@@ -833,20 +824,28 @@ exec_command (void)
   char *p;
   FILE *fp;
   char buf[128];
-
+  int xargc;
+  char **xargv;
+  int i;
+  char checkpoint_option[80];
+  
   /* Insert --checkpoint option.
-     FIXME: This assumes that exec_argv does not use traditional tar options
+     FIXME: This assumes that argv does not use traditional tar options
      (without dash).
-     FIXME: There is no way to set checkpoint argument (granularity).
   */
-  if (checkpoint_option)
-    {
-      exec_argc++;
-      exec_argv = xrealloc (exec_argv, (exec_argc + 1) * sizeof (*exec_argv));
-      memmove (exec_argv+2, exec_argv+1,
-	       (exec_argc - 1) * sizeof (*exec_argv));
-      exec_argv[1] = checkpoint_option;
-    }
+  xargc = argc + 5;
+  xargv = xcalloc (xargc + 1, sizeof (xargv[0]));
+  xargv[0] = argv[0];
+  snprintf (checkpoint_option, sizeof (checkpoint_option),
+	    "--checkpoint=%s", checkpoint_granularity);
+  xargv[1] = checkpoint_option;
+  xargv[2] = "--checkpoint-action";
+  xargv[3] = "echo=" CHECKPOINT_TEXT " %u";
+  xargv[4] = "--checkpoint-action";
+  xargv[5] = "wait=SIGUSR1";
+
+  for (i = 1; i <= argc; i++)
+    xargv[i + 5] = argv[i];
 
 #ifdef SIGCHLD
   /* System V fork+wait does not work if SIGCHLD is ignored.  */
@@ -872,8 +871,8 @@ exec_command (void)
       /* Make sure POSIX locale is used */
       setenv ("LC_ALL", "POSIX", 1);
 
-      execvp (exec_argv[0], exec_argv);
-      error (EXIT_FAILURE, errno, "execvp %s", exec_argv[0]);
+      execvp (xargv[0], xargv);
+      error (EXIT_FAILURE, errno, "execvp %s", xargv[0]);
     }
 
   /* Master */
@@ -900,6 +899,7 @@ exec_command (void)
 	      if (!(*end && !isspace ((unsigned char) *end)))
 		{
 		  process_checkpoint (n);
+		  kill (pid, SIGUSR1);
 		  continue;
 		}
 	    }
@@ -985,14 +985,7 @@ main (int argc, char **argv)
       break;
 
     case mode_exec:
-      if (!checkpoint_option)
-	{
-	  exec_argc = argc;
-	  exec_argv = argv;
-	}
-      else if (argc)
-	error (EXIT_FAILURE, 0, _("too many arguments"));
-      exec_command ();
+      exec_command (argc, argv);
       break;
 
     default:

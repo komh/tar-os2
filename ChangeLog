@@ -1,3 +1,469 @@
+2019-01-02  Sergey Poznyakoff  <gray@gnu.org>
+
+	Version 1.31
+
+2018-12-28  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix the difflink test
+
+	Hardlinking a symlink produces hardlink on BSD and symlink
+	on GNU/Linux. Avoid the ambiguity.
+
+	* tests/difflink.at: Create hard link from a regular file.
+
+2018-12-28  Sergey Poznyakoff  <gray@gnu.org>
+
+	Work over a bug in gnulib error()
+
+	The error() function from glibc correctly prefixes each message it
+	prints with program_name as set by set_program_name. However, its
+	replacement from gnulib, which is linked in on systems where this
+	function is not available, prints the name returned by
+	getprogname()
+	instead. Due to this messages output by tar subprocess (which
+	sets its
+	program name to 'tar (child)') become indiscernible from those
+	printed
+	by the main process. In particular, this breaks the remfiles01.at
+	and
+	remfiles02.at test cases.
+
+	* configure.ac: Define ENABLE_ERROR_PRINT_PROGNAME if using
+	gnulib error().
+	* src/tar.c [ENABLE_ERROR_PRINT_PROGNAME] (tar_print_progname):
+	New function.
+	(main) [ENABLE_ERROR_PRINT_PROGNAME]: Set error_print_progname.
+
+2018-12-28  Sergey Poznyakoff  <gray@gnu.org>
+
+	Implement the "wait" checkpoint action.
+
+	This action instructs tar to pause until given signal is
+	delivered.
+	The newer genfile tool uses this action for communication between
+	genfile and tar in exec mode. This eliminates race conitions and
+	speeds up the tests based on exec mode.
+
+	* doc/tar.texi: Document changes.
+	* paxutils: Upgrade.
+	* src/checkpoint.c: Implement the wait action.
+	* src/common.h (decode_signal): New proto.
+	* src/tar.c (decode_signal): New function.
+	(set_stat_signal): Rewrite.
+	* tests/dirrem01.at: Adjust genfile and tar command line arguments
+	to use the new feature.
+	* tests/dirrem02.at: Likewise.
+	* tests/filerem01.at: Likewise.
+	* tests/filerem02.at: Likewise.
+	* tests/grow.at: Likewise.
+	* tests/sptrcreat.at: Likewise.
+	* tests/sptrdiff00.at: Likewise.
+	* tests/sptrdiff01.at: Likewise.
+	* tests/truncate.at: Likewise.
+
+2018-12-27  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix CVE-2018-20482
+
+	* NEWS: Update.
+	* src/sparse.c (sparse_dump_region): Handle short read condition.
+	(sparse_extract_region,check_data_region): Fix dumped_size
+	calculation.
+	Handle short read condition.
+	(pax_decode_header): Fix dumped_size calculation.
+	* tests/Makefile.am: Add new testcases.
+	* tests/testsuite.at: Likewise.
+
+	* tests/sptrcreat.at: New file.
+	* tests/sptrdiff00.at: New file.
+	* tests/sptrdiff01.at: New file.
+
+2018-12-21  Sergey Poznyakoff  <gray@gnu.org>
+
+	Disallow modifications to the global pax extended header in
+	update mode.
+
+	Updating global headers in update mode is not possible, because:
+
+	1) If the original archive was not in PAX format, writing the
+	global header would overwrite first member header (and eventually
+	data blocks) in the archive.
+	2) Otherwise, using the --pax-option can make the updated header
+	occupy more blocks than the original one, which would lead to the
+	same effect as in 1.
+
+	This also fixes
+	  http://lists.gnu.org/archive/html/bug-tar/2018-12/msg00007.html
+
+	* src/xheader.c (xheader_forbid_global): New function.
+	* src/common.h (xheader_forbid_global): New prototype.
+	* src/update.c (update_archive): Use xheader_forbid_global,
+	instead
+	of trying to write global extended header record.
+
+2018-12-21  Sergey Poznyakoff  <gray@gnu.org>
+
+	Bugfix
+
+	Bug reported in
+	  http://lists.gnu.org/archive/html/bug-tar/2018-12/msg00014.html
+
+	* src/names.c (collect_and_sort_names): Fix iteration over
+	namelist.
+
+2018-12-21  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix semantics of -K used together with explicit member names.
+
+	This also fixes the bug reported in
+	  http://lists.gnu.org/archive/html/bug-tar/2018-12/msg00012.html
+
+	* src/common.h (starting_file_option): Describe the variable.
+	* src/names.c (add_starting_file): New function.
+	(name_match): Ignore everything before the member indicated by the
+	--starting-file option
+	* src/tar.c: Use add_starting_file to handle the -K option.
+
+2018-12-21  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix error handling when reading incremental snapshots
+
+	Bug reported in
+	  http://lists.gnu.org/archive/html/bug-tar/2018-12/msg00008.html
+
+	* incremen.c (read_incr_db_01): Don't try to continue after
+	errors.
+
+2018-12-21  Sergey Poznyakoff  <gray@gnu.org>
+
+	Reject pax options starting with equals sign
+
+	Bug reported in
+	  http://lists.gnu.org/archive/html/bug-tar/2018-12/msg00010.html
+
+	* xheader.c (xheader_set_keyword_equal): Bail out if the keyword
+	starts
+	with =
+
+2018-12-21  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix buffer overflow
+
+	Bug reported in
+	  http://lists.gnu.org/archive/html/bug-tar/2018-12/msg00011.html
+
+	* src/xheader.c (xheader_format_name): fix length calculation
+
+2018-12-21  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix improper memory access
+
+	Bug reported in
+	  http://lists.gnu.org/archive/html/bug-tar/2018-12/msg00009.html
+
+	* src/transform.c (parse_transform_expr): Check if re is not empty
+	before accessing its last byte.
+
+2018-11-24  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix parsing of ACLs
+
+	Text returned by acl_to_text can contain comments (introduced
+	by #).
+	Strip comments and horizontal tabs prior to storing ACLs in PAX
+	headers.
+
+	* src/xattrs.c (xattrs_acls_cleanup): New function.
+	(xattrs__acls_get_a,xattrs__acls_get_d): Use xattrs_acls_cleanup.
+
+2018-11-24  Sergey Poznyakoff  <gray@gnu.org>
+
+	Don't try to read past the end of header string fields
+
+	* src/common.h (assign_string_n): New proto.
+	(ASSIGN_STRING_N): New macro.
+	* src/misc.c (assign_string_n): New function.
+	* gnulib.modules: Add strnlen.
+	* src/buffer.c: Use assign_string_n where appropriate.
+	* src/list.c: Likewise.
+
+2018-11-12  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix verbose ACL listing
+
+	* src/xattrs.c (acls_one_line): Advance pos.
+	(xattrs_print): Insert a comma between ACL and default ACL if both
+	are non-empty.
+
+2018-10-29  Paul Eggert  <eggert@cs.ucla.edu>
+
+	tar: fix numbered backup bug
+
+	* src/misc.c (maybe_backup_file): Pass chdir_fd, not AT_FDCWD,
+	to find_backup_file_name.  This fixes a bug whereby the wrong
+	backup file name was chosen for numbered backups.
+
+2018-10-29  Paul Eggert  <eggert@cs.ucla.edu>
+
+	* src/tar.c (expand_pax_option): Pacify recent GCC.
+
+2018-10-29  Paul Eggert  <eggert@cs.ucla.edu>
+
+	build: update gnulib submodule to latest
+
+	* src/misc.c (maybe_backup_file): Adjust to Gnulib change.
+
+2018-08-02  Sergey Poznyakoff  <gray@gnu.org>
+
+	Minor fixes in wordsplit.c
+
+2018-08-02  Paul Eggert  <eggert@cs.ucla.edu>
+
+	build: update gnulib submodule to latest
+
+2018-07-31  Sergey Poznyakoff  <gray@gnu.org>
+
+	Silence gcc warnings in wordsplit
+
+2018-07-31  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix double-free introduced by 577dc345
+
+	* src/utf8.c (utf8_convert): Don't store freed value in *output
+
+2018-07-31  Pavel Raiskup  <praiskup@redhat.com>
+
+	Report race on systems without O_DIRECTORY
+
+	* src/names.c (collect_and_sort_names): Report ENOTDIR after
+	successful fstat() but !S_ISDIR.
+
+2018-07-31  Pavel Raiskup  <praiskup@redhat.com>
+
+	Avoid some resource leaks
+
+	* src/incremen.c (store_rename): Free temp_name, leaked before for
+	each renamed directory with --listed-incremental.
+	* src/transform.c (add_literal_segment): Tighten arguments by
+	const.
+	(parse_transform_expr): Free 'str', leaked storage for each
+	--transform option before.
+	* src/utf8.c (utf8_convert): Deallocate buffer for failed iconv()
+	call so callers don't have to.
+
+2018-07-31  Sergey Poznyakoff  <gray@gnu.org>
+
+	Sync wordsplit and paxutils with the most recent versions
+
+2018-06-14  Paul Eggert  <eggert@cs.ucla.edu>
+
+	* doc/tar.1: Fix font typo noted by esr.
+
+2018-05-16  Paul Eggert  <eggert@cs.ucla.edu>
+
+	* doc/tar.1: Don't refer to nonexistent tar(5).
+
+2018-04-13  Jim Meyering  <meyering@fb.com>
+
+	--one-top-level: avoid a heap-buffer-overflow
+
+	* NEWS: Mention this.
+	* src/suffix.c (strip_compression_suffix): Fix string comparison
+	guard.
+	Without this change, some ASAN-enabled test runs would fail
+	with the
+	following.  Also, strip an additional .tar suffix only if
+	the just-
+	stripped suffix did not match /^\.t/".
+
+	==30815==ERROR: AddressSanitizer: heap-buffer-overflow on
+	address 0x6020000002ed at pc 0x00000049d1f4 bp 0x7ffeb5906d50
+	sp 0x7ffeb5906500
+	READ of size 1 at 0x6020000002ed thread T0
+	SCARINESS: 12 (1-byte-read-heap-buffer-overflow)
+	    #0 0x49d1f3 in __interceptor_strncmp
+	    /j/gcc/libsanitizer/sanitizer_common/sanitizer_common_interceptors.inc:407
+	    #1 0x5670f3 in strip_compression_suffix
+	    /j/tar/src/suffix.c:107
+	    #2 0x575788 in decode_options /j/tar/src/tar.c:2545
+	    #3 0x5760c0 in main /j/tar/src/tar.c:2708
+	    #4 0x7f105090df29 in __libc_start_main ../csu/libc-start.c:308
+	    #5 0x408629 in _start (/j/tar/src/tar+0x408629)
+
+	0x6020000002ed is located 3 bytes to the left of 6-byte region
+	[0x6020000002f0,0x6020000002f6)
+	allocated by thread T0 here:
+	    #0 0x4d0710 in __interceptor_malloc
+	    /j/gcc/libsanitizer/asan/asan_malloc_linux.cc:86
+	    #1 0x4908ad in __interceptor_strndup
+	    /j/gcc/libsanitizer/sanitizer_common/sanitizer_common_interceptors.inc:326
+	    #2 0x5cbcbd in xstrndup /j/tar/gnu/xstrndup.c:32
+	    #3 0x5a325b in base_name /j/tar/gnu/basename.c:57
+	    #4 0x575772 in decode_options /j/tar/src/tar.c:2544
+	    #5 0x5760c0 in main /j/tar/src/tar.c:2708
+	    #6 0x7f105090df29 in __libc_start_main ../csu/libc-start.c:308
+
+2018-04-07  Andrew Hounsell  <andrewhounsell@gmail.com>
+
+	Tiny fix
+
+	* doc/snapshot.texi: Fix a typo
+	* scripts/tar-snapshot-edit: Fix a typo
+
+2018-04-07  Jim Meyering  <jim@meyering.net>
+
+	tests: avoid test failure with non-ancient autoconf
+
+	Running "make check" would fail with this:
+	  T-nonl.at:30: error: m4_divert_push: cannot change diversion
+	  to `GROW' inside m4_expand
+	* tests/T-nonl.at: Use printf in place of AS_ECHO_N.
+	These days, printf should work for everyone.
+
+2018-04-07  Jim Meyering  <meyering@fb.com>
+
+	maint: avoid -Wstringop-truncation warnings from upcoming GCC8
+
+	* src/create.c (start_private_header, start_header): Convert
+	trivial uses of strncpy to memcpy, to avoid warnings like this:
+	In function 'strncpy',
+	    inlined from 'start_private_header' at create.c:522:3:
+	/usr/include/bits/string_fortified.h:106:10: warning: \
+	  '__builtin_strncpy' output truncated before terminating nul \
+	  copying 2 bytes from a string of the same length \
+	  [-Wstringop-truncation]
+
+2018-04-07  Jim Meyering  <meyering@fb.com>
+
+	maint: avoid -Wstringop-truncation warnings upcoming GCC8
+
+	* src/buffer.c (gnu_add_multi_volume_header): Convert a use of
+	strncpy to memcpy, to avoid this warning:
+	In function 'strncpy',
+	    inlined from 'gnu_add_multi_volume_header' at buffer.c:1782:3,
+	    ...
+	/usr/include/bits/string_fortified.h:106:10: error:
+	'__builtin_strncpy'\
+	   specified bound 100 equals destination size \
+	   [-Werror=stringop-truncation]
+
+2018-04-07  Jim Meyering  <meyering@fb.com>
+
+	maint: avoid warnings from upcoming GCC8
+
+	* src/transform.c (_single_transform_name_to_obstack): Mark with
+	FALLTHROUGH statement rather than /* FALL THROUGH */ comment.
+	Only the former works with gcc-8.
+	* src/extract.c (maybe_recoverable): Call abort to tell gcc-8 that
+	this code is unreachable.
+
+2018-04-07  Sergey Poznyakoff  <gray@gnu.org>
+
+	Rewrite struct tm formatting
+
+	* src/list.c (tartime): Use strftime instead of manually
+	formatting
+	fields of the struct tm. This should also suppress some gcc
+	warnings.
+
+2018-04-07  Jim Meyering  <jim@meyering.net>
+
+	tests: add coverage for new --zstd and all other compression tools
+
+	* tests/compress.at.in: New file: template from which each
+	per-compression-tool test is derived.
+	* tests/Makefile.am (TESTSUITE_AT): Add it.
+	(EXTRA_DIST): Add compress.at.in.
+	(compress-*.at): New rules to generate a file/tests for each
+	compression tool.
+	* tests/testsuite.at (Compression): Add each of these generated
+	files in a new section.
+	* tests/.gitignore: Ignore the new generated files.
+
+2018-03-18  Aaron Schrab  <aaron@schrab.com>
+
+	Fix typo
+
+2018-03-18  Sergey Poznyakoff  <gray@gnu.org>
+
+	Version 1.30.90
+
+	* NEWS: Update.
+	* configure.ac: Update.
+	* THANKS: Add Adam Borowski.
+
+2018-03-18  Adam Borowski  <kilobyte@angband.pl>
+
+	Add support for zstd compression
+
+	* configure.ac (zstd): Register compression program.
+	* doc/tar.1: Mention --zstd.
+	* doc/tar.texi: Document zstd support.
+	* src/buffer.c: Register zstd compression.
+	* src/suffix.c: Add suffixes zst and tzst.
+	* src/tar.c: New compression option --zstd.
+
+2018-03-18  Pavel Raiskup  <praiskup@redhat.com>
+
+	tests: fix race in dirrem01 and dirrem02
+
+	Previously the '--checkpoint-action=echo' was triggered after
+	'--checkpoint-action=sleep=1' - so the order of events *usually*
+	was (for --format='gnu'):
+
+	  ...
+	  1. checkpoint handler before write of 'dir/sub' member
+	  2. one-second delay
+	  3. stderr write: 'tar: Write checkpoint 3'
+	  4. write the member 'dir/sub' into the archive
+	  5. check that the member's ctime has not been changed
+	  6. genfile's detecting 'Write checkpoint', doing unlink
+	  ...
+
+	But sometimes, the genfile was fast enough to win the race and
+	unlinked the directory before the member was written into the
+	archive (IOW, the order was 1-2-3-6-4-5).  This led to the
+	occasional warning 'tar: dir/sub: file changed as we read it'.
+
+	Swap the order of 'sleep=1' and 'echo' actions so the genfile
+	utility has (hopefully) enough time to do the unlink before
+	writing the file into the archive (enforce 1-2-3-6-4-5 order).
+
+	* tests/dirrem01.at: Swap 'sleep=1' and 'echo' actions.
+	* tests/dirrem02.at: Likewise.
+
+2018-03-13  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix typos in the docs
+
+2018-03-13  Sergey Poznyakoff  <gray@gnu.org.ua>
+
+	Provide a way to skip tests that create very large files
+
+	Define environment variable TARTEST_SKIP_LARGE_FILES=1 in order
+	to skip tests that require lots of disk space.
+
+	* tests/testsuite.at (AT_SKIP_LARGE_FILES): New macro.
+	* tests/sparse03.at: Mark test with AT_SKIP_LARGE_FILES.
+	* tests/sparse05.at: Likewise.
+	* tests/star/pax-big-10g.at: Likewise.
+	* tests/star/ustar-big-2g.at: Likewise.
+	* tests/star/ustar-big-8g.at: Likewise.
+
+2018-03-13  Sergey Poznyakoff  <gray@gnu.org.ua>
+
+	Testsuite bugfix
+
+	* tests/difflink.at: Define order of files within tested archive.
+
+2018-03-13  Sergey Poznyakoff  <gray@gnu.org>
+
+	testsuite: account for absolute file names starting with double
+	slash
+
+	* tests/incr08.at: Absolute file names can start with //
+	* tests/xform03.at: Likewise.
+
 2017-12-17  Sergey Poznyakoff  <gray@gnu.org>
 
 	Version 1.30

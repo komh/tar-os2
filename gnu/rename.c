@@ -1,6 +1,6 @@
 /* Work around rename bugs in some systems.
 
-   Copyright (C) 2001-2003, 2005-2006, 2009-2017 Free Software Foundation, Inc.
+   Copyright (C) 2001-2003, 2005-2006, 2009-2019 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,7 +23,7 @@
 
 #undef rename
 
-#if (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
+#if defined _WIN32 && ! defined __CYGWIN__
 /* The mingw rename has problems with trailing slashes; it also
    requires use of native Windows calls to allow atomic renames over
    existing files.  */

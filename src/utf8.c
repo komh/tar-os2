@@ -1,7 +1,6 @@
 /* Charset handling for GNU tar.
 
-   Copyright 2004, 2006-2007, 2013-2014, 2016-2017 Free Software
-   Foundation, Inc.
+   Copyright 2004-2019 Free Software Foundation, Inc.
 
    This file is part of GNU tar.
 
@@ -65,10 +64,9 @@ bool
 utf8_convert (bool to_utf, char const *input, char **output)
 {
   char ICONV_CONST *ib;
-  char *ob;
+  char *ob, *ret;
   size_t inlen;
   size_t outlen;
-  size_t rc;
   iconv_t cd = utf8_init (to_utf);
 
   if (cd == 0)
@@ -81,11 +79,16 @@ utf8_convert (bool to_utf, char const *input, char **output)
 
   inlen = strlen (input) + 1;
   outlen = inlen * MB_LEN_MAX + 1;
-  ob = *output = xmalloc (outlen);
+  ob = ret = xmalloc (outlen);
   ib = (char ICONV_CONST *) input;
-  rc = iconv (cd, &ib, &inlen, &ob, &outlen);
+  if (iconv (cd, &ib, &inlen, &ob, &outlen) == -1)
+    {
+      free (ret);
+      return false;
+    }
   *ob = 0;
-  return rc != -1;
+  *output = ret;
+  return true;
 }
 
 

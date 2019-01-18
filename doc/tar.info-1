@@ -1,6 +1,6 @@
-This is tar.info, produced by makeinfo version 5.2 from tar.texi.
+This is tar.info, produced by makeinfo version 5.9.93 from tar.texi.
 
-This manual is for GNU 'tar' (version 1.30, 16 December 2017), which
+This manual is for GNU 'tar' (version 1.31, 2 January 2019), which
 creates and extracts files from archives.
 
    Copyright (C) 1992, 1994-1997, 1999-2001, 2003-2017 Free Software
@@ -32,7 +32,7 @@ File: tar.info,  Node: Top,  Next: Introduction,  Up: (dir)
 GNU tar: an archiver tool
 *************************
 
-This manual is for GNU 'tar' (version 1.30, 16 December 2017), which
+This manual is for GNU 'tar' (version 1.31, 2 January 2019), which
 creates and extracts files from archives.
 
    Copyright (C) 1992, 1994-1997, 1999-2001, 2003-2017 Free Software
@@ -566,7 +566,7 @@ in version 1.11.  Thomas Bushnell, n/BSG and Amy Gorin worked on a
 tutorial and manual for GNU 'tar'.  Franc,ois Pinard put version 1.11.8
 of the manual together by taking information from all these sources and
 merging them.  Melissa Weisshaus finally edited and redesigned the book
-to create version 1.12.  The book for versions from 1.14 up to 1.30 were
+to create version 1.12.  The book for versions from 1.14 up to 1.31 were
 edited by the current maintainer, Sergey Poznyakoff.
 
    For version 1.12, Daniel Hagerty contributed a great deal of
@@ -1910,10 +1910,11 @@ function; they are interchangeable.
    Short options which require arguments take their arguments
 immediately following the option, usually separated by white space.  It
 is also possible to stick the argument right after the short option
-name, using no intervening space.  For example, you might write '-f archive.tar'
-or '-farchive.tar' instead of using '--file=archive.tar'.  Both
-'--file=ARCHIVE-NAME' and '-f ARCHIVE-NAME' denote the option which
-indicates a specific archive, here named 'archive.tar'.
+name, using no intervening space.  For example, you might write
+'-f archive.tar' or '-farchive.tar' instead of using
+'--file=archive.tar'.  Both '--file=ARCHIVE-NAME' and '-f ARCHIVE-NAME'
+denote the option which indicates a specific archive, here named
+'archive.tar'.
 
    Short options which take optional arguments take their arguments
 immediately following the option letter, _without any intervening white
@@ -1980,8 +1981,9 @@ Here, '20' is the argument of '-b' and '/dev/rmt0' is the argument of
 with their corresponding arguments, and is often confusing.  In the
 command 'tar cvbf 20 /dev/rmt0', for example, '20' is the argument for
 '-b', '/dev/rmt0' is the argument for '-f', and '-v' does not have a
-corresponding argument.  Even using short options like in 'tar -c -v -b 20 -f /dev/rmt0'
-is clearer, putting all arguments next to the option they pertain to.
+corresponding argument.  Even using short options like in
+'tar -c -v -b 20 -f /dev/rmt0' is clearer, putting all arguments next to
+the option they pertain to.
 
    If you want to reorder the letters in the old option argument, be
 sure to reorder any corresponding argument appropriately.
@@ -2304,6 +2306,12 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
 
      ttyout=STRING
           Output STRING on the current console ('/dev/tty').
+
+     totals
+          Print statistics (see *note totals::).
+
+     wait=SIGNO
+          Wait for signal SIGNO.
 
      Several '--checkpoint-action' options can be specified.  The
      supplied actions will be executed in order of their appearance in
@@ -2628,7 +2636,7 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
      pattern specified in NAME.  *Note Tape Files::.
 
 '--level=N'
-     Force incremental backup of level N.  As of GNU 'tar' version 1.30,
+     Force incremental backup of level N.  As of GNU 'tar' version 1.31,
      the option '--level=0' truncates the snapshot file, thereby forcing
      the level 0 dump.  Other values of N are effectively ignored.
      *Note --level=0::, for details and examples.
@@ -3125,8 +3133,8 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
 '--tape-length=NUM[SUF]'
 '-L NUM[SUF]'
 
-     Specifies the length of tapes that 'tar' is writing as being NUM x 1024
-     bytes long.  If optional SUF is given, it specifies a
+     Specifies the length of tapes that 'tar' is writing as being
+     NUM x 1024 bytes long.  If optional SUF is given, it specifies a
      multiplicative factor to be used instead of 1024.  For example,
      '-L2M' means 2 megabytes.  *Note Table 9.1: size-suffixes, for a
      list of allowed suffixes.  *Note Using Multiple Tapes::, for a
@@ -3282,6 +3290,10 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
 '--xz'
 '-J'
      Use 'xz' for compressing or decompressing the archives.  *Note
+     gzip::.
+
+'--zstd'
+     Use 'zstd' for compressing or decompressing the archives.  *Note
      gzip::.
 
    ---------- Footnotes ----------
@@ -3530,8 +3542,8 @@ about its name, version, origin and legal status, all on standard
 output, and then exit successfully.  For example, 'tar --version' might
 print:
 
-     tar (GNU tar) 1.30
-     Copyright (C) 2013-2017 Free Software Foundation, Inc.
+     tar (GNU tar) 1.31
+     Copyright (C) 2013-2019 Free Software Foundation, Inc.
      License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
      This is free software: you are free to change and redistribute it.
      There is NO WARRANTY, to the extent permitted by law.
@@ -3911,6 +3923,21 @@ seconds.  The following example will stop for 30 seconds at each
 checkpoint:
 
      $ tar -c --checkpoint=1000 --checkpoint-action=sleep=30
+
+   The 'wait=SIGNO' action stops further execution until the signal
+SIGNO is delivered.  Valid values for SIGNO are: 'SIGHUP', 'SIGQUIT',
+'SIGINT', 'SIGUSR1' and 'SIGUSR2'.  The 'SIG' prefix is optional.  For
+example:
+
+     $ tar -c -f arc --checkpoint=1000 --checkpoint-action wait=USR1 .
+
+   In this example, GNU 'tar' will stop archivation at each 1000th
+checkpoint.  wait until the 'SIGUSR1' signal is delivered, and resume
+processing.
+
+   This action is used by the 'genfile' utility to perform modifications
+on the input files upon hitting certain checkpoints (*note genfile: Exec
+Mode.).
 
    Finally, the 'exec' action executes a given external command.  For
 example:
@@ -6929,7 +6956,7 @@ options provide such possibility:
      systems: 'CVS', 'RCS', 'SCCS', 'SVN', 'Arch', 'Bazaar',
      'Mercurial', and 'Darcs'.
 
-     As of version 1.30, the following files are excluded:
+     As of version 1.31, the following files are excluded:
 
         * 'CVS/', and everything under it
         * 'RCS/', and everything under it
@@ -7058,7 +7085,7 @@ entirely:
 
    (1) According to the Bazaar docs, globbing-patterns are Korn-shell
 style and regular expressions are perl-style.  As of GNU 'tar' version
-1.30, these are treated as shell-style globs and posix extended regexps.
+1.31, these are treated as shell-style globs and posix extended regexps.
 This will be fixed in future releases.
 
    (2) Support for perl-style regexps will appear in future releases.

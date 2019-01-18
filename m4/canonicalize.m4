@@ -1,6 +1,6 @@
 # canonicalize.m4 serial 29
 
-dnl Copyright (C) 2003-2007, 2009-2017 Free Software Foundation, Inc.
+dnl Copyright (C) 2003-2007, 2009-2019 Free Software Foundation, Inc.
 
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -35,8 +35,8 @@ AC_DEFUN([gl_CANONICALIZE_LGPL],
       HAVE_REALPATH=0
     else
       case "$gl_cv_func_realpath_works" in
-	*yes) ;;
-	*)    REPLACE_REALPATH=1 ;;
+        *yes) ;;
+        *)    REPLACE_REALPATH=1 ;;
       esac
     fi
   else

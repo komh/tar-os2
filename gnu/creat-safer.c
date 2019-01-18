@@ -1,5 +1,6 @@
-/* Rename a file relative to open directories.
-   Copyright 2017 Free Software Foundation, Inc.
+/* Invoke creat, but avoid some glitches.
+
+   Copyright (C) 2005-2006, 2009-2019 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -14,17 +15,17 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.  */
 
-/* written by Paul Eggert */
+/* Written by Jim Meyering.  */
 
-/* Get RENAME_* macros from linux/fs.h if present, otherwise supply
-   the traditional Linux values.  */
-#if HAVE_LINUX_FS_H
-# include <linux/fs.h>
-#endif
-#ifndef RENAME_NOREPLACE
-# define RENAME_NOREPLACE  (1 << 0)
-# define RENAME_EXCHANGE   (1 << 1)
-# define RENAME_WHITEOUT   (1 << 2)
-#endif
+#include <config.h>
 
-extern int renameat2 (int, char const *, int, char const *, unsigned int);
+#include "fcntl-safer.h"
+
+#include <fcntl.h>
+#include "unistd-safer.h"
+
+int
+creat_safer (char const *file, mode_t mode)
+{
+  return fd_safer (creat (file, mode));
+}

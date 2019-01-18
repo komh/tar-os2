@@ -1,5 +1,5 @@
 /* Define PATH_MAX somehow.  Requires sys/types.h.
-   Copyright (C) 1992, 1999, 2001, 2003, 2005, 2009-2017 Free Software
+   Copyright (C) 1992, 1999, 2001, 2003, 2005, 2009-2019 Free Software
    Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify
@@ -65,7 +65,7 @@
 #  define PATH_MAX 1024
 # endif
 
-# if (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
+# if defined _WIN32 && ! defined __CYGWIN__
 /* The page "Naming Files, Paths, and Namespaces" on msdn.microsoft.com,
    section "Maximum Path Length Limitation",
    <https://msdn.microsoft.com/en-us/library/aa365247.aspx#maxpath>

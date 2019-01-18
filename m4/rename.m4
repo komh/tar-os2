@@ -1,6 +1,6 @@
-# serial 29
+# serial 31
 
-# Copyright (C) 2001, 2003, 2005-2006, 2009-2017 Free Software Foundation, Inc.
+# Copyright (C) 2001, 2003, 2005-2006, 2009-2019 Free Software Foundation, Inc.
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -19,7 +19,7 @@ AC_DEFUN([gl_FUNC_RENAME],
   AC_REQUIRE([gl_STDIO_H_DEFAULTS])
   AC_CHECK_FUNCS_ONCE([lstat])
 
-  dnl Solaris 11, AIX 7.1 mistakenly allow rename("file","name/").
+  dnl Solaris 11.3, AIX 7.1 mistakenly allow rename("file","name/").
   dnl NetBSD 1.6 mistakenly forbids rename("dir","name/").
   dnl FreeBSD 7.2 mistakenly allows rename("file","link-to-file/").
   dnl The Solaris bug can be worked around without stripping
@@ -55,12 +55,14 @@ AC_DEFUN([gl_FUNC_RENAME],
       [gl_cv_func_rename_slash_dst_works=no],
       dnl When crosscompiling, assume rename is broken.
       [case "$host_os" in
-                 # Guess yes on glibc systems.
-         *-gnu*) gl_cv_func_rename_slash_dst_works="guessing yes" ;;
-                 # Guess no on native Windows.
-         mingw*) gl_cv_func_rename_slash_dst_works="guessing no" ;;
-                 # If we don't know, assume the worst.
-         *)      gl_cv_func_rename_slash_dst_works="guessing no" ;;
+                          # Guess yes on Linux systems.
+         linux-* | linux) gl_cv_func_rename_slash_dst_works="guessing yes" ;;
+                          # Guess yes on glibc systems.
+         *-gnu*)          gl_cv_func_rename_slash_dst_works="guessing yes" ;;
+                          # Guess no on native Windows.
+         mingw*)          gl_cv_func_rename_slash_dst_works="guessing no" ;;
+                          # If we don't know, assume the worst.
+         *)               gl_cv_func_rename_slash_dst_works="guessing no" ;;
        esac
       ])
     rm -rf conftest.f conftest.f1 conftest.f2 conftest.d1 conftest.d2 conftest.lnk
@@ -109,12 +111,14 @@ AC_DEFUN([gl_FUNC_RENAME],
       [gl_cv_func_rename_slash_src_works=no],
       dnl When crosscompiling, assume rename is broken.
       [case "$host_os" in
-                 # Guess yes on glibc systems.
-         *-gnu*) gl_cv_func_rename_slash_src_works="guessing yes" ;;
-                 # Guess yes on native Windows.
-         mingw*) gl_cv_func_rename_slash_src_works="guessing yes" ;;
-                 # If we don't know, assume the worst.
-         *)      gl_cv_func_rename_slash_src_works="guessing no" ;;
+                          # Guess yes on Linux systems.
+         linux-* | linux) gl_cv_func_rename_slash_src_works="guessing yes" ;;
+                          # Guess yes on glibc systems.
+         *-gnu*)          gl_cv_func_rename_slash_src_works="guessing yes" ;;
+                          # Guess yes on native Windows.
+         mingw*)          gl_cv_func_rename_slash_src_works="guessing yes" ;;
+                          # If we don't know, assume the worst.
+         *)               gl_cv_func_rename_slash_src_works="guessing no" ;;
        esac
       ])
     rm -rf conftest.f conftest.f1 conftest.d1 conftest.d2 conftest.d3 conftest.lnk
@@ -169,12 +173,14 @@ AC_DEFUN([gl_FUNC_RENAME],
            [gl_cv_func_rename_link_works=no],
            dnl When crosscompiling, assume rename is broken.
            [case "$host_os" in
-                      # Guess yes on glibc systems.
-              *-gnu*) gl_cv_func_rename_link_works="guessing yes" ;;
-                      # Guess yes on native Windows.
-              mingw*) gl_cv_func_rename_link_works="guessing yes" ;;
-                      # If we don't know, assume the worst.
-              *)      gl_cv_func_rename_link_works="guessing no" ;;
+                               # Guess yes on Linux systems.
+              linux-* | linux) gl_cv_func_rename_link_works="guessing yes" ;;
+                               # Guess yes on glibc systems.
+              *-gnu*)          gl_cv_func_rename_link_works="guessing yes" ;;
+                               # Guess yes on native Windows.
+              mingw*)          gl_cv_func_rename_link_works="guessing yes" ;;
+                               # If we don't know, assume the worst.
+              *)               gl_cv_func_rename_link_works="guessing no" ;;
             esac
            ])
        else
@@ -220,12 +226,14 @@ AC_DEFUN([gl_FUNC_RENAME],
       [gl_cv_func_rename_dest_works=no],
       dnl When crosscompiling, assume rename is broken.
       [case "$host_os" in
-                 # Guess yes on glibc systems.
-         *-gnu*) gl_cv_func_rename_dest_works="guessing yes" ;;
-                 # Guess no on native Windows.
-         mingw*) gl_cv_func_rename_dest_works="guessing no" ;;
-                 # If we don't know, assume the worst.
-         *)      gl_cv_func_rename_dest_works="guessing no" ;;
+                          # Guess yes on Linux systems.
+         linux-* | linux) gl_cv_func_rename_dest_works="guessing yes" ;;
+                          # Guess yes on glibc systems.
+         *-gnu*)          gl_cv_func_rename_dest_works="guessing yes" ;;
+                          # Guess no on native Windows.
+         mingw*)          gl_cv_func_rename_dest_works="guessing no" ;;
+                          # If we don't know, assume the worst.
+         *)               gl_cv_func_rename_dest_works="guessing no" ;;
        esac
       ])
     rm -rf conftest.f conftest.d1 conftest.d2

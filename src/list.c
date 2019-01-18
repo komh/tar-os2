@@ -1,7 +1,6 @@
 /* List a tar archive, with support routines for reading a tar archive.
 
-   Copyright 1988, 1992-1994, 1996-2001, 2003-2007, 2010, 2012-2017 Free
-   Software Foundation, Inc.
+   Copyright 1988-2019 Free Software Foundation, Inc.
 
    This file is part of GNU tar.
 
@@ -23,7 +22,7 @@
 #include <system.h>
 #include <inttostr.h>
 #include <quotearg.h>
-
+#include <time.h>
 #include "common.h"
 
 union block *current_header;	/* points to current archive header */
@@ -631,10 +630,12 @@ decode_header (union block *header, struct tar_stat_info *stat_info,
   stat_info->stat.st_mode = mode;
   stat_info->mtime.tv_sec = TIME_FROM_HEADER (header->header.mtime);
   stat_info->mtime.tv_nsec = 0;
-  assign_string (&stat_info->uname,
-		 header->header.uname[0] ? header->header.uname : NULL);
-  assign_string (&stat_info->gname,
-		 header->header.gname[0] ? header->header.gname : NULL);
+  assign_string_n (&stat_info->uname,
+		   header->header.uname[0] ? header->header.uname : NULL,
+		   sizeof (header->header.uname));
+  assign_string_n (&stat_info->gname,
+		   header->header.gname[0] ? header->header.gname : NULL,
+		   sizeof (header->header.gname));
 
   xheader_xattr_init (stat_info);
 
@@ -1049,15 +1050,11 @@ tartime (struct timespec t, bool full_time)
     {
       if (full_time)
 	{
-	  sprintf (buffer, "%04ld-%02d-%02d %02d:%02d:%02d",
-		   tm->tm_year + 1900L, tm->tm_mon + 1, tm->tm_mday,
-		   tm->tm_hour, tm->tm_min, tm->tm_sec);
+	  strftime (buffer, sizeof buffer, "%Y-%m-%d %H:%M:%S", tm);
 	  code_ns_fraction (ns, buffer + strlen (buffer));
 	}
       else
-	sprintf (buffer, "%04ld-%02d-%02d %02d:%02d",
-		 tm->tm_year + 1900L, tm->tm_mon + 1, tm->tm_mday,
-		 tm->tm_hour, tm->tm_min);
+	strftime (buffer, sizeof buffer, "%Y-%m-%d %H:%M", tm);
       return buffer;
     }
 
@@ -1443,7 +1440,7 @@ test_archive_label (void)
       decode_header (current_header,
 		     &current_stat_info, &current_format, 0);
       if (current_header->header.typeflag == GNUTYPE_VOLHDR)
-	assign_string (&volume_label, current_header->header.name);
+	ASSIGN_STRING_N (&volume_label, current_header->header.name);
 
       if (volume_label)
 	{

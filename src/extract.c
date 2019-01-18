@@ -1,7 +1,6 @@
 /* Extract files from a tar archive.
 
-   Copyright 1988, 1992-1994, 1996-2001, 2003-2007, 2010, 2012-2014,
-   2016-2017 Free Software Foundation, Inc.
+   Copyright 1988-2019 Free Software Foundation, Inc.
 
    This file is part of GNU tar.
 
@@ -788,6 +787,7 @@ maybe_recoverable (char *file_name, bool regular, bool *interdir_made)
 	case UNLINK_FIRST_OLD_FILES:
 	  break;
 	}
+      abort (); /* notreached */
 
     case ENOENT:
       /* Attempt creating missing intermediate directories.  */

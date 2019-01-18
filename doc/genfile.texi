@@ -1,5 +1,5 @@
 @c This is part of the paxutils manual.
-@c Copyright (C) 2005, 2006, 2009 Free Software Foundation, Inc.
+@c Copyright (C) 2005, 2006, 2009, 2108 Free Software Foundation, Inc.
 @c Written by Sergey Poznyakoff
 @c This file is distributed under GFDL 1.1 or any later version
 @c published by the Free Software Foundation.
@@ -283,13 +283,43 @@ genfile --stat=name,atime *
 
 @cindex Exec Mode, @command{genfile}
     This mode is designed for testing the behavior of @code{paxutils}
-commands when some of the files change during archiving. It is an
-experimental mode.
+commands when some of the files change during archiving. It supposes
+that the command being executed supports @option{--checkpoint} and
+@option{--checkpoint-action} options (@pxref{checkpoints,
+Checkpoints,,tar,GNU tar}).
 
-    The @samp{Exec Mode} is toggled by @option{--run} command line
-option (or its alias @option{-r}). The non-optional arguments to
-@command{getopt} give the command line to be executed. Normally,
-it should contain at least the @option{--checkpoint} option.
+    The @samp{Exec Mode} is enabled by @option{--run} command line
+option (or its alias @option{-r}). The non-optional arguments
+supply the command line to be executed. @command{Genfile} modifies
+this command line by inserting the following options between the
+command name and first argument:
+
+@example
+--checkpoint=@var{n}
+--checkpoint-action "echo=genfile checkpoint %u"
+--checkpoint-action "wait=SIGUSR1"
+@end example
+
+    Here, @var{n} stands for the checkpoint granularity (for GNU
+@command{tar}, it is the number of archive records read or written
+between each pair of checkpoints).  The default value is 1.  This
+value can be changed using the optional argument to the @option{--run}
+option.  For example, to run actions on each 10th checkpoint:
+
+@example
+genfile --run=10 ...
+@end example
+
+    If the command line contains options, it must be preceded by a
+double-dash (@samp{--}), which will prevent these options from being
+interpreted by @command{genfile} itself.  For example:
+
+@example
+genfile --run --checkpoint=2 --truncate foo -- tar -c -f a.tar .
+@end example
+
+    Notice also, that when running @command{tar}, its command line may
+not contain traditional options (cluster of letters without dash).    
 
     A set of options is provided for defining checkpoint values and
 actions to be executed upon reaching them. Checkpoint values are
@@ -334,36 +364,6 @@ connected to descriptor 1. All messages it prints to file descriptor
 2, except checkpoint notifications, are forwarded to standard
 error.
 
-    @command{Genfile} exits with the exit status of the executed command.
+    In exec mode, @command{genfile} exits with the exit status of the
+executed command.
 
-    For compatibility with previous @command{genfile} versions, the
-@option{--run} option takes an optional argument. If used this way,
-its argument supplies the command line to be executed. There should
-be no non-optional arguments in the @command{genfile} command line.
-
-    The actual command line is constructed by inserting
-the @option{--checkpoint} option between the command name and its
-first argument (if any). Due to this, the argument to @option{--run}
-may not use traditional @command{tar} option syntax, i.e., the
-following is wrong:
-
-@smallexample
-# Wrong!
-genfile --run='tar cf foo bar'
-@end smallexample
-
-@noindent
-
-Use the following syntax instead:
-
-@smallexample
-genfile --run='tar -cf foo bar' @var{actions}...
-@end smallexample
-
-The above command line is equivalent to
-
-@smallexample
-genfile @var{actions}... -- tar -cf foo bar
-@end smallexample
-
-Notice, that the use of compatibility mode is deprecated.

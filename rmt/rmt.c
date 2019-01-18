@@ -51,13 +51,16 @@ FILE *dbgout;
     }									\
   while (0)
 
-#define VDEBUG(lev, pfx, fmt, ap)		\
+#define VDEBUG(lev, pfx, fmt)		        \
   do						\
     {						\
       if (dbgout && (lev) <= dbglev)		\
 	{					\
+          va_list aptr;                         \
+          va_start (aptr, fmt);                 \
 	  fprintf (dbgout, "%s", pfx);		\
-	  vfprintf (dbgout, fmt, ap);		\
+	  vfprintf (dbgout, fmt, aptr);		\
+          va_end (aptr);                        \
 	}					\
     }						\
   while (0)
@@ -100,8 +103,9 @@ rmt_write (const char *fmt, ...)
   va_list ap;
   va_start (ap, fmt);
   vfprintf (stdout, fmt, ap);
+  va_end (ap);
   fflush (stdout);
-  VDEBUG (10, "S: ", fmt, ap);
+  VDEBUG (10, "S: ", fmt);
 }
 
 static void

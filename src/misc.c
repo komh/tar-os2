@@ -1,7 +1,6 @@
 /* Miscellaneous functions, not really specific to GNU tar.
 
-   Copyright 1988, 1992, 1994-1997, 1999-2001, 2003-2007, 2009-2010,
-   2012-2014, 2016-2017 Free Software Foundation, Inc.
+   Copyright 1988-2019 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -48,6 +47,20 @@ assign_string (char **string, const char *value)
 {
   free (*string);
   *string = value ? xstrdup (value) : 0;
+}
+
+void
+assign_string_n (char **string, const char *value, size_t n)
+{
+  free (*string);
+  if (value)
+    {
+      size_t l = strnlen (value, n);
+      char *p = xmalloc (l + 1);
+      memcpy (p, value, l);
+      p[l] = 0;
+      *string = p;
+    }
 }
 
 #if 0
@@ -727,7 +740,7 @@ maybe_backup_file (const char *file_name, bool this_is_the_archive)
       && (S_ISBLK (file_stat.st_mode) || S_ISCHR (file_stat.st_mode)))
     return true;
 
-  after_backup_name = find_backup_file_name (file_name, backup_type);
+  after_backup_name = find_backup_file_name (chdir_fd, file_name, backup_type);
   if (! after_backup_name)
     xalloc_die ();
 

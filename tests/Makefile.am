@@ -1,6 +1,6 @@
 # Makefile for GNU tar regression tests.
 
-# Copyright 1996-1997, 1999-2001, 2003-2007, 2009, 2012-2015 Free Software
+# Copyright 1996-2019 Free Software Foundation, Inc.
 
 # This file is part of GNU tar.
 
@@ -17,9 +17,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-EXTRA_DIST = $(TESTSUITE_AT) testsuite package.m4 star/README star/quicktest.sh
+EXTRA_DIST = $(TESTSUITE_AT) \
+  testsuite package.m4 star/README star/quicktest.sh \
+  compress.at.in
+
 DISTCLEANFILES       = atconfig $(check_SCRIPTS)
 MAINTAINERCLEANFILES = Makefile.in $(TESTSUITE)
+CLEANFILES =
 
 ## ------------ ##
 ## package.m4.  ##
@@ -66,6 +70,12 @@ TESTSUITE_AT = \
  chtype.at\
  comprec.at\
  comperr.at\
+ compress-zstd.at\
+ compress-xz.at\
+ compress-bzip2.at\
+ compress-gzip.at\
+ compress-lzip.at\
+ compress-lzop.at\
  delete01.at\
  delete02.at\
  delete03.at\
@@ -228,6 +238,9 @@ TESTSUITE_AT = \
  spmvp00.at\
  spmvp01.at\
  spmvp10.at\
+ sptrcreat.at\
+ sptrdiff00.at\
+ sptrdiff01.at\
  time01.at\
  time02.at\
  truncate.at\
@@ -263,6 +276,42 @@ TESTSUITE_AT = \
  selnx01.at\
  selacl01.at\
  capabs_raw01.at
+
+CLEANFILES += compress-zstd.at
+compress-zstd.at: compress.at.in
+	$(AM_V_GEN)rm -rf $@ $@-t
+	$(AM_V_at)sed 's/@tool@/zstd/g;s/@suff@/zst/g;s/@suff2@/tzst/g;' \
+	  $(srcdir)/compress.at.in > $@-t && chmod a-w $@-t && mv $@-t $@
+
+CLEANFILES += compress-gzip.at
+compress-gzip.at: compress.at.in
+	$(AM_V_GEN)rm -rf $@ $@-t
+	$(AM_V_at)sed 's/@tool@/gzip/g;s/@suff@/gz/g;s/@suff2@/tgz/g;' \
+	  $(srcdir)/compress.at.in > $@-t && chmod a-w $@-t && mv $@-t $@
+
+CLEANFILES += compress-xz.at
+compress-xz.at: compress.at.in
+	$(AM_V_GEN)rm -rf $@ $@-t
+	$(AM_V_at)sed 's/@tool@/xz/g;s/@suff@/xz/g;s/@suff2@/txz/g;' \
+	  $(srcdir)/compress.at.in > $@-t && chmod a-w $@-t && mv $@-t $@
+
+CLEANFILES += compress-bzip2.at
+compress-bzip2.at: compress.at.in
+	$(AM_V_GEN)rm -rf $@ $@-t
+	$(AM_V_at)sed 's/@tool@/bzip2/g;s/@suff@/bz2/g;s/@suff2@/tbz2/g;' \
+	  $(srcdir)/compress.at.in > $@-t && chmod a-w $@-t && mv $@-t $@
+
+CLEANFILES += compress-lzip.at
+compress-lzip.at: compress.at.in
+	$(AM_V_GEN)rm -rf $@ $@-t
+	$(AM_V_at)sed 's/@tool@/lzip/g;s/@suff@/lz/g;s/@suff2@//g;' \
+	  $(srcdir)/compress.at.in > $@-t && chmod a-w $@-t && mv $@-t $@
+
+CLEANFILES += compress-lzop.at
+compress-lzop.at: compress.at.in
+	$(AM_V_GEN)rm -rf $@ $@-t
+	$(AM_V_at)sed 's/@tool@/lzop/g;s/@suff@/lzo/g;s/@suff2@//g;' \
+	  $(srcdir)/compress.at.in > $@-t && chmod a-w $@-t && mv $@-t $@
 
 distclean-local:
 	-rm -rf download

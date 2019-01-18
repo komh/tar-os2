@@ -1,4 +1,4 @@
-/* Copyright (C) 1991-2017 Free Software Foundation, Inc.
+/* Copyright (C) 1991-2019 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    The GNU C Library is free software; you can redistribute it and/or
@@ -91,6 +91,7 @@ extern char *tzname[];
 # define UCHAR_T unsigned char
 # define L_(Str) Str
 # define NLW(Sym) Sym
+# define ABALTMON_1 _NL_ABALTMON_1
 
 # define MEMCPY(d, s, n) memcpy (d, s, n)
 # define STRLEN(s) strlen (s)
@@ -255,7 +256,7 @@ extern char *tzname[];
 # undef _NL_CURRENT
 # define _NL_CURRENT(category, item) \
   (current->values[_NL_ITEM_INDEX (item)].string)
-# define LOCALE_PARAM , __locale_t loc
+# define LOCALE_PARAM , locale_t loc
 # define LOCALE_ARG , loc
 # define HELPER_LOCALE_ARG  , current
 #else
@@ -475,12 +476,19 @@ __strftime_internal (STREAM_OR_CHAR_T *s, STRFTIME_ARG (size_t maxsize)
 # define f_month \
   ((const CHAR_T *) (tp->tm_mon < 0 || tp->tm_mon > 11                       \
                      ? "?" : _NL_CURRENT (LC_TIME, NLW(MON_1) + tp->tm_mon)))
+# define a_altmonth \
+  ((const CHAR_T *) (tp->tm_mon < 0 || tp->tm_mon > 11                       \
+                     ? "?" : _NL_CURRENT (LC_TIME, NLW(ABALTMON_1) + tp->tm_mon)))
+# define f_altmonth \
+  ((const CHAR_T *) (tp->tm_mon < 0 || tp->tm_mon > 11                       \
+                     ? "?" : _NL_CURRENT (LC_TIME, NLW(ALTMON_1) + tp->tm_mon)))
 # define ampm \
   ((const CHAR_T *) _NL_CURRENT (LC_TIME, tp->tm_hour > 11                    \
                                  ? NLW(PM_STR) : NLW(AM_STR)))
 
 # define aw_len STRLEN (a_wkday)
 # define am_len STRLEN (a_month)
+# define aam_len STRLEN (a_altmonth)
 # define ap_len STRLEN (ampm)
 #endif
 #if HAVE_TZNAME
@@ -808,17 +816,20 @@ __strftime_internal (STREAM_OR_CHAR_T *s, STRFTIME_ARG (size_t maxsize)
               to_uppcase = true;
               to_lowcase = false;
             }
-          if (modifier != 0)
+          if (modifier == L_('E'))
             goto bad_format;
 #ifdef _NL_CURRENT
-          cpy (am_len, a_month);
+          if (modifier == L_('O'))
+            cpy (aam_len, a_altmonth);
+          else
+            cpy (am_len, a_month);
           break;
 #else
           goto underlying_strftime;
 #endif
 
         case L_('B'):
-          if (modifier != 0)
+          if (modifier == L_('E'))
             goto bad_format;
           if (change_case)
             {
@@ -826,7 +837,10 @@ __strftime_internal (STREAM_OR_CHAR_T *s, STRFTIME_ARG (size_t maxsize)
               to_lowcase = false;
             }
 #ifdef _NL_CURRENT
-          cpy (STRLEN (f_month), f_month);
+          if (modifier == L_('O'))
+            cpy (STRLEN (f_altmonth), f_altmonth);
+          else
+            cpy (STRLEN (f_month), f_month);
           break;
 #else
           goto underlying_strftime;
@@ -1424,28 +1438,10 @@ __strftime_internal (STREAM_OR_CHAR_T *s, STRFTIME_ARG (size_t maxsize)
 # endif
 
                 ltm = *tp;
+                ltm.tm_wday = -1;
                 lt = mktime_z (tz, &ltm);
-
-                if (lt == (time_t) -1)
-                  {
-                    /* mktime returns -1 for errors, but -1 is also a
-                       valid time_t value.  Check whether an error really
-                       occurred.  */
-                    struct tm tm;
-
-                    if (! localtime_rz (tz, &lt, &tm)
-                        || ((ltm.tm_sec ^ tm.tm_sec)
-                            | (ltm.tm_min ^ tm.tm_min)
-                            | (ltm.tm_hour ^ tm.tm_hour)
-                            | (ltm.tm_mday ^ tm.tm_mday)
-                            | (ltm.tm_mon ^ tm.tm_mon)
-                            | (ltm.tm_year ^ tm.tm_year)))
-                      break;
-                  }
-
-                if (! localtime_rz (0, &lt, &gtm))
+                if (ltm.tm_wday < 0 || ! localtime_rz (0, &lt, &gtm))
                   break;
-
                 diff = tm_diff (&ltm, &gtm);
               }
 #endif

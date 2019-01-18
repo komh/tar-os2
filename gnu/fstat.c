@@ -1,5 +1,5 @@
 /* fstat() replacement.
-   Copyright (C) 2011-2017 Free Software Foundation, Inc.
+   Copyright (C) 2011-2019 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@
 #include <sys/stat.h>
 #undef __need_system_sys_stat_h
 
-#if (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
+#if defined _WIN32 && ! defined __CYGWIN__
 # define WINDOWS_NATIVE
 #endif
 
@@ -44,6 +44,8 @@ orig_fstat (int fd, struct stat *buf)
    eliminates this include because of the preliminary #include <sys/stat.h>
    above.  */
 #include "sys/stat.h"
+
+#include "stat-time.h"
 
 #include <errno.h>
 #include <unistd.h>
@@ -83,6 +85,6 @@ rpl_fstat (int fd, struct stat *buf)
     }
   return _gl_fstat_by_handle (h, NULL, buf);
 #else
-  return orig_fstat (fd, buf);
+  return stat_time_normalize (orig_fstat (fd, buf), buf);
 #endif
 }

@@ -1,6 +1,5 @@
 /* This file is part of GNU tar.
-   Copyright 2007, 2009, 2013-2014, 2016-2017 Free Software Foundation,
-   Inc.
+   Copyright 2007-2019 Free Software Foundation, Inc.
 
    Written by Sergey Poznyakoff.
 
@@ -46,6 +45,8 @@ static struct compression_suffix compression_suffixes[] = {
   { S(lzo,  LZOP) },
   { S(xz,   XZ) },
   { S(txz,  XZ) }, /* Slackware */
+  { S(zst,  ZSTD) },
+  { S(tzst, ZSTD) },
   { NULL }
 #undef S
 #undef __CAT2__
@@ -60,7 +61,7 @@ find_compression_suffix (const char *name, size_t *ret_len)
     {
       size_t len;
       struct compression_suffix *p;
-      
+
       suf++;
       len = strlen (suf);
 
@@ -99,10 +100,14 @@ strip_compression_suffix (const char *name)
 {
   char *s = NULL;
   size_t len;
+  struct compression_suffix const *p = find_compression_suffix (name, &len);
 
-  if (find_compression_suffix (name, &len))
+  if (p)
     {
-      if (strncmp (name + len - 4, ".tar", 4) == 0)
+      /* Strip an additional ".tar" suffix, but only if the just-stripped
+	 "outer" suffix did not begin with "t".  */
+      if (len > 4 && strncmp (name + len - 4, ".tar", 4) == 0
+	  && p->suffix[0] != 't')
 	len -= 4;
       if (len == 0)
 	return NULL;
@@ -112,4 +117,3 @@ strip_compression_suffix (const char *name)
     }
   return s;
 }
-  

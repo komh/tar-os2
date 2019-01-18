@@ -1,5 +1,5 @@
 /* Set the access and modification time of a file relative to directory fd.
-   Copyright (C) 2009-2017 Free Software Foundation, Inc.
+   Copyright (C) 2009-2019 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -94,10 +94,10 @@ rpl_utimensat (int fd, char const *file, struct timespec const times[2],
       else if (times
                && ((times[0].tv_nsec != UTIME_NOW
                     && ! (0 <= times[0].tv_nsec
-                          && times[0].tv_nsec < TIMESPEC_RESOLUTION))
+                          && times[0].tv_nsec < TIMESPEC_HZ))
                    || (times[1].tv_nsec != UTIME_NOW
                        && ! (0 <= times[1].tv_nsec
-                             && times[1].tv_nsec < TIMESPEC_RESOLUTION))))
+                             && times[1].tv_nsec < TIMESPEC_HZ))))
         {
           errno = EINVAL;
           return -1;

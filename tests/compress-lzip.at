@@ -1,0 +1,67 @@
+# Process this file with autom4te to create testsuite. -*- Autotest -*-
+
+# Test suite for GNU tar.
+# Copyright 2018-2019 Free Software Foundation, Inc.
+
+# This file is part of GNU tar.
+
+# GNU tar is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 3 of the License, or
+# (at your option) any later version.
+
+# GNU tar is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+# tar can create/decompress lzip-compressed tarballs
+
+AT_SETUP([compress: lzip])
+AT_KEYWORDS([compression lzip])
+
+unset TAR_OPTIONS
+
+AT_CHECK([
+AT_GZIP_PREREQ([lzip])
+
+touch empty
+# Create with --lzip:
+tar --lzip -cf - empty 2>err > k.tar.lz || exit 1
+test -s err && exit 1
+tar tf k.tar.lz 2>err > out || exit 1
+test "$(cat out)" = empty || exit 1
+test -s err && exit 1
+
+# Ensure -ac works with an -f-specified .lz-suffixed name.
+tar -acf k2.tar.lz empty 2>err > out || exit 1
+cmp k2.tar.lz k.tar.lz || exit 1
+test -s err && exit 1
+
+# Extraction: ensure the .lz suffix is recognized.
+rm -f empty || exit 1
+tar xf k.tar.lz 2>err > out || exit 1
+test -s err && exit 1
+test -f empty || exit 1
+
+if test -n ''; then
+  # Extraction: ensure the . suffix is also recognized.
+  mv k.tar.lz k. || exit 1
+  rm -f empty
+  tar xf k. 2>err > out || exit 1
+  test -s err && exit 1
+  test -f empty || exit 1
+else
+  :
+fi
+
+],
+[0],
+[],
+[],
+[],[])
+
+AT_CLEANUP

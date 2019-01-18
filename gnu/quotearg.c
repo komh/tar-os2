@@ -1,6 +1,6 @@
 /* quotearg.c - quote arguments for output
 
-   Copyright (C) 1998-2002, 2004-2017 Free Software Foundation, Inc.
+   Copyright (C) 1998-2002, 2004-2019 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -1080,3 +1080,10 @@ quote (char const *arg)
 {
   return quote_n (0, arg);
 }
+
+/*
+ * Hey Emacs!
+ * Local Variables:
+ * coding: utf-8
+ * End:
+ */

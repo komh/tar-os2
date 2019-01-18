@@ -1,7 +1,7 @@
 %{
 /* Parse a string into an internal timestamp.
 
-   Copyright (C) 1999-2000, 2002-2017 Free Software Foundation, Inc.
+   Copyright (C) 1999-2000, 2002-2019 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -492,7 +492,7 @@ debug_print_current_time (char const *item, parser_control *pc)
   if (pc->local_zones_seen && !pc->debug_local_zones_seen)
     {
       fprintf (stderr, &" isdst=%d%s"[!space],
-	       pc->local_isdst, pc->dsts_seen ? " DST" : "");
+               pc->local_isdst, pc->dsts_seen ? " DST" : "");
       pc->debug_local_zones_seen = true;
       space = true;
     }
@@ -1554,24 +1554,17 @@ yyerror (parser_control const *pc _GL_UNUSED,
   return 0;
 }
 
-/* In timezone TZ, if *TM0 is the old and *TM1 is the new value of a
-   struct tm after passing it to mktime_z, return true if it's OK that
-   mktime_z returned T.  It's not OK if *TM0 has out-of-range
-   members.  */
+/* If *TM0 is the old and *TM1 is the new value of a struct tm after
+   passing it to mktime_z, return true if it's OK.  It's not OK if
+   mktime failed or if *TM0 has out-of-range mainline members.
+   The caller should set TM1->tm_wday to -1 before calling mktime,
+   as a negative tm_wday is how mktime failure is inferred.  */
 
 static bool
-mktime_ok (timezone_t tz, struct tm const *tm0, struct tm const *tm1, time_t t)
+mktime_ok (struct tm const *tm0, struct tm const *tm1)
 {
-  struct tm ltm;
-  if (t == (time_t) -1)
-    {
-      /* Guard against falsely reporting an error when parsing a
-         timestamp that happens to equal (time_t) -1, on a host that
-         supports such a timestamp.  */
-      tm1 = localtime_rz (tz, &t, &ltm);
-      if (!tm1)
-        return false;
-    }
+  if (tm1->tm_wday < 0)
+    return false;
 
   return ! ((tm0->tm_sec ^ tm1->tm_sec)
             | (tm0->tm_min ^ tm1->tm_min)
@@ -1766,6 +1759,11 @@ parse_datetime2 (struct timespec *result, char const *p,
 
   timezone_t tz = tzdefault;
 
+  /* Store a local copy prior to first "goto".  Without this, a prior use
+     below of RELATIVE_TIME_0 on the RHS might translate to an assignment-
+     to-temporary, which would trigger a -Wjump-misses-init warning.  */
+  const relative_time rel_time_0 = RELATIVE_TIME_0;
+
   if (strncmp (p, "TZ=\"", 4) == 0)
     {
       char const *tzbase = p + 4;
@@ -1838,7 +1836,7 @@ parse_datetime2 (struct timespec *result, char const *p,
   tm.tm_isdst = tmp.tm_isdst;
 
   pc.meridian = MER24;
-  pc.rel = RELATIVE_TIME_0;
+  pc.rel = rel_time_0;
   pc.timespec_seen = false;
   pc.rels_seen = false;
   pc.dates_seen = 0;
@@ -1961,7 +1959,7 @@ parse_datetime2 (struct timespec *result, char const *p,
         fprintf (stderr, ", dst");
 
       if (pc.zones_seen)
-	fprintf (stderr, " (%s)", time_zone_str (pc.time_zone, time_zone_buf));
+        fprintf (stderr, " (%s)", time_zone_str (pc.time_zone, time_zone_buf));
 
       fputc ('\n', stderr);
     }
@@ -2041,10 +2039,11 @@ parse_datetime2 (struct timespec *result, char const *p,
       tm0.tm_mon = tm.tm_mon;
       tm0.tm_year = tm.tm_year;
       tm0.tm_isdst = tm.tm_isdst;
+      tm.tm_wday = -1;
 
       Start = mktime_z (tz, &tm);
 
-      if (! mktime_ok (tz, &tm0, &tm, Start))
+      if (! mktime_ok (&tm0, &tm))
         {
           bool repaired = false;
           bool time_zone_seen = pc.zones_seen != 0;
@@ -2077,8 +2076,9 @@ parse_datetime2 (struct timespec *result, char const *p,
               tm.tm_mon = tm0.tm_mon;
               tm.tm_year = tm0.tm_year;
               tm.tm_isdst = tm0.tm_isdst;
+              tm.tm_wday = -1;
               Start = mktime_z (tz2, &tm);
-              repaired = mktime_ok (tz2, &tm0, &tm, Start);
+              repaired = mktime_ok (&tm0, &tm);
               tzfree (tz2);
             }
 

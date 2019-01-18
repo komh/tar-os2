@@ -2553,6 +2553,12 @@ Wait for @var{time} seconds.
 
 @item ttyout=@var{string}
 Output @var{string} on the current console (@file{/dev/tty}).
+
+@item totals
+Print statistics (see @pxref{totals}).
+
+@item wait=@var{signo}
+Wait for signal @var{signo}.
 @end table
 
 Several @option{--checkpoint-action} options can be specified.  The
@@ -3713,6 +3719,9 @@ only attributes from the user namespace.
 @itemx -J
 Use @command{xz} for compressing or decompressing the archives.  @xref{gzip}.
 
+@item --zstd
+Use @command{zstd} for compressing or decompressing the archives.  @xref{gzip}.
+
 @end table
 
 @node Short Option Summary
@@ -3968,7 +3977,7 @@ successfully.  For example, @w{@samp{tar --version}} might print:
 
 @smallexample
 tar (GNU tar) @value{VERSION}
-Copyright (C) 2013-2017 Free Software Foundation, Inc.
+Copyright (C) 2013-2019 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
@@ -4448,6 +4457,25 @@ checkpoint:
 @smallexample
 $ @kbd{tar -c --checkpoint=1000 --checkpoint-action=sleep=30}
 @end smallexample
+
+@anchor{checkpoint wait}
+@cindex @code{wait}, checkpoint action
+The @code{wait=@var{signo}} action stops further execution until the
+signal @var{signo} is delivered.  Valid values for @var{signo} are:
+@code{SIGHUP}, @code{SIGQUIT}, @code{SIGINT}, @code{SIGUSR1} and
+@code{SIGUSR2}.  The @samp{SIG} prefix is optional.  For example:
+
+@example
+$ @kbd{tar -c -f arc --checkpoint=1000 --checkpoint-action wait=USR1 .}
+@end example
+
+In this example, @GNUTAR{} will stop archivation at each 1000th
+checkpoint. wait until the @samp{SIGUSR1} signal is delivered,
+and resume processing.
+
+This action is used by the @command{genfile} utility to perform
+modifications on the input files upon hitting certain checkpoints
+(@pxref{Exec Mode, genfile}).
 
 @anchor{checkpoint exec}
 @cindex @code{exec}, checkpoint action
@@ -5477,7 +5505,7 @@ reproducible archives given a common timestamp for generated files
 while still retaining the original timestamps of untouched files.
 
 @smallexample
-$ @kbd{tar -c -f archive.tar --clamp-mtime --mtime=@atchar{}$SOURCE_DATE_EPOCH .}
+$ @kbd{tar -c -f archive.tar --clamp-mtime --mtime=@@$SOURCE_DATE_EPOCH .}
 @end smallexample
 
 @item --owner=@var{user}
@@ -9520,24 +9548,32 @@ switch to @samp{posix}.
 @cindex lzma
 @cindex lzop
 @cindex compress
+@cindex zstd
 @GNUTAR{} is able to create and read compressed archives.  It supports
 a wide variety of compression programs, namely: @command{gzip},
 @command{bzip2}, @command{lzip}, @command{lzma}, @command{lzop},
-@command{xz} and traditional @command{compress}. The latter is
-supported mostly for backward compatibility, and we recommend
+@command{zstd}, @command{xz} and traditional @command{compress}. The
+latter is supported mostly for backward compatibility, and we recommend
 against using it, because it is by far less effective than the other
 compression programs@footnote{It also had patent problems in the past.}.
 
 Creating a compressed archive is simple: you just specify a
 @dfn{compression option} along with the usual archive creation
-commands.  The compression option is @option{-z} (@option{--gzip}) to
-create a @command{gzip} compressed archive, @option{-j}
-(@option{--bzip2}) to create a @command{bzip2} compressed archive,
-@option{--lzip} to create an @asis{lzip} compressed archive,
-@option{-J} (@option{--xz}) to create an @asis{XZ} archive,
-@option{--lzma} to create an @asis{LZMA} compressed
-archive, @option{--lzop} to create an @asis{LZOP} archive, and
-@option{-Z} (@option{--compress}) to use @command{compress} program.
+commands.  Available compression options are summarized in the
+table below:
+
+@multitable @columnfractions 0.4 0.2 0.4
+@headitem Long            @tab Short       @tab Archive format
+@item @option{--gzip}     @tab @option{-z} @tab @command{gzip}
+@item @option{--bzip2}    @tab @option{-j} @tab @command{bzip2}
+@item @option{--xz}       @tab @option{-J} @tab @command{xz}
+@item @option{--lzip}     @tab             @tab @command{lzip}
+@item @option{--lzma}     @tab             @tab @command{lzma}
+@item @option{--lzop}     @tab             @tab @command{lzop}
+@item @option{--zstd}     @tab             @tab @command{zstd}
+@item @option{--compress} @tab @option{-Z} @tab @command{compress}
+@end multitable
+
 For example:
 
 @smallexample
@@ -9658,6 +9694,10 @@ Filter the archive through @command{lzma}.
 @item --lzop
 Filter the archive through @command{lzop}.
 
+@opindex zstd
+@item --zstd
+Filter the archive through @command{zstd}.
+
 @opindex compress
 @opindex uncompress
 @item -Z
@@ -9730,6 +9770,8 @@ suffix.  The following suffixes are recognized:
 @item @samp{.tlz} @tab @command{lzma}
 @item @samp{.lzo} @tab @command{lzop}
 @item @samp{.xz} @tab @command{xz}
+@item @samp{.zst} @tab @command{zstd}
+@item @samp{.tzst} @tab @command{zstd}
 @end multitable
 
 @anchor{use-compress-program}

@@ -1,7 +1,6 @@
 /* A tar (tape archiver) program.
 
-   Copyright 1988, 1992-1997, 1999-2001, 2003-2007, 2012-2017 Free
-   Software Foundation, Inc.
+   Copyright 1988-2019 Free Software Foundation, Inc.
 
    Written by John Gilmore, starting 1985-08-25.
 
@@ -348,7 +347,8 @@ enum
   WARNING_OPTION,
   XATTR_OPTION,
   XATTR_EXCLUDE,
-  XATTR_INCLUDE
+  XATTR_INCLUDE,
+  ZSTD_OPTION,
 };
 
 static char const doc[] = N_("\
@@ -682,6 +682,7 @@ static struct argp_option options[] = {
   {"lzma", LZMA_OPTION, 0, 0, NULL, GRID+1 },
   {"lzop", LZOP_OPTION, 0, 0, NULL, GRID+1 },
   {"xz", 'J', 0, 0, NULL, GRID+1 },
+  {"zstd", ZSTD_OPTION, 0, 0, NULL, GRID+1 },
 #undef GRID
 
 #define GRID 100
@@ -974,34 +975,35 @@ stat_on_signal (int signo)
 #endif
 }
 
-static void
-set_stat_signal (const char *name)
+int
+decode_signal (const char *name)
 {
   static struct sigtab
   {
     char const *name;
     int signo;
   } const sigtab[] = {
-    { "SIGUSR1", SIGUSR1 },
     { "USR1", SIGUSR1 },
-    { "SIGUSR2", SIGUSR2 },
     { "USR2", SIGUSR2 },
-    { "SIGHUP", SIGHUP },
     { "HUP", SIGHUP },
-    { "SIGINT", SIGINT },
     { "INT", SIGINT },
-    { "SIGQUIT", SIGQUIT },
     { "QUIT", SIGQUIT }
   };
   struct sigtab const *p;
+  char const *s = name;
 
+  if (strncmp (s, "SIG", 3) == 0)
+    s += 3;
   for (p = sigtab; p < sigtab + sizeof (sigtab) / sizeof (sigtab[0]); p++)
-    if (strcmp (p->name, name) == 0)
-      {
-	stat_on_signal (p->signo);
-	return;
-      }
+    if (strcmp (p->name, s) == 0)
+      return p->signo;
   FATAL_ERROR ((0, 0, _("Unknown signal name: %s"), name));
+}
+
+static void
+set_stat_signal (const char *name)
+{
+  stat_on_signal (decode_signal (name));
 }
 
 
@@ -1129,6 +1131,10 @@ tar_help_filter (int key, const char *text, void *input)
       s = xasprintf (_("filter the archive through %s"), XZ_PROGRAM);
       break;
 
+    case ZSTD_OPTION:
+      s = xasprintf (_("filter the archive through %s"), ZSTD_PROGRAM);
+      break;
+
     case ARGP_KEY_HELP_EXTRA:
       {
 	const char *tstr;
@@ -1151,7 +1157,7 @@ tar_help_filter (int key, const char *text, void *input)
   return s;
 }
 
-static char *
+static char * _GL_ATTRIBUTE_MALLOC
 expand_pax_option (struct tar_args *targs, const char *arg)
 {
   struct obstack stk;
@@ -1437,8 +1443,7 @@ parse_opt (int key, char *arg, struct argp_state *state)
 
     case 'K':
       optloc_save (OC_STARTING_FILE, args->loc);
-      starting_file_option = true;
-      addname (arg, 0, true, NULL);
+      add_starting_file (arg);
       break;
 
     case ONE_FILE_SYSTEM_OPTION:
@@ -1648,6 +1653,10 @@ parse_opt (int key, char *arg, struct argp_state *state)
 
     case 'Z':
       set_use_compress_program_option (COMPRESS_PROGRAM, args->loc);
+      break;
+
+    case ZSTD_OPTION:
+      set_use_compress_program_option (ZSTD_PROGRAM, args->loc);
       break;
 
     case ATIME_PRESERVE_OPTION:
@@ -2656,7 +2665,28 @@ decode_options (int argc, char **argv)
 
   report_textual_dates (&args);
 }
+
+#ifdef ENABLE_ERROR_PRINT_PROGNAME
+/* The error() function from glibc correctly prefixes each message it
+   prints with program_name as set by set_program_name. However, its
+   replacement from gnulib, which is linked in on systems where this
+   function is not available, prints the name returned by getprogname()
+   instead. Due to this messages output by tar subprocess (which sets its
+   program name to 'tar (child)') become indiscernible from those printed
+   by the main process. In particular, this breaks the remfiles01.at and
+   remfiles02.at test cases.
 
+   To avoid this, on such systems the following helper function is used
+   to print proper program name. Its address is assigned to the
+   error_print_progname variable, which error() then uses instead of
+   printing getprogname() result.
+ */
+static void
+tar_print_progname (void)
+{
+  fprintf (stderr, "%s: ", program_name);
+}
+#endif
 
 /* Tar proper.  */
 
@@ -2666,7 +2696,9 @@ main (int argc, char **argv)
 {
   set_start_time ();
   set_program_name (argv[0]);
-
+#ifdef ENABLE_ERROR_PRINT_PROGNAME
+  error_print_progname = tar_print_progname;
+#endif
   setlocale (LC_ALL, "");
   bindtextdomain (PACKAGE, LOCALEDIR);
   textdomain (PACKAGE);

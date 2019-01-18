@@ -4,14 +4,14 @@
 #
 # Claus Hindsgaul <claus_h@image.dk>, 2001.
 # Keld Jørn Simonsen <keld@keldix.com>, 2000-2001,2009,2010.
-# Keld Simonsen <keld@keldix.com>, 2010-2011, 2015.
-#: src/create.c:1599
+# Keld Simonsen <keld@keldix.com>, 2010-2011, 2015, 2017.
+#: src/create.c:1598
 msgid ""
 msgstr ""
-"Project-Id-Version: GNU tar 1.28\n"
+"Project-Id-Version: GNU tar 1.30\n"
 "Report-Msgid-Bugs-To: bug-tar@gnu.org\n"
-"POT-Creation-Date: 2017-12-17 12:31+0200\n"
-"PO-Revision-Date: 2015-04-26 10:18+0200\n"
+"POT-Creation-Date: 2019-01-02 20:28+0200\n"
+"PO-Revision-Date: 2017-12-20 17:18+0100\n"
 "Last-Translator: Keld Simonsen <keld@keldix.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "Language: da\n"
@@ -99,7 +99,7 @@ msgid "give a short usage message"
 msgstr "vis en kort hjælpemeddelelse"
 
 #: gnu/argp-parse.c:83 src/tar.c:507 src/tar.c:509 src/tar.c:612
-#: tests/genfile.c:134
+#: tests/genfile.c:129
 msgid "NAME"
 msgstr "NAVN"
 
@@ -137,29 +137,29 @@ msgid "write error"
 msgstr "skrivefejl"
 
 #: gnu/getopt.c:278
-#, fuzzy, c-format
+#, c-format
 msgid "%s: option '%s%s' is ambiguous\n"
-msgstr "%s: flag '-W %s' er flertydigt\n"
+msgstr "%s: flag '%s%s' er flertydigt\n"
 
 #: gnu/getopt.c:284
-#, fuzzy, c-format
+#, c-format
 msgid "%s: option '%s%s' is ambiguous; possibilities:"
-msgstr "%s: flag '%s' er flertydigt; muligheder:"
+msgstr "%s: flag '%s%s' er flertydigt; muligheder:"
 
 #: gnu/getopt.c:319
-#, fuzzy, c-format
+#, c-format
 msgid "%s: unrecognized option '%s%s'\n"
-msgstr "%s: ukendt flag '%c%s'\n"
+msgstr "%s: ukendt flag '%s%s'\n"
 
 #: gnu/getopt.c:345
-#, fuzzy, c-format
+#, c-format
 msgid "%s: option '%s%s' doesn't allow an argument\n"
-msgstr "%s: flag '%c%s' tillader ikke et argument\n"
+msgstr "%s: flag '%s%s' tillader ikke et argument\n"
 
 #: gnu/getopt.c:360
-#, fuzzy, c-format
+#, c-format
 msgid "%s: option '%s%s' requires an argument\n"
-msgstr "%s: flag '--%s' kræver et argument\n"
+msgstr "%s: flag '%s%s' kræver et argument\n"
 
 #: gnu/getopt.c:621
 #, c-format
@@ -234,12 +234,12 @@ msgstr "^[jJyY]"
 msgid "^[nN]"
 msgstr "^[nN]"
 
-#: gnu/version-etc.c:74
+#: gnu/version-etc.c:73
 #, c-format
 msgid "Packaged by %s (%s)\n"
 msgstr "Pakket af %s (%s)\n"
 
-#: gnu/version-etc.c:77
+#: gnu/version-etc.c:76
 #, c-format
 msgid "Packaged by %s\n"
 msgstr "Pakket af %s\n"
@@ -247,12 +247,11 @@ msgstr "Pakket af %s\n"
 #. TRANSLATORS: Translate "(C)" to the copyright symbol
 #. (C-in-a-circle), if this symbol is available in the user's
 #. locale.  Otherwise, do not translate "(C)"; leave it as-is.
-#: gnu/version-etc.c:84
+#: gnu/version-etc.c:83
 msgid "(C)"
 msgstr "©"
 
-#: gnu/version-etc.c:86
-#, fuzzy
+#: gnu/version-etc.c:85
 msgid ""
 "\n"
 "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl."
@@ -264,7 +263,7 @@ msgstr ""
 "\n"
 "Licens GPLv3+: GNU GPL version 3 eller senere <http://gnu.org/licenses/gpl."
 "html>.\n"
-"Dette program er frit programmel. Du kan ændre og distribuere det.\n"
+"Dette program er frit programmel. Du må ændre og distribuere det.\n"
 "Der er ikke NOGEN SOM HELST GARANTI, i det omfang som lov tillader.\n"
 
 #. TRANSLATORS: %s denotes an author name.
@@ -399,15 +398,14 @@ msgid "%s home page: <%s>\n"
 msgstr "%s hjemmeside: <%s>\n"
 
 #: gnu/version-etc.c:253
-#, fuzzy, c-format
+#, c-format
 msgid "%s home page: <https://www.gnu.org/software/%s/>\n"
-msgstr "%s hjemmeside: <http://www.gnu.org/software/%s/>.\n"
+msgstr "%s hjemmeside: <http://www.gnu.org/software/%s/>\n"
 
 #: gnu/version-etc.c:256
-#, fuzzy
 msgid "General help using GNU software: <https://www.gnu.org/gethelp/>\n"
 msgstr ""
-"Generel brugerhjælp for GNU-programmel: <http://www.gnu.org/gethelp/>.\n"
+"Generel brugerhjælp for GNU-programmel: <http://www.gnu.org/gethelp/>\n"
 
 #. TRANSLATORS: %s after `Cannot' is a function name, e.g. `Cannot open'.
 #. Directly translating this to another language will not work, first because
@@ -526,189 +524,189 @@ msgstr "Kan ikke omdirigere filer for fjern skál"
 msgid "Cannot execute remote shell"
 msgstr "Kan ikke eksekvere fjern skál"
 
-#: rmt/rmt.c:432
+#: rmt/rmt.c:436
 msgid "Seek direction out of range"
 msgstr "Søgeretning udenfor interval"
 
-#: rmt/rmt.c:438
+#: rmt/rmt.c:442
 msgid "Invalid seek direction"
 msgstr "Ugyldig søgeretning"
 
-#: rmt/rmt.c:446
+#: rmt/rmt.c:450
 msgid "Invalid seek offset"
 msgstr "Ugyldig positioneringsværdi"
 
-#: rmt/rmt.c:452
+#: rmt/rmt.c:456
 msgid "Seek offset out of range"
 msgstr "Søgeposition udenfor interval"
 
-#: rmt/rmt.c:493 rmt/rmt.c:544 rmt/rmt.c:608
+#: rmt/rmt.c:497 rmt/rmt.c:548 rmt/rmt.c:612
 msgid "Invalid byte count"
 msgstr "Ugyldigt byteantal"
 
-#: rmt/rmt.c:499 rmt/rmt.c:550 rmt/rmt.c:614 rmt/rmt.c:625
+#: rmt/rmt.c:503 rmt/rmt.c:554 rmt/rmt.c:618 rmt/rmt.c:629
 msgid "Byte count out of range"
 msgstr "Byteantal udenfor interval"
 
-#: rmt/rmt.c:558
+#: rmt/rmt.c:562
 msgid "Premature eof"
 msgstr "For tidlig filafslutning"
 
-#: rmt/rmt.c:601
+#: rmt/rmt.c:605
 msgid "Invalid operation code"
 msgstr "Ugyldig operationskode"
 
-#: rmt/rmt.c:636 rmt/rmt.c:680
+#: rmt/rmt.c:640 rmt/rmt.c:684
 msgid "Operation not supported"
 msgstr "Operation understøttes ikke"
 
-#: rmt/rmt.c:664
+#: rmt/rmt.c:668
 msgid "Unexpected arguments"
 msgstr "Uventede argumenter"
 
-#: rmt/rmt.c:689
+#: rmt/rmt.c:693
 msgid "Manipulate a tape drive, accepting commands from a remote process"
 msgstr "Styr en båndstation via accept af kommandoer fra en fjernproces"
 
-#: rmt/rmt.c:696 src/tar.c:432 src/tar.c:436 src/tar.c:610 src/tar.c:625
-#: src/tar.c:714 src/tar.c:730 tests/genfile.c:171
+#: rmt/rmt.c:700 src/tar.c:432 src/tar.c:436 src/tar.c:610 src/tar.c:625
+#: src/tar.c:715 src/tar.c:731 tests/genfile.c:166
 msgid "NUMBER"
 msgstr "NUMMER"
 
-#: rmt/rmt.c:697
+#: rmt/rmt.c:701
 msgid "set debug level"
 msgstr "sæt fejlsøgningsniveau"
 
-#: rmt/rmt.c:698 src/names.c:71 src/names.c:75 src/names.c:93 src/names.c:103
-#: src/names.c:106 src/names.c:109 src/names.c:112 src/names.c:114
-#: src/tar.c:430 src/tar.c:511 src/tar.c:513 src/tar.c:615 src/tar.c:747
-#: tests/genfile.c:136 tests/genfile.c:185 tests/genfile.c:189
-#: tests/genfile.c:192 tests/genfile.c:198
+#: rmt/rmt.c:702 src/names.c:70 src/names.c:74 src/names.c:92 src/names.c:102
+#: src/names.c:105 src/names.c:108 src/names.c:111 src/names.c:113
+#: src/tar.c:430 src/tar.c:511 src/tar.c:513 src/tar.c:615 src/tar.c:748
+#: tests/genfile.c:131 tests/genfile.c:180 tests/genfile.c:184
+#: tests/genfile.c:187 tests/genfile.c:193
 msgid "FILE"
 msgstr "FIL"
 
-#: rmt/rmt.c:699
+#: rmt/rmt.c:703
 msgid "set debug output file name"
 msgstr "sæt fejlsøgningsfilnavn"
 
-#: rmt/rmt.c:715 rmt/rmt.c:783
+#: rmt/rmt.c:719 rmt/rmt.c:787
 #, c-format
 msgid "cannot open %s"
 msgstr "kan ikke åbne %s"
 
-#: rmt/rmt.c:780 tests/genfile.c:977 tests/genfile.c:994
+#: rmt/rmt.c:784 tests/genfile.c:977
 #, c-format
 msgid "too many arguments"
 msgstr "for mange argumenter"
 
-#: rmt/rmt.c:822
+#: rmt/rmt.c:826
 msgid "Garbage command"
 msgstr "Ugyldig kommando"
 
-#: src/buffer.c:474 src/buffer.c:479 src/buffer.c:773 src/buffer.c:1415
-#: src/buffer.c:1452 src/buffer.c:1464 src/buffer.c:1493 src/delete.c:211
-#: src/list.c:275 src/update.c:188
+#: src/buffer.c:476 src/buffer.c:481 src/buffer.c:775 src/buffer.c:1417
+#: src/buffer.c:1454 src/buffer.c:1466 src/buffer.c:1495 src/delete.c:210
+#: src/list.c:274 src/update.c:187
 msgid "This does not look like a tar archive"
 msgstr "Dette ligner ikke et tar-arkiv"
 
-#: src/buffer.c:590
+#: src/buffer.c:592
 msgid "Total bytes read"
 msgstr "Totalt antal byte læst"
 
-#: src/buffer.c:592
+#: src/buffer.c:594
 msgid "Total bytes written"
 msgstr "Totalt antal byte skrevet"
 
-#: src/buffer.c:593
+#: src/buffer.c:595
 msgid "Total bytes deleted"
 msgstr "Totalt antal byte slettet"
 
-#: src/buffer.c:672
+#: src/buffer.c:674
 msgid "(pipe)"
 msgstr "(datakanal)"
 
-#: src/buffer.c:696
+#: src/buffer.c:698
 msgid "Refusing to read archive contents from terminal (missing -f option?)"
 msgstr "Nægter at læse arkivindhold fra terminal (manglende -f-flag?)"
 
-#: src/buffer.c:698
+#: src/buffer.c:700
 msgid "Refusing to write archive contents to terminal (missing -f option?)"
 msgstr "Nægter at skrive arkivindhold til terminal (manglende -f-flag?)"
 
-#: src/buffer.c:711
+#: src/buffer.c:713
 msgid "Invalid value for record_size"
 msgstr "Ugyldig værdi for record_size"
 
-#: src/buffer.c:714
+#: src/buffer.c:716
 msgid "No archive name given"
 msgstr "Arkivnavn er ikke opgivet"
 
-#: src/buffer.c:757
+#: src/buffer.c:759
 msgid "Cannot verify stdin/stdout archive"
 msgstr "Kan ikke verificere standard-ind/standard-ud arkiver"
 
-#: src/buffer.c:770
+#: src/buffer.c:772
 #, c-format
 msgid "Archive is compressed. Use %s option"
 msgstr "Arkivet er komprimeret. Brug flaget %s"
 
-#: src/buffer.c:828 src/tar.c:2455
+#: src/buffer.c:830 src/tar.c:2464
 msgid "Cannot update compressed archives"
 msgstr "Kan ikke opdatere komprimerede arkiver"
 
-#: src/buffer.c:928
+#: src/buffer.c:930
 msgid "At beginning of tape, quitting now"
 msgstr "Ved begyndelsen af båndet, afslutter nu"
 
-#: src/buffer.c:934
+#: src/buffer.c:936
 msgid "Too many errors, quitting"
 msgstr "For mange fejl, afslutter"
 
-#: src/buffer.c:967
+#: src/buffer.c:969
 #, c-format
 msgid "Record size = %lu block"
 msgid_plural "Record size = %lu blocks"
 msgstr[0] "Poststørrelse = %lu blok"
 msgstr[1] "Poststørrelse = %lu blokke"
 
-#: src/buffer.c:988
+#: src/buffer.c:990
 #, c-format
 msgid "Unaligned block (%lu byte) in archive"
 msgid_plural "Unaligned block (%lu bytes) in archive"
 msgstr[0] "Ikke-justeret blok (%lu byte) i arkiv"
 msgstr[1] "Ikke-justerede blokke (%lu byte) i arkiv"
 
-#: src/buffer.c:1075
+#: src/buffer.c:1077
 msgid "Cannot backspace archive file; it may be unreadable without -i"
 msgstr "Kunne ikke gå tilbage i arkivfilen. Den kan være ulæselig uden -i"
 
-#: src/buffer.c:1107
+#: src/buffer.c:1109
 msgid "rmtlseek not stopped at a record boundary"
 msgstr "rmtlseek stoppede ikke på en postgrænse"
 
-#: src/buffer.c:1168
+#: src/buffer.c:1170
 #, c-format
 msgid "%s: contains invalid volume number"
 msgstr "%s: indeholder ugyldigt delarkivs-nummer"
 
-#: src/buffer.c:1203
+#: src/buffer.c:1205
 msgid "Volume number overflow"
 msgstr "Overløb på delarkiv-nummer"
 
-#: src/buffer.c:1218
+#: src/buffer.c:1220
 #, c-format
 msgid "Prepare volume #%d for %s and hit return: "
 msgstr "Klargør delarkiv nummer %d for %s og tryk retur: "
 
-#: src/buffer.c:1224
+#: src/buffer.c:1226
 msgid "EOF where user reply was expected"
 msgstr "Filafslutning hvor svar fra bruger var forventet"
 
-#: src/buffer.c:1229 src/buffer.c:1261
+#: src/buffer.c:1231 src/buffer.c:1263
 msgid "WARNING: Archive is incomplete"
 msgstr "ADVARSEL: Arkivet er ufuldstændigt"
 
-#: src/buffer.c:1243
+#: src/buffer.c:1245
 #, c-format
 msgid ""
 " n name        Give a new file name for the next (and subsequent) volume(s)\n"
@@ -720,66 +718,66 @@ msgstr ""
 " q                   Afbryd tar\n"
 " y eller ny linje    Fortsæt handling\n"
 
-#: src/buffer.c:1248
+#: src/buffer.c:1250
 #, c-format
 msgid " !             Spawn a subshell\n"
 msgstr " !            Start en ny skál\n"
 
-#: src/buffer.c:1249
+#: src/buffer.c:1251
 #, c-format
 msgid " ?             Print this list\n"
 msgstr " ?            Udskriv denne liste\n"
 
-#: src/buffer.c:1256
+#: src/buffer.c:1258
 msgid "No new volume; exiting.\n"
 msgstr "Intet nyt delarkiv; afslutter.\n"
 
-#: src/buffer.c:1289
+#: src/buffer.c:1291
 msgid "File name not specified. Try again.\n"
 msgstr "Filnavn ikke angivet, prøv igen.\n"
 
-#: src/buffer.c:1301
+#: src/buffer.c:1303
 #, c-format
 msgid "Invalid input. Type ? for help.\n"
 msgstr "Ugyldigt inddata. Skriv ? for at få hjælp.\n"
 
-#: src/buffer.c:1352
+#: src/buffer.c:1354
 #, c-format
 msgid "%s command failed"
 msgstr "'%s'-kommando mislykkedes"
 
-#: src/buffer.c:1529 src/buffer.c:1545
+#: src/buffer.c:1531 src/buffer.c:1547
 #, c-format
 msgid "%s is not continued on this volume"
 msgstr "%s fortsætter ikke i dette delarkiv"
 
-#: src/buffer.c:1541
+#: src/buffer.c:1543
 #, c-format
 msgid "%s is possibly continued on this volume: header contains truncated name"
 msgstr ""
 "%s fortsættes muligvis i dette delarkiv: hoved indeholder afkortet navn"
 
-#: src/buffer.c:1559
+#: src/buffer.c:1561
 #, c-format
 msgid "%s is the wrong size (%s != %s + %s)"
 msgstr "%s har forkert størrelse (%s != %s + %s)"
 
-#: src/buffer.c:1574
+#: src/buffer.c:1576
 #, c-format
 msgid "This volume is out of sequence (%s - %s != %s)"
 msgstr "Dette delarkiv er ude af rækkefølge (%s - %s != %s)"
 
-#: src/buffer.c:1652 src/buffer.c:1678
+#: src/buffer.c:1654 src/buffer.c:1672
 #, c-format
 msgid "Archive not labeled to match %s"
 msgstr "Arkivet er ikke navngivet til at passe med %s"
 
-#: src/buffer.c:1682
+#: src/buffer.c:1676
 #, c-format
 msgid "Volume %s does not match %s"
 msgstr "Delarkivet '%s' stemmer ikke overens med %s"
 
-#: src/buffer.c:1774
+#: src/buffer.c:1769
 #, c-format
 msgid ""
 "%s: file name too long to be stored in a GNU multivolume header, truncated"
@@ -787,210 +785,210 @@ msgstr ""
 "%s: filnavnet er for langt til at gemmes i hovedet på et GNU-flerdelarkiv, "
 "afkortes"
 
-#: src/buffer.c:1965
+#: src/buffer.c:1962
 msgid "write did not end on a block boundary"
 msgstr "skrivning stoppede ikke på en blokgrænse"
 
-#: src/compare.c:98
+#: src/compare.c:97
 #, c-format
 msgid "Could only read %lu of %lu byte"
 msgid_plural "Could only read %lu of %lu bytes"
 msgstr[0] "Kunne kun læse %lu af %lu byte"
 msgstr[1] "Kunne kun læse %lu af %lu byte"
 
-#: src/compare.c:108 src/compare.c:398
+#: src/compare.c:107 src/compare.c:397
 msgid "Contents differ"
 msgstr "Indhold er forskelligt"
 
-#: src/compare.c:134 src/extract.c:1204 src/incremen.c:1508 src/list.c:488
-#: src/list.c:1404 src/xheader.c:847
+#: src/compare.c:133 src/extract.c:1204 src/incremen.c:1508 src/list.c:487
+#: src/list.c:1401 src/xheader.c:865
 msgid "Unexpected EOF in archive"
 msgstr "Uventet filslutning i arkivet"
 
-#: src/compare.c:182 src/compare.c:198 src/compare.c:317 src/compare.c:422
+#: src/compare.c:181 src/compare.c:197 src/compare.c:316 src/compare.c:421
 msgid "File type differs"
 msgstr "Filtype er forskellig"
 
-#: src/compare.c:185 src/compare.c:205 src/compare.c:331
+#: src/compare.c:184 src/compare.c:204 src/compare.c:330
 msgid "Mode differs"
 msgstr "Modus er forskellig"
 
-#: src/compare.c:208
+#: src/compare.c:207
 msgid "Uid differs"
 msgstr "Bruger-ID er forskellig"
 
-#: src/compare.c:210
+#: src/compare.c:209
 msgid "Gid differs"
 msgstr "Gruppe-ID er forskellig"
 
-#: src/compare.c:214
+#: src/compare.c:213
 msgid "Mod time differs"
 msgstr "Modificeringstid er forskellig"
 
-#: src/compare.c:218 src/compare.c:432
+#: src/compare.c:217 src/compare.c:431
 msgid "Size differs"
 msgstr "Størrelse er forskellig"
 
-#: src/compare.c:267
+#: src/compare.c:266
 #, c-format
 msgid "Not linked to %s"
 msgstr "Ikke lænket til %s"
 
-#: src/compare.c:293
+#: src/compare.c:292
 msgid "Symlink differs"
 msgstr "Symbolsk lænke er forskellig"
 
-#: src/compare.c:325
+#: src/compare.c:324
 msgid "Device number differs"
 msgstr "Enhedsnummer er forskellig"
 
-#: src/compare.c:473
+#: src/compare.c:472
 #, c-format
 msgid "Verify "
 msgstr "Verificér "
 
-#: src/compare.c:480
+#: src/compare.c:479
 #, c-format
 msgid "%s: Unknown file type '%c', diffed as normal file"
 msgstr "%s: Ukendt filtype '%c', diff'et som en almindelig fil"
 
-#: src/compare.c:535
+#: src/compare.c:534
 msgid "Archive contains file names with leading prefixes removed."
 msgstr "Arkivet indeholder filnavne med indledende prefixer borttaget."
 
-#: src/compare.c:541
+#: src/compare.c:540
 msgid "Archive contains transformed file names."
 msgstr "Arkiv indeholder transformerede filnavne."
 
-#: src/compare.c:546
+#: src/compare.c:545
 msgid "Verification may fail to locate original files."
 msgstr "Verificering kan mislykkes med at finde originalfiler."
 
-#: src/compare.c:620
+#: src/compare.c:619
 #, c-format
 msgid "VERIFY FAILURE: %d invalid header detected"
 msgid_plural "VERIFY FAILURE: %d invalid headers detected"
 msgstr[0] "VERIFICERINGSFEJL: %d ukendt hoved fundet"
 msgstr[1] "VERIFICERINGSFEJL: %d ukendte hoveder fundet"
 
-#: src/compare.c:638 src/list.c:252
+#: src/compare.c:637 src/list.c:251
 #, c-format
 msgid "A lone zero block at %s"
 msgstr "En enkeltstående nulblok ved %s"
 
-#: src/create.c:74
+#: src/create.c:73
 #, c-format
 msgid "%s: contains a cache directory tag %s; %s"
 msgstr "%s: indeholder et cachekatalog-mærke %s; %s"
 
-#: src/create.c:263
+#: src/create.c:262
 #, c-format
 msgid "value %s out of %s range %s..%s; substituting %s"
 msgstr "værdi %s ud af %s interval %s..%s; erstatter %s"
 
-#: src/create.c:269
+#: src/create.c:268
 #, c-format
 msgid "value %s out of %s range %s..%s"
 msgstr "værdi %s ud af %s interval %s..%s"
 
-#: src/create.c:329
+#: src/create.c:328
 msgid "Generating negative octal headers"
 msgstr "Genererer negative oktale hoveder"
 
-#: src/create.c:606 src/create.c:669
+#: src/create.c:605 src/create.c:668
 #, c-format
 msgid "%s: file name is too long (max %d); not dumped"
 msgstr "%s: filnavnet er for langt (max %d); ikke arkiveret"
 
-#: src/create.c:616
+#: src/create.c:615
 #, c-format
 msgid "%s: file name is too long (cannot be split); not dumped"
 msgstr "%s: filnavnet er for langt (kan ikke opdeles); ikke arkiveret"
 
-#: src/create.c:643
+#: src/create.c:642
 #, c-format
 msgid "%s: link name is too long; not dumped"
 msgstr "%s: lænkenavn er for langt; ikke arkiveret"
 
-#: src/create.c:1106
+#: src/create.c:1105
 #, c-format
 msgid "%s: File shrank by %s byte; padding with zeros"
 msgid_plural "%s: File shrank by %s bytes; padding with zeros"
 msgstr[0] "%s: Filen formindsket med %s byte, fylder ud med nul"
 msgstr[1] "%s: Filen formindsket med %s byte, fylder ud med nuller"
 
-#: src/create.c:1204
+#: src/create.c:1203
 #, c-format
 msgid "%s: file is on a different filesystem; not dumped"
 msgstr "%s: fil er på et andet filesystem; ikke arkiveret"
 
-#: src/create.c:1247 src/create.c:1258 src/incremen.c:610 src/incremen.c:617
+#: src/create.c:1246 src/create.c:1257 src/incremen.c:609 src/incremen.c:616
 msgid "contents not dumped"
 msgstr "indholdet ikke arkiveret"
 
-#: src/create.c:1464
+#: src/create.c:1463
 #, c-format
 msgid "%s: Unknown file type; file ignored"
 msgstr "%s: Ukendt filtype; filen blev ignoreret"
 
-#: src/create.c:1576
+#: src/create.c:1575
 #, c-format
 msgid "Missing links to %s."
 msgstr "Mangler lænke til %s."
 
-#: src/create.c:1737
+#: src/create.c:1736
 #, c-format
 msgid "%s: file is unchanged; not dumped"
 msgstr "%s: fil er uændret; ikke arkiveret"
 
-#: src/create.c:1746
+#: src/create.c:1745
 #, c-format
 msgid "%s: file is the archive; not dumped"
 msgstr "%s: fil er det samme som arkivet; ikke arkiveret"
 
-#: src/create.c:1774 src/incremen.c:603
+#: src/create.c:1773 src/incremen.c:602
 msgid "directory not dumped"
 msgstr "katalog ikke arkiveret"
 
-#: src/create.c:1846
+#: src/create.c:1845
 #, c-format
 msgid "%s: file changed as we read it"
 msgstr "%s: Fil ændredes mens vi læste den"
 
-#: src/create.c:1922
+#: src/create.c:1921
 #, c-format
 msgid "%s: socket ignored"
 msgstr "%s: sokkel ignoreret"
 
-#: src/create.c:1928
+#: src/create.c:1927
 #, c-format
 msgid "%s: door ignored"
 msgstr "%s: dør ignoreret"
 
-#: src/delete.c:216 src/list.c:288 src/update.c:192
+#: src/delete.c:215 src/list.c:287 src/update.c:191
 msgid "Skipping to next header"
 msgstr "Hopper til næste hoved"
 
-#: src/delete.c:281
+#: src/delete.c:280
 msgid "Deleting non-header from archive"
 msgstr "Sletter ikke-hoved fra arkivet"
 
-#: src/extract.c:302
+#: src/extract.c:301
 #, c-format
 msgid "%s: implausibly old time stamp %s"
 msgstr "%s: usandsynligt gammelt tidsstempel %s"
 
-#: src/extract.c:320
+#: src/extract.c:319
 #, c-format
 msgid "%s: time stamp %s is %s s in the future"
 msgstr "%s: tidsstempel %s er %s sekunder ud i fremtiden"
 
-#: src/extract.c:553
+#: src/extract.c:552
 #, c-format
 msgid "%s: Unexpected inconsistency when making directory"
 msgstr "%s: Uventet uoverensstemmelse ved oprettelse af katalog"
 
-#: src/extract.c:771
+#: src/extract.c:770
 #, c-format
 msgid "%s: skipping existing file"
 msgstr "%s: skipper eksisterende fil"
@@ -1013,7 +1011,7 @@ msgstr "Forsøger at udpakke symbolske lænker som hårde lænker"
 msgid "%s: Cannot extract -- file is continued from another volume"
 msgstr "%s: Kan ikke udpakke -- filen er fortsat fra et andet delarkiv"
 
-#: src/extract.c:1603 src/list.c:1167
+#: src/extract.c:1603 src/list.c:1164
 msgid "Unexpected long name header"
 msgstr "Uventet langt filnavnshoved"
 
@@ -1030,7 +1028,7 @@ msgstr "Nuværende %s er nyere eller lige så gammel"
 #: src/extract.c:1664
 #, c-format
 msgid "%s: Member name contains '..'"
-msgstr ""
+msgstr "%s: Medlemsnavn indeholder '..'"
 
 #: src/extract.c:1696
 #, c-format
@@ -1042,22 +1040,22 @@ msgstr "%s: Kunne ikke sikkerhedskopiere denne fil"
 msgid "Cannot rename %s to %s"
 msgstr "Kan ikke omdøbe %s til %s"
 
-#: src/incremen.c:494 src/incremen.c:536
+#: src/incremen.c:493 src/incremen.c:535
 #, c-format
 msgid "%s: Directory has been renamed from %s"
 msgstr "%s: Kataloget er blevet omdøbt fra %s"
 
-#: src/incremen.c:549
+#: src/incremen.c:548
 #, c-format
 msgid "%s: Directory is new"
 msgstr "%s: Kataloget er nyt"
 
-#: src/incremen.c:566
+#: src/incremen.c:565
 #, c-format
 msgid "%s: directory is on a different filesystem; not dumped"
 msgstr "%s: katalog er på et andet filesystem; ikke arkiveret"
 
-#: src/incremen.c:587
+#: src/incremen.c:586
 #, c-format
 msgid "%s: Directory has been renamed"
 msgstr "%s: Kataloget er blevet omdøbt"
@@ -1144,9 +1142,8 @@ msgid "Malformed dumpdir: empty name in 'R'"
 msgstr "Fejlagtigt dumpkatalog: tomt navn i \"R\""
 
 #: src/incremen.c:1585
-#, fuzzy
 msgid "Malformed dumpdir: 'T' not preceded by 'R'"
-msgstr "Fejlagtigt dumpkatalog: \"T\" foregås ikke af \"R\""
+msgstr "Fejlagtigt dumpkatalog: 'T' foregås ikke af 'R'"
 
 #: src/incremen.c:1591
 msgid "Malformed dumpdir: empty name in 'T'"
@@ -1186,192 +1183,191 @@ msgstr "%s: Sletter %s\n"
 msgid "%s: Cannot remove"
 msgstr "Kan ikke slette %s"
 
-#: src/list.c:219
+#: src/list.c:218
 #, c-format
 msgid "%s: Omitting"
 msgstr "%s: Udelader"
 
-#: src/list.c:237
+#: src/list.c:236
 #, c-format
 msgid "block %s: ** Block of NULs **\n"
 msgstr "blok %s: ** Blok med NULler **\n"
 
-#: src/list.c:263
+#: src/list.c:262
 #, c-format
 msgid "block %s: ** End of File **\n"
 msgstr "blok %s: ** Slut på fil **\n"
 
-#: src/list.c:285 src/list.c:1136 src/list.c:1372
+#: src/list.c:284 src/list.c:1133 src/list.c:1369
 #, c-format
 msgid "block %s: "
 msgstr "blok %s: "
 
 #. TRANSLATORS: %s is type of the value (gid_t, uid_t,
 #. etc.)
-#: src/list.c:751
+#: src/list.c:752
 #, c-format
 msgid "Blanks in header where numeric %s value expected"
 msgstr "Blank-tegn i hovedet hvor numerisk %s værdi var forventet"
 
 #. TRANSLATORS: Second %s is a type name (gid_t,uid_t,etc.)
-#: src/list.c:806
+#: src/list.c:807
 #, c-format
 msgid "Archive octal value %.*s is out of %s range; assuming two's complement"
 msgstr "Oktal værdi %.*s i arkiv er udenfor %s interval; antager to-komplement"
 
 #. TRANSLATORS: Second %s is a type name (gid_t,uid_t,etc.)
-#: src/list.c:817
+#: src/list.c:818
 #, c-format
 msgid "Archive octal value %.*s is out of %s range"
 msgstr "Oktal værdi %.*s i arkiv er udenfor %s interval"
 
-#: src/list.c:838
+#: src/list.c:839
 msgid "Archive contains obsolescent base-64 headers"
 msgstr "Arkiv indeholder forældede base-64 hoveder"
 
-#: src/list.c:852
+#: src/list.c:853
 #, c-format
 msgid "Archive signed base-64 string %s is out of %s range"
 msgstr "Base-64 streng med fortegn %s i arkiv er udenfor %s interval"
 
-#: src/list.c:883
+#: src/list.c:884
 #, c-format
 msgid "Archive base-256 value is out of %s range"
 msgstr "Base-256 værdi i arkiv er udenfor %s interval"
 
 #. TRANSLATORS: Second %s is a type name (gid_t,uid_t,etc.)
-#: src/list.c:912
+#: src/list.c:913
 #, c-format
 msgid "Archive contains %.*s where numeric %s value expected"
 msgstr "Arkiv indeholder %.*s hvor numerisk %s-værdi var forventet"
 
 #. TRANSLATORS: Second %s is type name (gid_t,uid_t,etc.)
-#: src/list.c:934
+#: src/list.c:935
 #, c-format
 msgid "Archive value %s is out of %s range %s..%s"
 msgstr "Arkiv værdi %s er udenfor %s interval %s..%s"
 
-#: src/list.c:1272
+#: src/list.c:1269
 #, c-format
 msgid " link to %s\n"
 msgstr " lænke til %s\n"
 
-#: src/list.c:1280
+#: src/list.c:1277
 #, c-format
 msgid " unknown file type %s\n"
 msgstr " ukendt filtype %s\n"
 
-#: src/list.c:1298
+#: src/list.c:1295
 #, c-format
 msgid "--Long Link--\n"
 msgstr "--Lang lænke--\n"
 
-#: src/list.c:1302
+#: src/list.c:1299
 #, c-format
 msgid "--Long Name--\n"
 msgstr "--Langt navn--\n"
 
-#: src/list.c:1306
+#: src/list.c:1303
 #, c-format
 msgid "--Volume Header--\n"
 msgstr "--Delarkivhoved--\n"
 
-#: src/list.c:1314
+#: src/list.c:1311
 #, c-format
 msgid "--Continued at byte %s--\n"
 msgstr "--Fortsat ved byte %s--\n"
 
-#: src/list.c:1377
+#: src/list.c:1374
 msgid "Creating directory:"
 msgstr "Opretter katalog:"
 
-#: src/misc.c:738
+#: src/misc.c:751
 #, c-format
 msgid "Renaming %s to %s\n"
 msgstr "Omdøber %s til %s\n"
 
-#: src/misc.c:747 src/misc.c:766
+#: src/misc.c:760 src/misc.c:779
 #, c-format
 msgid "%s: Cannot rename to %s"
 msgstr "%s: Kan ikke omdøbe til %s"
 
-#: src/misc.c:771
+#: src/misc.c:784
 #, c-format
 msgid "Renaming %s back to %s\n"
 msgstr "Omdøber %s tilbage til %s\n"
 
-#: src/misc.c:1134
+#: src/misc.c:1147
 #, c-format
 msgid "%s: File removed before we read it"
 msgstr "%s: Fil fjernet før vi læste den"
 
-#: src/misc.c:1148
+#: src/misc.c:1161
 msgid "child process"
 msgstr "underproces"
 
-#: src/misc.c:1157
+#: src/misc.c:1170
 msgid "interprocess channel"
 msgstr "mellemproces-kanal"
 
-#: src/names.c:69
-#, fuzzy
+#: src/names.c:68
 msgid "Local file name selection:"
-msgstr "Lokalt filvalg:"
+msgstr "Lokalt valg af filnavn:"
 
-#: src/names.c:72
+#: src/names.c:71
 msgid "add given FILE to the archive (useful if its name starts with a dash)"
 msgstr "tilføj angivet FIL til arkivet (brugbart hvis FIL begynder med \"-\")"
 
-#: src/names.c:73 src/tar.c:484
+#: src/names.c:72 src/tar.c:484
 msgid "DIR"
 msgstr "KATALOG"
 
-#: src/names.c:74
+#: src/names.c:73
 msgid "change to directory DIR"
 msgstr "gå til arbejdskatalog KATALOG"
 
-#: src/names.c:76
+#: src/names.c:75
 msgid "get names to extract or create from FILE"
 msgstr "hent navne at udpakke eller oprette fra FIL"
 
-#: src/names.c:78
-#, fuzzy
+#: src/names.c:77
 msgid "-T reads null-terminated names; implies --verbatim-files-from"
-msgstr "-T læser navne adskilt med nultegn, deaktivér -C"
+msgstr "-T læser navne adskilt med nultegn; indebærer --verbatim-files-from"
 
-#: src/names.c:81
+#: src/names.c:80
 msgid "disable the effect of the previous --null option"
 msgstr "fjern effekten af foregående --null-flag"
 
-#: src/names.c:83
+#: src/names.c:82
 msgid "unquote input file or member names (default)"
 msgstr "afcitér inddata fil eller medlemsnavne (standardværdi)"
 
-#: src/names.c:85
+#: src/names.c:84
 msgid "do not unquote input file or member names"
 msgstr "afcitér ikke inddata fil eller medlemsnavne"
 
-#: src/names.c:87
+#: src/names.c:86
 msgid "-T reads file names verbatim (no escape or option handling)"
 msgstr ""
+"-T læser filnavne bogstaveligt (ingen beskyttelsestegn eller flagbehandling)"
 
-#: src/names.c:89
+#: src/names.c:88
 msgid "-T treats file names starting with dash as options (default)"
-msgstr ""
+msgstr "-T behandler filnavne der begynder med '-' som flag (standard)"
 
-#: src/names.c:91 tests/genfile.c:140
+#: src/names.c:90 tests/genfile.c:135
 msgid "PATTERN"
 msgstr "MØNSTER"
 
-#: src/names.c:92
+#: src/names.c:91
 msgid "exclude files, given as a PATTERN"
 msgstr "udelad filer som matcher MØNSTER"
 
-#: src/names.c:94
+#: src/names.c:93
 msgid "exclude patterns listed in FILE"
 msgstr "udelad filer som matcher mønster listet i FIL"
 
-#: src/names.c:96
+#: src/names.c:95
 msgid ""
 "exclude contents of directories containing CACHEDIR.TAG, except for the tag "
 "file itself"
@@ -1379,24 +1375,24 @@ msgstr ""
 "udelad indholdet i kataloger som indeholder CACHEDIR.TAG, undtagen "
 "mærkefilen CACHEDIR.TAG selv"
 
-#: src/names.c:99
+#: src/names.c:98
 msgid "exclude everything under directories containing CACHEDIR.TAG"
 msgstr "udelad alt i kataloger som indeholder CACHEDIR.TAG"
 
-#: src/names.c:102
+#: src/names.c:101
 msgid "exclude directories containing CACHEDIR.TAG"
 msgstr "udelad kataloger som indeholder CACHEDIR.TAG"
 
-#: src/names.c:104
+#: src/names.c:103
 msgid "exclude contents of directories containing FILE, except for FILE itself"
 msgstr "udelad indholdet i kataloger som indeholder FIL, undtagen FIL selv"
 
-#: src/names.c:107
+#: src/names.c:106
 msgid "read exclude patterns for each directory from FILE, if it exists"
 msgstr ""
 "indlæs ekskluderingsmønstre for hvert katalog fra FIL, hvis den eksisterer"
 
-#: src/names.c:110
+#: src/names.c:109
 msgid ""
 "read exclude patterns for each directory and its subdirectories from FILE, "
 "if it exists"
@@ -1404,118 +1400,121 @@ msgstr ""
 "indlæs ekskluderingsmønstre for hvert katalog og dets underkataloger fra "
 "FIL, hvis den eksisterer"
 
-#: src/names.c:113
+#: src/names.c:112
 msgid "exclude everything under directories containing FILE"
 msgstr "udelad alting i kataloger som indeholder FIL"
 
-#: src/names.c:115
+#: src/names.c:114
 msgid "exclude directories containing FILE"
 msgstr "udelad kataloger som indeholder FIL"
 
-#: src/names.c:117
+#: src/names.c:116
 msgid "exclude version control system directories"
 msgstr "udelad kataloger fra versionshåndteringssystemer"
 
-#: src/names.c:119
+#: src/names.c:118
 msgid "read exclude patterns from the VCS ignore files"
 msgstr "indlæs ekskluderingsmønstre fra VCS ignoreingsfiler"
 
-#: src/names.c:121
+#: src/names.c:120
 msgid "exclude backup and lock files"
 msgstr "udelad sikkerhedskopier og låsefiler"
 
-#: src/names.c:123
+#: src/names.c:122
 msgid "recurse into directories (default)"
 msgstr "gå rekursivt ned i kataloger (standardværdi)"
 
-#: src/names.c:125
+#: src/names.c:124
 msgid "avoid descending automatically in directories"
 msgstr "gå ikke ned i kataloger automatisk"
 
-#: src/names.c:130
+#: src/names.c:129
 msgid "File name matching options (affect both exclude and include patterns):"
 msgstr ""
 "Flag for match af filnavne (påvirker både ekskluderings- og "
 "inkluderingsmønstre):"
 
-#: src/names.c:133
+#: src/names.c:132
 msgid "patterns match file name start"
 msgstr "mønstre skal matche med begyndelsen på filnavne"
 
-#: src/names.c:135
+#: src/names.c:134
 msgid "patterns match after any '/' (default for exclusion)"
 msgstr "mønstre matches efter alle '/'-er (standardværdi ved ekskludering)"
 
-#: src/names.c:137
+#: src/names.c:136
 msgid "ignore case"
 msgstr "ingen forskel på store og små bogstaver"
 
-#: src/names.c:139
+#: src/names.c:138
 msgid "case sensitive matching (default)"
 msgstr "match store og små bogstaver forskelligt (standardværdi)"
 
-#: src/names.c:141
+#: src/names.c:140
 msgid "use wildcards (default for exclusion)"
 msgstr "brug jokertegn (standardværdi for ekskludering)"
 
-#: src/names.c:143
+#: src/names.c:142
 msgid "verbatim string matching"
 msgstr "ordret strengsammenligning"
 
-#: src/names.c:145
+#: src/names.c:144
 msgid "wildcards match '/' (default for exclusion)"
 msgstr "jokertegn matcher '/' (standardværdi for ekskludering)"
 
-#: src/names.c:147
+#: src/names.c:146
 msgid "wildcards do not match '/'"
 msgstr "jokertegn matcher ikke '/'"
 
-#: src/names.c:733
+#: src/names.c:732
 msgid ""
 "The following options were used after any non-optional arguments in archive "
 "create or update mode.  These options are positional and affect only "
 "arguments that follow them.  Please, rearrange them properly."
 msgstr ""
+"De følgende flag blev brugt efter nogen valgfri argumenter i oprettelses- "
+"eller opdaterings-tilstand for arkiv. Disse flag er positionelle og påvirker "
+"kun argumenter som følger efter dem. Omarrangér dem venligst korrekt."
 
-#: src/names.c:744
+#: src/names.c:743
 #, c-format
 msgid "-C %s has no effect"
-msgstr ""
+msgstr "-C %s har ingen virkning"
 
-#: src/names.c:749
+#: src/names.c:748
 #, c-format
 msgid "--%s %s has no effect"
-msgstr ""
+msgstr "--%s %s har ingen virkning"
 
-#: src/names.c:753
+#: src/names.c:752
 #, c-format
 msgid "--%s has no effect"
-msgstr ""
+msgstr "--%s har ingen virkning"
 
-#: src/names.c:879
+#: src/names.c:878
 msgid "command line"
 msgstr "kommandolinje"
 
-#: src/names.c:897
+#: src/names.c:896
 #, c-format
 msgid "%s: file list requested from %s already read from %s"
 msgstr "%s: filliste forespurgt fra %s allerede læst fra %s"
 
-#: src/names.c:978 src/checkpoint.c:274
+#: src/names.c:977 src/checkpoint.c:306
 #, c-format
 msgid "cannot split string '%s': %s"
 msgstr "kan ikke opsplitte streng '%s': %s"
 
-#: src/names.c:1025
+#: src/names.c:1024
 #, c-format
 msgid "%s: file name read contains nul character"
 msgstr "%s: filnavnet som læstes indeholder nultegn"
 
-#: src/names.c:1358
+#: src/names.c:1388
 msgid "Pattern matching characters used in file names"
 msgstr "Mønstermatchningstegn bruges i filnavne"
 
-#: src/names.c:1360
+#: src/names.c:1390
 msgid ""
 "Use --wildcards to enable pattern matching, or --no-wildcards to suppress "
 "this warning"
@@ -1523,46 +1522,46 @@ msgstr ""
 "Brug --wildcards for at aktivere mønstermatchning, eller --no-wildcards for "
 "at undertrykke denne advarsel"
 
-#: src/names.c:1378 src/names.c:1394
+#: src/names.c:1408 src/names.c:1424
 #, c-format
 msgid "%s: Not found in archive"
 msgstr "%s: Ikke fundet i arkivet"
 
-#: src/names.c:1379
+#: src/names.c:1409
 #, c-format
 msgid "%s: Required occurrence not found in archive"
 msgstr "%s: Krævet forekomst blev ikke fundet i arkivet"
 
-#: src/names.c:1413
+#: src/names.c:1443
 #, c-format
 msgid "Archive label mismatch"
 msgstr "Arkivetiket stemmer ikke overrens"
 
-#: src/names.c:1717
+#: src/names.c:1747
 msgid ""
 "Using -C option inside file list is not allowed with --listed-incremental"
 msgstr ""
 "At bruge -C-flaget i en filliste er ikke tilladt med --listed-incremental"
 
-#: src/names.c:1723
+#: src/names.c:1753
 msgid "Only one -C option is allowed with --listed-incremental"
 msgstr "Kun ét -C-flag er tilladt med --listed-incremental"
 
-#: src/tar.c:88
+#: src/tar.c:87
 #, c-format
 msgid "Options '%s' and '%s' both want standard input"
 msgstr "Flagene '%s' and '%s' vil begge have standard inddata"
 
-#: src/tar.c:165
+#: src/tar.c:164
 #, c-format
 msgid "%s: Invalid archive format"
 msgstr "%s: ugyldigt arkivformat"
 
-#: src/tar.c:197
+#: src/tar.c:196
 msgid "GNU features wanted on incompatible archive format"
 msgstr "GNU-funktioner forsøgt på inkompatibelt arkiv-format"
 
-#: src/tar.c:265
+#: src/tar.c:264
 #, c-format
 msgid ""
 "Unknown quoting style '%s'. Try '%s --quoting-style=help' to get a list."
@@ -1661,11 +1660,11 @@ msgstr "håndtér filer med huller effektivt"
 
 #: src/tar.c:424
 msgid "TYPE"
-msgstr ""
+msgstr "TYPE"
 
 #: src/tar.c:425
 msgid "technique to detect holes"
-msgstr ""
+msgstr "teknik til at finde huller"
 
 #: src/tar.c:426
 msgid "MAJOR[.MINOR]"
@@ -1785,7 +1784,7 @@ msgstr "Vælg uddatastrøm:"
 msgid "extract files to standard output"
 msgstr "udpak filer til standard-ud"
 
-#: src/tar.c:495 src/tar.c:588 src/tar.c:590 tests/genfile.c:195
+#: src/tar.c:495 src/tar.c:588 src/tar.c:590 tests/genfile.c:190
 msgid "COMMAND"
 msgstr "KOMMANDO"
 
@@ -1815,13 +1814,13 @@ msgstr "sæt NAVN som gruppe for tilføjede filer"
 
 #: src/tar.c:512
 msgid "use FILE to map file owner UIDs and names"
-msgstr ""
+msgstr "brug FIL til at associere filejer UID'er og navne"
 
 #: src/tar.c:514
 msgid "use FILE to map file owner GIDs and names"
-msgstr ""
+msgstr "brug FIL til at associere filejer GID'er og navne"
 
-#: src/tar.c:515 src/tar.c:700
+#: src/tar.c:515 src/tar.c:701
 msgid "DATE-OR-FILE"
 msgstr "DATO-ELLER-FIL"
 
@@ -1832,7 +1831,7 @@ msgstr "sæt modificeringstid på tilføjede filer fra DATO-ELLER-FIL"
 #: src/tar.c:518
 msgid ""
 "only set time when the file is more recent than what was given with --mtime"
-msgstr ""
+msgstr "sæt kun tid når filen er nyere end hvad der er givet med --mtime"
 
 #: src/tar.c:519
 msgid "CHANGES"
@@ -2030,7 +2029,7 @@ msgstr "lav nye blokke ved læsning (for 4.2BSD-datakanaler)"
 msgid "Archive format selection:"
 msgstr "Valg af arkivformat:"
 
-#: src/tar.c:637 tests/genfile.c:158
+#: src/tar.c:637 tests/genfile.c:153
 msgid "FORMAT"
 msgstr "FORMAT"
 
@@ -2114,59 +2113,59 @@ msgstr "PROG"
 msgid "filter through PROG (must accept -d)"
 msgstr "filtrér med PROG (skal acceptere -d)"
 
-#: src/tar.c:689
+#: src/tar.c:690
 msgid "Local file selection:"
 msgstr "Lokalt filvalg:"
 
-#: src/tar.c:691
+#: src/tar.c:692
 msgid "stay in local file system when creating archive"
 msgstr "skift ikke filsystem når arkivet oprettes"
 
-#: src/tar.c:693
+#: src/tar.c:694
 msgid "don't strip leading '/'s from file names"
 msgstr "fjern ikke indledende '/'-er fra filnavne"
 
-#: src/tar.c:695
+#: src/tar.c:696
 msgid "follow symlinks; archive and dump the files they point to"
 msgstr "følg symbolske lænker, arkivér filerne de peger på"
 
-#: src/tar.c:697
+#: src/tar.c:698
 msgid "follow hard links; archive and dump the files they refer to"
 msgstr "følg hårde lænker, arkivér filerne de peger på"
 
-#: src/tar.c:698
+#: src/tar.c:699
 msgid "MEMBER-NAME"
 msgstr "MEDLEMSNAVN"
 
-#: src/tar.c:699
+#: src/tar.c:700
 msgid "begin at member MEMBER-NAME when reading the archive"
 msgstr "begynd med medlem MEDLEMSNAVN ved læsning af arkivet"
 
-#: src/tar.c:701
+#: src/tar.c:702
 msgid "only store files newer than DATE-OR-FILE"
 msgstr "arkivér kun filer nyere end DATO-ELLER-FIL"
 
-#: src/tar.c:703
+#: src/tar.c:704
 msgid "DATE"
 msgstr "DATO"
 
-#: src/tar.c:704
+#: src/tar.c:705
 msgid "compare date and time when data changed only"
 msgstr "sammenlign kun dato og tid for dataændringer"
 
-#: src/tar.c:705
+#: src/tar.c:706
 msgid "CONTROL"
 msgstr "KONTROL"
 
-#: src/tar.c:706
+#: src/tar.c:707
 msgid "backup before removal, choose version CONTROL"
 msgstr "lav sikkerhedskopier før fjernelse, vælg type af versionshåndtering"
 
-#: src/tar.c:707 src/tar.c:766 src/tar.c:768 tests/genfile.c:174
+#: src/tar.c:708 src/tar.c:767 src/tar.c:769 tests/genfile.c:169
 msgid "STRING"
 msgstr "STRENG"
 
-#: src/tar.c:708
+#: src/tar.c:709
 msgid ""
 "backup before removal, override usual suffix ('~' unless overridden by "
 "environment variable SIMPLE_BACKUP_SUFFIX)"
@@ -2174,60 +2173,60 @@ msgstr ""
 "lav sikkerhedskopier før fjernelse, erstat den normale sikkerhedskopiendelse "
 "(\"~\" hvis ikke ændret med miljøvariablen SIMPLE_BACKUP_SUFFIX)"
 
-#: src/tar.c:713
+#: src/tar.c:714
 msgid "File name transformations:"
 msgstr "Filnavnstransformationer:"
 
-#: src/tar.c:715
+#: src/tar.c:716
 msgid "strip NUMBER leading components from file names on extraction"
 msgstr "fjern ANTAL indledende komponenter fra filnavne ved udpakning"
 
-#: src/tar.c:717
+#: src/tar.c:718
 msgid "EXPRESSION"
 msgstr "UDTRYK"
 
-#: src/tar.c:718
+#: src/tar.c:719
 msgid "use sed replace EXPRESSION to transform file names"
 msgstr "brug sed's erstatnings-UDTRYK for at transformere filnavne"
 
-#: src/tar.c:724
+#: src/tar.c:725
 msgid "Informative output:"
 msgstr "Informativ udskrift:"
 
-#: src/tar.c:727
+#: src/tar.c:728
 msgid "verbosely list files processed"
 msgstr "vís navne på alle filer som bliver behandlet"
 
-#: src/tar.c:728
+#: src/tar.c:729
 msgid "KEYWORD"
 msgstr "NØGLEORD"
 
-#: src/tar.c:729
+#: src/tar.c:730
 msgid "warning control"
 msgstr "advarselskontrol"
 
-#: src/tar.c:731
+#: src/tar.c:732
 msgid "display progress messages every NUMBERth record (default 10)"
 msgstr ""
 "vis forløbsmeddelelser efter hver gruppe af ANTAL poster (standardværdi 10)"
 
-#: src/tar.c:733
+#: src/tar.c:734
 msgid "ACTION"
 msgstr "HANDLING"
 
-#: src/tar.c:734
+#: src/tar.c:735
 msgid "execute ACTION on each checkpoint"
 msgstr "udfør HANDLING ved hvert kontrolpunkt"
 
-#: src/tar.c:737
+#: src/tar.c:738
 msgid "print a message if not all links are dumped"
 msgstr "vis en meddelelse hvis ikke alle lænker bliver arkiveret"
 
-#: src/tar.c:738
+#: src/tar.c:739
 msgid "SIGNAL"
 msgstr "SIGNAL"
 
-#: src/tar.c:739
+#: src/tar.c:740
 msgid ""
 "print total bytes after processing the archive; with an argument - print "
 "total bytes when this SIGNAL is delivered; Allowed signals are: SIGHUP, "
@@ -2239,35 +2238,35 @@ msgstr ""
 "SIGHUP, SIGQUIT, SIGINT, SIGUSR1 coh SIGUSR2. Navne uden SIG-præfix "
 "accepteres også."
 
-#: src/tar.c:744
+#: src/tar.c:745
 msgid "print file modification times in UTC"
 msgstr "vis filers modificeringstid i UTC"
 
-#: src/tar.c:746
+#: src/tar.c:747
 msgid "print file time to its full resolution"
 msgstr "vis fuld opløsning på filtider"
 
-#: src/tar.c:748
+#: src/tar.c:749
 msgid "send verbose output to FILE"
 msgstr "send informative meddelelser til FIL"
 
-#: src/tar.c:750
+#: src/tar.c:751
 msgid "show block number within archive with each message"
 msgstr "vis bloknummer i arkivet for hver meddelelse"
 
-#: src/tar.c:752
+#: src/tar.c:753
 msgid "ask for confirmation for every action"
 msgstr "bed om bekræftelse for hver handling"
 
-#: src/tar.c:755
+#: src/tar.c:756
 msgid "show tar defaults"
 msgstr "vis standardværdier for \"tar\""
 
-#: src/tar.c:757
+#: src/tar.c:758
 msgid "show valid ranges for snapshot-file fields"
 msgstr "vis gyldige områder for felter i snapshot-filer"
 
-#: src/tar.c:759
+#: src/tar.c:760
 msgid ""
 "when listing or extracting, list each directory that does not match search "
 "criteria"
@@ -2275,31 +2274,31 @@ msgstr ""
 "ved visning eller udpakning vises hvert katalog som ikke matcher "
 "søgekriterium"
 
-#: src/tar.c:761
+#: src/tar.c:762
 msgid "show file or archive names after transformation"
 msgstr "vis fil- eller arkivnavne efter transformering"
 
-#: src/tar.c:764
+#: src/tar.c:765
 msgid "STYLE"
 msgstr "STÍL"
 
-#: src/tar.c:765
+#: src/tar.c:766
 msgid "set name quoting style; see below for valid STYLE values"
 msgstr "sæt citatstíl for navne. Se nedenfor for gyldige værdier på STÍL."
 
-#: src/tar.c:767
+#: src/tar.c:768
 msgid "additionally quote characters from STRING"
 msgstr "citér også tegn i STRENG"
 
-#: src/tar.c:769
+#: src/tar.c:770
 msgid "disable quoting for characters from STRING"
 msgstr "citér ikke tegn fra STRENG"
 
-#: src/tar.c:774
+#: src/tar.c:775
 msgid "Compatibility options:"
 msgstr "Kompatibilitetsflag:"
 
-#: src/tar.c:777
+#: src/tar.c:778
 msgid ""
 "when creating, same as --old-archive; when extracting, same as --no-same-"
 "owner"
@@ -2307,22 +2306,22 @@ msgstr ""
 "ved oprettelse det samme som --old-archive; ved udpakning det samme som --no-"
 "same-owner"
 
-#: src/tar.c:782
+#: src/tar.c:783
 msgid "Other options:"
 msgstr "Andre flag:"
 
-#: src/tar.c:785
+#: src/tar.c:786
 msgid "disable use of some potentially harmful options"
 msgstr "begræns brugen af potentielt farlige flag"
 
 #. TRANSLATORS: Both %s in this statement are replaced with
 #. option names.
-#: src/tar.c:845
+#: src/tar.c:846
 #, c-format
 msgid "'%s' cannot be used with '%s'"
 msgstr "%s: kan ikke bruges med '%s'"
 
-#: src/tar.c:933
+#: src/tar.c:934
 msgid ""
 "You may not specify more than one '-Acdtrux', '--delete' or  '--test-label' "
 "option"
@@ -2330,40 +2329,40 @@ msgstr ""
 "Du kan ikke angive mere end ét af '-Acdtrux', --delete eller `--test-label' "
 "flagene"
 
-#: src/tar.c:945
+#: src/tar.c:946
 msgid "Conflicting compression options"
 msgstr "Konflikt i komprimeringsflag"
 
-#: src/tar.c:1004
+#: src/tar.c:1000
 #, c-format
 msgid "Unknown signal name: %s"
 msgstr "Ukendt signalnavn: %s"
 
-#: src/tar.c:1028
+#: src/tar.c:1030
 msgid "Date sample file not found"
 msgstr "Tidsfil blev ikke fundet"
 
-#: src/tar.c:1036
+#: src/tar.c:1038
 #, c-format
 msgid "Substituting %s for unknown date format %s"
 msgstr "Erstatter %s for ukendt dato-format %s"
 
-#: src/tar.c:1065
+#: src/tar.c:1067
 #, c-format
 msgid "Option %s: Treating date '%s' as %s"
 msgstr "Flag %s: Behandler tidsangivelse '%s' som %s"
 
-#: src/tar.c:1105 src/tar.c:1109 src/tar.c:1113 src/tar.c:1117 src/tar.c:1121
-#: src/tar.c:1125 src/tar.c:1129
+#: src/tar.c:1107 src/tar.c:1111 src/tar.c:1115 src/tar.c:1119 src/tar.c:1123
+#: src/tar.c:1127 src/tar.c:1131 src/tar.c:1135
 #, c-format
 msgid "filter the archive through %s"
 msgstr "filtrér arkivet igennem %s"
 
-#: src/tar.c:1137
+#: src/tar.c:1143
 msgid "Valid arguments for the --quoting-style option are:"
 msgstr "Gyldige argumenter til flaget --quoting-style er:"
 
-#: src/tar.c:1141
+#: src/tar.c:1147
 msgid ""
 "\n"
 "*This* tar defaults to:\n"
@@ -2371,164 +2370,164 @@ msgstr ""
 "\n"
 "*Denne* tar har standardværdierne:\n"
 
-#: src/tar.c:1253
+#: src/tar.c:1259
 msgid "Invalid owner or group ID"
 msgstr "Ugyldig ejer eller gruppe-ID"
 
-#: src/tar.c:1347
+#: src/tar.c:1353
 msgid "Invalid blocking factor"
 msgstr "Ugyldig blokfaktor"
 
-#: src/tar.c:1467
+#: src/tar.c:1472
 msgid "Invalid tape length"
 msgstr "Ugyldig båndlængde"
 
-#: src/tar.c:1481
+#: src/tar.c:1486
 msgid "Invalid incremental level value"
 msgstr "Fejlagtig værdi for inkrementelt niveau"
 
-#: src/tar.c:1527
+#: src/tar.c:1532
 msgid "More than one threshold date"
 msgstr "Mere end én grænse-dato"
 
-#: src/tar.c:1594 src/tar.c:1597
+#: src/tar.c:1599 src/tar.c:1602
 msgid "Invalid sparse version value"
 msgstr "Ugyldig version for filer med huller"
 
-#: src/tar.c:1661
+#: src/tar.c:1670
 msgid "--atime-preserve='system' is not supported on this platform"
 msgstr "--atime-preserve=\"system\" understøttes ikke på denne platform"
 
-#: src/tar.c:1686
+#: src/tar.c:1695
 msgid "--checkpoint value is not an integer"
 msgstr "--checkpoint-værdien er ikke et heltal"
 
-#: src/tar.c:1764
+#: src/tar.c:1773
 msgid "Invalid mode given on option"
 msgstr "Ugyldig modus angivet i flag"
 
-#: src/tar.c:1797
+#: src/tar.c:1806
 msgid "Invalid number"
 msgstr "Ugyldigt nummer"
 
-#: src/tar.c:1861
+#: src/tar.c:1870
 msgid "Invalid record size"
 msgstr "Ugyldig poststørrelse"
 
-#: src/tar.c:1864
+#: src/tar.c:1873
 #, c-format
 msgid "Record size must be a multiple of %d."
 msgstr "Poststørrelse skal være deleligt med %d."
 
-#: src/tar.c:1910
+#: src/tar.c:1919
 msgid "Invalid number of elements"
 msgstr "Ugyldigt antal elementer"
 
-#: src/tar.c:1935
+#: src/tar.c:1944
 msgid "Only one --to-command option allowed"
 msgstr "Kun ét --to-command flag tilladt"
 
-#: src/tar.c:2023
+#: src/tar.c:2032
 #, c-format
 msgid "Malformed density argument: %s"
 msgstr "Ugyldig densitetsangivelse: %s"
 
-#: src/tar.c:2049
+#: src/tar.c:2058
 #, c-format
 msgid "Unknown density: '%c'"
 msgstr "Ukendt densitet: '%c'"
 
-#: src/tar.c:2066
+#: src/tar.c:2075
 #, c-format
 msgid "Options '-[0-7][lmh]' not supported by *this* tar"
 msgstr ""
 "Flagene '-[0-7][lmh]' understøttes ikke af *denne* implementering af tar"
 
-#: src/tar.c:2073
+#: src/tar.c:2082
 #, c-format
 msgid "%s:%lu: location of the error"
-msgstr ""
+msgstr "%s:%lu: sted for fejlen"
 
-#: src/tar.c:2076
-#, fuzzy, c-format
+#: src/tar.c:2085
+#, c-format
 msgid "error parsing %s"
-msgstr "Fejl ved fortolkning af tal nær \"%s\""
+msgstr "Fejl ved fortolkning af %s"
 
-#: src/tar.c:2090
+#: src/tar.c:2099
 msgid "[FILE]..."
 msgstr "[FIL]..."
 
-#: src/tar.c:2181
-#, fuzzy, c-format
+#: src/tar.c:2190
+#, c-format
 msgid "non-option arguments in %s"
-msgstr "ugyldigt argument %s for %s"
+msgstr "argumenter uden flag i %s"
 
-#: src/tar.c:2196
-#, fuzzy, c-format
+#: src/tar.c:2205
+#, c-format
 msgid "cannot split TAR_OPTIONS: %s"
-msgstr "kan ikke opsplitte streng '%s': %s"
+msgstr "kan ikke opsplitte TAR_OPTIONS: %s"
 
-#: src/tar.c:2291
+#: src/tar.c:2300
 #, c-format
 msgid "Old option '%c' requires an argument."
 msgstr "Gammelt flag '%c' behøver et argument."
 
-#: src/tar.c:2364
+#: src/tar.c:2373
 msgid "--occurrence is meaningless without a file list"
 msgstr "--occurrence er meningsløs uden en filliste"
 
-#: src/tar.c:2390
+#: src/tar.c:2399
 msgid "Multiple archive files require '-M' option"
 msgstr "Ved flere arkivfiler kræves '-M'-flaget"
 
-#: src/tar.c:2407
+#: src/tar.c:2416
 msgid "--level is meaningless without --listed-incremental"
 msgstr "--level er meningsløs uden --listed-incremental"
 
-#: src/tar.c:2424
+#: src/tar.c:2433
 #, c-format
 msgid "%s: Volume label is too long (limit is %lu byte)"
 msgid_plural "%s: Volume label is too long (limit is %lu bytes)"
 msgstr[0] "%s: etiket på delarkiv er for lang (grænse er %lu byte)"
 msgstr[1] "%s: etiket på delarkiv er for lang (grænse er %lu byte)"
 
-#: src/tar.c:2437
+#: src/tar.c:2446
 msgid "Cannot verify multi-volume archives"
 msgstr "Kan ikke verificere arkiv som går over flere delarkiver"
 
-#: src/tar.c:2439
+#: src/tar.c:2448
 msgid "Cannot verify compressed archives"
 msgstr "Kan ikke verificere komprimerede arkiver"
 
-#: src/tar.c:2453
+#: src/tar.c:2462
 msgid "Cannot use multi-volume compressed archives"
 msgstr "Kan ikke bruge komprimerede arkiver som går over flere delarkiver"
 
-#: src/tar.c:2457
+#: src/tar.c:2466
 msgid "Cannot concatenate compressed archives"
 msgstr "Kan ikke sammenlægge (konkatenere) komprimerede arkiver"
 
-#: src/tar.c:2464
+#: src/tar.c:2473
 msgid "--clamp-mtime needs a date specified using --mtime"
-msgstr ""
+msgstr "--clamp-mtime behøver en dato angivet med --mtime"
 
-#: src/tar.c:2474
+#: src/tar.c:2483
 msgid "--pax-option can be used only on POSIX archives"
 msgstr "--pax-option kan kun bruges på POSIX-arkiver"
 
-#: src/tar.c:2481
+#: src/tar.c:2490
 msgid "--acls can be used only on POSIX archives"
 msgstr "--acls kan kun bruges på POSIX-arkiver"
 
-#: src/tar.c:2486
+#: src/tar.c:2495
 msgid "--selinux can be used only on POSIX archives"
 msgstr "--selinux kan kun bruges på POSIX-arkiver"
 
-#: src/tar.c:2491
+#: src/tar.c:2500
 msgid "--xattrs can be used only on POSIX archives"
 msgstr "--xattrs kan kun bruges på POSIX-arkiver"
 
-#: src/tar.c:2540
+#: src/tar.c:2549
 msgid ""
 "Cannot deduce top-level directory name; please set it explicitly with --one-"
 "top-level=DIR"
@@ -2536,128 +2535,137 @@ msgstr ""
 "Kan ikke udlede topniveau-katalognav; sæt det eksplicit med --one-top-"
 "level=KAT"
 
-#: src/tar.c:2573
+#: src/tar.c:2582
 msgid "Volume length cannot be less than record size"
 msgstr "Delarkivlængden kan ikke være mindre end poststørrelsen"
 
-#: src/tar.c:2597
+#: src/tar.c:2606
 msgid "Cowardly refusing to create an empty archive"
 msgstr "Nægter stædigt at oprette et tomt arkiv"
 
-#: src/tar.c:2623
+#: src/tar.c:2632
 msgid "Options '-Aru' are incompatible with '-f -'"
 msgstr "Flagene '-Aru' er inkompatible med '-f -'"
 
-#: src/tar.c:2711
+#: src/tar.c:2743
 msgid ""
 "You must specify one of the '-Acdtrux', '--delete' or '--test-label' options"
 msgstr ""
 "Du skal angive et af '-Acdtrux', '--delete' eller '--test-label' flagene"
 
-#: src/tar.c:2768
+#: src/tar.c:2800
 #, c-format
 msgid "Exiting with failure status due to previous errors"
 msgstr "Afslutter med fejlstatus på grund af tidligere fejl"
 
-#: src/update.c:87
+#: src/update.c:86
 #, c-format
 msgid "%s: File shrank by %s byte"
 msgid_plural "%s: File shrank by %s bytes"
 msgstr[0] "%s: Filen formindskedes med %s byte"
 msgstr[1] "%s: Filen formindskedes med %s byte"
 
-#: src/xheader.c:165
+#: src/xheader.c:164
 #, c-format
 msgid "Keyword %s is unknown or not yet implemented"
 msgstr "Nøgleordet %s er ukendt eller ikke implementeret endnu"
 
-#: src/xheader.c:174
+#: src/xheader.c:173
 msgid "Time stamp is out of allowed range"
 msgstr "Tidsstempel udenfor tilladt interval"
 
-#: src/xheader.c:205
+#: src/xheader.c:188
+#, c-format
+msgid "Malformed pax option: %s"
+msgstr ""
+
+#: src/xheader.c:207
 #, c-format
 msgid "Pattern %s cannot be used"
 msgstr "Mønster %s kan ikke bruges"
 
-#: src/xheader.c:219
+#: src/xheader.c:221
 #, c-format
 msgid "Keyword %s cannot be overridden"
 msgstr "Nøgleord %s kan ikke erstattes"
 
-#: src/xheader.c:668
+#: src/xheader.c:476
+msgid "can't update global extended header record"
+msgstr ""
+
+#: src/xheader.c:686
 msgid "Malformed extended header: missing length"
 msgstr "Fejlagtigt udvidet hoved: længden mangles"
 
-#: src/xheader.c:677
+#: src/xheader.c:695
 #, c-format
 msgid "Extended header length %*s is out of range"
 msgstr "Længde %*s på udvidet hoved er udenfor gyldigt interval"
 
-#: src/xheader.c:689
+#: src/xheader.c:707
 msgid "Malformed extended header: missing blank after length"
 msgstr "Fejlagtigt udvidet hoved: blanktegn efter længdangivelse mangles"
 
-#: src/xheader.c:697
+#: src/xheader.c:715
 msgid "Malformed extended header: missing equal sign"
 msgstr "Fejlagtigt udvidet hoved: ligmedtegn mangles"
 
-#: src/xheader.c:703
+#: src/xheader.c:721
 msgid "Malformed extended header: missing newline"
 msgstr "Fejlagtigt udvidet hoved: nylinje mangles"
 
-#: src/xheader.c:741
+#: src/xheader.c:759
 #, c-format
 msgid "Ignoring unknown extended header keyword '%s'"
 msgstr "Ignorerer nøgleord '%s' i udvidet hoved"
 
-#: src/xheader.c:1023
+#: src/xheader.c:1041
 #, c-format
 msgid "Generated keyword/value pair is too long (keyword=%s, length=%s)"
 msgstr "Genereret nøgle/værdi-par er for langt (nøgle=%s, længde=%s)"
 
 #. TRANSLATORS: The first %s is the pax extended header keyword
 #. (atime, gid, etc.).
-#: src/xheader.c:1053
+#: src/xheader.c:1071
 #, c-format
 msgid "Extended header %s=%s is out of range %s..%s"
 msgstr "Udvidet hoved %s=%s er udenfor intervallet %s..%s"
 
-#: src/xheader.c:1104 src/xheader.c:1137 src/xheader.c:1487
+#: src/xheader.c:1122 src/xheader.c:1155 src/xheader.c:1505
 #, c-format
 msgid "Malformed extended header: invalid %s=%s"
 msgstr "Fejlagtigt udvidet hoved: ugyldig %s=%s"
 
-#: src/xheader.c:1440 src/xheader.c:1465 src/xheader.c:1520
+#: src/xheader.c:1458 src/xheader.c:1483 src/xheader.c:1538
 #, c-format
 msgid "Malformed extended header: excess %s=%s"
 msgstr "Fejlagtigt udvidet hoved: for mange %s=%s"
 
-#: src/xheader.c:1533
+#: src/xheader.c:1551
 #, c-format
 msgid "Malformed extended header: invalid %s: unexpected delimiter %c"
 msgstr "Fejlagtigt udvidet hoved: ugyldigt %s: uventet skilletegn %c"
 
-#: src/xheader.c:1543
+#: src/xheader.c:1561
 #, c-format
 msgid "Malformed extended header: invalid %s: odd number of values"
 msgstr "Fejlagtigt udvidet hoved: ugyldigt %s: ulige antal værdier"
 
-#: src/checkpoint.c:114
+#: src/checkpoint.c:133
 #, c-format
 msgid "%s: not a valid timeout"
 msgstr "%s: ugyldig tidsudløb"
 
-#: src/checkpoint.c:121
+#: src/checkpoint.c:146
 #, c-format
 msgid "%s: unknown checkpoint action"
 msgstr "%s: ukendt kontrolpunktshandling"
 
-#: src/checkpoint.c:202
+#: src/checkpoint.c:234
 msgid "write"
 msgstr "skrive"
 
-#: src/checkpoint.c:202
+#: src/checkpoint.c:234
 msgid "read"
 msgstr "læse"
 
@@ -2665,7 +2673,7 @@ msgstr "læse"
 #. *not* "Writing a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de escritura",
 #. *not* "Escribiendo un punto de comprobaci@'on"
-#: src/checkpoint.c:218
+#: src/checkpoint.c:250
 #, c-format
 msgid "Write checkpoint %u"
 msgstr "Skrivekontrolpunkt %u"
@@ -2674,12 +2682,12 @@ msgstr "Skrivekontrolpunkt %u"
 #. *not* "Reading a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de lectura",
 #. *not* "Leyendo un punto de comprobaci@'on"
-#: src/checkpoint.c:224
+#: src/checkpoint.c:256
 #, c-format
 msgid "Read checkpoint %u"
 msgstr "Læsekontrolpunkt %u"
 
-#: tests/genfile.c:115
+#: tests/genfile.c:110
 msgid ""
 "genfile manipulates data files for GNU paxutils test suite.\n"
 "OPTIONS are:\n"
@@ -2687,93 +2695,97 @@ msgstr ""
 "genfile bearbejder datafiler i testsuiten for GNU paxutils.\n"
 "FLAG er:\n"
 
-#: tests/genfile.c:131
+#: tests/genfile.c:126
 msgid "File creation options:"
 msgstr "Flag for filoprettelse:"
 
-#: tests/genfile.c:132 tests/genfile.c:143
+#: tests/genfile.c:127 tests/genfile.c:138
 msgid "SIZE"
 msgstr "STØRRELSE"
 
-#: tests/genfile.c:133
+#: tests/genfile.c:128
 msgid "Create file of the given SIZE"
 msgstr "Opret en fil med angivet STØRRELSE"
 
-#: tests/genfile.c:135
+#: tests/genfile.c:130
 msgid "Write to file NAME, instead of standard output"
 msgstr "Skriv til filen NAVN i stedet for til standard-ud"
 
-#: tests/genfile.c:137
+#: tests/genfile.c:132
 msgid "Read file names from FILE"
 msgstr "Læs filnavne fra FIL"
 
-#: tests/genfile.c:139
+#: tests/genfile.c:134
 msgid "-T reads null-terminated names"
 msgstr "-T læser navne adskilte med nultegn"
 
-#: tests/genfile.c:141
+#: tests/genfile.c:136
 msgid "Fill the file with the given PATTERN. PATTERN is 'default' or 'zeros'"
 msgstr "Fyld filen med det angivne MØNSTER. MØNSTER er 'default' eller 'zeros'"
 
-#: tests/genfile.c:144
+#: tests/genfile.c:139
 msgid "Size of a block for sparse file"
 msgstr "Størrelse af en blok for filer med huller"
 
-#: tests/genfile.c:146
+#: tests/genfile.c:141
 msgid "Generate sparse file. Rest of the command line gives the file map."
 msgstr "Generér fil med huller. Resten af kommandolinjen giver filmapningen."
 
-#: tests/genfile.c:148
+#: tests/genfile.c:143
 msgid "OFFSET"
 msgstr "POSITION"
 
-#: tests/genfile.c:149
+#: tests/genfile.c:144
 msgid "Seek to the given offset before writing data"
 msgstr "Flyt til given position inden data skrives"
 
-#: tests/genfile.c:152
+#: tests/genfile.c:147
 msgid "Suppress non-fatal diagnostic messages"
-msgstr ""
+msgstr "Undertryk ikke-fataler diagnosebeskeder"
 
-#: tests/genfile.c:156
+#: tests/genfile.c:151
 msgid "File statistics options:"
 msgstr "Flag for filstatistik:"
 
-#: tests/genfile.c:159
+#: tests/genfile.c:154
 msgid "Print contents of struct stat for each given file. Default FORMAT is: "
 msgstr ""
 "Vís indholdet i \"struct stat\" for hver given fil. Standardværdi på FORMAT "
 "er:"
 
-#: tests/genfile.c:166
+#: tests/genfile.c:161
 msgid "Synchronous execution options:"
 msgstr "Flag for synkron udførelse:"
 
-#: tests/genfile.c:168
-msgid "OPTION"
-msgstr "FLAG"
+#: tests/genfile.c:163
+msgid "N"
+msgstr ""
 
-#: tests/genfile.c:169
+#: tests/genfile.c:164
+#, fuzzy
+#| msgid ""
+#| "Execute ARGS. Useful with --checkpoint and one of --cut, --append, --"
+#| "touch, --unlink"
 msgid ""
-"Execute ARGS. Useful with --checkpoint and one of --cut, --append, --touch, "
-"--unlink"
+"Execute ARGS. Trigger checkpoints every Nth record (default 1). Useful with "
+"--checkpoint and one of --cut, --append, --touch, --unlink"
 msgstr ""
 "Udfør ARGUMENTER. Nyttigt ved --checkpoint og en af --cut, --append, --"
 "touch, --unlink"
 
-#: tests/genfile.c:172
+#: tests/genfile.c:167
 msgid "Perform given action (see below) upon reaching checkpoint NUMBER"
 msgstr "Udfør angivet handling (se nedenfor) når kontrolpunkt NUMMER nås"
 
-#: tests/genfile.c:175
+#: tests/genfile.c:170
 msgid "Set date for next --touch option"
 msgstr "Sæt dato for næste --touch flag"
 
-#: tests/genfile.c:178
+#: tests/genfile.c:173
 msgid "Display executed checkpoints and exit status of COMMAND"
 msgstr "Vís udførte kontrolpunkter og slutstatus på KOMMANDO"
 
-#: tests/genfile.c:183
+#: tests/genfile.c:178
 msgid ""
 "Synchronous execution actions. These are executed when checkpoint number "
 "given by --checkpoint option is reached."
@@ -2781,7 +2793,7 @@ msgstr ""
 "Synkront udførte handlinger. Disse udføres når kontrolpunktnummeret givet "
 "med flaget --checkpoint nås."
 
-#: tests/genfile.c:186
+#: tests/genfile.c:181
 msgid ""
 "Truncate FILE to the size specified by previous --length option (or 0, if it "
 "is not given)"
@@ -2789,127 +2801,127 @@ msgstr ""
 "Afkort FIL til størrelsen givet med det foregående --length flag (eller 0 "
 "hvis det ikke er angivet)"
 
-#: tests/genfile.c:190
+#: tests/genfile.c:185
 msgid "Append SIZE bytes to FILE. SIZE is given by previous --length option."
 msgstr ""
 "Tilføj STØRRELSE antal byte til FIL. STØRRELSE er givet med foregående --"
 "length flag."
 
-#: tests/genfile.c:193
+#: tests/genfile.c:188
 msgid "Update the access and modification times of FILE"
 msgstr "Opdatér acces- og modifikationstider for FIL"
 
-#: tests/genfile.c:196
+#: tests/genfile.c:191
 msgid "Execute COMMAND"
 msgstr "Udfør KOMMANDO"
 
-#: tests/genfile.c:199
+#: tests/genfile.c:194
 msgid "Delete FILE"
-msgstr ""
+msgstr "Slet FIL"
 
-#: tests/genfile.c:250
+#: tests/genfile.c:245
 #, c-format
 msgid "Invalid size: %s"
 msgstr "Ugyldig størrelse %s"
 
-#: tests/genfile.c:255
+#: tests/genfile.c:250
 #, c-format
 msgid "Number out of allowed range: %s"
 msgstr "Nummer udenfor tilladt interval: %s"
 
-#: tests/genfile.c:258
+#: tests/genfile.c:253
 #, c-format
 msgid "Negative size: %s"
 msgstr "Negativ størrelse: %s"
 
-#: tests/genfile.c:271 tests/genfile.c:642
+#: tests/genfile.c:266 tests/genfile.c:633
 #, c-format
 msgid "stat(%s) failed"
 msgstr "status (stat) kunne ikke tages på %s"
 
-#: tests/genfile.c:274
+#: tests/genfile.c:269
 #, c-format
 msgid "requested file length %lu, actual %lu"
 msgstr "ønsket fillængde %lu, virkelig %lu"
 
-#: tests/genfile.c:278
+#: tests/genfile.c:273
 #, c-format
 msgid "created file is not sparse"
 msgstr "oprettet fil har ikke huller"
 
-#: tests/genfile.c:375
+#: tests/genfile.c:366
 #, c-format
 msgid "Error parsing number near `%s'"
 msgstr "Fejl ved fortolkning af tal nær \"%s\""
 
-#: tests/genfile.c:381
+#: tests/genfile.c:372
 #, c-format
 msgid "Unknown date format"
 msgstr "Ukendt datoformat"
 
-#: tests/genfile.c:405
+#: tests/genfile.c:396
 msgid "[ARGS...]"
 msgstr "[ARGUMENTER...]"
 
-#: tests/genfile.c:442 tests/genfile.c:482 tests/genfile.c:583
-#: tests/genfile.c:746 tests/genfile.c:760
+#: tests/genfile.c:433 tests/genfile.c:473 tests/genfile.c:574
+#: tests/genfile.c:737 tests/genfile.c:751
 #, c-format
 msgid "cannot open `%s'"
 msgstr "kan ikke åbne '%s'"
 
-#: tests/genfile.c:448
+#: tests/genfile.c:439
 msgid "cannot seek"
 msgstr "Kan ikke søge"
 
-#: tests/genfile.c:465
+#: tests/genfile.c:456
 #, c-format
 msgid "file name contains null character"
 msgstr "filnavnet indeholder nultegn"
 
-#: tests/genfile.c:578
+#: tests/genfile.c:569
 #, c-format
 msgid "cannot generate sparse files on standard output, use --file option"
 msgstr "kan ikke oprette filer med huller til standard-ud, brug flaget --file"
 
-#: tests/genfile.c:669
+#: tests/genfile.c:660
 #, c-format
 msgid "incorrect mask (near `%s')"
 msgstr "fejlagtig maske (nær \"%s\")"
 
-#: tests/genfile.c:675 tests/genfile.c:708
+#: tests/genfile.c:666 tests/genfile.c:699
 #, c-format
 msgid "Unknown field `%s'"
 msgstr "Ukendt felt '%s'"
 
-#: tests/genfile.c:735
+#: tests/genfile.c:726
 #, c-format
 msgid "cannot set time on `%s'"
 msgstr "kan ikke sætte tid på \"%s\""
 
-#: tests/genfile.c:765
+#: tests/genfile.c:756
 #, c-format
 msgid "cannot truncate `%s'"
 msgstr "kan ikke trunkere '%s'"
 
-#: tests/genfile.c:774
+#: tests/genfile.c:765
 #, c-format
 msgid "command failed: %s"
 msgstr "kommando mislykkedes: %s"
 
-#: tests/genfile.c:781
-#, fuzzy, c-format
+#: tests/genfile.c:772
+#, c-format
 msgid "cannot stat `%s'"
-msgstr "kan ikke trunkere '%s'"
+msgstr "kan ikke tage status via stat() på '%s'"
 
-#: tests/genfile.c:785
-#, fuzzy, c-format
+#: tests/genfile.c:776
+#, c-format
 msgid "cannot remove directory `%s'"
-msgstr "kan ikke sætte tid på \"%s\""
+msgstr "kan ikke fjerne katalog '%s'"
 
-#: tests/genfile.c:788
+#: tests/genfile.c:779
 #, c-format
 msgid "cannot unlink `%s'"
-msgstr "kan ikke fjerne (unlink) \"%s\""
+msgstr "kan ikke fjerne (unlink) '%s'"
 
 #: tests/genfile.c:918
 #, c-format
@@ -2945,6 +2957,9 @@ msgstr "Kommandoen afsluttedes\n"
 #, c-format
 msgid "--stat requires file names"
 msgstr "--stat kræver filnavne"
+
+#~ msgid "OPTION"
+#~ msgstr "FLAG"
 
 #~ msgid "%.*s: ARGP_HELP_FMT parameter must be positive"
 #~ msgstr "%.*s: Parameter fra ARGP_HELP_FMT skal være positiv."

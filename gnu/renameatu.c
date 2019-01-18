@@ -1,5 +1,5 @@
 /* Rename a file relative to open directories.
-   Copyright (C) 2009-2017 Free Software Foundation, Inc.
+   Copyright (C) 2009-2019 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@
 
 #include <config.h>
 
-#include "renameat2.h"
+#include "renameatu.h"
 
 #include <errno.h>
 #include <stdio.h>
@@ -68,16 +68,22 @@ rename_noreplace (char const *src, char const *dst)
    the restore_cwd fails, then give a diagnostic and exit nonzero.
 
    Obey FLAGS when doing the renaming.  If FLAGS is zero, this
-   function is equivalent to renameat (FD1, SRC, FD2, DST).  */
+   function is equivalent to renameat (FD1, SRC, FD2, DST).
+   Otherwise, attempt to implement FLAGS even if the implementation is
+   not atomic; this differs from the GNU/Linux native renameat2,
+   which fails if it cannot guarantee atomicity.  */
 
 int
-renameat2 (int fd1, char const *src, int fd2, char const *dst,
+renameatu (int fd1, char const *src, int fd2, char const *dst,
            unsigned int flags)
 {
   int ret_val = -1;
   int err = EINVAL;
 
-#ifdef SYS_renameat2
+#ifdef HAVE_RENAMEAT2
+  ret_val = renameat2 (fd1, src, fd2, dst, flags);
+  err = errno;
+#elif defined SYS_renameat2
   ret_val = syscall (SYS_renameat2, fd1, src, fd2, dst, flags);
   err = errno;
 #elif defined RENAME_EXCL

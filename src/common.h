@@ -1,7 +1,6 @@
 /* Common declarations for the tar program.
 
-   Copyright 1988, 1992-1994, 1996-1997, 1999-2010, 2012-2017 Free
-   Software Foundation, Inc.
+   Copyright 1988-2019 Free Software Foundation, Inc.
 
    This file is part of GNU tar.
 
@@ -302,6 +301,10 @@ enum hole_detection_method
 
 GLOBAL enum hole_detection_method hole_detection;
 
+/* The first entry in names.c:namelist specifies the member name to
+   start extracting from. Set by add_starting_file() upon seeing the
+   -K option.
+*/
 GLOBAL bool starting_file_option;
 
 /* Specified maximum byte length of each tape volume (multiple of 1024).  */
@@ -628,6 +631,8 @@ void skip_member (void);
 
 char const *quote_n_colon (int n, char const *arg);
 void assign_string (char **dest, const char *src);
+void assign_string_n (char **string, const char *value, size_t n);
+#define ASSIGN_STRING_N(s,v) assign_string_n (s, v, sizeof (v))
 int unquote_string (char *str);
 char *zap_slashes (char *name);
 char *normalize_filename (int cdidx, const char *name);
@@ -750,6 +755,7 @@ const char *name_next (int change_dirs);
 void name_gather (void);
 struct name *addname (char const *string, int change_dir,
 		      bool cmdline, struct name *parent);
+void add_starting_file (char const *file_name);
 void remname (struct name *name);
 bool name_match (const char *name);
 void names_notfound (void);
@@ -791,6 +797,8 @@ void set_exit_status (int val);
 
 void request_stdin (const char *option);
 
+int decode_signal (const char *);
+
 /* Where an option comes from: */
 enum option_source
   {
@@ -829,6 +837,7 @@ void xheader_store (char const *keyword, struct tar_stat_info *st,
 void xheader_read (struct xheader *xhdr, union block *header, off_t size);
 void xheader_write (char type, char *name, time_t t, struct xheader *xhdr);
 void xheader_write_global (struct xheader *xhdr);
+void xheader_forbid_global (void);
 void xheader_finish (struct xheader *hdr);
 void xheader_destroy (struct xheader *hdr);
 char *xheader_xhdr_name (struct tar_stat_info *st);

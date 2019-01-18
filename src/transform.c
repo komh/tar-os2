@@ -1,6 +1,5 @@
 /* This file is part of GNU tar.
-   Copyright 2006-2008, 2013-2014, 2016-2017 Free Software Foundation,
-   Inc.
+   Copyright 2006-2019 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -101,7 +100,7 @@ add_segment (struct transform *tf)
 }
 
 static void
-add_literal_segment (struct transform *tf, char *str, char *end)
+add_literal_segment (struct transform *tf, const char *str, const char *end)
 {
   size_t len = end - str;
   if (len)
@@ -273,7 +272,7 @@ parse_transform_expr (const char *expr)
       USAGE_ERROR ((0, 0, _("Invalid transform expression: %s"), errbuf));
     }
 
-  if (str[0] == '^' || str[strlen (str) - 1] == '$')
+  if (str[0] == '^' || (i > 2 && str[i - 3] == '$'))
     tf->transform_type = transform_first;
 
   free (str);
@@ -403,6 +402,7 @@ parse_transform_expr (const char *expr)
 	cur++;
     }
   add_literal_segment (tf, beg, cur);
+  free(str);
 
   return p;
 }
@@ -550,7 +550,7 @@ _single_transform_name_to_obstack (struct transform *tf, char *input)
 			default:
 			  break;
 			}
-		      /*FALL THROUGH*/
+		      FALLTHROUGH;
 
 		    case ctl_upcase:
 		    case ctl_locase:

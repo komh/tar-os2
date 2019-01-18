@@ -1,5 +1,5 @@
-# wcwidth.m4 serial 25
-dnl Copyright (C) 2006-2017 Free Software Foundation, Inc.
+# wcwidth.m4 serial 27
+dnl Copyright (C) 2006-2019 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -98,9 +98,9 @@ int main ()
           [
 changequote(,)dnl
            case "$host_os" in
-                     # Guess yes on glibc and AIX 7 systems.
-             *-gnu* | aix[7-9]*) gl_cv_func_wcwidth_works="guessing yes";;
-             *)                  gl_cv_func_wcwidth_works="guessing no";;
+                                        # Guess yes on glibc and AIX 7 systems.
+             *-gnu* | gnu* | aix[7-9]*) gl_cv_func_wcwidth_works="guessing yes";;
+             *)                         gl_cv_func_wcwidth_works="guessing no";;
            esac
 changequote([,])dnl
           ])
@@ -114,4 +114,10 @@ changequote([,])dnl
   fi
   dnl We don't substitute HAVE_WCWIDTH. We assume that if the system does not
   dnl have the wcwidth function, then it does not declare it.
+])
+
+# Prerequisites of lib/wcwidth.c.
+AC_DEFUN([gl_PREREQ_WCWIDTH], [
+  AC_REQUIRE([AC_C_INLINE])
+  :
 ])

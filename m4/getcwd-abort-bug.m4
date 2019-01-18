@@ -1,9 +1,9 @@
-# serial 8
+# serial 9
 # Determine whether getcwd aborts when the length of the working directory
 # name is unusually large.  Any length between 4k and 16k trigger the bug
 # when using glibc-2.4.90-9 or older.
 
-# Copyright (C) 2006, 2009-2017 Free Software Foundation, Inc.
+# Copyright (C) 2006, 2009-2019 Free Software Foundation, Inc.
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -16,7 +16,13 @@ AC_DEFUN([gl_FUNC_GETCWD_ABORT_BUG],
   AC_CHECK_DECLS_ONCE([getcwd])
   AC_CHECK_HEADERS_ONCE([unistd.h])
   AC_REQUIRE([gl_PATHMAX_SNIPPET_PREREQ])
-  AC_CHECK_FUNCS([getpagesize])
+
+  gl_CHECK_FUNC_GETPAGESIZE
+  if test $gl_cv_func_getpagesize = yes; then
+    AC_DEFINE_UNQUOTED([HAVE_GETPAGESIZE], [1],
+      [Define to 1 if the system has the 'getpagesize' function.])
+  fi
+
   AC_CACHE_CHECK([whether getcwd aborts when 4k < cwd_length < 16k],
     [gl_cv_func_getcwd_abort_bug],
     [# Remove any remnants of a previous test.

@@ -1,5 +1,5 @@
 /* Print --version and bug-reporting information in a consistent format.
-   Copyright (C) 1999-2017 Free Software Foundation, Inc.
+   Copyright (C) 1999-2019 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,7 +23,6 @@
 
 #include <stdarg.h>
 #include <stdio.h>
-#include <stdlib.h>
 
 #if USE_UNLOCKED_IO
 # include "unlocked-io.h"
@@ -38,7 +37,7 @@
 # define PACKAGE PACKAGE_TARNAME
 #endif
 
-enum { COPYRIGHT_YEAR = 2017 };
+enum { COPYRIGHT_YEAR = 2019 };
 
 /* The three functions below display the --version information the
    standard way.
@@ -95,8 +94,9 @@ There is NO WARRANTY, to the extent permitted by law.\n\
   switch (n_authors)
     {
     case 0:
-      /* The caller must provide at least one author name.  */
-      abort ();
+      /* No authors are given.  The caller should output authorship
+         info after calling this function.  */
+      break;
     case 1:
       /* TRANSLATORS: %s denotes an author name.  */
       fprintf (stream, _("Written by %s.\n"), authors[0]);

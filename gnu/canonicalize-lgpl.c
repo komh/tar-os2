@@ -1,5 +1,5 @@
 /* Return the canonical absolute name of a given file.
-   Copyright (C) 1996-2017 Free Software Foundation, Inc.
+   Copyright (C) 1996-2019 Free Software Foundation, Inc.
    This file is part of the GNU C Library.
 
    This program is free software: you can redistribute it and/or modify
@@ -95,7 +95,7 @@
 static void
 alloc_failed (void)
 {
-#if (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
+#if defined _WIN32 && ! defined __CYGWIN__
   /* Avoid errno problem without using the malloc or realloc modules; see:
      https://lists.gnu.org/r/bug-gnulib/2016-08/msg00025.html  */
   errno = ENOMEM;

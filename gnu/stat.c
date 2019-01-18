@@ -1,5 +1,5 @@
 /* Work around platform bugs in stat.
-   Copyright (C) 2009-2017 Free Software Foundation, Inc.
+   Copyright (C) 2009-2019 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@
 #include <sys/stat.h>
 #undef __need_system_sys_stat_h
 
-#if (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
+#if defined _WIN32 && ! defined __CYGWIN__
 # define WINDOWS_NATIVE
 #endif
 
@@ -46,6 +46,8 @@ orig_stat (const char *filename, struct stat *buf)
    eliminates this include because of the preliminary #include <sys/stat.h>
    above.  */
 #include "sys/stat.h"
+
+#include "stat-time.h"
 
 #include <errno.h>
 #include <limits.h>
@@ -405,19 +407,23 @@ rpl_stat (char const *name, struct stat *buf)
   }
 #else
   int result = orig_stat (name, buf);
-# if REPLACE_FUNC_STAT_FILE
-  /* Solaris 9 mistakenly succeeds when given a non-directory with a
-     trailing slash.  */
-  if (result == 0 && !S_ISDIR (buf->st_mode))
+  if (result == 0)
     {
-      size_t len = strlen (name);
-      if (ISSLASH (name[len - 1]))
+# if REPLACE_FUNC_STAT_FILE
+      /* Solaris 9 mistakenly succeeds when given a non-directory with a
+         trailing slash.  */
+      if (!S_ISDIR (buf->st_mode))
         {
-          errno = ENOTDIR;
-          return -1;
+          size_t len = strlen (name);
+          if (ISSLASH (name[len - 1]))
+            {
+              errno = ENOTDIR;
+              return -1;
+            }
         }
-    }
 # endif /* REPLACE_FUNC_STAT_FILE */
+      result = stat_time_normalize (result, buf);
+    }
   return result;
 #endif
 }

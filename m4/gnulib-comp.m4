@@ -1,5 +1,5 @@
 # DO NOT EDIT! GENERATED AUTOMATICALLY!
-# Copyright (C) 2002-2017 Free Software Foundation, Inc.
+# Copyright (C) 2002-2019 Free Software Foundation, Inc.
 #
 # This file is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -101,6 +101,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module fchownat:
   # Code from module fcntl:
   # Code from module fcntl-h:
+  # Code from module fcntl-safer:
   # Code from module fd-hook:
   # Code from module fd-safer-flag:
   # Code from module fdopendir:
@@ -113,6 +114,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module float:
   # Code from module fnmatch:
   # Code from module fnmatch-gnu:
+  # Code from module fnmatch-h:
   # Code from module fpending:
   # Code from module fprintftime:
   # Code from module fseek:
@@ -141,7 +143,6 @@ AC_DEFUN([gl_EARLY],
   # Code from module hard-locale:
   # Code from module hash:
   # Code from module havelib:
-  # Code from module host-cpu-c-abi:
   # Code from module human:
   # Code from module include_next:
   # Code from module intprops:
@@ -153,6 +154,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module largefile:
   AC_REQUIRE([AC_SYS_LARGEFILE])
   # Code from module lchown:
+  # Code from module libc-config:
   # Code from module limits-h:
   # Code from module link:
   # Code from module link-follow:
@@ -198,7 +200,9 @@ AC_DEFUN([gl_EARLY],
   # Code from module openat:
   # Code from module openat-die:
   # Code from module openat-h:
+  # Code from module openat-safer:
   # Code from module opendir:
+  # Code from module opendirat:
   # Code from module parse-datetime:
   # Code from module pathmax:
   # Code from module priv-set:
@@ -216,7 +220,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module regex:
   # Code from module rename:
   # Code from module renameat:
-  # Code from module renameat2:
+  # Code from module renameatu:
   # Code from module rewinddir:
   # Code from module rmdir:
   # Code from module root-uid:
@@ -246,9 +250,7 @@ AC_DEFUN([gl_EARLY],
   # Code from module stdalign:
   # Code from module stdarg:
   dnl Some compilers (e.g., AIX 5.3 cc) need to be in c99 mode
-  dnl for the builtin va_copy to work.  With Autoconf 2.60 or later,
-  dnl gl_PROG_CC_C99 arranges for this.  With older Autoconf gl_PROG_CC_C99
-  dnl shouldn't hurt, though installers are on their own to set c99 mode.
+  dnl for the builtin va_copy to work.  gl_PROG_CC_C99 arranges for this.
   gl_PROG_CC_C99
   # Code from module stdbool:
   # Code from module stddef:
@@ -467,6 +469,8 @@ AC_DEFUN([gl_INIT],
   fi
   gl_FCNTL_MODULE_INDICATOR([fcntl])
   gl_FCNTL_H
+  gl_FCNTL_SAFER
+  gl_MODULE_INDICATOR([fcntl-safer])
   gl_MODULE_INDICATOR([fd-safer-flag])
   gl_FUNC_FDOPENDIR
   if test $HAVE_FDOPENDIR = 0 || test $REPLACE_FDOPENDIR = 1; then
@@ -491,15 +495,18 @@ AC_DEFUN([gl_INIT],
     AC_LIBOBJ([itold])
   fi
   gl_FUNC_FNMATCH_POSIX
-  if test -n "$FNMATCH_H"; then
+  if test $HAVE_FNMATCH = 0 || test $REPLACE_FNMATCH = 1; then
     AC_LIBOBJ([fnmatch])
     gl_PREREQ_FNMATCH
   fi
+  gl_FNMATCH_MODULE_INDICATOR([fnmatch])
   gl_FUNC_FNMATCH_GNU
-  if test -n "$FNMATCH_H"; then
+  if test $HAVE_FNMATCH = 0 || test $REPLACE_FNMATCH = 1; then
     AC_LIBOBJ([fnmatch])
     gl_PREREQ_FNMATCH
   fi
+  gl_MODULE_INDICATOR([fnmatch-gnu])
+  gl_FNMATCH_H
   gl_FUNC_FPENDING
   if test $gl_cv_func___fpending = no; then
     AC_LIBOBJ([fpending])
@@ -606,8 +613,6 @@ AC_DEFUN([gl_INIT],
     gl_PREREQ_GROUP_MEMBER
   fi
   gl_UNISTD_MODULE_INDICATOR([group-member])
-  gl_HARD_LOCALE
-  AC_REQUIRE([gl_HOST_CPU_C_ABI])
   gl_HUMAN
   gl_INTTOSTR
   gl_INTTYPES_H
@@ -628,6 +633,7 @@ AC_DEFUN([gl_INIT],
     AC_LIBOBJ([lchown])
   fi
   gl_UNISTD_MODULE_INDICATOR([lchown])
+  gl___INLINE
   gl_LIMITS_H
   gl_FUNC_LINK
   if test $HAVE_LINK = 0 || test $REPLACE_LINK = 1; then
@@ -642,7 +648,8 @@ AC_DEFUN([gl_INIT],
   fi
   gl_UNISTD_MODULE_INDICATOR([linkat])
   gl_LOCALCHARSET
-  LOCALCHARSET_TESTS_ENVIRONMENT="CHARSETALIASDIR=\"\$(abs_top_builddir)/$gl_source_base\""
+  dnl For backward compatibility. Some packages still use this.
+  LOCALCHARSET_TESTS_ENVIRONMENT=
   AC_SUBST([LOCALCHARSET_TESTS_ENVIRONMENT])
   gl_LOCALE_H
   gl_FUNC_LOCALECONV
@@ -800,6 +807,8 @@ AC_DEFUN([gl_INIT],
   fi
   gl_MODULE_INDICATOR([openat]) dnl for lib/getcwd.c
   gl_FCNTL_MODULE_INDICATOR([openat])
+  gl_OPENAT_SAFER
+  gl_MODULE_INDICATOR([openat-safer])
   gl_FUNC_OPENDIR
   if test $HAVE_OPENDIR = 0 || test $REPLACE_OPENDIR = 1; then
     AC_LIBOBJ([opendir])
@@ -1067,7 +1076,7 @@ AC_DEFUN([gl_INIT],
   gl_UNISTD_SAFER
   gl_LIBUNISTRING_LIBHEADER([0.9.4], [unitypes.h])
   gl_LIBUNISTRING_LIBHEADER([0.9.4], [uniwidth.h])
-  gl_LIBUNISTRING_MODULE([0.9.6], [uniwidth/width])
+  gl_LIBUNISTRING_MODULE([0.9.8], [uniwidth/width])
   gl_FUNC_UNLINK
   if test $REPLACE_UNLINK = 1; then
     AC_LIBOBJ([unlink])
@@ -1119,6 +1128,7 @@ AC_DEFUN([gl_INIT],
   gl_FUNC_WCWIDTH
   if test $HAVE_WCWIDTH = 0 || test $REPLACE_WCWIDTH = 1; then
     AC_LIBOBJ([wcwidth])
+    gl_PREREQ_WCWIDTH
   fi
   gl_WCHAR_MODULE_INDICATOR([wcwidth])
   gl_FUNC_WRITE
@@ -1337,6 +1347,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/canonicalize-lgpl.c
   lib/careadlinkat.c
   lib/careadlinkat.h
+  lib/cdefs.h
   lib/chdir-long.c
   lib/chdir-long.h
   lib/chmodat.c
@@ -1350,7 +1361,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/closedir.c
   lib/closeout.c
   lib/closeout.h
-  lib/config.charset
+  lib/creat-safer.c
   lib/dirent--.h
   lib/dirent-private.h
   lib/dirent-safer.h
@@ -1377,6 +1388,8 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/fchmodat.c
   lib/fchown-stub.c
   lib/fchownat.c
+  lib/fcntl--.h
+  lib/fcntl-safer.h
   lib/fcntl.c
   lib/fcntl.in.h
   lib/fd-hook.c
@@ -1447,6 +1460,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/itold.c
   lib/langinfo.in.h
   lib/lchown.c
+  lib/libc-config.h
   lib/limits.in.h
   lib/link.c
   lib/linkat.c
@@ -1461,7 +1475,6 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/malloc.c
   lib/malloca.c
   lib/malloca.h
-  lib/malloca.valgrind
   lib/mbchar.c
   lib/mbchar.h
   lib/mbrtowc.c
@@ -1499,14 +1512,18 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/obstack.c
   lib/obstack.h
   lib/offtostr.c
+  lib/open-safer.c
   lib/open.c
   lib/openat-die.c
   lib/openat-priv.h
   lib/openat-proc.c
+  lib/openat-safer.c
   lib/openat.c
   lib/openat.h
   lib/opendir-safer.c
   lib/opendir.c
+  lib/opendirat.c
+  lib/opendirat.h
   lib/parse-datetime.h
   lib/parse-datetime.y
   lib/pathmax.h
@@ -1530,8 +1547,6 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/readlink.c
   lib/readlinkat.c
   lib/realloc.c
-  lib/ref-add.sin
-  lib/ref-del.sin
   lib/regcomp.c
   lib/regex.c
   lib/regex.h
@@ -1540,8 +1555,8 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/regexec.c
   lib/rename.c
   lib/renameat.c
-  lib/renameat2.c
-  lib/renameat2.h
+  lib/renameatu.c
+  lib/renameatu.h
   lib/rewinddir.c
   lib/rmdir.c
   lib/root-uid.h
@@ -1608,6 +1623,7 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/strtoumax.c
   lib/symlink.c
   lib/symlinkat.c
+  lib/sys-limits.h
   lib/sys_stat.in.h
   lib/sys_time.in.h
   lib/sys_types.in.h
@@ -1679,11 +1695,11 @@ AC_DEFUN([gl_FILE_LIST], [
   lib/xvasprintf.c
   lib/xvasprintf.h
   m4/00gnulib.m4
+  m4/__inline.m4
   m4/absolute-header.m4
   m4/acl.m4
   m4/alloca.m4
   m4/argp.m4
-  m4/asm-underscore.m4
   m4/backupfile.m4
   m4/bison.m4
   m4/btowc.m4
@@ -1719,6 +1735,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/fchmodat.m4
   m4/fchownat.m4
   m4/fcntl-o.m4
+  m4/fcntl-safer.m4
   m4/fcntl.m4
   m4/fcntl_h.m4
   m4/fdopendir.m4
@@ -1727,6 +1744,7 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/flexmember.m4
   m4/float_h.m4
   m4/fnmatch.m4
+  m4/fnmatch_h.m4
   m4/fpending.m4
   m4/fseek.m4
   m4/fseeko.m4
@@ -1750,12 +1768,12 @@ AC_DEFUN([gl_FILE_LIST], [
   m4/glibc21.m4
   m4/gnulib-common.m4
   m4/group-member.m4
-  m4/hard-locale.m4
   m4/host-cpu-c-abi.m4
   m4/human.m4
   m4/iconv.m4
   m4/include_next.m4
   m4/intdiv0.m4
+  m4/intl-thread-locale.m4
   m4/intl.m4
   m4/intldir.m4
   m4/intlmacosx.m4
