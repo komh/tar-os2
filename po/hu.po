@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tar 1.30\n"
 "Report-Msgid-Bugs-To: bug-tar@gnu.org\n"
-"POT-Creation-Date: 2019-01-02 20:28+0200\n"
+"POT-Creation-Date: 2019-02-23 14:57+0200\n"
 "PO-Revision-Date: 2018-01-20 14:21+0100\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
@@ -1533,7 +1533,7 @@ msgstr "parancssor"
 msgid "%s: file list requested from %s already read from %s"
 msgstr "%s: a(z) %s helyről kért fájllista már be van olvasva innen: %s"
 
-#: src/names.c:977 src/checkpoint.c:306
+#: src/names.c:977 src/checkpoint.c:308
 #, c-format
 msgid "cannot split string '%s': %s"
 msgstr "nem darabolható a(z) „%s” karakterlánc: %s"
@@ -2718,11 +2718,11 @@ msgstr "%s: érvénytelen időtúllépés"
 msgid "%s: unknown checkpoint action"
 msgstr "%s: ismeretlen ellenőrzőpont-művelet"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "write"
 msgstr "írás"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "read"
 msgstr "olvasás"
 
@@ -2730,7 +2730,7 @@ msgstr "olvasás"
 #. *not* "Writing a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de escritura",
 #. *not* "Escribiendo un punto de comprobaci@'on"
-#: src/checkpoint.c:250
+#: src/checkpoint.c:252
 #, c-format
 msgid "Write checkpoint %u"
 msgstr "%u. írási ellenőrzőpont"
@@ -2739,7 +2739,7 @@ msgstr "%u. írási ellenőrzőpont"
 #. *not* "Reading a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de lectura",
 #. *not* "Leyendo un punto de comprobaci@'on"
-#: src/checkpoint.c:256
+#: src/checkpoint.c:258
 #, c-format
 msgid "Read checkpoint %u"
 msgstr "%u. olvasási ellenőrzőpont"

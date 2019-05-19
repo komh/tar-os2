@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tar-1.29\n"
 "Report-Msgid-Bugs-To: bug-tar@gnu.org\n"
-"POT-Creation-Date: 2019-01-02 20:28+0200\n"
+"POT-Creation-Date: 2019-02-23 14:57+0200\n"
 "PO-Revision-Date: 2016-05-17 00:52+0200\n"
 "Last-Translator: Stéphane Aulery <lkppo@free.fr>\n"
 "Language-Team: French <traduc@traduc.org>\n"
@@ -1550,7 +1550,7 @@ msgstr "commande échouée"
 msgid "%s: file list requested from %s already read from %s"
 msgstr "%s : la liste demandée depuis %s a déjà été lue depuis %s"
 
-#: src/names.c:977 src/checkpoint.c:306
+#: src/names.c:977 src/checkpoint.c:308
 #, c-format
 msgid "cannot split string '%s': %s"
 msgstr "Impossible de couper la chaîne de caractères « %s » : %s"
@@ -2766,11 +2766,11 @@ msgstr "%s : délai d'expiration non valable"
 msgid "%s: unknown checkpoint action"
 msgstr "%s : action de point de contrôle inconnue"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "write"
 msgstr "écriture"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "read"
 msgstr "lecture"
 
@@ -2778,7 +2778,7 @@ msgstr "lecture"
 #. *not* "Writing a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de escritura",
 #. *not* "Escribiendo un punto de comprobaci@'on"
-#: src/checkpoint.c:250
+#: src/checkpoint.c:252
 #, c-format
 msgid "Write checkpoint %u"
 msgstr "Point de contrôle d'écriture %u"
@@ -2787,7 +2787,7 @@ msgstr "Point de contrôle d'écriture %u"
 #. *not* "Reading a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de lectura",
 #. *not* "Leyendo un punto de comprobaci@'on"
-#: src/checkpoint.c:256
+#: src/checkpoint.c:258
 #, c-format
 msgid "Read checkpoint %u"
 msgstr "Point de contrôle de lecture %u"

@@ -1,3 +1,154 @@
+2019-02-23  Sergey Poznyakoff  <gray@gnu.org>
+
+	Version 1.32
+
+2019-02-04  Sergey Poznyakoff  <gray@gnu.org>
+
+	Minor fixes in docs.
+
+	* doc/tar.1: Remove description of the --preserve option
+	Document verbosity levels.
+	* doc/tar.texi: Fix description of the -o option.
+
+2019-01-15  Daniel Le  <greenrecyclebin@gmail.com>
+
+	Fix typos in the documentation
+
+	Short option "t" was mistranslated to "--test" instead of "--list"
+	in commit
+	67cad0792b4e6cf22c6cb1b167b149cd176d49f9.
+
+2019-01-15  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix build on AIX
+
+	* src/unlink.c (flush_deferred_unlinks): Avoid possible duplicate
+	case
+	(if ENOTEMPTY==EEXIST)
+
+2019-01-15  Sergey Poznyakoff  <gray@gnu.org>
+
+	Version 1.31.90
+
+2019-01-14  Sergey Poznyakoff  <gray@gnu.org>
+
+	Ensure gnu format when running checkpoint tests
+
+2019-01-14  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix compression tests
+
+	Existing compression tests used tar with compiled-in
+	defaults. However,
+	some of the defaults are sure to create archives that are not
+	byte-to-byte
+	reproducible (e.g. DEFAULT_ARCHIVE_FORMAT=POSIX, because the
+	name field
+	in posix extended headers uses PID of the creating process
+	by default).
+	Moreover, some compressors (e.g. gzip) store current timestamp in
+	the file header when compressing from stdin, so that using cmp
+	on the
+	two created archives as the tests did is error-prone. Another
+	problem
+	is that the tests implicitly assumed that tar uses archive
+	suffix to
+	recognize its format when extracting, which isn't the
+	case. Finally,
+	there's hardly any reason in using sed to create m4 sources, when
+	everything can be achieved by m4 itself.
+
+	* tests/Makefile.am: Remove generation of compress-*.at files.
+	* tests/compress.at.in: Remove.
+	* tests/compress.m4: New file.
+	* tests/testsuite.at: Include compress.m4, use TAR_CHECK_COMPRESS
+	to
+	check compression options.
+
+2019-01-14  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix possible NULL dereference (savannah bug #55369)
+
+	* src/sparse.c (pax_decode_header): Check return from
+	find_next_block.
+
+2019-01-14  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix compilation without iconv.
+
+2019-01-14  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix iconv usage.
+
+	Patch by Christian Weisgerber.
+
+	* src/utf8.c (utf8_convert): non-zero return from iconv means
+	failure.
+
+2019-01-14  Pavel Raiskup  <praiskup@redhat.com>
+
+	tests: fix numeric.at for BSD
+
+	While creating file, BSD kernels inherit the group ownership from
+	parent directory.
+	http://lists.gnu.org/archive/html/bug-tar/2016-06/msg00000.html
+
+	* tests/numeric.at: Attempt to 'chown' the newly created directory
+	to proper group (at least on affected machines that command is
+	expected to succeed).
+
+2019-01-14  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix typo in manpage.
+
+2019-01-14  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix expected output in dirrem tests.
+
+	In both tests, the "file changed as we read it" warning might be
+	produced for dir/sub, depending on the ctime resolution and
+	timing.
+	The problem was fixed by 64b43fdf70d82c39eb2ca900cd4f8e49,
+	but regressed
+	after e7cd377f7801d42aa8e07addff93d2150666c237, which removed
+	1 second
+	delays between each pair of checkpoints. Since the presense
+	or absense
+	of this warning is irrelevant for the test, it is now suppressed.
+
+	* tests/dirrem01.at: Suppress the file-changed warning.
+	* tests/dirrem02.at: Likewise.
+
+2019-01-12  Sergey Poznyakoff  <gray@gnu.org.ua>
+
+	Fix the use of --checkpoint without explicit --checkpoint-action
+
+	* src/checkpoint.c (checkpoint_finish_compile): Set default
+	action,
+	if necessary.
+	* tests/checkpoint/defaults.at: New testcase.
+	* tests/checkpoint/dot-compat.at: New testcase.
+	* tests/checkpoint/dot-int.at: New testcase.
+	* tests/checkpoint/dot.at: New testcase.
+	* tests/checkpoint/interval.at: New testcase.
+	* tests/Makefile.am: Add new testcases.
+	* tests/testsuite.at Include new testcases.
+
+2019-01-10  Sergey Poznyakoff  <gray@gnu.org.ua>
+
+	Remove erroneous abort() call
+
+	The call was introduced by commit ccef8581. It caused tar to abort
+	on perfectly normal operations, like untarring archives containing
+	./ with the -U option,
+
+	See
+	http://lists.gnu.org/archive/html/bug-tar/2019-01/msg00019.html
+	for details.
+
+	* src/extract.c (maybe_recoverable): Remove misplaced call
+	to abort().
+
 2019-01-02  Sergey Poznyakoff  <gray@gnu.org>
 
 	Version 1.31

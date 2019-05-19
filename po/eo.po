@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tar 1.30\n"
 "Report-Msgid-Bugs-To: bug-tar@gnu.org\n"
-"POT-Creation-Date: 2019-01-02 20:28+0200\n"
+"POT-Creation-Date: 2019-02-23 14:57+0200\n"
 "PO-Revision-Date: 2018-06-05 23:06-0300\n"
 "Last-Translator: Felipe Castro <fefcas@gmail.com>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
@@ -1504,7 +1504,7 @@ msgstr "komandlinio"
 msgid "%s: file list requested from %s already read from %s"
 msgstr "%s: dosierlisto petita el %s jam estas legita el %s"
 
-#: src/names.c:977 src/checkpoint.c:306
+#: src/names.c:977 src/checkpoint.c:308
 #, c-format
 msgid "cannot split string '%s': %s"
 msgstr "ne eblas apartigi ĉenon '%s': %s"
@@ -2660,11 +2660,11 @@ msgstr "%s: ne estas valida templimo"
 msgid "%s: unknown checkpoint action"
 msgstr "%s: nekonata kontrolpunkta ago"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "write"
 msgstr "skribi"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "read"
 msgstr "legi"
 
@@ -2672,7 +2672,7 @@ msgstr "legi"
 #. *not* "Writing a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de escritura",
 #. *not* "Escribiendo un punto de comprobaci@'on"
-#: src/checkpoint.c:250
+#: src/checkpoint.c:252
 #, c-format
 msgid "Write checkpoint %u"
 msgstr "Skriba kontrol-punkto %u"
@@ -2681,7 +2681,7 @@ msgstr "Skriba kontrol-punkto %u"
 #. *not* "Reading a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de lectura",
 #. *not* "Leyendo un punto de comprobaci@'on"
-#: src/checkpoint.c:256
+#: src/checkpoint.c:258
 #, c-format
 msgid "Read checkpoint %u"
 msgstr "Lega kontrol-punkto %u"

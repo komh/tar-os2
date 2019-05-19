@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tar 1.30\n"
 "Report-Msgid-Bugs-To: bug-tar@gnu.org\n"
-"POT-Creation-Date: 2019-01-02 20:28+0200\n"
+"POT-Creation-Date: 2019-02-23 14:57+0200\n"
 "PO-Revision-Date: 2018-10-23 22:00+0200\n"
 "Last-Translator: Alexander Shopov <ash@kambanaria.org>\n"
 "Language-Team: Bulgarian <dict@ludost.net>\n"
@@ -1537,7 +1537,7 @@ msgstr "команден ред"
 msgid "%s: file list requested from %s already read from %s"
 msgstr "%s: файловият списък заявен от „%s“ вече е прочетен от „%s“"
 
-#: src/names.c:977 src/checkpoint.c:306
+#: src/names.c:977 src/checkpoint.c:308
 #, c-format
 msgid "cannot split string '%s': %s"
 msgstr "низът „%s“ не може да се раздели: %s"
@@ -2727,11 +2727,11 @@ msgstr "%s: неправилен краен срок"
 msgid "%s: unknown checkpoint action"
 msgstr "%s: непознато действие при контролна точка"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "write"
 msgstr "запис"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "read"
 msgstr "четене"
 
@@ -2739,7 +2739,7 @@ msgstr "четене"
 #. *not* "Writing a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de escritura",
 #. *not* "Escribiendo un punto de comprobaci@'on"
-#: src/checkpoint.c:250
+#: src/checkpoint.c:252
 #, c-format
 msgid "Write checkpoint %u"
 msgstr "Контролна точка при запис %u"
@@ -2748,7 +2748,7 @@ msgstr "Контролна точка при запис %u"
 #. *not* "Reading a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de lectura",
 #. *not* "Leyendo un punto de comprobaci@'on"
-#: src/checkpoint.c:256
+#: src/checkpoint.c:258
 #, c-format
 msgid "Read checkpoint %u"
 msgstr "Контролна точка при четене %u"

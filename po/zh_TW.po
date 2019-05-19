@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GNU tar 1.30\n"
 "Report-Msgid-Bugs-To: bug-tar@gnu.org\n"
-"POT-Creation-Date: 2019-01-02 20:28+0200\n"
+"POT-Creation-Date: 2019-02-23 14:57+0200\n"
 "PO-Revision-Date: 2018-05-05 19:29+0800\n"
 "Last-Translator: pan93412 <pan93412@gmail.com>\n"
 "Language-Team: Chinese (traditional) <zh-l10n@linux.org.tw>\n"
@@ -1474,7 +1474,7 @@ msgstr "命令列"
 msgid "%s: file list requested from %s already read from %s"
 msgstr "%s：%s 要求的檔案清單已經由 %s 所讀取"
 
-#: src/names.c:977 src/checkpoint.c:306
+#: src/names.c:977 src/checkpoint.c:308
 #, c-format
 msgid "cannot split string '%s': %s"
 msgstr "無法分割字串 %s：%s"
@@ -2597,11 +2597,11 @@ msgstr "%s：不是有效的時間限制"
 msgid "%s: unknown checkpoint action"
 msgstr "%s：不明查核點動作"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "write"
 msgstr "寫入"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "read"
 msgstr "讀取"
 
@@ -2609,7 +2609,7 @@ msgstr "讀取"
 #. *not* "Writing a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de escritura",
 #. *not* "Escribiendo un punto de comprobaci@'on"
-#: src/checkpoint.c:250
+#: src/checkpoint.c:252
 #, c-format
 msgid "Write checkpoint %u"
 msgstr "寫入的查核點 %u"
@@ -2618,7 +2618,7 @@ msgstr "寫入的查核點 %u"
 #. *not* "Reading a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de lectura",
 #. *not* "Leyendo un punto de comprobaci@'on"
-#: src/checkpoint.c:256
+#: src/checkpoint.c:258
 #, c-format
 msgid "Read checkpoint %u"
 msgstr "讀取的查核點 %u"

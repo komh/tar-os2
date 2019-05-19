@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tar 1.30\n"
 "Report-Msgid-Bugs-To: bug-tar@gnu.org\n"
-"POT-Creation-Date: 2019-01-02 20:28+0200\n"
+"POT-Creation-Date: 2019-02-23 14:57+0200\n"
 "PO-Revision-Date: 2017-12-17 09:10-0600\n"
 "Last-Translator: Kevin Scannell <kscanne@gmail.com>\n"
 "Language-Team: Irish <gaeilge-gnulinux@lists.sourceforge.net>\n"
@@ -1542,7 +1542,7 @@ msgstr "líne na n-orduithe"
 msgid "%s: file list requested from %s already read from %s"
 msgstr "%s: bhí an liosta comhad iarrtha ó %s léite ó %s cheana"
 
-#: src/names.c:977 src/checkpoint.c:306
+#: src/names.c:977 src/checkpoint.c:308
 #, c-format
 msgid "cannot split string '%s': %s"
 msgstr "ní féidir teaghrán '%s' a scoilt: %s"
@@ -2728,11 +2728,11 @@ msgstr "%s: teorainn ama neamhbhailí"
 msgid "%s: unknown checkpoint action"
 msgstr "%s: gníomh anaithnid seicphointe"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "write"
 msgstr "scríobh"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "read"
 msgstr "léamh"
 
@@ -2740,7 +2740,7 @@ msgstr "léamh"
 #. *not* "Writing a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de escritura",
 #. *not* "Escribiendo un punto de comprobaci@'on"
-#: src/checkpoint.c:250
+#: src/checkpoint.c:252
 #, c-format
 msgid "Write checkpoint %u"
 msgstr "Seicphointe scríofa %u"
@@ -2749,7 +2749,7 @@ msgstr "Seicphointe scríofa %u"
 #. *not* "Reading a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de lectura",
 #. *not* "Leyendo un punto de comprobaci@'on"
-#: src/checkpoint.c:256
+#: src/checkpoint.c:258
 #, c-format
 msgid "Read checkpoint %u"
 msgstr "Seicphointe léimh %u"

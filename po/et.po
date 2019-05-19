@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: GNU tar 1.29\n"
 "Report-Msgid-Bugs-To: bug-tar@gnu.org\n"
-"POT-Creation-Date: 2019-01-02 20:28+0200\n"
+"POT-Creation-Date: 2019-02-23 14:57+0200\n"
 "PO-Revision-Date: 2016-05-16 22:43+0300\n"
 "Last-Translator: Toomas Soome <tsoome@me.com>\n"
 "Language-Team: Estonian <linux-ee@lists.eenet.ee>\n"
@@ -1495,7 +1495,7 @@ msgstr "käsurida"
 msgid "%s: file list requested from %s already read from %s"
 msgstr "%s: %s loetud failide nimekiri on juba loetud failist %s"
 
-#: src/names.c:977 src/checkpoint.c:306
+#: src/names.c:977 src/checkpoint.c:308
 #, c-format
 msgid "cannot split string '%s': %s"
 msgstr "sõne '%s' ei saa tükeldada: %s"
@@ -2637,11 +2637,11 @@ msgstr "%s: ei ole korrektne taimout"
 msgid "%s: unknown checkpoint action"
 msgstr "%s: tundmatu kontrollpunkti tegevus"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "write"
 msgstr "kirjutamine"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "read"
 msgstr "lugemine"
 
@@ -2649,7 +2649,7 @@ msgstr "lugemine"
 #. *not* "Writing a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de escritura",
 #. *not* "Escribiendo un punto de comprobaci@'on"
-#: src/checkpoint.c:250
+#: src/checkpoint.c:252
 #, c-format
 msgid "Write checkpoint %u"
 msgstr "Kirjutamise kontrollpunkt %u"
@@ -2658,7 +2658,7 @@ msgstr "Kirjutamise kontrollpunkt %u"
 #. *not* "Reading a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de lectura",
 #. *not* "Leyendo un punto de comprobaci@'on"
-#: src/checkpoint.c:256
+#: src/checkpoint.c:258
 #, c-format
 msgid "Read checkpoint %u"
 msgstr "Lugemise kontrollpunkt %u"

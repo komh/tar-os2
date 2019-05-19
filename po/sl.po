@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tar 1.28\n"
 "Report-Msgid-Bugs-To: bug-tar@gnu.org\n"
-"POT-Creation-Date: 2019-01-02 20:28+0200\n"
+"POT-Creation-Date: 2019-02-23 14:57+0200\n"
 "PO-Revision-Date: 2014-11-16 21:24+0100\n"
 "Last-Translator: Primož Peterlin <primozz.peterlin@gmail.com>\n"
 "Language-Team: Slovenian <translation-team-sl@lists.sourceforge.net>\n"
@@ -1528,7 +1528,7 @@ msgstr "ukazna vrstica"
 msgid "%s: file list requested from %s already read from %s"
 msgstr "%s: seznam datotek, ki ga zahteva %s, je že prebran iz %s"
 
-#: src/names.c:977 src/checkpoint.c:306
+#: src/names.c:977 src/checkpoint.c:308
 #, c-format
 msgid "cannot split string '%s': %s"
 msgstr "ni mogoče razcepiti niza »%s«: %s"
@@ -2697,11 +2697,11 @@ msgstr "%s: neveljaven čas preteka"
 msgid "%s: unknown checkpoint action"
 msgstr "%s: neznano dejanje za kontrolno točko"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "write"
 msgstr "zapiši"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "read"
 msgstr "preberi"
 
@@ -2710,7 +2710,7 @@ msgstr "preberi"
 #. *not* "Writing a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de escritura",
 #. *not* "Escribiendo un punto de comprobaci@'on"
-#: src/checkpoint.c:250
+#: src/checkpoint.c:252
 #, c-format
 msgid "Write checkpoint %u"
 msgstr "Oznaka pisanja %u"
@@ -2720,7 +2720,7 @@ msgstr "Oznaka pisanja %u"
 #. *not* "Reading a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de lectura",
 #. *not* "Leyendo un punto de comprobaci@'on"
-#: src/checkpoint.c:256
+#: src/checkpoint.c:258
 #, c-format
 msgid "Read checkpoint %u"
 msgstr "Oznaka branja %u"

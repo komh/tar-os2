@@ -1,6 +1,6 @@
 This is tar.info, produced by makeinfo version 5.9.93 from tar.texi.
 
-This manual is for GNU 'tar' (version 1.31, 2 January 2019), which
+This manual is for GNU 'tar' (version 1.32, 4 February 2019), which
 creates and extracts files from archives.
 
    Copyright (C) 1992, 1994-1997, 1999-2001, 2003-2017 Free Software
@@ -32,7 +32,7 @@ File: tar.info,  Node: Top,  Next: Introduction,  Up: (dir)
 GNU tar: an archiver tool
 *************************
 
-This manual is for GNU 'tar' (version 1.31, 2 January 2019), which
+This manual is for GNU 'tar' (version 1.32, 4 February 2019), which
 creates and extracts files from archives.
 
    Copyright (C) 1992, 1994-1997, 1999-2001, 2003-2017 Free Software
@@ -566,7 +566,7 @@ in version 1.11.  Thomas Bushnell, n/BSG and Amy Gorin worked on a
 tutorial and manual for GNU 'tar'.  Franc,ois Pinard put version 1.11.8
 of the manual together by taking information from all these sources and
 merging them.  Melissa Weisshaus finally edited and redesigned the book
-to create version 1.12.  The book for versions from 1.14 up to 1.31 were
+to create version 1.12.  The book for versions from 1.14 up to 1.32 were
 edited by the current maintainer, Sergey Poznyakoff.
 
    For version 1.12, Daniel Hagerty contributed a great deal of
@@ -1312,7 +1312,7 @@ Consider this example, run from your home directory:
      /home/myself/practice/folk
      /home/myself/practice/jazz
      /home/myself/practice/collection.tar
-     $ tar --test --file practice.tar
+     $ tar --list --file practice.tar
      home/myself/practice/
      home/myself/practice/blues
      home/myself/practice/folk
@@ -1337,7 +1337,7 @@ GNU 'tar' show member names when creating archive by supplying
      home/myself/practice/folk
      home/myself/practice/jazz
      home/myself/practice/collection.tar
-     $ tar --test --file practice.tar
+     $ tar --list --file practice.tar
      home/myself/practice/
      home/myself/practice/blues
      home/myself/practice/folk
@@ -2636,7 +2636,7 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
      pattern specified in NAME.  *Note Tape Files::.
 
 '--level=N'
-     Force incremental backup of level N.  As of GNU 'tar' version 1.31,
+     Force incremental backup of level N.  As of GNU 'tar' version 1.32,
      the option '--level=0' truncates the snapshot file, thereby forcing
      the level 0 dump.  Other values of N are effectively ignored.
      *Note --level=0::, for details and examples.
@@ -3377,8 +3377,8 @@ Short Option   Reference
                
 -m             *note --touch::.
                
--o             When creating, *note --no-same-owner::, when extracting
-               -- *note --portability::.
+-o             When extracting, same as *note --no-same-owner::.  When
+               creating, - *note --old-archive::.
                
                The latter usage is deprecated.  It is retained for
                compatibility with the earlier versions of GNU 'tar'.
@@ -3542,7 +3542,7 @@ about its name, version, origin and legal status, all on standard
 output, and then exit successfully.  For example, 'tar --version' might
 print:
 
-     tar (GNU tar) 1.31
+     tar (GNU tar) 1.32
      Copyright (C) 2013-2019 Free Software Foundation, Inc.
      License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
      This is free software: you are free to change and redistribute it.
@@ -6956,7 +6956,7 @@ options provide such possibility:
      systems: 'CVS', 'RCS', 'SCCS', 'SVN', 'Arch', 'Bazaar',
      'Mercurial', and 'Darcs'.
 
-     As of version 1.31, the following files are excluded:
+     As of version 1.32, the following files are excluded:
 
         * 'CVS/', and everything under it
         * 'RCS/', and everything under it
@@ -7085,7 +7085,7 @@ entirely:
 
    (1) According to the Bazaar docs, globbing-patterns are Korn-shell
 style and regular expressions are perl-style.  As of GNU 'tar' version
-1.31, these are treated as shell-style globs and posix extended regexps.
+1.32, these are treated as shell-style globs and posix extended regexps.
 This will be fixed in future releases.
 
    (2) Support for perl-style regexps will appear in future releases.

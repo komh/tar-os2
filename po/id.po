@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tar 1.28\n"
 "Report-Msgid-Bugs-To: bug-tar@gnu.org\n"
-"POT-Creation-Date: 2019-01-02 20:28+0200\n"
+"POT-Creation-Date: 2019-02-23 14:57+0200\n"
 "PO-Revision-Date: 2014-08-02 10:00+0700\n"
 "Last-Translator: Arif E. Nugroho <arif_endro@yahoo.com>\n"
 "Language-Team: Indonesian <translation-team-id@lists.sourceforge.net>\n"
@@ -1503,7 +1503,7 @@ msgstr "Perintah gagal"
 msgid "%s: file list requested from %s already read from %s"
 msgstr "%s: file list requested from %s daftar berkas telah dibaca %s"
 
-#: src/names.c:977 src/checkpoint.c:306
+#: src/names.c:977 src/checkpoint.c:308
 #, c-format
 msgid "cannot split string '%s': %s"
 msgstr "tidak dapat menset waktu di '%s': %s"
@@ -2665,11 +2665,11 @@ msgstr "%s: bukan sebuah kehabisan waktu yang valid"
 msgid "%s: unknown checkpoint action"
 msgstr "%s: aksi titik pemeriksaan tidak diketahui"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "write"
 msgstr "tulis"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "read"
 msgstr "baca"
 
@@ -2677,7 +2677,7 @@ msgstr "baca"
 #. *not* "Writing a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de escritura",
 #. *not* "Escribiendo un punto de comprobaci@'on"
-#: src/checkpoint.c:250
+#: src/checkpoint.c:252
 #, c-format
 msgid "Write checkpoint %u"
 msgstr "Menulis titik pemeriksaan %u"
@@ -2686,7 +2686,7 @@ msgstr "Menulis titik pemeriksaan %u"
 #. *not* "Reading a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de lectura",
 #. *not* "Leyendo un punto de comprobaci@'on"
-#: src/checkpoint.c:256
+#: src/checkpoint.c:258
 #, c-format
 msgid "Read checkpoint %u"
 msgstr "Membaca titik pemeriksaan %u"

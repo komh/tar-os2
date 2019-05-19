@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tar 1.30\n"
 "Report-Msgid-Bugs-To: bug-tar@gnu.org\n"
-"POT-Creation-Date: 2019-01-02 20:28+0200\n"
+"POT-Creation-Date: 2019-02-23 14:57+0200\n"
 "PO-Revision-Date: 2017-12-21 13:40+0700\n"
 "Last-Translator: Trần Ngọc Quân <vnwildman@gmail.com>\n"
 "Language-Team: Vietnamese <translation-team-vi@lists.sourceforge.net>\n"
@@ -1505,7 +1505,7 @@ msgstr "dòng lệnh"
 msgid "%s: file list requested from %s already read from %s"
 msgstr "%s: danh sách tập tin đã yêu cầu từ %s đã sẵn được đọc từ %s"
 
-#: src/names.c:977 src/checkpoint.c:306
+#: src/names.c:977 src/checkpoint.c:308
 #, c-format
 msgid "cannot split string '%s': %s"
 msgstr "không thể chia tách chuỗi “%s”: %s"
@@ -2669,11 +2669,11 @@ msgstr "%s: không phải thời gian chờ tối đa hợp lệ"
 msgid "%s: unknown checkpoint action"
 msgstr "%s: không rõ hành động điểm kiểm"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "write"
 msgstr "ghi"
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "read"
 msgstr "đọc"
 
@@ -2681,7 +2681,7 @@ msgstr "đọc"
 #. *not* "Writing a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de escritura",
 #. *not* "Escribiendo un punto de comprobaci@'on"
-#: src/checkpoint.c:250
+#: src/checkpoint.c:252
 #, c-format
 msgid "Write checkpoint %u"
 msgstr "Điểm kiểm tra ghi %u"
@@ -2690,7 +2690,7 @@ msgstr "Điểm kiểm tra ghi %u"
 #. *not* "Reading a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de lectura",
 #. *not* "Leyendo un punto de comprobaci@'on"
-#: src/checkpoint.c:256
+#: src/checkpoint.c:258
 #, c-format
 msgid "Read checkpoint %u"
 msgstr "Điểm kiểm tra đọc %u"

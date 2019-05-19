@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tar- \n"
 "Report-Msgid-Bugs-To: bug-tar@gnu.org\n"
-"POT-Creation-Date: 2019-01-02 20:28+0200\n"
+"POT-Creation-Date: 2019-02-23 14:57+0200\n"
 "PO-Revision-Date: 2002-02-10 12:00CEST\n"
 "Last-Translator: Martin Lacko <lacko@host.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -1487,7 +1487,7 @@ msgstr "'%s' príkaz zlyhal"
 msgid "%s: file list requested from %s already read from %s"
 msgstr ""
 
-#: src/names.c:977 src/checkpoint.c:306
+#: src/names.c:977 src/checkpoint.c:308
 #, c-format
 msgid "cannot split string '%s': %s"
 msgstr ""
@@ -2622,11 +2622,11 @@ msgstr "%s: Chybná skupina"
 msgid "%s: unknown checkpoint action"
 msgstr ""
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "write"
 msgstr ""
 
-#: src/checkpoint.c:234
+#: src/checkpoint.c:236
 msgid "read"
 msgstr ""
 
@@ -2634,7 +2634,7 @@ msgstr ""
 #. *not* "Writing a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de escritura",
 #. *not* "Escribiendo un punto de comprobaci@'on"
-#: src/checkpoint.c:250
+#: src/checkpoint.c:252
 #, fuzzy, c-format
 msgid "Write checkpoint %u"
 msgstr "Zapisujem testovací bod %d"
@@ -2643,7 +2643,7 @@ msgstr "Zapisujem testovací bod %d"
 #. *not* "Reading a checkpoint".
 #. E.g. in Spanish "Punto de comprobaci@'on de lectura",
 #. *not* "Leyendo un punto de comprobaci@'on"
-#: src/checkpoint.c:256
+#: src/checkpoint.c:258
 #, fuzzy, c-format
 msgid "Read checkpoint %u"
 msgstr "Èítanie testovacieho bodu %d"
