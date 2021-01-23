@@ -1,5 +1,5 @@
 /* Print --version and bug-reporting information in a consistent format.
-   Copyright (C) 1999, 2003, 2005, 2009-2019 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2003, 2005, 2009-2021 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -21,15 +21,6 @@
 
 # include <stdarg.h>
 # include <stdio.h>
-
-/* The 'sentinel' attribute was added in gcc 4.0.  */
-#ifndef _GL_ATTRIBUTE_SENTINEL
-# if 4 <= __GNUC__
-#  define _GL_ATTRIBUTE_SENTINEL __attribute__ ((__sentinel__))
-# else
-#  define _GL_ATTRIBUTE_SENTINEL /* empty */
-# endif
-#endif
 
 extern const char version_etc_copyright[];
 
@@ -70,7 +61,7 @@ extern void version_etc (FILE *stream,
                          const char *command_name, const char *package,
                          const char *version,
                          /* const char *author1, ..., NULL */ ...)
-  _GL_ATTRIBUTE_SENTINEL;
+  _GL_ATTRIBUTE_SENTINEL ((0));
 
 /* Display the usual "Report bugs to" stanza.  */
 extern void emit_bug_reporting_address (void);

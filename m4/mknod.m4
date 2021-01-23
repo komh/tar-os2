@@ -1,7 +1,7 @@
-# serial 7
+# serial 8
 # See if we need to provide mknod replacement.
 
-dnl Copyright (C) 2009-2019 Free Software Foundation, Inc.
+dnl Copyright (C) 2009-2021 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -47,8 +47,8 @@ AC_DEFUN([gl_FUNC_MKNOD],
             linux-* | linux) gl_cv_func_mknod_works="guessing yes" ;;
                              # Guess yes on glibc systems.
             *-gnu* | gnu*)   gl_cv_func_mknod_works="guessing yes" ;;
-                             # If we don't know, assume the worst.
-            *)               gl_cv_func_mknod_works="guessing no" ;;
+                             # If we don't know, obey --enable-cross-guesses.
+            *)               gl_cv_func_mknod_works="$gl_cross_guess_normal" ;;
           esac
          ])
        rm -f conftest.fifo])

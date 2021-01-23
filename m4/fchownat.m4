@@ -1,5 +1,5 @@
-# fchownat.m4 serial 2
-dnl Copyright (C) 2004-2019 Free Software Foundation, Inc.
+# fchownat.m4 serial 7
+dnl Copyright (C) 2004-2021 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -56,22 +56,24 @@ AC_DEFUN([gl_FUNC_FCHOWNAT_DEREF_BUG],
           [[
 #include <fcntl.h>
 #include <unistd.h>
+/* Android 4.3 declares fchownat() in <sys/stat.h> instead.  */
+#include <sys/stat.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <sys/types.h>
 int
 main ()
 {
-  return (fchownat (AT_FDCWD, "$gl_dangle", -1, getgid (),
+  return (fchownat (AT_FDCWD, "$gl_dangle", (uid_t)(-1), getgid (),
                     AT_SYMLINK_NOFOLLOW) != 0
           && errno == ENOENT);
 }
           ]])],
        [gl_cv_func_fchownat_nofollow_works=yes],
        [gl_cv_func_fchownat_nofollow_works=no],
-       [gl_cv_func_fchownat_nofollow_works=no])
+       [gl_cv_func_fchownat_nofollow_works="$gl_cross_guess_normal"])
   ])
-  AS_IF([test $gl_cv_func_fchownat_nofollow_works = no], [$1], [$2])
+  AS_IF([test "$gl_cv_func_fchownat_nofollow_works" != yes], [$1], [$2])
 ])
 
 # gl_FUNC_FCHOWNAT_EMPTY_FILENAME_BUG([ACTION-IF-BUGGY[, ACTION-IF-NOT_BUGGY]])
@@ -86,7 +88,9 @@ AC_DEFUN([gl_FUNC_FCHOWNAT_EMPTY_FILENAME_BUG],
        [AC_LANG_PROGRAM(
           [[#include <unistd.h>
             #include <fcntl.h>
-          ]],
+            /* Android 4.3 declares fchownat() in <sys/stat.h> instead.  */
+            #include <sys/stat.h>
+          ]GL_MDA_DEFINES],
           [[int fd;
             int ret;
             if (mkdir ("conftestdir", 0700) < 0)
@@ -94,14 +98,14 @@ AC_DEFUN([gl_FUNC_FCHOWNAT_EMPTY_FILENAME_BUG],
             fd = open ("conftestdir", O_RDONLY);
             if (fd < 0)
               return 3;
-            ret = fchownat (fd, "", -1, -1, 0);
+            ret = fchownat (fd, "", (uid_t)(-1), (gid_t)(-1), 0);
             close (fd);
             rmdir ("conftestdir");
             return ret == 0;
           ]])],
        [gl_cv_func_fchownat_empty_filename_works=yes],
        [gl_cv_func_fchownat_empty_filename_works=no],
-       [gl_cv_func_fchownat_empty_filename_works="guessing no"])
+       [gl_cv_func_fchownat_empty_filename_works="$gl_cross_guess_normal"])
     ])
   AS_IF([test "$gl_cv_func_fchownat_empty_filename_works" != yes], [$1], [$2])
 ])

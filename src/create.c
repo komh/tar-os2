@@ -1,6 +1,6 @@
 /* Create a tar archive.
 
-   Copyright 1985-2019 Free Software Foundation, Inc.
+   Copyright 1985-2021 Free Software Foundation, Inc.
 
    This file is part of GNU tar.
 
@@ -1348,15 +1348,15 @@ create_archive (void)
 {
   struct name const *p;
 
-  trivial_link_count = name_count <= 1 && ! dereference_option;
+  trivial_link_count = filename_args != FILES_MANY && ! dereference_option;
 
   open_archive (ACCESS_WRITE);
   buffer_write_global_xheader ();
 
   if (incremental_option)
     {
-      size_t buffer_size = 1000;
-      char *buffer = xmalloc (buffer_size);
+      size_t buffer_size = 0;
+      char *buffer = NULL;
       const char *q;
 
       collect_and_sort_names ();
@@ -1371,12 +1371,8 @@ create_archive (void)
 	  {
 	    struct tar_stat_info st;
 	    size_t plen = strlen (p->name);
-	    if (buffer_size <= plen)
-	      {
-		while ((buffer_size *= 2) <= plen)
-		  continue;
-		buffer = xrealloc (buffer, buffer_size);
-	      }
+	    while (buffer_size <= plen)
+	      buffer = x2realloc (buffer, &buffer_size);
 	    memcpy (buffer, p->name, plen);
 	    if (! ISSLASH (buffer[plen - 1]))
 	      buffer[plen++] = DIRECTORY_SEPARATOR;
@@ -1407,12 +1403,8 @@ create_archive (void)
 			    }
 			  st.orig_file_name = xstrdup (p->name);
 			}
-		      if (buffer_size < plen + qlen)
-			{
-			  while ((buffer_size *=2 ) < plen + qlen)
-			    continue;
-			  buffer = xrealloc (buffer, buffer_size);
- 			}
+		      while (buffer_size < plen + qlen)
+			buffer = x2realloc (buffer, &buffer_size);
 		      strcpy (buffer + plen, q + 1);
 		      dump_file (&st, q + 1, buffer);
 		    }

@@ -1,6 +1,6 @@
 /* Work around unlinkat bugs on Solaris 9 and Hurd.
 
-   Copyright (C) 2009-2019 Free Software Foundation, Inc.
+   Copyright (C) 2009-2021 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@
 
 #include <stdlib.h>
 
-#include "dosname.h"
+#include "filename.h"
 #include "openat.h"
 
 #if HAVE_UNLINKAT
@@ -59,7 +59,7 @@ rpl_unlinkat (int fd, char const *name, int flag)
          directory.  */
       struct stat st;
       result = lstatat (fd, name, &st);
-      if (result == 0)
+      if (result == 0 || errno == EOVERFLOW)
         {
           /* Trailing NUL will overwrite the trailing slash.  */
           char *short_name = malloc (len);
@@ -78,6 +78,7 @@ rpl_unlinkat (int fd, char const *name, int flag)
               return -1;
             }
           free (short_name);
+          result = 0;
         }
     }
   if (!result)

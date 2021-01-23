@@ -1,6 +1,6 @@
 /* Buffer management for tar.
 
-   Copyright 1988-2019 Free Software Foundation, Inc.
+   Copyright 1988-2021 Free Software Foundation, Inc.
 
    This file is part of GNU tar.
 
@@ -1731,7 +1731,7 @@ add_chunk_header (struct bufmap *map)
       st.stat.st_uid = getuid ();
       st.stat.st_gid = getgid ();
       st.orig_file_name = xheader_format_name (&st,
-                                               "%d/GNUFileParts.%p/%f.%n",
+                                               "%d/GNUFileParts/%f.%n",
                                                volno);
       st.file_name = st.orig_file_name;
       st.archive_file_size = st.stat.st_size = map->sizeleft;

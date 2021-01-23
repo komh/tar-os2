@@ -1,6 +1,6 @@
 /* anytostr.c -- convert integers to printable strings
 
-   Copyright (C) 2001, 2006, 2008-2019 Free Software Foundation, Inc.
+   Copyright (C) 2001, 2006, 2008-2021 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
    INT_BUFSIZE_BOUND (INTTYPE) bytes long.  Return the address of the
    printable string, which need not start at BUF.  */
 
-char * __attribute_warn_unused_result__
+char * _GL_ATTRIBUTE_NODISCARD
 anytostr (inttype i, char *buf)
 {
   char *p = buf + INT_STRLEN_BOUND (inttype);

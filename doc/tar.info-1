@@ -1,10 +1,10 @@
-This is tar.info, produced by makeinfo version 5.9.93 from tar.texi.
+This is tar.info, produced by makeinfo version 6.7 from tar.texi.
 
-This manual is for GNU 'tar' (version 1.32, 4 February 2019), which
+This manual is for GNU 'tar' (version 1.33, 6 January 2021), which
 creates and extracts files from archives.
 
-   Copyright (C) 1992, 1994-1997, 1999-2001, 2003-2017 Free Software
-Foundation, Inc.
+   Copyright (C) 1992, 1994-1997, 1999-2001, 2003-2017, 2021 Free
+Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -32,11 +32,11 @@ File: tar.info,  Node: Top,  Next: Introduction,  Up: (dir)
 GNU tar: an archiver tool
 *************************
 
-This manual is for GNU 'tar' (version 1.32, 4 February 2019), which
+This manual is for GNU 'tar' (version 1.33, 6 January 2021), which
 creates and extracts files from archives.
 
-   Copyright (C) 1992, 1994-1997, 1999-2001, 2003-2017 Free Software
-Foundation, Inc.
+   Copyright (C) 1992, 1994-1997, 1999-2001, 2003-2017, 2021 Free
+Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -73,7 +73,6 @@ Appendices
 * Fixing Snapshot Files::
 * Tar Internals::
 * Genfile::
-* Free Software Needs Free Documentation::
 * GNU Free Documentation License::
 * Index of Command Line Options::
 * Index::
@@ -551,7 +550,7 @@ File: tar.info,  Node: Authors,  Next: Reports,  Prev: Naming tar Archives,  Up:
 GNU 'tar' was originally written by John Gilmore, and modified by many
 people.  The GNU enhancements were written by Jay Fenlason, then Joy
 Kendall, and the whole package has been further maintained by Thomas
-Bushnell, n/BSG, Franc,ois Pinard, Paul Eggert, and finally Sergey
+Bushnell, n/BSG, François Pinard, Paul Eggert, and finally Sergey
 Poznyakoff with the help of numerous and kind users.
 
    We wish to stress that 'tar' is a collective work, and owes much to
@@ -563,10 +562,10 @@ from the GNU 'tar' distribution.
    Jay Fenlason put together a draft of a GNU 'tar' manual, borrowing
 notes from the original man page from John Gilmore.  This was withdrawn
 in version 1.11.  Thomas Bushnell, n/BSG and Amy Gorin worked on a
-tutorial and manual for GNU 'tar'.  Franc,ois Pinard put version 1.11.8
+tutorial and manual for GNU 'tar'.  François Pinard put version 1.11.8
 of the manual together by taking information from all these sources and
 merging them.  Melissa Weisshaus finally edited and redesigned the book
-to create version 1.12.  The book for versions from 1.14 up to 1.32 were
+to create version 1.12.  The book for versions from 1.14 up to 1.33 were
 edited by the current maintainer, Sergey Poznyakoff.
 
    For version 1.12, Daniel Hagerty contributed a great deal of
@@ -2636,7 +2635,7 @@ File: tar.info,  Node: Option Summary,  Next: Short Option Summary,  Prev: Opera
      pattern specified in NAME.  *Note Tape Files::.
 
 '--level=N'
-     Force incremental backup of level N.  As of GNU 'tar' version 1.32,
+     Force incremental backup of level N.  As of GNU 'tar' version 1.33,
      the option '--level=0' truncates the snapshot file, thereby forcing
      the level 0 dump.  Other values of N are effectively ignored.
      *Note --level=0::, for details and examples.
@@ -3542,8 +3541,8 @@ about its name, version, origin and legal status, all on standard
 output, and then exit successfully.  For example, 'tar --version' might
 print:
 
-     tar (GNU tar) 1.32
-     Copyright (C) 2013-2019 Free Software Foundation, Inc.
+     tar (GNU tar) 1.33
+     Copyright (C) 2013-2020 Free Software Foundation, Inc.
      License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
      This is free software: you are free to change and redistribute it.
      There is NO WARRANTY, to the extent permitted by law.
@@ -5007,7 +5006,7 @@ options:
      Disable POSIX ACLs support.  This is the default.
 
    When listing the archive, if both '--acls' and '--verbose' options
-are given, files that have ACLs are marked with a plus sing following
+are given, files that have ACLs are marked with a plus sign following
 their permission mask.  For example:
 
      -rw-r--r--+ smith/users      110 2016-03-16 16:07 file
@@ -6748,8 +6747,12 @@ gzip:: for more information.)
 By default, each line read from the file list is first stripped off any
 leading and trailing whitespace.  If the resulting string begins with
 '-' character, it is considered a 'tar' option and is processed
-accordingly(1).  For example, the common use of this feature is to
-change to another directory by specifying '-C' option:
+accordingly(1).  Only a subset of GNU 'tar' options is allowed for use
+in file lists.  For a list of such options, *note Position-Sensitive
+Options::.
+
+   For example, the common use of this feature is to change to another
+directory by specifying '-C' option:
 
      $ cat list
      -C/etc
@@ -6956,7 +6959,7 @@ options provide such possibility:
      systems: 'CVS', 'RCS', 'SCCS', 'SVN', 'Arch', 'Bazaar',
      'Mercurial', and 'Darcs'.
 
-     As of version 1.32, the following files are excluded:
+     As of version 1.33, the following files are excluded:
 
         * 'CVS/', and everything under it
         * 'RCS/', and everything under it
@@ -7085,7 +7088,7 @@ entirely:
 
    (1) According to the Bazaar docs, globbing-patterns are Korn-shell
 style and regular expressions are perl-style.  As of GNU 'tar' version
-1.32, these are treated as shell-style globs and posix extended regexps.
+1.33, these are treated as shell-style globs and posix extended regexps.
 This will be fixed in future releases.
 
    (2) Support for perl-style regexps will appear in future releases.

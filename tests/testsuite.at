@@ -1,7 +1,7 @@
 # Process this file with autom4te to create testsuite. -*- Autotest -*-
 
 # Test suite for GNU tar.
-# Copyright 2004-2019 Free Software Foundation, Inc.
+# Copyright 2004-2021 Free Software Foundation, Inc.
 
 # This file is part of GNU tar.
 
@@ -342,6 +342,8 @@ m4_include([extrac18.at])
 m4_include([extrac19.at])
 m4_include([extrac20.at])
 m4_include([extrac21.at])
+m4_include([extrac22.at])
+m4_include([extrac23.at])
 
 m4_include([backup01.at])
 
@@ -388,6 +390,7 @@ m4_include([rename02.at])
 m4_include([rename03.at])
 m4_include([rename04.at])
 m4_include([rename05.at])
+m4_include([rename06.at])
 m4_include([chtype.at])
 
 AT_BANNER([Ignore failing reads])

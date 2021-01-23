@@ -1,6 +1,6 @@
 /* Test whether a file has a nontrivial ACL.  -*- coding: utf-8 -*-
 
-   Copyright (C) 2002-2003, 2005-2019 Free Software Foundation, Inc.
+   Copyright (C) 2002-2003, 2005-2021 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -353,7 +353,7 @@ file_has_acl (char const *name, struct stat const *sb)
             {
               struct stat statbuf;
 
-              if (stat (name, &statbuf) < 0)
+              if (stat (name, &statbuf) == -1 && errno != EOVERFLOW)
                 return -1;
 
               return acl_nontrivial (count, entries);

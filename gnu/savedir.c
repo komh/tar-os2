@@ -1,6 +1,6 @@
 /* savedir.c -- save the list of files in a directory in a string
 
-   Copyright (C) 1990, 1997-2001, 2003-2006, 2009-2019 Free Software
+   Copyright (C) 1990, 1997-2001, 2003-2006, 2009-2021 Free Software
    Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
@@ -65,7 +65,7 @@ direntry_cmp_inode (void const *a, void const *b)
   direntry_t const *dea = a;
   direntry_t const *deb = b;
 
-  return dea->ino < deb->ino ? -1 : dea->ino > deb->ino;
+  return _GL_CMP (dea->ino, deb->ino);
 }
 #endif
 

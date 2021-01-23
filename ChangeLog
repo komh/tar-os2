@@ -1,3 +1,268 @@
+2021-01-07  Sergey Poznyakoff  <gray@gnu.org>
+
+	Version 1.33
+
+	* NEWS: Update.
+	* configure.ac: Raise version number. Require automake 1.15 and
+	autoconf 2.64.
+	* gnulib: pull v0.1-4333-g30820c2
+	* src/names.c: Use hash_remove instead of the deprecated
+	hash_delete.
+
+2021-01-06  Sergey Poznyakoff  <gray@gnu.org>
+
+	Update copyright years
+
+2020-07-13  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix typo in the manpage
+
+	* doc/tar.1: Fix description of the --newer option
+
+2020-07-10  Pavel Raiskup  <praiskup@redhat.com>
+
+	Bugfix --sparse --diff mode
+
+	Originally reported in:
+	https://bugzilla.redhat.com/show_bug.cgi?id=1853469
+
+	* src/sparse.c (check_data_region): Only compare the part
+	of buffer
+	really fed by safe_read(), not whole rdsize.
+
+2020-06-24  Sergey Poznyakoff  <gray@gnu.org>
+
+	Accept only position-sensitive (file-selection) options in file
+	list files.
+
+	Using such options as -f, -z, etc. is senseless in the file
+	list file
+	and bypasses the option consistency checks in decode_options.
+	Therefore,
+	only options related to file selection (a.k.a position-sensitive
+	options)
+	are allowed in files.
+
+	* doc/tar.texi: Document changes.
+	* src/common.h (tar_args): Move from tar.c
+	(TAR_ARGS_INITIALIZER): New macro.
+	* src/names.c: Declare option group identifiers as an enum.
+	(names_parse_opt): Special handling for ARGP_KEY_ERROR.
+	(names_argp): Remove static qualifier.
+	(names_argp_children): Remove.
+	* src/tar.c: Declare option group identifiers as an enum.
+	(parse_opt): Special handling for ARGP_KEY_INIT.
+	(argp_children): New static variable.
+	(args): Remove static variable.
+	(more_options): Allow only options from names_argp.
+	(parse_default_options): Take a pointer to struct tar_args
+	as argument.
+	Replace the loc member during the call to argp_parse and
+	restore it
+	afterwards.
+	(decode_options): Use automatic variable for args.
+
+2020-06-22  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix the logic of prepare_to_extract.
+
+	* src/extract.c (prepare_to_extract): Return true to proceed with
+	the extraction, and false to skip the current member.
+	If extracting
+	over a pipe, skip unlinking logic.
+	(extract_archive): Update accordingly.
+
+2020-06-15  Sergey Poznyakoff  <gray@gnu.org>
+
+	Make sure link counting works for file names supplied with -T
+
+	* src/common.h (name_count): Remove extern.
+	(files_count): New enum.
+	(filename_args): New extern.
+	* src/names.c (name_count): Remove.
+	(files_count): New variable.
+	(name_add_name,name_add_file): Update filename_args.
+	* src/create.c (create_archive): Set trivial_link_count
+	depending on
+	the filename_args.
+
+2020-06-10  Alfred M. Szmidt  <ams@gnu.org>
+
+	Remove freemanuals.texi
+
+	* doc/Makefile.am (tar_TEXINFOS): Remove freemanuals.texi.
+	* doc/freemanuals.texi: Delete file.
+	* doc/tar.texi (Free Software Needs Free Documentation): Remove
+	appendix.
+
+2020-06-03  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix typo in docs
+
+2020-06-03  Sergey Poznyakoff  <gray@gnu.org>
+
+	Bugfix
+
+	* src/sparse.c (sparse_diff_file): Fix return value.
+
+2020-05-19  Paul Eggert  <eggert@cs.ucla.edu>
+
+	tar: avoid read overrun
+
+	Problem reported by Timotej Kapus in:
+	https://lists.gnu.org/r/bug-tar/2020-05/msg00001.html
+	* src/transform.c (parse_transform_expr):
+	Diagnose ‘--transform='s'’ instead of continuing past '\0'.
+
+2020-02-15  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix handling of linked rename chains in incremental backups
+
+	* src/incremen.c: Change the meaning of the DIRF_RENAMED flag.
+	Now it
+	marks a directory which is the last one in a chain of renames.
+	Regular renamed directories are recognized by their orig member
+	being
+	non-NULL.  Directories marked with DIRF_RENAMED start encoding
+	of renames.
+	(procdir): Clear DIRF_RENAMED flag on directories which are
+	origins for
+	renames.
+	(makedumpdir): Use the orig member to check if the directory is a
+	result of a rename.
+	(store_rename): Move the check for DIR_IS_RENAMED to the
+	caller. Don't
+	clear the DIRF_RENAMED, it is not needed any more.
+
+	* tests/rename06.at: New test.
+	* tests/Makefile.am: Add rename06.at
+	* tests/testsuite.at: Likewise.
+
+2020-02-08  Sergey Poznyakoff  <gray@gnu.org>
+
+	Update copyright years
+
+2020-02-08  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix the --no-overwrite-dir option
+
+	Given this option, tar failed to preserve permissions of empty
+	directories
+	and to create files under directories owned by the current user
+	that did
+	not have the S_IWUSR bit set.
+
+	* src/extract.c (fd_chmod): Rename to fd_i_chmod.
+	(fd_chmod): New function.
+	(safe_dir_mode): New function.
+	(extract_dir): Special handling for existing directories in
+	--no-overwrite-dir mode.
+	* tests/extrac23.at: New file.
+	* tests/Makefile.am: Add new test case.
+	* tests/testsuite.at: Likewise.
+
+2019-12-03  Sergey Poznyakoff  <gray@gnu.org>
+
+	Wildcards in exclude-vcs-ignore mode should not match slash
+
+	* src/exclist.c (info_attach_exclist): Use the FNM_FILE_NAME flag.
+
+2019-11-27  Sergey Poznyakoff  <gray@gnu.org>
+
+	Version 1.32.90
+
+2019-11-25  Sergey Poznyakoff  <gray@gnu.org>
+
+	Testsuite fixes
+
+	* tests/sparse06.at: Skip the test if genfile is unable to create
+	sparse files.
+	* tests/sptrcreat.at: Likewise.
+	* tests/sptrdiff00.at: Likewise.
+	* tests/sptrdiff01.at: Likewise.
+
+2019-11-14  Sergey Poznyakoff  <gray@gnu.org>
+
+	Another testsuite fix.
+
+	* tests/extrac11.at: Skip test if ulimit fails.
+
+2019-11-13  Sergey Poznyakoff  <gray@gnu.org>
+
+	Testsuite fix.
+
+	* tests/remfiles10.at: Don't expect EINVAL when trying to remove
+	CWD.
+
+2019-08-25  Sergey Poznyakoff  <gray@gnu.org>
+
+	Consistently use x2realloc for buffer reallocation
+
+	* src/create.c (create_archive): Use x2realloc
+	* src/names.c (copy_name)
+	(add_hierarchy_to_namelist): Use x2realloc
+
+2019-08-18  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix extraction of symbolic links hardlinked to another symbolic
+	links
+
+	* src/extract.c (create_placeholder_file): Take additional
+	argument:
+	the delayed_link entry after which to the newly created one.
+	(extract_link): Create a placeholder file if the target link name
+	exists in the delayed_link list.
+
+2019-04-11  Sergey Poznyakoff  <gray@gnu.org>
+
+	Fix --delay-directory-restore on archives with reversed member
+	ordering.
+
+	* src/extract.c (find_direct_ancestor): Remove useless test.
+	(delay_set_stat): If the file name being added is already in
+	the list, update stored data instead of creating a new entry.
+	This works for archives with reversed order of members.
+	* tests/extrac22.at: New testcase.
+	* tests/Makefile.am: Add new testcase.
+	* tests/testsuite.at: Include new testcase.
+
+2019-03-28  Sergey Poznyakoff  <gray@gnu.org>
+
+	Minor change * scripts/backup.in: Fix typo
+
+	Typesetting fixes in the manpage
+
+2019-03-28  Zachary Vance  <za3k@za3k.com>
+
+	POSIX extended format headers do not include PID by default
+
+	The intent is to make binary-equivalent PAX archives easy
+	to create.  If
+	POSIXLY_CORRECT is set, the POSIX standard default is used,
+	which embeds
+	the pid.
+
+	* src/common.h (posixly_correct): New global.
+	* src/tar.c (decode_options): Detect the POSIXLY_CORRECT
+	environment
+	variable.
+	* src/buffer.c (add_chunk_header): Change filenames of multipart
+	files to
+	omit the pid.
+	* src/xheader.c (HEADER_TEMPLATE): New macro.
+	(xheader_xhdr_name, xheader_ghdr_name): Use HEADER_TEMPLATE
+	to select
+	the template for the POSIX extended header name.
+	* doc/tar.texi: Document the change.
+
+2019-03-03  Sergey Poznyakoff  <gray@gnu.org>
+
+	Check return value from xgetcwd
+
+	* src/misc.c (chdir_arg,tar_getcdpath): Check for non-NULL
+	return from xgetcwd. The function returns NULL for any
+	error originating from getcwd.
+
 2019-02-23  Sergey Poznyakoff  <gray@gnu.org>
 
 	Version 1.32

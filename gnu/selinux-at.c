@@ -1,5 +1,5 @@
 /* openat-style fd-relative functions for SE Linux
-   Copyright (C) 2007, 2009-2019 Free Software Foundation, Inc.
+   Copyright (C) 2007, 2009-2021 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
 
 #define AT_FUNC_NAME getfileconat
 #define AT_FUNC_F1 getfilecon
-#define AT_FUNC_POST_FILE_PARAM_DECLS , security_context_t *con
+#define AT_FUNC_POST_FILE_PARAM_DECLS , char **con
 #define AT_FUNC_POST_FILE_ARGS        , con
 #include "at-func.c"
 #undef AT_FUNC_NAME
@@ -42,7 +42,7 @@
 
 #define AT_FUNC_NAME lgetfileconat
 #define AT_FUNC_F1 lgetfilecon
-#define AT_FUNC_POST_FILE_PARAM_DECLS , security_context_t *con
+#define AT_FUNC_POST_FILE_PARAM_DECLS , char **con
 #define AT_FUNC_POST_FILE_ARGS        , con
 #include "at-func.c"
 #undef AT_FUNC_NAME
@@ -52,7 +52,7 @@
 
 #define AT_FUNC_NAME setfileconat
 #define AT_FUNC_F1 setfilecon
-#define AT_FUNC_POST_FILE_PARAM_DECLS , security_context_t con
+#define AT_FUNC_POST_FILE_PARAM_DECLS , char const *con
 #define AT_FUNC_POST_FILE_ARGS        , con
 #include "at-func.c"
 #undef AT_FUNC_NAME
@@ -62,7 +62,7 @@
 
 #define AT_FUNC_NAME lsetfileconat
 #define AT_FUNC_F1 lsetfilecon
-#define AT_FUNC_POST_FILE_PARAM_DECLS , security_context_t con
+#define AT_FUNC_POST_FILE_PARAM_DECLS , char const *con
 #define AT_FUNC_POST_FILE_ARGS        , con
 #include "at-func.c"
 #undef AT_FUNC_NAME

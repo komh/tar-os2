@@ -1,10 +1,10 @@
-This is tar.info, produced by makeinfo version 5.9.93 from tar.texi.
+This is tar.info, produced by makeinfo version 6.7 from tar.texi.
 
-This manual is for GNU 'tar' (version 1.32, 4 February 2019), which
+This manual is for GNU 'tar' (version 1.33, 6 January 2021), which
 creates and extracts files from archives.
 
-   Copyright (C) 1992, 1994-1997, 1999-2001, 2003-2017 Free Software
-Foundation, Inc.
+   Copyright (C) 1992, 1994-1997, 1999-2001, 2003-2017, 2021 Free
+Software Foundation, Inc.
 
      Permission is granted to copy, distribute and/or modify this
      document under the terms of the GNU Free Documentation License,
@@ -265,17 +265,17 @@ arguments to the various programs.  The C interface (via the
 
 * Menu:
 
-* General date syntax::            Common rules.
-* Calendar date items::            19 Dec 1994.
-* Time of day items::              9:20pm.
-* Time zone items::                EST, PDT, UTC, ...
-* Combined date and time of day items:: 1972-09-24T20:02:00,000000-0500.
-* Day of week items::              Monday and others.
-* Relative items in date strings:: next tuesday, 2 years ago.
-* Pure numbers in date strings::   19931219, 1440.
-* Seconds since the Epoch::        @1078100502.
-* Specifying time zone rules::     TZ="America/New_York", TZ="UTC0".
-* Authors of parse_datetime::      Bellovin, Eggert, Salz, Berets, et al.
+* General date syntax::          Common rules
+* Calendar date items::          21 Jul 2020
+* Time of day items::            9:20pm
+* Time zone items::              UTC, -0700, +0900, ...
+* Combined date and time of day items:: 2020-07-21T20:02:00,000000-0400
+* Day of week items::            Monday and others
+* Relative items in date strings:: next tuesday, 2 years ago
+* Pure numbers in date strings:: 20200721, 1440
+* Seconds since the Epoch::      @1595289600
+* Specifying time zone rules::   TZ="America/New_York", TZ="UTC0"
+* Authors of parse_datetime::    Bellovin, Eggert, Salz, Berets, et al.
 
 
 File: tar.info,  Node: General date syntax,  Next: Calendar date items,  Up: Date input formats
@@ -325,24 +325,24 @@ date format that is independent of language and that does not use time
 zone items other than 'UTC' and 'Z'.  Here are some ways to do this:
 
      $ LC_ALL=C TZ=UTC0 date
-     Mon Mar  1 00:21:42 UTC 2004
+     Tue Jul 21 23:00:37 UTC 2020
      $ TZ=UTC0 date +'%Y-%m-%d %H:%M:%SZ'
-     2004-03-01 00:21:42Z
+     2020-07-21 23:00:37Z
      $ date --rfc-3339=ns  # --rfc-3339 is a GNU extension.
-     2004-02-29 16:21:42.692722128-08:00
+     2020-07-21 19:00:37.692722128-04:00
      $ date --rfc-2822  # a GNU extension
-     Sun, 29 Feb 2004 16:21:42 -0800
+     Tue, 21 Jul 2020 19:00:37 -0400
      $ date +'%Y-%m-%d %H:%M:%S %z'  # %z is a GNU extension.
-     2004-02-29 16:21:42 -0800
+     2020-07-21 19:00:37 -0400
      $ date +'@%s.%N'  # %s and %N are GNU extensions.
-     @1078100502.692722128
+     @1595372437.692722128
 
    Alphabetic case is completely ignored in dates.  Comments may be
 introduced between round parentheses, as long as included parentheses
 are properly nested.  Hyphens not followed by a digit are currently
 ignored.  Leading zeros on numbers are ignored.
 
-   Invalid dates like '2005-02-29' or times like '24:00' are rejected.
+   Invalid dates like '2019-02-29' or times like '24:00' are rejected.
 In the typical case of a host that does not support leap seconds, a time
 like '23:59:60' is rejected even if it corresponds to a valid leap
 second.
@@ -357,23 +357,21 @@ A "calendar date item" specifies a day of the year.  It is specified
 differently, depending on whether the month is specified numerically or
 literally.  All these strings specify the same calendar date:
 
-     1972-09-24     # ISO 8601.
-     72-9-24        # Assume 19xx for 69 through 99,
-                    # 20xx for 00 through 68.
-     72-09-24       # Leading zeros are ignored.
-     9/24/72        # Common U.S. writing.
-     24 September 1972
-     24 Sept 72     # September has a special abbreviation.
-     24 Sep 72      # Three-letter abbreviations always allowed.
-     Sep 24, 1972
-     24-sep-72
-     24sep72
+     2020-07-20     # ISO 8601.
+     20-7-20        # Assume 19xx for 69 through 99,
+                    # 20xx for 00 through 68 (not recommended).
+     7/20/2020      # Common U.S. writing.
+     20 July 2020
+     20 Jul 2020    # Three-letter abbreviations always allowed.
+     Jul 20, 2020
+     20-jul-2020
+     20jul2020
 
    The year can also be omitted.  In this case, the last specified year
 is used, or the current year if none.  For example:
 
-     9/24
-     sep 24
+     7/20
+     jul 20
 
    Here are the rules.
 
@@ -466,9 +464,10 @@ normally done only for 'UTC'; for example, 'UTC+05:30' is equivalent to
 
    Time zone items other than 'UTC' and 'Z' are obsolescent and are not
 recommended, because they are ambiguous; for example, 'EST' has a
-different meaning in Australia than in the United States.  Instead, it's
-better to use unambiguous numeric time zone corrections like '-0500', as
-described in the previous section.
+different meaning in Australia than in the United States, and 'A' has
+different meaning as a military time zone than as an obsolescent RFC 822
+time zone.  Instead, it's better to use unambiguous numeric time zone
+corrections like '-0500', as described in the previous section.
 
    If neither a time zone item nor a time zone correction is supplied,
 timestamps are interpreted using the rules of the default time zone
@@ -564,13 +563,13 @@ where the clocks were adjusted, typically for daylight saving time, the
 resulting date and time are adjusted accordingly.
 
    The fuzz in units can cause problems with relative items.  For
-example, '2003-07-31 -1 month' might evaluate to 2003-07-01, because
-2003-06-31 is an invalid date.  To determine the previous month more
+example, '2020-07-31 -1 month' might evaluate to 2020-07-01, because
+2020-06-31 is an invalid date.  To determine the previous month more
 reliably, you can ask for the month before the 15th of the current
 month.  For example:
 
      $ date -R
-     Thu, 31 Jul 2003 13:02:39 -0700
+     Thu, 31 Jul 2020 13:02:39 -0400
      $ date --date='-1 month' +'Last month was %B?'
      Last month was July?
      $ date --date="$(date +%Y-%m-15) -1 month" +'Last month was %B!'
@@ -619,22 +618,23 @@ be combined with any other date item, as it specifies a complete
 timestamp.
 
    Internally, computer times are represented as a count of seconds
-since an epoch--a well-defined point of time.  On GNU and POSIX systems,
-the epoch is 1970-01-01 00:00:00 UTC, so '@0' represents this time, '@1'
+since an Epoch--a well-defined point of time.  On GNU and POSIX systems,
+the Epoch is 1970-01-01 00:00:00 UTC, so '@0' represents this time, '@1'
 represents 1970-01-01 00:00:01 UTC, and so forth.  GNU and most other
 POSIX-compliant systems support such times as an extension to POSIX,
 using negative counts, so that '@-1' represents 1969-12-31 23:59:59 UTC.
 
-   Traditional Unix systems count seconds with 32-bit two's-complement
+   Most modern systems count seconds with 64-bit two's-complement
+integers of seconds with nanosecond subcounts, which is a range that
+includes the known lifetime of the universe with nanosecond resolution.
+Some obsolescent systems count seconds with 32-bit two's-complement
 integers and can represent times from 1901-12-13 20:45:52 through
-2038-01-19 03:14:07 UTC.  More modern systems use 64-bit counts of
-seconds with nanosecond subcounts, and can represent all the times in
-the known lifetime of the universe to a resolution of 1 nanosecond.
+2038-01-19 03:14:07 UTC.  A few systems sport other time ranges.
 
    On most hosts, these counts ignore the presence of leap seconds.  For
-example, on most hosts '@915148799' represents 1998-12-31 23:59:59 UTC,
-'@915148800' represents 1999-01-01 00:00:00 UTC, and there is no way to
-represent the intervening leap second 1998-12-31 23:59:60 UTC.
+example, on most hosts '@1483228799' represents 2016-12-31 23:59:59 UTC,
+'@1483228800' represents 2017-01-01 00:00:00 UTC, and there is no way to
+represent the intervening leap second 2016-12-31 23:59:60 UTC.
 
 
 File: tar.info,  Node: Specifying time zone rules,  Next: Authors of parse_datetime,  Prev: Seconds since the Epoch,  Up: Date input formats
@@ -652,26 +652,26 @@ be escaped by a backslash.
 
    For example, with the GNU 'date' command you can answer the question
 "What time is it in New York when a Paris clock shows 6:30am on October
-31, 2004?"  by using a date beginning with 'TZ="Europe/Paris"' as shown
+31, 2019?"  by using a date beginning with 'TZ="Europe/Paris"' as shown
 in the following shell transcript:
 
      $ export TZ="America/New_York"
-     $ date --date='TZ="Europe/Paris" 2004-10-31 06:30'
-     Sun Oct 31 01:30:00 EDT 2004
+     $ date --date='TZ="Europe/Paris" 2019-10-31 06:30'
+     Sun Oct 31 01:30:00 EDT 2019
 
    In this example, the '--date' operand begins with its own 'TZ'
 setting, so the rest of that operand is processed according to
-'Europe/Paris' rules, treating the string '2004-10-31 06:30' as if it
+'Europe/Paris' rules, treating the string '2019-10-31 06:30' as if it
 were in Paris.  However, since the output of the 'date' command is
 processed according to the overall time zone rules, it uses New York
-time.  (Paris was normally six hours ahead of New York in 2004, but this
+time.  (Paris was normally six hours ahead of New York in 2019, but this
 example refers to a brief Halloween period when the gap was five hours.)
 
    A 'TZ' value is a rule that typically names a location in the 'tz'
-database (http://www.twinsun.com/tz/tz-link.htm).  A recent catalog of
+database (https://www.iana.org/time-zones).  A recent catalog of
 location names appears in the TWiki Date and Time Gateway
-(http://twiki.org/cgi-bin/xtra/tzdate).  A few non-GNU hosts require a
-colon before a location name in a 'TZ' setting, e.g.,
+(https://twiki.org/cgi-bin/xtra/tzdatepick.html).  A few non-GNU hosts
+require a colon before a location name in a 'TZ' setting, e.g.,
 'TZ=":America/New_York"'.
 
    The 'tz' database includes a wide variety of locations ranging from
@@ -702,7 +702,7 @@ parse more locale-specific dates using 'strptime', but relies on an
 environment variable and external file, and lacks the thread-safety of
 'parse_datetime'.
 
-   This chapter was originally produced by Franc,ois Pinard
+   This chapter was originally produced by François Pinard
 (<pinard@iro.umontreal.ca>) from the 'parse_datetime.y' source code, and
 then edited by K. Berry (<kb@cs.umb.edu>).
 
@@ -750,7 +750,7 @@ v7
      This format has traditionally been used by Automake when producing
      Makefiles.  This practice will change in the future, in the
      meantime, however this means that projects containing file names
-     more than 99 characters long will not be able to use GNU 'tar' 1.32
+     more than 99 characters long will not be able to use GNU 'tar' 1.33
      and Automake prior to 1.9.
 
 ustar
@@ -772,7 +772,7 @@ ustar
           21.
 
 star
-     Format used by Jo"rg Schilling 'star' implementation.  GNU 'tar' is
+     Format used by Jörg Schilling 'star' implementation.  GNU 'tar' is
      able to read 'star' archives but currently does not produce them.
 
 posix
@@ -889,7 +889,7 @@ a list of recognized suffixes).
    Some compression programs are able to handle different compression
 formats.  GNU 'tar' uses this, if the principal decompressor for the
 given format is not available.  For example, if 'compress' is not
-installed, 'tar' will try to use 'gzip'.  As of version 1.32 the
+installed, 'tar' will try to use 'gzip'.  As of version 1.33 the
 following alternatives are tried(2):
 
 Format                 Main decompressor      Alternatives
@@ -1592,7 +1592,14 @@ keyword option taking one of the following forms:
      If no option 'exthdr.name=string' is specified, 'tar' will use the
      following default value:
 
-          %d/PaxHeaders.%p/%f
+          %d/PaxHeaders/%f
+
+     This default is selected to ensure the reproducibility of the
+     archive.  POSIX standard recommends to use '%d/PaxHeaders.%p/%f'
+     instead, which means the two archives created with the same set of
+     options and containing the same set of files will be byte-to-byte
+     different.  This default will be used if the environment variable
+     'POSIXLY_CORRECT' is set.
 
 'exthdr.mtime=VALUE'
 
@@ -1622,10 +1629,15 @@ keyword option taking one of the following forms:
      If no option 'globexthdr.name=string' is specified, 'tar' will use
      the following default value:
 
+          $TMPDIR/GlobalHead.%n
+
+     If the environment variable 'POSIXLY_CORRECT' is set, the following
+     value is used instead:
+
           $TMPDIR/GlobalHead.%p.%n
 
-     where '$TMPDIR' represents the value of the TMPDIR environment
-     variable.  If TMPDIR is not set, 'tar' uses '/tmp'.
+     In both cases, '$TMPDIR' stands for the value of the TMPDIR
+     environment variable.  If TMPDIR is not set, 'tar' uses '/tmp'.
 
 'globexthdr.mtime=VALUE'
 
@@ -1679,17 +1691,28 @@ use the following option:
 archives created using it, will be binary equivalent if they have the
 same contents:
 
-     --pax-option=exthdr.name=%d/PaxHeaders/%f,atime:=0
+     --pax-option=atime:=0
 
 If you extract files from such an archive and recreate the archive from
 them, you will also need to eliminate changes due to ctime, as shown in
 examples below:
 
-     --pax-option=exthdr.name=%d/PaxHeaders/%f,atime:=0,ctime:=0
+     --pax-option=atime:=0,ctime:=0
 
 or
 
-     --pax-option=exthdr.name=%d/PaxHeaders/%f,atime:=0,delete=ctime
+     --pax-option=atime:=0,delete=ctime
+
+   Notice, that if you create an archive in POSIX format (*note posix::)
+and the environment variable 'POSIXLY_CORRECT' is set, then the two
+archives created using the same options on the same set of files will
+not be byte-to-byte equivalent even with the above option.  This is
+because the posix default for extended header names includes the PID of
+the tar process, which is different at each run.  To produce
+byte-to-byte equivalent archives in this case, either unset
+'POSIXLY_CORRECT', or use the following option:
+
+     ---pax-option=exthdr.name=%d/PaxHeaders/%f,atime:=0,ctime:=0
 
 
 File: tar.info,  Node: Checksumming,  Next: Large or Negative Values,  Prev: posix,  Up: Portability
@@ -1807,7 +1830,7 @@ that each part of a split member is extracted to a different file by
 specifically, the very first part retains its original name, and all
 subsequent parts are named using the pattern:
 
-     %d/GNUFileParts.%p/%f.%n
+     %d/GNUFileParts/%f.%n
 
 where symbols preceded by '%' are "macro characters" that have the
 following meaning:
@@ -1826,12 +1849,11 @@ Meta-character     Replaced By
                    part.
 
    For example, if the file 'var/longfile' was split during archive
-creation between three volumes, and the creator 'tar' process had
-process ID '27962', then the member names will be:
+creation between three volumes, then the member names will be:
 
      var/longfile
-     var/GNUFileParts.27962/longfile.1
-     var/GNUFileParts.27962/longfile.2
+     var/GNUFileParts/longfile.1
+     var/GNUFileParts/longfile.2
 
    When you extract your archive using a third-party 'tar', these files
 will be created on your disk, and the only thing you will need to do to
@@ -1839,9 +1861,9 @@ restore your file in its original form is concatenate them in the proper
 order, for example:
 
      $ cd var
-     $ cat GNUFileParts.27962/longfile.1 \
-       GNUFileParts.27962/longfile.2 >> longfile
-     $ rm -f GNUFileParts.27962
+     $ cat GNUFileParts/longfile.1 \
+       GNUFileParts/longfile.2 >> longfile
+     $ rm -f GNUFileParts
 
    Notice, that if the 'tar' implementation you use supports PAX format
 archives, it will probably emit warnings about unknown keywords during
@@ -1858,12 +1880,12 @@ You can safely ignore these warnings.
 warnings and more files generated on your disk, e.g.:
 
      $ tar xf vol-1.tar
-     var/PaxHeaders.27962/longfile: Unknown file type 'x', extracted as
+     var/PaxHeaders/longfile: Unknown file type 'x', extracted as
      normal file
      Unexpected EOF in archive
      $ tar xf vol-2.tar
-     tmp/GlobalHead.27962.1: Unknown file type 'g', extracted as normal file
-     GNUFileParts.27962/PaxHeaders.27962/sparsefile.1: Unknown file type
+     tmp/GlobalHead.1: Unknown file type 'g', extracted as normal file
+     GNUFileParts/PaxHeaders/sparsefile.1: Unknown file type
      'x', extracted as normal file
 
    Ignore these warnings.  The 'PaxHeaders.*' directories created will
@@ -1951,8 +1973,8 @@ in order to verify the integrity of the expanded file.  The option '-x'
 sets the name of the extended header file to use.  Continuing our
 example:
 
-     $ xsparse -v -x /home/gray/PaxHeaders.6058/sparsefile \
-       /home/gray/GNUSparseFile.6058/sparsefile
+     $ xsparse -v -x /home/gray/PaxHeaders/sparsefile \
+       /home/gray/GNUSparseFile/sparsefile
      Reading extended header file
      Found variable GNU.sparse.major = 1
      Found variable GNU.sparse.minor = 0
@@ -1975,8 +1997,7 @@ is: how to obtain extended headers from the archive?
    If you use a 'tar' implementation that does not support PAX format,
 extended headers for each member will be extracted as a separate file.
 If we represent the member name as 'DIR/NAME', then the extended header
-file will be named 'DIR/PaxHeaders.N/NAME', where N is an integer
-number.
+file will be named 'DIR/PaxHeaders/NAME'.
 
    Things become more difficult if your 'tar' implementation does
 support PAX headers, because in this case you will have to manually
@@ -2444,8 +2465,8 @@ quite consistent way.
      wrote 'PD TAR', I used the historically correct terminology ('tar'
      writes data records, which are grouped into blocks).  It appears
      that the bogus terminology made it into POSIX (no surprise here),
-     and now Franc,ois has migrated that terminology back into the
-     source code too.
+     and now François has migrated that terminology back into the source
+     code too.
 
    The term "physical block" means the basic transfer chunk from or to a
 device, after which reading or writing may stop without anything being
@@ -4120,7 +4141,7 @@ Boolean assignment
      following text:
 
       Main operation mode:
-
+     
        -A, --catenate, --concatenate   append tar files to
                                   an archive
        -c, --create               create a new archive
@@ -4461,7 +4482,7 @@ distribution, this is part of file 'src/tar.h':
      /* Solaris extended header */
      #define SOLARIS_XHDTYPE 'X'
 
-     /* Jo"rg Schilling star header */
+     /* Jörg Schilling star header */
 
      struct star_header
      {                              /* byte offset */
@@ -4976,13 +4997,13 @@ backups (*note Incremental Dumps::).  It contains the status of the file
 system at the time of the dump and is used to determine which files were
 modified since the last backup.
 
-   GNU 'tar' version 1.32 supports three snapshot file formats.  The
+   GNU 'tar' version 1.33 supports three snapshot file formats.  The
 first format, called "format 0", is the one used by GNU 'tar' versions
 up to and including 1.15.1.  The second format, called "format 1" is an
 extended version of this format, that contains more metadata and allows
 for further extensions.  It was used by alpha release version 1.15.90.
 For alpha version 1.15.91 and stable releases version 1.16 up through
-1.32, the "format 2" is used.
+1.33, the "format 2" is used.
 
    GNU 'tar' is able to read all three formats, but will create
 snapshots only in format 2.
@@ -5041,7 +5062,7 @@ snapshots only in format 2.
   2. 'Format 2' snapshot file begins with a format identifier, as
      described for version 1, e.g.:
 
-          GNU tar-1.32-2
+          GNU tar-1.33-2
 
      This line is followed by newline.  Rest of file consists of
      records, separated by null (ASCII 0) characters.  Thus, in contrast
@@ -5201,7 +5222,7 @@ archive format (*note Formats::):
      block containing the dumpdir.
 
 
-File: tar.info,  Node: Genfile,  Next: Free Software Needs Free Documentation,  Prev: Tar Internals,  Up: Top
+File: tar.info,  Node: Genfile,  Next: GNU Free Documentation License,  Prev: Tar Internals,  Up: Top
 
 Appendix F Genfile
 ******************
@@ -5526,106 +5547,14 @@ except checkpoint notifications, are forwarded to standard error.
 command.
 
 
-File: tar.info,  Node: Free Software Needs Free Documentation,  Next: GNU Free Documentation License,  Prev: Genfile,  Up: Top
+File: tar.info,  Node: GNU Free Documentation License,  Next: Index of Command Line Options,  Prev: Genfile,  Up: Top
 
-Appendix G Free Software Needs Free Documentation
-*************************************************
-
-The biggest deficiency in the free software community today is not in
-the software--it is the lack of good free documentation that we can
-include with the free software.  Many of our most important programs do
-not come with free reference manuals and free introductory texts.
-Documentation is an essential part of any software package; when an
-important free software package does not come with a free manual and a
-free tutorial, that is a major gap.  We have many such gaps today.
-
-   Consider Perl, for instance.  The tutorial manuals that people
-normally use are non-free.  How did this come about?  Because the
-authors of those manuals published them with restrictive terms--no
-copying, no modification, source files not available--which exclude them
-from the free software world.
-
-   That wasn't the first time this sort of thing happened, and it was
-far from the last.  Many times we have heard a GNU user eagerly describe
-a manual that he is writing, his intended contribution to the community,
-only to learn that he had ruined everything by signing a publication
-contract to make it non-free.
-
-   Free documentation, like free software, is a matter of freedom, not
-price.  The problem with the non-free manual is not that publishers
-charge a price for printed copies--that in itself is fine.  (The Free
-Software Foundation sells printed copies of manuals, too.)  The problem
-is the restrictions on the use of the manual.  Free manuals are
-available in source code form, and give you permission to copy and
-modify.  Non-free manuals do not allow this.
-
-   The criteria of freedom for a free manual are roughly the same as for
-free software.  Redistribution (including the normal kinds of commercial
-redistribution) must be permitted, so that the manual can accompany
-every copy of the program, both on-line and on paper.
-
-   Permission for modification of the technical content is crucial too.
-When people modify the software, adding or changing features, if they
-are conscientious they will change the manual too--so they can provide
-accurate and clear documentation for the modified program.  A manual
-that leaves you no choice but to write a new manual to document a
-changed version of the program is not really available to our community.
-
-   Some kinds of limits on the way modification is handled are
-acceptable.  For example, requirements to preserve the original author's
-copyright notice, the distribution terms, or the list of authors, are
-ok.  It is also no problem to require modified versions to include
-notice that they were modified.  Even entire sections that may not be
-deleted or changed are acceptable, as long as they deal with
-nontechnical topics (like this one).  These kinds of restrictions are
-acceptable because they don't obstruct the community's normal use of the
-manual.
-
-   However, it must be possible to modify all the _technical_ content of
-the manual, and then distribute the result in all the usual media,
-through all the usual channels.  Otherwise, the restrictions obstruct
-the use of the manual, it is not free, and we need another manual to
-replace it.
-
-   Please spread the word about this issue.  Our community continues to
-lose manuals to proprietary publishing.  If we spread the word that free
-software needs free reference manuals and free tutorials, perhaps the
-next person who wants to contribute by writing documentation will
-realize, before it is too late, that only free manuals contribute to the
-free software community.
-
-   If you are writing documentation, please insist on publishing it
-under the GNU Free Documentation License or another free documentation
-license.  Remember that this decision requires your approval--you don't
-have to let the publisher decide.  Some commercial publishers will use a
-free license if you insist, but they will not propose the option; it is
-up to you to raise the issue and say firmly that this is what you want.
-If the publisher you are dealing with refuses, please try other
-publishers.  If you're not sure whether a proposed license is free,
-write to <licensing@gnu.org>.
-
-   You can encourage commercial publishers to sell more free, copylefted
-manuals and tutorials by buying them, and particularly by buying copies
-from the publishers that paid for their writing or for major
-improvements.  Meanwhile, try to avoid buying non-free documentation at
-all.  Check the distribution terms of a manual before you buy it, and
-insist that whoever seeks your business must respect your freedom.
-Check the history of the book, and try reward the publishers that have
-paid or pay the authors to work on it.
-
-   The Free Software Foundation maintains a list of free documentation
-published by other publishers, at
-<http://www.fsf.org/doc/other-free-books.html>.
-
-
-File: tar.info,  Node: GNU Free Documentation License,  Next: Index of Command Line Options,  Prev: Free Software Needs Free Documentation,  Up: Top
-
-Appendix H GNU Free Documentation License
+Appendix G GNU Free Documentation License
 *****************************************
 
                      Version 1.3, 3 November 2008
 
-     Copyright (C) 2000-2019 Free Software Foundation, Inc.
+     Copyright (C) 2000-2021 Free Software Foundation, Inc.
      <http://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
@@ -6102,7 +6031,7 @@ their use in free software.
 
 File: tar.info,  Node: Index of Command Line Options,  Next: Index,  Prev: GNU Free Documentation License,  Up: Top
 
-Appendix I Index of Command Line Options
+Appendix H Index of Command Line Options
 ****************************************
 
 This appendix contains an index of all GNU 'tar' long command line
@@ -6116,7 +6045,7 @@ Summary::.
 * absolute-names:                        absolute.           (line   10)
 * absolute-names, summary:               Option Summary.     (line    6)
 * acls, summary:                         Option Summary.     (line   14)
-* add-file:                              files.              (line   79)
+* add-file:                              files.              (line   83)
 * after-date:                            after.              (line   24)
 * after-date, summary:                   Option Summary.     (line   17)
 * anchored:                              controlling pattern-matching.
@@ -6161,8 +6090,8 @@ Summary::.
 * create, introduced:                    Creating the archive.
                                                              (line    6)
 * create, summary:                       Operation Summary.  (line   29)
-* create, using with '--verbose':        create verbose.     (line    6)
-* create, using with '--verify':         verify.             (line   24)
+* create, using with --verbose:          create verbose.     (line    6)
+* create, using with --verify:           verify.             (line   24)
 * delay-directory-restore:               Directory Modification Times and Permissions.
                                                              (line   62)
 * delay-directory-restore, summary:      Option Summary.     (line  186)
@@ -6208,7 +6137,7 @@ Summary::.
 * extract, additional options:           extract options.    (line    6)
 * extract, complementary notes:          Basic tar.          (line   49)
 * extract, summary:                      Operation Summary.  (line   44)
-* extract, using with '--listed-incremental': Incremental Dumps.
+* extract, using with --listed-incremental: Incremental Dumps.
                                                              (line  120)
 * file:                                  file.               (line    6)
 * file, short description:               file.               (line   15)
@@ -6246,7 +6175,7 @@ Summary::.
 * ignore-zeros, short description:       Blocking Factor.    (line  152)
 * ignore-zeros, summary:                 Option Summary.     (line  405)
 * incremental, summary:                  Option Summary.     (line  411)
-* incremental, using with '--list':      Incremental Dumps.  (line  185)
+* incremental, using with --list:        Incremental Dumps.  (line  185)
 * index-file, summary:                   Option Summary.     (line  419)
 * info-script:                           Multi-Volume Archives.
                                                              (line   83)
@@ -6268,17 +6197,15 @@ Summary::.
 * level, summary:                        Option Summary.     (line  476)
 * list:                                  list.               (line    6)
 * list, summary:                         Operation Summary.  (line   55)
-* list, using with '--incremental':      Incremental Dumps.  (line  185)
-* list, using with '--listed-incremental': Incremental Dumps.
-                                                             (line  185)
-* list, using with '--verbose':          list.               (line   34)
+* list, using with --incremental:        Incremental Dumps.  (line  185)
+* list, using with --listed-incremental: Incremental Dumps.  (line  185)
+* list, using with --verbose:            list.               (line   34)
 * list, using with file name arguments:  list.               (line   25)
 * listed-incremental, described:         Incremental Dumps.  (line   14)
 * listed-incremental, summary:           Option Summary.     (line  486)
-* listed-incremental, using with '--extract': Incremental Dumps.
+* listed-incremental, using with --extract: Incremental Dumps.
                                                              (line  120)
-* listed-incremental, using with '--list': Incremental Dumps.
-                                                             (line  185)
+* listed-incremental, using with --list: Incremental Dumps.  (line  185)
 * lzip:                                  gzip.               (line  112)
 * lzip, summary:                         Option Summary.     (line  495)
 * lzma:                                  gzip.               (line  115)
@@ -6331,7 +6258,7 @@ Summary::.
 * no-unquote:                            Selecting Archive Members.
                                                              (line   42)
 * no-unquote, summary:                   Option Summary.     (line  632)
-* no-verbatim-files-from:                files.              (line   75)
+* no-verbatim-files-from:                files.              (line   79)
 * no-verbatim-files-from, summary:       Option Summary.     (line  636)
 * no-wildcards:                          controlling pattern-matching.
                                                              (line   41)
@@ -6466,16 +6393,16 @@ Summary::.
 * use-compress-program:                  gzip.               (line  185)
 * use-compress-program, summary:         Option Summary.     (line 1043)
 * utc, summary:                          Option Summary.     (line 1049)
-* verbatim-files-from:                   files.              (line   70)
+* verbatim-files-from:                   files.              (line   74)
 * verbatim-files-from, summary:          Option Summary.     (line 1054)
 * verbose:                               verbose.            (line   18)
 * verbose, introduced:                   verbose tutorial.   (line    6)
 * verbose, summary:                      Option Summary.     (line 1076)
-* verbose, using with '--create':        create verbose.     (line    6)
-* verbose, using with '--list':          list.               (line   34)
+* verbose, using with --create:          create verbose.     (line    6)
+* verbose, using with --list:            list.               (line   34)
 * verify, short description:             verify.             (line    8)
 * verify, summary:                       Option Summary.     (line 1084)
-* verify, using with '--create':         verify.             (line   24)
+* verify, using with --create:           verify.             (line   24)
 * version:                               help.               (line    6)
 * version, summary:                      Option Summary.     (line 1090)
 * volno-file:                            Multi-Volume Archives.
@@ -6501,20 +6428,19 @@ Summary::.
 
 File: tar.info,  Node: Index,  Prev: Index of Command Line Options,  Up: Top
 
-Appendix J Index
+Appendix I Index
 ****************
 
  [index ]
 * Menu:
 
-* '%s: Directory has been renamed from %s', warning message: warnings.
+* %s: Directory has been renamed from %s, warning message: warnings.
                                                               (line 100)
-* '%s: Directory has been renamed', warning message: warnings.
-                                                              (line 100)
-* '%s: Directory is new', warning message: warnings.          (line 102)
-* '%s: directory is on a different device: not purging', warning message: warnings.
+* %s: Directory has been renamed, warning message: warnings.  (line 100)
+* %s: Directory is new, warning message: warnings.            (line 102)
+* %s: directory is on a different device: not purging, warning message: warnings.
                                                               (line 104)
-* '%s: skipping existing file', warning message: warnings.    (line  66)
+* %s: skipping existing file, warning message: warnings.      (line  66)
 * -after-date and -update compared:      after.               (line  19)
 * -newer-mtime and -update compared:     after.               (line  19)
 * -quite, option:                        Generate Mode.       (line 120)
@@ -6522,8 +6448,8 @@ Appendix J Index
 * .cvsignore:                            exclude.             (line  50)
 * .gitignore:                            exclude.             (line  55)
 * .hgignore:                             exclude.             (line  70)
-* 'A lone zero block at', warning message: warnings.          (line  33)
-* abbreviations for months:              Calendar date items. (line  38)
+* A lone zero block at, warning message: warnings.            (line  33)
+* abbreviations for months:              Calendar date items. (line  36)
 * absolute file names:                   absolute.            (line   6)
 * absolute file names <1>:               Remote Tape Server.  (line  17)
 * Adding archives to an archive:         concatenate.         (line   6)
@@ -6546,7 +6472,7 @@ Appendix J Index
 * Archive Name:                          file.                (line   6)
 * Archive, creation of:                  create.              (line   6)
 * Archives, Appending files to:          appending files.     (line   6)
-* archives, binary equivalent:           PAX keywords.        (line 136)
+* archives, binary equivalent:           PAX keywords.        (line 148)
 * Archiving Directories:                 create dir.          (line   6)
 * archiving files:                       Top.                 (line  23)
 * ARGP_HELP_FMT, environment variable:   Configuring Help Summary.
@@ -6554,10 +6480,10 @@ Appendix J Index
 * arguments to long options:             Long Options.        (line  31)
 * arguments to old options:              Old Options.         (line  26)
 * arguments to short options:            Short Options.       (line  13)
-* 'Attempting extraction of symbolic links as hard links', warning message: warnings.
+* Attempting extraction of symbolic links as hard links, warning message: warnings.
                                                               (line  72)
 * attributes, files:                     Attributes.          (line   6)
-* authors of 'parse_datetime':           Authors of parse_datetime.
+* authors of parse_datetime:             Authors of parse_datetime.
                                                               (line   6)
 * Avoiding recursion in directories:     recurse.             (line   6)
 * backup options:                        backup.              (line   6)
@@ -6576,14 +6502,14 @@ Appendix J Index
 * Bazaar, ignore files:                  exclude.             (line  37)
 * beginning of time, for POSIX:          Seconds since the Epoch.
                                                               (line  13)
-* 'bell', checkpoint action:             checkpoints.         (line 106)
+* bell, checkpoint action:               checkpoints.         (line 106)
 * Bellovin, Steven M.:                   Authors of parse_datetime.
                                                               (line   6)
 * Berets, Jim:                           Authors of parse_datetime.
                                                               (line   6)
 * Berry, K.:                             Authors of parse_datetime.
                                                               (line  19)
-* binary equivalent archives, creating:  PAX keywords.        (line 136)
+* binary equivalent archives, creating:  PAX keywords.        (line 148)
 * block:                                 Blocking.            (line   6)
 * Block number where error occurred:     verbose.             (line 112)
 * BLOCKING:                              General-Purpose Variables.
@@ -6597,7 +6523,7 @@ Appendix J Index
 * cachedir:                              warnings.            (line  40)
 * calendar date item:                    Calendar date items. (line   6)
 * case, ignored in dates:                General date syntax. (line  60)
-* 'cat' vs 'concatenate':                concatenate.         (line  63)
+* cat vs concatenate:                    concatenate.         (line  63)
 * Changing directory mid-stream:         directory.           (line   6)
 * Character class, excluding characters from: wildcards.      (line  34)
 * checkpoints, defined:                  checkpoints.         (line   6)
@@ -6607,16 +6533,14 @@ Appendix J Index
 * comments, in dates:                    General date syntax. (line  60)
 * compress:                              gzip.                (line   6)
 * Compressed archives:                   gzip.                (line   6)
-* 'concatenate' vs 'cat':                concatenate.         (line  63)
+* concatenate vs cat:                    concatenate.         (line  63)
 * Concatenating Archives:                concatenate.         (line   6)
-* 'contains a cache directory tag', warning message: warnings.
-                                                              (line  40)
+* contains a cache directory tag, warning message: warnings.  (line  40)
 * contiguous-cast:                       warnings.            (line  70)
 * corrupted archives:                    Full Dumps.          (line   8)
 * corrupted archives <1>:                gzip.                (line 151)
 * Creation of the archive:               create.              (line   6)
-* 'Current %s is newer or same age', warning message: warnings.
-                                                              (line  76)
+* Current %s is newer or same age, warning message: warnings. (line  76)
 * CVS, excluding files:                  exclude.             (line  85)
 * CVS, ignore files:                     exclude.             (line  37)
 * Darcs, excluding files:                exclude.             (line  85)
@@ -6626,7 +6550,7 @@ Appendix J Index
                                                               (line   6)
 * date and time of day format, ISO 8601: Combined date and time of day items.
                                                               (line   6)
-* date format, ISO 8601:                 Calendar date items. (line  30)
+* date format, ISO 8601:                 Calendar date items. (line  28)
 * date input formats:                    Date input formats.  (line   6)
 * day in date strings:                   Relative items in date strings.
                                                               (line  15)
@@ -6651,8 +6575,8 @@ Appendix J Index
                                                               (line   6)
 * doc-opt-col:                           Configuring Help Summary.
                                                               (line  95)
-* 'door ignored', warning message:       warnings.            (line  45)
-* 'dot', checkpoint action:              checkpoints.         (line 130)
+* door ignored, warning message:         warnings.            (line  45)
+* dot, checkpoint action:                checkpoints.         (line 130)
 * Double-checking a write operation:     verify.              (line   6)
 * dumps, full:                           Full Dumps.          (line   8)
 * DUMP_BEGIN:                            User Hooks.          (line  31)
@@ -6663,14 +6587,14 @@ Appendix J Index
                                                               (line  52)
 * dup-args-note:                         Configuring Help Summary.
                                                               (line  69)
-* 'echo', checkpoint action:             checkpoints.         (line  25)
+* echo, checkpoint action:               checkpoints.         (line  25)
 * Eggert, Paul:                          Authors of parse_datetime.
                                                               (line   6)
 * End-of-archive blocks, ignoring:       Ignore Zeros.        (line   6)
 * End-of-archive info script:            Multi-Volume Archives.
                                                               (line  83)
 * entry:                                 Naming tar Archives. (line  11)
-* epoch, for POSIX:                      Seconds since the Epoch.
+* Epoch, for POSIX:                      Seconds since the Epoch.
                                                               (line  13)
 * Error message, block number of:        verbose.             (line 122)
 * Exabyte blocking:                      Blocking Factor.     (line 199)
@@ -6682,40 +6606,38 @@ Appendix J Index
 * Excluding file by age:                 after.               (line   6)
 * Excluding files by file system:        exclude.             (line   6)
 * Excluding files by name and pattern:   exclude.             (line   6)
-* Exec Mode, 'genfile':                  Exec Mode.           (line   6)
-* 'exec', checkpoint action:             checkpoints.         (line 166)
+* Exec Mode, genfile:                    Exec Mode.           (line   6)
+* exec, checkpoint action:               checkpoints.         (line 166)
 * existing backup method:                backup.              (line  59)
 * existing-file:                         warnings.            (line  66)
 * exit status:                           Synopsis.            (line  67)
-* 'Extracting contiguous files as regular files', warning message: warnings.
+* Extracting contiguous files as regular files, warning message: warnings.
                                                               (line  70)
 * extracting Nth copy of the file:       append.              (line  34)
 * extraction:                            Definitions.         (line  22)
 * Extraction:                            extract.             (line   6)
 * file archival:                         Top.                 (line  23)
 * file attributes:                       Attributes.          (line   6)
-* 'file changed as we read it', warning message: warnings.    (line  55)
-* 'file is on a different filesystem', warning message: warnings.
+* file changed as we read it, warning message: warnings.      (line  55)
+* file is on a different filesystem, warning message: warnings.
                                                               (line  43)
-* 'file is the archive; not dumped', warning message: warnings.
+* file is the archive; not dumped, warning message: warnings. (line  51)
+* file is the archive; not dumped, warning message <1>: warnings.
                                                               (line  51)
-* 'file is the archive; not dumped', warning message <1>: warnings.
-                                                              (line  51)
-* 'file is unchanged; not dumped', warning message: warnings. (line  49)
+* file is unchanged; not dumped, warning message: warnings.   (line  49)
 * File lists separated by NUL characters: Generate Mode.      (line  33)
 * file name:                             Definitions.         (line  15)
 * File Name arguments, alternatives:     files.               (line   6)
-* File name arguments, using '--list' with: list.             (line  25)
-* 'file name read contains nul character', warning message: warnings.
+* File name arguments, using --list with: list.               (line  25)
+* file name read contains nul character, warning message: warnings.
                                                               (line  31)
 * file names, absolute:                  absolute.            (line   6)
 * File names, excluding files by:        exclude.             (line   6)
-* File names, terminated by 'NUL':       nul.                 (line   6)
+* File names, terminated by NUL:         nul.                 (line   6)
 * File names, using hard links:          hard links.          (line   6)
 * File names, using symbolic links:      dereference.         (line   6)
-* 'File removed before we read it', warning message: warnings.
-                                                              (line  53)
-* 'File shrank by %s bytes', warning message: warnings.       (line  41)
+* File removed before we read it, warning message: warnings.  (line  53)
+* File shrank by %s bytes, warning message: warnings.         (line  41)
 * File system boundaries, not crossing:  one.                 (line   6)
 * file-changed:                          warnings.            (line  55)
 * file-ignored:                          warnings.            (line  45)
@@ -6725,8 +6647,8 @@ Appendix J Index
 * FILELIST:                              General-Purpose Variables.
                                                               (line  69)
 * filename-with-nuls:                    warnings.            (line  31)
-* 'find', using with 'tar':              files.               (line   6)
-* 'find', using with 'tar' <1>:          recurse.             (line  11)
+* find, using with tar:                  files.               (line   6)
+* find, using with tar <1>:              recurse.             (line  11)
 * first in date strings:                 General date syntax. (line  22)
 * format 0, snapshot file:               Snapshot Files.      (line  24)
 * format 1, snapshot file:               Snapshot Files.      (line  51)
@@ -6736,19 +6658,17 @@ Appendix J Index
 * Format, old style:                     old.                 (line   6)
 * fortnight in date strings:             Relative items in date strings.
                                                               (line  15)
-* free documentation:                    Free Software Needs Free Documentation.
-                                                              (line   6)
 * full dumps:                            Full Dumps.          (line   8)
 * future time stamps:                    Large or Negative Values.
                                                               (line   6)
 * general date syntax:                   General date syntax. (line   6)
-* Generate Mode, 'genfile':              Generate Mode.       (line   6)
+* Generate Mode, genfile:                Generate Mode.       (line   6)
 * genfile:                               Genfile.             (line   6)
-* 'genfile', create file:                Generate Mode.       (line   6)
-* 'genfile', creating sparse files:      Generate Mode.       (line  55)
-* 'genfile', generate mode:              Generate Mode.       (line   6)
-* 'genfile', reading a list of file names: Generate Mode.     (line  22)
-* 'genfile', seeking to a given offset:  Generate Mode.       (line  18)
+* genfile, create file:                  Generate Mode.       (line   6)
+* genfile, creating sparse files:        Generate Mode.       (line  55)
+* genfile, generate mode:                Generate Mode.       (line   6)
+* genfile, reading a list of file names: Generate Mode.       (line  22)
+* genfile, seeking to a given offset:    Generate Mode.       (line  18)
 * Getting program version number:        help.                (line   6)
 * git, excluding files:                  exclude.             (line  85)
 * Git, ignore files:                     exclude.             (line  37)
@@ -6777,15 +6697,15 @@ Appendix J Index
 * ignore-archive <1>:                    warnings.            (line  51)
 * ignore-newer:                          warnings.            (line  76)
 * Ignoring end-of-archive blocks:        Ignore Zeros.        (line   6)
-* 'Ignoring unknown extended header keyword '%s'', warning message: warnings.
+* Ignoring unknown extended header keyword '%s', warning message: warnings.
                                                               (line  78)
-* 'implausibly old time stamp %s', warning message: warnings. (line  67)
+* implausibly old time stamp %s, warning message: warnings.   (line  67)
 * Info script:                           Multi-Volume Archives.
                                                               (line  83)
 * Interactive operation:                 interactive.         (line   6)
 * ISO 8601 date and time of day format:  Combined date and time of day items.
                                                               (line   6)
-* ISO 8601 date format:                  Calendar date items. (line  30)
+* ISO 8601 date format:                  Calendar date items. (line  28)
 * items in date strings:                 General date syntax. (line   6)
 * Labeling an archive:                   label.               (line   6)
 * labeling archives:                     Tape Files.          (line   6)
@@ -6803,8 +6723,8 @@ Appendix J Index
 * leap seconds:                          General date syntax. (line  65)
 * leap seconds <1>:                      Time of day items.   (line  14)
 * leap seconds <2>:                      Seconds since the Epoch.
-                                                              (line  26)
-* Listing all 'tar' options:             help.                (line  26)
+                                                              (line  27)
+* Listing all tar options:               help.                (line  26)
 * listing member and file names:         list.                (line  45)
 * Listing volume label:                  label.               (line  27)
 * Lists of file names:                   files.               (line   6)
@@ -6819,7 +6739,7 @@ Appendix J Index
 * lzop:                                  gzip.                (line   6)
 * MacKenzie, David:                      Authors of parse_datetime.
                                                               (line   6)
-* 'Malformed dumpdir: 'X' never used', warning message: warnings.
+* Malformed dumpdir: 'X' never used, warning message: warnings.
                                                               (line 106)
 * member:                                Definitions.         (line  15)
 * member name:                           Definitions.         (line  15)
@@ -6841,7 +6761,7 @@ Appendix J Index
                                                               (line   6)
 * month in date strings:                 Relative items in date strings.
                                                               (line  15)
-* month names in date strings:           Calendar date items. (line  38)
+* month names in date strings:           Calendar date items. (line  36)
 * months, written-out:                   General date syntax. (line  32)
 * MT:                                    General-Purpose Variables.
                                                               (line  74)
@@ -6871,7 +6791,7 @@ Appendix J Index
 * now in date strings:                   Relative items in date strings.
                                                               (line  33)
 * ntape device:                          Many.                (line   6)
-* 'NUL'-terminated file names:           nul.                 (line   6)
+* NUL-terminated file names:             nul.                 (line   6)
 * Number of blocks per record:           Blocking Factor.     (line   6)
 * Number of bytes per record:            Blocking Factor.     (line   6)
 * numbered backup method:                backup.              (line  55)
@@ -6889,7 +6809,7 @@ Appendix J Index
 * option syntax, traditional:            Old Options.         (line   6)
 * optional arguments to long options:    Long Options.        (line  39)
 * optional arguments to short options:   Short Options.       (line  22)
-* options for use with '--extract':      extract options.     (line   6)
+* options for use with --extract:        extract options.     (line   6)
 * Options when reading archives:         Reading.             (line   6)
 * Options, archive format specifying:    Format Variations.   (line   6)
 * Options, format specifying:            Format Variations.   (line   6)
@@ -6904,7 +6824,7 @@ Appendix J Index
 * Overwriting old files, prevention:     Dealing with Old Files.
                                                               (line  16)
 * parse_datetime:                        Date input formats.  (line   6)
-* pattern, 'genfile':                    Generate Mode.       (line  39)
+* pattern, genfile:                      Generate Mode.       (line  39)
 * PAX archive format:                    posix.               (line   6)
 * Permissions of extracted files:        Setting Access Permissions.
                                                               (line   6)
@@ -6922,7 +6842,7 @@ Appendix J Index
 * Reading incomplete records:            Reading.             (line   6)
 * record:                                Blocking.            (line   6)
 * Record Size:                           Blocking Factor.     (line   6)
-* 'Record size = %lu blocks', warning message: warnings.      (line  93)
+* Record size = %lu blocks, warning message: warnings.        (line  93)
 * record-size:                           warnings.            (line  93)
 * Records, incomplete:                   Reading.             (line   6)
 * Recursion in directories, avoiding:    recurse.             (line   6)
@@ -6957,7 +6877,7 @@ Appendix J Index
                                                               (line  79)
 * simple backup method:                  backup.              (line  64)
 * SIMPLE_BACKUP_SUFFIX:                  backup.              (line  67)
-* 'sleep', checkpoint action:            checkpoints.         (line 145)
+* sleep, checkpoint action:              checkpoints.         (line 145)
 * SLEEP_MESSAGE:                         General-Purpose Variables.
                                                               (line 121)
 * SLEEP_TIME:                            General-Purpose Variables.
@@ -6971,7 +6891,7 @@ Appendix J Index
                                                               (line   6)
 * snapshot files, fixing device numbers: Fixing Snapshot Files.
                                                               (line   6)
-* 'socket ignored', warning message:     warnings.            (line  45)
+* socket ignored, warning message:       warnings.            (line  45)
 * Sparse Files:                          sparse.              (line   6)
 * sparse files v.0.0, extracting with non-GNU tars: Sparse Recovery.
                                                               (line  92)
@@ -6979,7 +6899,7 @@ Appendix J Index
                                                               (line  92)
 * sparse files v.1.0, extracting with non-GNU tars: Sparse Recovery.
                                                               (line  17)
-* Sparse files, creating using 'genfile': Generate Mode.      (line  55)
+* Sparse files, creating using genfile:  Generate Mode.       (line  55)
 * sparse files, extracting with non-GNU tars: Sparse Recovery.
                                                               (line   6)
 * sparse formats:                        Sparse Formats.      (line   6)
@@ -7004,7 +6924,7 @@ Appendix J Index
 * tape blocking:                         Blocking Factor.     (line 189)
 * tape marks:                            Many.                (line  43)
 * tape positioning:                      Many.                (line  26)
-* Tapes, using '--delete' and:           delete.              (line  17)
+* Tapes, using --delete and:             delete.              (line  17)
 * TAPE_FILE:                             General-Purpose Variables.
                                                               (line  18)
 * tar:                                   What tar Does.       (line   6)
@@ -7078,7 +6998,7 @@ Appendix J Index
 * this in date strings:                  Relative items in date strings.
                                                               (line  33)
 * time of day item:                      Time of day items.   (line   6)
-* 'time stamp %s is %s s in the future', warning message: warnings.
+* time stamp %s is %s s in the future, warning message: warnings.
                                                               (line  67)
 * time zone correction:                  Time of day items.   (line  29)
 * time zone item:                        General date syntax. (line  40)
@@ -7088,15 +7008,14 @@ Appendix J Index
                                                               (line  33)
 * tomorrow in date strings:              Relative items in date strings.
                                                               (line  29)
-* 'totals', checkpoint action:           checkpoints.         (line 140)
-* 'ttyout', checkpoint action:           checkpoints.         (line 111)
+* totals, checkpoint action:             checkpoints.         (line 140)
+* ttyout, checkpoint action:             checkpoints.         (line 111)
 * TZ:                                    Specifying time zone rules.
                                                               (line   6)
 * Ultrix 3.1 and write failure:          Remote Tape Server.  (line  40)
-* 'Unknown file type '%c', extracted as normal file', warning message: warnings.
+* Unknown file type '%c', extracted as normal file, warning message: warnings.
                                                               (line  74)
-* 'Unknown file type; file ignored', warning message: warnings.
-                                                              (line  45)
+* Unknown file type; file ignored, warning message: warnings. (line  45)
 * unknown-cast:                          warnings.            (line  74)
 * unknown-keyword:                       warnings.            (line  78)
 * unpacking:                             Definitions.         (line  22)
@@ -7113,7 +7032,7 @@ Appendix J Index
 * Verifying a write operation:           verify.              (line   6)
 * Verifying the currency of an archive:  compare.             (line   6)
 * version control system, excluding files: exclude.           (line  85)
-* Version of the 'tar' program:          help.                (line   6)
+* Version of the tar program:            help.                (line   6)
 * version-control Emacs variable:        backup.              (line  49)
 * VERSION_CONTROL:                       backup.              (line  41)
 * volno file:                            Multi-Volume Archives.
@@ -7123,7 +7042,7 @@ Appendix J Index
 * Volume label, listing:                 label.               (line  27)
 * Volume number file:                    Multi-Volume Archives.
                                                               (line  74)
-* 'wait', checkpoint action:             checkpoints.         (line 151)
+* wait, checkpoint action:               checkpoints.         (line 151)
 * week in date strings:                  Relative items in date strings.
                                                               (line  15)
 * Where is the archive?:                 file.                (line   6)

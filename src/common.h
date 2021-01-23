@@ -1,6 +1,6 @@
 /* Common declarations for the tar program.
 
-   Copyright 1988-2019 Free Software Foundation, Inc.
+   Copyright 1988-2021 Free Software Foundation, Inc.
 
    This file is part of GNU tar.
 
@@ -339,6 +339,9 @@ GLOBAL const char *volno_file_option;
 GLOBAL const char *volume_label_option;
 
 /* Other global variables.  */
+
+/* Force POSIX-compliance */
+GLOBAL bool posixly_correct;
 
 /* File descriptor for archive file.  */
 GLOBAL int archive;
@@ -739,7 +742,21 @@ int set_file_atime (int fd, int parentfd, char const *file,
 
 /* Module names.c.  */
 
-extern size_t name_count;
+enum files_count
+  {
+    FILES_NONE,
+    FILES_ONE,
+    FILES_MANY
+  };
+extern enum files_count filename_args;
+
+/* Return true if there are file names in the list */
+static inline bool
+name_more_files (void)
+{
+  return filename_args != FILES_NONE;
+}
+
 extern struct name *gnu_list_name;
 
 void gid_to_gname (gid_t gid, char **gname);
@@ -816,6 +833,24 @@ struct option_locus
   struct option_locus *prev;  /* Previous occurrence of the option of same
 				 class */
 };
+
+struct tar_args        /* Variables used during option parsing */
+{
+  struct option_locus *loc;
+
+  struct textual_date *textual_date; /* Keeps the arguments to --newer-mtime
+					and/or --date option if they are
+					textual dates */
+  bool o_option;                   /* True if -o option was given */
+  bool pax_option;                 /* True if --pax-option was given */
+  bool compress_autodetect;        /* True if compression autodetection should
+				      be attempted when creating archives */
+  char const *backup_suffix_string;   /* --suffix option argument */
+  char const *version_control_string; /* --backup option argument */
+};
+
+#define TAR_ARGS_INITIALIZER(loc)              \
+  { loc, NULL, false, false, false, NULL, NULL }
 
 void more_options (int argc, char **argv, struct option_locus *loc);
 

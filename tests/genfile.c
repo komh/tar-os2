@@ -40,6 +40,8 @@
 #ifndef EXIT_FAILURE
 # define EXIT_FAILURE 1
 #endif
+#define EXIT_USAGE 2
+#define EXIT_UNAVAILABLE 3
 
 #if ! defined SIGCHLD && defined SIGCLD
 # define SIGCHLD SIGCLD
@@ -242,15 +244,15 @@ get_size (const char *str, int allow_zero)
       if (9 < (unsigned) digit)
 	{
 	  if (xlat_suffix (&v, p))
-	    error (EXIT_FAILURE, 0, _("Invalid size: %s"), str);
+	    error (EXIT_USAGE, 0, _("Invalid size: %s"), str);
 	  else
 	    break;
 	}
       else if (x / 10 != v)
-	error (EXIT_FAILURE, 0, _("Number out of allowed range: %s"), str);
+	error (EXIT_USAGE, 0, _("Number out of allowed range: %s"), str);
       v = x + digit;
       if (v < 0)
-	error (EXIT_FAILURE, 0, _("Negative size: %s"), str);
+	error (EXIT_USAGE, 0, _("Negative size: %s"), str);
     }
   return v;
 }
@@ -270,7 +272,7 @@ verify_file (char *file_name)
 	       (unsigned long)st.st_size, (unsigned long)file_length);
 
       if (!quiet && mode == mode_sparse && !ST_IS_SPARSE (st))
-	error (EXIT_FAILURE, 0, _("created file is not sparse"));
+	error (EXIT_UNAVAILABLE, 0, _("created file is not sparse"));
     }
 }
 
@@ -565,7 +567,7 @@ generate_sparse_file (int argc, char **argv)
   int flags = O_CREAT | O_RDWR | O_BINARY;
 
   if (!file_name)
-    error (EXIT_FAILURE, 0,
+    error (EXIT_USAGE, 0,
 	   _("cannot generate sparse files on standard output, use --file option"));
   if (!seek_offset)
     flags |= O_TRUNC;
@@ -657,13 +659,13 @@ print_stat (const char *name)
 	      if (*q)
 		{
 		  printf ("\n");
-		  error (EXIT_FAILURE, 0, _("incorrect mask (near `%s')"), q);
+		  error (EXIT_USAGE, 0, _("incorrect mask (near `%s')"), q);
 		}
 	    }
 	  else if (p[4])
 	    {
 	      printf ("\n");
-	      error (EXIT_FAILURE, 0, _("Unknown field `%s'"), p);
+	      error (EXIT_USAGE, 0, _("Unknown field `%s'"), p);
 	    }
 	  printf ("%0o", val);
 	}
@@ -696,7 +698,7 @@ print_stat (const char *name)
       else
 	{
 	  printf ("\n");
-	  error (EXIT_FAILURE, 0, _("Unknown field `%s'"), p);
+	  error (EXIT_USAGE, 0, _("Unknown field `%s'"), p);
 	}
       p = strtok (NULL, ",");
       if (p)
@@ -952,7 +954,7 @@ main (int argc, char **argv)
   /* Decode command options.  */
 
   if (argp_parse (&argp, argc, argv, 0, &index, NULL))
-    exit (EXIT_FAILURE);
+    exit (EXIT_USAGE);
 
   argc -= index;
   argv += index;
@@ -961,7 +963,7 @@ main (int argc, char **argv)
     {
     case mode_stat:
       if (argc == 0)
-	error (EXIT_FAILURE, 0, _("--stat requires file names"));
+	error (EXIT_USAGE, 0, _("--stat requires file names"));
 
       while (argc--)
 	print_stat (*argv++);
@@ -974,7 +976,7 @@ main (int argc, char **argv)
 
     case mode_generate:
       if (argc)
-	error (EXIT_FAILURE, 0, _("too many arguments"));
+	error (EXIT_USAGE, 0, _("too many arguments"));
       if (files_from)
 	generate_files_from_list ();
       else

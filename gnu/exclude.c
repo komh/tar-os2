@@ -1,6 +1,6 @@
 /* exclude.c -- exclude file names
 
-   Copyright (C) 1992-1994, 1997, 1999-2007, 2009-2019 Free Software
+   Copyright (C) 1992-1994, 1997, 1999-2007, 2009-2021 Free Software
    Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
@@ -683,7 +683,7 @@ add_exclude_file (void (*add_func) (struct exclude *, char const *, int),
 
   if (use_stdin)
     in = stdin;
-  else if (! (in = fopen (file_name, "r")))
+  else if (! (in = fopen (file_name, "re")))
     return -1;
 
   rc = add_exclude_fp (call_addfn, ex, in, options, line_end, &add_func);

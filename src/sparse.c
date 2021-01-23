@@ -1,6 +1,6 @@
 /* Functions for dealing with sparse files
 
-   Copyright 2003-2019 Free Software Foundation, Inc.
+   Copyright 2003-2021 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -684,7 +684,7 @@ check_data_region (struct tar_sparse_file *file, size_t i)
 	}
       size_left -= bytes_read;
       mv_size_left (file->stat_info->archive_file_size - file->dumped_size);
-      if (memcmp (blk->buffer, diff_buffer, rdsize))
+      if (memcmp (blk->buffer, diff_buffer, bytes_read))
 	{
 	  report_difference (file->stat_info, _("Contents differ"));
 	  return false;
@@ -702,7 +702,7 @@ sparse_diff_file (int fd, struct tar_stat_info *st)
   off_t offset = 0;
 
   if (!tar_sparse_init (&file))
-    return dump_status_not_implemented;
+    return false;
 
   file.stat_info = st;
   file.fd = fd;

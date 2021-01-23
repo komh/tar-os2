@@ -1,6 +1,6 @@
 /* Per-directory exclusion files for tar.
 
-   Copyright 2014-2019 Free Software Foundation, Inc.
+   Copyright 2014-2021 Free Software Foundation, Inc.
 
    This file is part of GNU tar.
 
@@ -104,7 +104,8 @@ info_attach_exclist (struct tar_stat_info *dir)
 	    vcsfile->data = vcsfile->initfn (vcsfile->data);
 
 	  if (add_exclude_fp (vcsfile->addfn, ex, fp,
-			      EXCLUDE_WILDCARDS|EXCLUDE_ANCHORED, '\n',
+			      FNM_FILE_NAME|EXCLUDE_WILDCARDS|EXCLUDE_ANCHORED,
+			      '\n',
 			      vcsfile->data))
 	    {
 	      int e = errno;

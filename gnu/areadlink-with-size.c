@@ -1,7 +1,7 @@
 /* readlink wrapper to return the link name in malloc'd storage.
    Unlike xreadlink and xreadlink_with_size, don't ever call exit.
 
-   Copyright (C) 2001, 2003-2007, 2009-2019 Free Software Foundation, Inc.
+   Copyright (C) 2001, 2003-2007, 2009-2021 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@
 #include <limits.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 #ifndef SSIZE_MAX
@@ -60,23 +61,34 @@ areadlink_with_size (char const *file, size_t size)
                           ? symlink_max + 1
                           : INITIAL_LIMIT_BOUND);
 
+  enum { stackbuf_size = 128 };
+
   /* The initial buffer size for the link value.  */
-  size_t buf_size = size < initial_limit ? size + 1 : initial_limit;
+  size_t buf_size = (size == 0 ? stackbuf_size
+                     : size < initial_limit ? size + 1 : initial_limit);
 
   while (1)
     {
       ssize_t r;
       size_t link_length;
-      char *buffer = malloc (buf_size);
+      char stackbuf[stackbuf_size];
+      char *buf = stackbuf;
+      char *buffer = NULL;
 
-      if (buffer == NULL)
-        return NULL;
-      r = readlink (file, buffer, buf_size);
+      if (! (size == 0 && buf_size == stackbuf_size))
+        {
+          buf = buffer = malloc (buf_size);
+          if (!buffer)
+            {
+              errno = ENOMEM;
+              return NULL;
+            }
+        }
+
+      r = readlink (file, buf, buf_size);
       link_length = r;
 
-      /* On AIX 5L v5.3 and HP-UX 11i v2 04/09, readlink returns -1
-         with errno == ERANGE if the buffer is too small.  */
-      if (r < 0 && errno != ERANGE)
+      if (r < 0)
         {
           int saved_errno = errno;
           free (buffer);
@@ -86,7 +98,20 @@ areadlink_with_size (char const *file, size_t size)
 
       if (link_length < buf_size)
         {
-          buffer[link_length] = 0;
+          buf[link_length] = 0;
+          if (!buffer)
+            {
+              buffer = malloc (link_length + 1);
+              if (buffer)
+                return memcpy (buffer, buf, link_length + 1);
+            }
+          else if (link_length + 1 < buf_size)
+            {
+              /* Shrink BUFFER before returning it.  */
+              char *shrinked_buffer = realloc (buffer, link_length + 1);
+              if (shrinked_buffer != NULL)
+                buffer = shrinked_buffer;
+            }
           return buffer;
         }
 

@@ -1,7 +1,7 @@
 /* provide consistent interface to chown for systems that don't interpret
    an ID of -1 as meaning "don't change the corresponding ID".
 
-   Copyright (C) 1997, 2004-2007, 2009-2019 Free Software Foundation, Inc.
+   Copyright (C) 1997, 2004-2007, 2009-2021 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -87,7 +87,7 @@ rpl_chown (const char *file, uid_t uid, gid_t gid)
        on the symlink itself.  To work around that, we open the
        file (but this can fail due to lack of read or write permission) and
        use fchown on the resulting descriptor.  */
-    int open_flags = O_NONBLOCK | O_NOCTTY;
+    int open_flags = O_NONBLOCK | O_NOCTTY | O_CLOEXEC;
     int fd = open (file, O_RDONLY | open_flags);
     if (0 <= fd
         || (errno == EACCES

@@ -1,6 +1,6 @@
 /* Various processing of names.
 
-   Copyright 1988-2019 Free Software Foundation, Inc.
+   Copyright 1988-2021 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -62,89 +62,93 @@ enum
     WILDCARDS_OPTION
   };
 
+enum
+  {
+    GRH_LOCAL,
+    GRID_LOCAL,
+    GRH_MATCH,
+    GRID_MATCH,
+  };
+
 static struct argp_option names_options[] = {
-#define GRID 100
   {NULL, 0, NULL, 0,
-   N_("Local file name selection:"), GRID },
+   N_("Local file name selection:"), GRH_LOCAL },
 
   {"add-file", ADD_FILE_OPTION, N_("FILE"), 0,
-   N_("add given FILE to the archive (useful if its name starts with a dash)"), GRID+1 },
+   N_("add given FILE to the archive (useful if its name starts with a dash)"), GRID_LOCAL },
   {"directory", 'C', N_("DIR"), 0,
-   N_("change to directory DIR"), GRID+1 },
+   N_("change to directory DIR"), GRID_LOCAL },
   {"files-from", 'T', N_("FILE"), 0,
-   N_("get names to extract or create from FILE"), GRID+1 },
+   N_("get names to extract or create from FILE"), GRID_LOCAL },
   {"null", NULL_OPTION, 0, 0,
    N_("-T reads null-terminated names; implies --verbatim-files-from"),
-      GRID+1 },
+      GRID_LOCAL },
   {"no-null", NO_NULL_OPTION, 0, 0,
-   N_("disable the effect of the previous --null option"), GRID+1 },
+   N_("disable the effect of the previous --null option"), GRID_LOCAL },
   {"unquote", UNQUOTE_OPTION, 0, 0,
-   N_("unquote input file or member names (default)"), GRID+1 },
+   N_("unquote input file or member names (default)"), GRID_LOCAL },
   {"no-unquote", NO_UNQUOTE_OPTION, 0, 0,
-   N_("do not unquote input file or member names"), GRID+1 },
+   N_("do not unquote input file or member names"), GRID_LOCAL },
   {"verbatim-files-from", VERBATIM_FILES_FROM_OPTION, 0, 0,
-   N_("-T reads file names verbatim (no escape or option handling)"), GRID+1 },
+   N_("-T reads file names verbatim (no escape or option handling)"), GRID_LOCAL },
   {"no-verbatim-files-from", NO_VERBATIM_FILES_FROM_OPTION, 0, 0,
    N_("-T treats file names starting with dash as options (default)"),
-      GRID+1 },
+      GRID_LOCAL },
   {"exclude", EXCLUDE_OPTION, N_("PATTERN"), 0,
-   N_("exclude files, given as a PATTERN"), GRID+1 },
+   N_("exclude files, given as a PATTERN"), GRID_LOCAL },
   {"exclude-from", 'X', N_("FILE"), 0,
-   N_("exclude patterns listed in FILE"), GRID+1 },
+   N_("exclude patterns listed in FILE"), GRID_LOCAL },
   {"exclude-caches", EXCLUDE_CACHES_OPTION, 0, 0,
    N_("exclude contents of directories containing CACHEDIR.TAG, "
-      "except for the tag file itself"), GRID+1 },
+      "except for the tag file itself"), GRID_LOCAL },
   {"exclude-caches-under", EXCLUDE_CACHES_UNDER_OPTION, 0, 0,
    N_("exclude everything under directories containing CACHEDIR.TAG"),
-   GRID+1 },
+   GRID_LOCAL },
   {"exclude-caches-all", EXCLUDE_CACHES_ALL_OPTION, 0, 0,
-   N_("exclude directories containing CACHEDIR.TAG"), GRID+1 },
+   N_("exclude directories containing CACHEDIR.TAG"), GRID_LOCAL },
   {"exclude-tag", EXCLUDE_TAG_OPTION, N_("FILE"), 0,
    N_("exclude contents of directories containing FILE, except"
-      " for FILE itself"), GRID+1 },
+      " for FILE itself"), GRID_LOCAL },
   {"exclude-ignore", EXCLUDE_IGNORE_OPTION, N_("FILE"), 0,
     N_("read exclude patterns for each directory from FILE, if it exists"),
-   GRID+1 },
+   GRID_LOCAL },
   {"exclude-ignore-recursive", EXCLUDE_IGNORE_RECURSIVE_OPTION, N_("FILE"), 0,
     N_("read exclude patterns for each directory and its subdirectories "
-       "from FILE, if it exists"), GRID+1 },
+       "from FILE, if it exists"), GRID_LOCAL },
   {"exclude-tag-under", EXCLUDE_TAG_UNDER_OPTION, N_("FILE"), 0,
-   N_("exclude everything under directories containing FILE"), GRID+1 },
+   N_("exclude everything under directories containing FILE"), GRID_LOCAL },
   {"exclude-tag-all", EXCLUDE_TAG_ALL_OPTION, N_("FILE"), 0,
-   N_("exclude directories containing FILE"), GRID+1 },
+   N_("exclude directories containing FILE"), GRID_LOCAL },
   {"exclude-vcs", EXCLUDE_VCS_OPTION, NULL, 0,
-   N_("exclude version control system directories"), GRID+1 },
+   N_("exclude version control system directories"), GRID_LOCAL },
   {"exclude-vcs-ignores", EXCLUDE_VCS_IGNORES_OPTION, NULL, 0,
-   N_("read exclude patterns from the VCS ignore files"), GRID+1 },
+   N_("read exclude patterns from the VCS ignore files"), GRID_LOCAL },
   {"exclude-backups", EXCLUDE_BACKUPS_OPTION, NULL, 0,
-   N_("exclude backup and lock files"), GRID+1 },
+   N_("exclude backup and lock files"), GRID_LOCAL },
   {"recursion", RECURSION_OPTION, 0, 0,
-   N_("recurse into directories (default)"), GRID+1 },
+   N_("recurse into directories (default)"), GRID_LOCAL },
   {"no-recursion", NO_RECURSION_OPTION, 0, 0,
-   N_("avoid descending automatically in directories"), GRID+1 },
-#undef GRID
+   N_("avoid descending automatically in directories"), GRID_LOCAL },
 
-#define GRID 120
   {NULL, 0, NULL, 0,
    N_("File name matching options (affect both exclude and include patterns):"),
-   GRID },
+   GRH_MATCH },
   {"anchored", ANCHORED_OPTION, 0, 0,
-   N_("patterns match file name start"), GRID+1 },
+   N_("patterns match file name start"), GRID_MATCH },
   {"no-anchored", NO_ANCHORED_OPTION, 0, 0,
-   N_("patterns match after any '/' (default for exclusion)"), GRID+1 },
+   N_("patterns match after any '/' (default for exclusion)"), GRID_MATCH },
   {"ignore-case", IGNORE_CASE_OPTION, 0, 0,
-   N_("ignore case"), GRID+1 },
+   N_("ignore case"), GRID_MATCH },
   {"no-ignore-case", NO_IGNORE_CASE_OPTION, 0, 0,
-   N_("case sensitive matching (default)"), GRID+1 },
+   N_("case sensitive matching (default)"), GRID_MATCH },
   {"wildcards", WILDCARDS_OPTION, 0, 0,
-   N_("use wildcards (default for exclusion)"), GRID+1 },
+   N_("use wildcards (default for exclusion)"), GRID_MATCH },
   {"no-wildcards", NO_WILDCARDS_OPTION, 0, 0,
-   N_("verbatim string matching"), GRID+1 },
+   N_("verbatim string matching"), GRID_MATCH },
   {"wildcards-match-slash", WILDCARDS_MATCH_SLASH_OPTION, 0, 0,
-   N_("wildcards match '/' (default for exclusion)"), GRID+1 },
+   N_("wildcards match '/' (default for exclusion)"), GRID_MATCH },
   {"no-wildcards-match-slash", NO_WILDCARDS_MATCH_SLASH_OPTION, 0, 0,
-   N_("wildcards do not match '/'"), GRID+1 },
-#undef GRID
+   N_("wildcards do not match '/'"), GRID_MATCH },
 
   {NULL}
 };
@@ -195,12 +199,25 @@ names_parse_opt (int key, char *arg, struct argp_state *state)
     case ADD_FILE_OPTION:
       name_add_name (arg);
       break;
+      
+    case ARGP_KEY_ERROR:
+      {
+	struct tar_args *args = state->input;
+	if (args->loc->source == OPTS_FILE)
+	  {
+	    error (0, 0, _("%s:%lu: unrecognized option"), args->loc->name,
+		   (unsigned long) args->loc->line);
+	    set_exit_status (TAREXIT_FAILURE);
+	  }
+	return ARGP_ERR_UNKNOWN;
+      }
 
     default:
       if (is_file_selection_option (key))
 	name_add_option (key, arg);
       else
 	return ARGP_ERR_UNKNOWN;
+      
     }
   return 0;
 }
@@ -419,7 +436,7 @@ handle_file_selection_option (int key, const char *arg)
     }
 }
 
-static struct argp names_argp = {
+struct argp names_argp = {
   names_options,
   names_parse_opt,
   NULL,
@@ -429,10 +446,6 @@ static struct argp names_argp = {
   NULL
 };
 
-struct argp_child names_argp_children[] = {
-  { &names_argp, 0, "", 0 },
-  { NULL }
-};
 
 /* User and group names.  */
 
@@ -651,8 +664,10 @@ struct name_elt        /* A name_array element. */
   } v;
 };
 
-static struct name_elt *name_head;/* store a list of names */
-size_t name_count;	 	  /* how many of the entries are file names? */
+static struct name_elt *name_head; /* store a list of names */
+
+/* how many of the entries are file names? */
+enum files_count filename_args = FILES_NONE;
 
 static struct name_elt *
 name_elt_alloc (void)
@@ -784,13 +799,6 @@ name_list_advance (void)
     }
 }
 
-/* Return true if there are names or options in the list */
-bool
-name_more_files (void)
-{
-  return name_count > 0;
-}
-
 /* Add to name_array the file NAME with fnmatch options MATFLAGS */
 void
 name_add_name (const char *name)
@@ -799,7 +807,20 @@ name_add_name (const char *name)
 
   ep->type = NELT_NAME;
   ep->v.name = name;
-  name_count++;
+
+  switch (filename_args)
+    {
+    case FILES_NONE:
+      filename_args = FILES_ONE;
+      break;
+
+    case FILES_ONE:
+      filename_args = FILES_MANY;
+      break;
+
+    default:
+      break;
+    }
 }
 
 static void
@@ -829,7 +850,10 @@ name_add_file (const char *name)
   ep->v.file.name = name;
   ep->v.file.line = 0;
   ep->v.file.fp = NULL;
-  name_count++;
+
+  /* We don't know beforehand how many files are listed.
+     Assume more than one. */
+  filename_args = FILES_MANY;
 }
 
 /* Names from external name file.  */
@@ -1058,19 +1082,8 @@ copy_name (struct name_elt *ep)
 
   source = ep->v.name;
   source_len = strlen (source);
-  if (name_buffer_length < source_len)
-    {
-      do
-	{
-	  name_buffer_length *= 2;
-	  if (! name_buffer_length)
-	    xalloc_die ();
-	}
-      while (name_buffer_length < source_len);
-
-      free (name_buffer);
-      name_buffer = xmalloc(name_buffer_length + 2);
-    }
+  while (name_buffer_length <= source_len)
+    name_buffer = x2realloc(name_buffer, &name_buffer_length);
   strcpy (name_buffer, source);
   chopslash (name_buffer);
 }
@@ -1591,9 +1604,8 @@ add_hierarchy_to_namelist (struct tar_stat_info *st, struct name *name)
       size_t name_length = name->length;
       size_t allocated_length = (name_length >= NAME_FIELD_SIZE
 				 ? name_length + NAME_FIELD_SIZE
-				 : NAME_FIELD_SIZE);
-      char *namebuf = xmalloc (allocated_length + 1);
-				/* FIXME: + 2 above?  */
+				 : NAME_FIELD_SIZE) + 2;
+      char *namebuf = xmalloc (allocated_length);
       const char *string;
       size_t string_length;
       int change_dir = name->change_dir;
@@ -1614,18 +1626,10 @@ add_hierarchy_to_namelist (struct tar_stat_info *st, struct name *name)
 	      struct tar_stat_info subdir;
 	      int subfd;
 
-	      if (allocated_length <= name_length + string_length)
-		{
-		  do
-		    {
-		      allocated_length *= 2;
-		      if (! allocated_length)
-			xalloc_die ();
-		    }
-		  while (allocated_length <= name_length + string_length);
-
-		  namebuf = xrealloc (namebuf, allocated_length + 1);
-		}
+	      /* need to have at least string_length bytes above the
+		 name_length, this includes the trailing null character */
+	      while (allocated_length < name_length + string_length)
+		namebuf = x2realloc (namebuf, &allocated_length);
 	      strcpy (namebuf + name_length, string + 1);
 	      np = addname (namebuf, change_dir, false, name);
 	      if (!child_head)
@@ -1826,7 +1830,7 @@ collect_and_sort_names (void)
 		{
 		  if (p->child)
 		    rebase_child_list (p->child, name);
-		  hash_delete (nametab, name);
+		  hash_remove (nametab, name);
 		  /* FIXME: remove_directory (p->caname); ? */
 		  remname (p);
 		  free_name (p);

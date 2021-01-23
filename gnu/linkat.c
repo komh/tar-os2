@@ -1,5 +1,5 @@
 /* Create a hard link relative to open directories.
-   Copyright (C) 2009-2019 Free Software Foundation, Inc.
+   Copyright (C) 2009-2021 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -29,19 +29,9 @@
 
 #include "areadlink.h"
 #include "dirname.h"
+#include "eloop-threshold.h"
 #include "filenamecat.h"
 #include "openat-priv.h"
-
-#if HAVE_SYS_PARAM_H
-# include <sys/param.h>
-#endif
-#ifndef MAXSYMLINKS
-# ifdef SYMLOOP_MAX
-#  define MAXSYMLINKS SYMLOOP_MAX
-# else
-#  define MAXSYMLINKS 20
-# endif
-#endif
 
 #if !HAVE_LINKAT || LINKAT_SYMLINK_NOTSUP
 
@@ -105,7 +95,7 @@ link_follow (char const *file1, char const *file2)
   char *name = (char *) file1;
   char *target;
   int result;
-  int i = MAXSYMLINKS;
+  int i = __eloop_threshold ();
 
   /* Using realpath or canonicalize_file_name is too heavy-handed: we
      don't need an absolute name, and we don't need to resolve
@@ -231,7 +221,7 @@ linkat_follow (int fd1, char const *file1, int fd2, char const *file2)
   char *name = (char *) file1;
   char *target;
   int result;
-  int i = MAXSYMLINKS;
+  int i = __eloop_threshold ();
 
   /* There is no realpathat.  */
   while (i-- && (target = areadlinkat (fd1, name)))

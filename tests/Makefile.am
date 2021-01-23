@@ -1,6 +1,6 @@
 # Makefile for GNU tar regression tests.
 
-# Copyright 1996-2019 Free Software Foundation, Inc.
+# Copyright 1996-2021 Free Software Foundation, Inc.
 
 # This file is part of GNU tar.
 
@@ -120,6 +120,8 @@ TESTSUITE_AT = \
  extrac19.at\
  extrac20.at\
  extrac21.at\
+ extrac22.at\
+ extrac23.at\
  filerem01.at\
  filerem02.at\
  dirrem01.at\
@@ -198,6 +200,7 @@ TESTSUITE_AT = \
  rename03.at\
  rename04.at\
  rename05.at\
+ rename06.at\
  remfiles01.at\
  remfiles02.at\
  remfiles03.at\

@@ -4,7 +4,7 @@
    when the buggy fchownat-with-AT_SYMLINK_NOFOLLOW operates on a symlink, it
    mistakenly affects the symlink referent, rather than the symlink itself.
 
-   Copyright (C) 2006-2007, 2009-2019 Free Software Foundation, Inc.
+   Copyright (C) 2006-2007, 2009-2021 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -23,9 +23,11 @@
 
 #include <config.h>
 
+/* Specification.  */
 #include <unistd.h>
 
 #include <errno.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "openat.h"

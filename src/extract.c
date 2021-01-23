@@ -1,6 +1,6 @@
 /* Extract files from a tar archive.
 
-   Copyright 1988-2019 Free Software Foundation, Inc.
+   Copyright 1988-2021 Free Software Foundation, Inc.
 
    This file is part of GNU tar.
 
@@ -194,7 +194,7 @@ extr_init (void)
 
 /* Use fchmod if possible, fchmodat otherwise.  */
 static int
-fd_chmod (int fd, char const *file, mode_t mode, int atflag)
+fd_i_chmod (int fd, char const *file, mode_t mode, int atflag)
 {
   if (0 <= fd)
     {
@@ -203,6 +203,42 @@ fd_chmod (int fd, char const *file, mode_t mode, int atflag)
 	return result;
     }
   return fchmodat (chdir_fd, file, mode, atflag);
+}
+
+/* A version of fd_i_chmod which gracefully handles several common error
+   conditions.  Additional argument TYPEFLAG is the type of file in tar
+   notation.
+ */
+static int
+fd_chmod(int fd, char const *file_name, int mode, int atflag, int typeflag)
+{
+  int chmod_errno = fd_i_chmod (fd, file_name, mode, atflag) == 0 ? 0 : errno;
+
+  /* On Solaris, chmod may fail if we don't have PRIV_ALL, because
+     setuid-root files would otherwise be a backdoor.  See
+     http://opensolaris.org/jive/thread.jspa?threadID=95826
+     (2009-09-03).  */
+  if (chmod_errno == EPERM && (mode & S_ISUID)
+      && priv_set_restore_linkdir () == 0)
+    {
+      chmod_errno = fd_i_chmod (fd, file_name, mode, atflag) == 0 ? 0 : errno;
+      priv_set_remove_linkdir ();
+    }
+
+  /* Linux fchmodat does not support AT_SYMLINK_NOFOLLOW, and
+     returns ENOTSUP even when operating on non-symlinks, try
+     again with the flag disabled if it does not appear to be
+     supported and if the file is not a symlink.  This
+     introduces a race, alas.  */
+  if (atflag && typeflag != SYMTYPE && ! implemented (chmod_errno))
+    chmod_errno = fd_i_chmod (fd, file_name, mode, 0) == 0 ? 0 : errno;
+
+  if (chmod_errno && (typeflag != SYMTYPE || implemented (chmod_errno)))
+    {
+      errno = chmod_errno;
+      return -1;
+    }
+  return 0;
 }
 
 /* Use fchown if possible, fchownat otherwise.  */
@@ -259,35 +295,8 @@ set_mode (char const *file_name,
 
       if (current_mode != mode)
 	{
-	  int chmod_errno =
-	    fd_chmod (fd, file_name, mode, atflag) == 0 ? 0 : errno;
-
-	  /* On Solaris, chmod may fail if we don't have PRIV_ALL, because
-	     setuid-root files would otherwise be a backdoor.  See
-	     http://opensolaris.org/jive/thread.jspa?threadID=95826
-	     (2009-09-03).  */
-	  if (chmod_errno == EPERM && (mode & S_ISUID)
-	      && priv_set_restore_linkdir () == 0)
-	    {
-	      chmod_errno =
-		fd_chmod (fd, file_name, mode, atflag) == 0 ? 0 : errno;
-	      priv_set_remove_linkdir ();
-	    }
-
-	  /* Linux fchmodat does not support AT_SYMLINK_NOFOLLOW, and
-	     returns ENOTSUP even when operating on non-symlinks, try
-	     again with the flag disabled if it does not appear to be
-	     supported and if the file is not a symlink.  This
-	     introduces a race, alas.  */
-	  if (atflag && typeflag != SYMTYPE && ! implemented (chmod_errno))
-	    chmod_errno = fd_chmod (fd, file_name, mode, 0) == 0 ? 0 : errno;
-
-	  if (chmod_errno
-	      && (typeflag != SYMTYPE || implemented (chmod_errno)))
-	    {
-	      errno = chmod_errno;
-	      chmod_error_details (file_name, mode);
-	    }
+	  if (fd_chmod (fd, file_name, mode, atflag, typeflag))
+	    chmod_error_details (file_name, mode);
 	}
     }
 }
@@ -400,7 +409,7 @@ find_direct_ancestor (char const *file_name)
   struct delayed_set_stat *h = delayed_set_stat_head;
   while (h)
     {
-      if (h && ! h->after_links
+      if (! h->after_links
 	  && strncmp (file_name, h->file_name, h->file_name_len) == 0
 	  && ISSLASH (file_name[h->file_name_len])
 	  && (last_component (file_name) == file_name + h->file_name_len + 1))
@@ -458,25 +467,56 @@ delay_set_stat (char const *file_name, struct tar_stat_info const *st,
 		mode_t mode, int atflag)
 {
   size_t file_name_len = strlen (file_name);
-  struct delayed_set_stat *data = xmalloc (sizeof (*data));
-  data->next = delayed_set_stat_head;
+  struct delayed_set_stat *data;
+
+  for (data = delayed_set_stat_head; data; data = data->next)
+    if (strcmp (data->file_name, file_name) == 0)
+      break;
+
+  if (data)
+    {
+      if (data->interdir)
+	{
+	  struct stat real_st;
+	  if (fstatat (chdir_fd, data->file_name,
+		       &real_st, data->atflag) != 0)
+	    {
+	      stat_error (data->file_name);
+	    }
+	  else
+	    {
+	      data->dev = real_st.st_dev;
+	      data->ino = real_st.st_ino;
+	    }
+	}
+    }
+  else
+    {
+      data = xmalloc (sizeof (*data));
+      data->next = delayed_set_stat_head;
+      delayed_set_stat_head = data;
+      data->file_name_len = file_name_len;
+      data->file_name = xstrdup (file_name);
+      data->after_links = false;
+      if (st)
+	{
+	  data->dev = st->stat.st_dev;
+	  data->ino = st->stat.st_ino;
+	}
+    }
+
   data->mode = mode;
   if (st)
     {
-      data->dev = st->stat.st_dev;
-      data->ino = st->stat.st_ino;
       data->uid = st->stat.st_uid;
       data->gid = st->stat.st_gid;
       data->atime = st->atime;
       data->mtime = st->mtime;
     }
-  data->file_name_len = file_name_len;
-  data->file_name = xstrdup (file_name);
   data->current_mode = current_mode;
   data->current_mode_mask = current_mode_mask;
   data->interdir = ! st;
   data->atflag = atflag;
-  data->after_links = 0;
   data->change_dir = chdir_current;
   data->cntx_name = NULL;
   if (st)
@@ -508,8 +548,6 @@ delay_set_stat (char const *file_name, struct tar_stat_info const *st,
       data->xattr_map = NULL;
       data->xattr_map_size = 0;
     }
-  strcpy (data->file_name, file_name);
-  delayed_set_stat_head = data;
   if (must_be_dot_or_slash (file_name))
     mark_after_links (data);
 }
@@ -523,7 +561,7 @@ repair_delayed_set_stat (char const *dir,
 			 struct stat const *dir_stat_info)
 {
   struct delayed_set_stat *data;
-  for (data = delayed_set_stat_head;  data;  data = data->next)
+  for (data = delayed_set_stat_head; data; data = data->next)
     {
       struct stat st;
       if (fstatat (chdir_fd, data->file_name, &st, data->atflag) != 0)
@@ -946,6 +984,26 @@ is_directory_link (const char *file_name)
   return res;
 }
 
+/* Given struct stat of a directory (or directory member) whose ownership
+   or permissions of will be restored later, return the temporary permissions
+   for that directory, sufficiently restrictive so that in the meantime
+   processes owned by other users do not inadvertently create files under this
+   directory that inherit the wrong owner, group, or permissions from the
+   directory.
+
+   If not root, though, make the directory writeable and searchable at first,
+   so that files can be created under it.
+*/
+static inline int
+safe_dir_mode (struct stat const *st)
+{
+  return ((st->st_mode
+	   & (0 < same_owner_option || 0 < same_permissions_option
+	      ? S_IRWXU
+	      : MODE_RWX))
+	  | (we_are_root ? 0 : MODE_WXUSR));
+}
+
 /* Extractor functions for various member types */
 
 static int
@@ -975,18 +1033,7 @@ extract_dir (char *file_name, int typeflag)
   else if (typeflag == GNUTYPE_DUMPDIR)
     skip_member ();
 
-  /* If ownership or permissions will be restored later, create the
-     directory with restrictive permissions at first, so that in the
-     meantime processes owned by other users do not inadvertently
-     create files under this directory that inherit the wrong owner,
-     group, or permissions from the directory.  If not root, though,
-     make the directory writeable and searchable at first, so that
-     files can be created under it.  */
-  mode = ((current_stat_info.stat.st_mode
-	   & (0 < same_owner_option || 0 < same_permissions_option
-	      ? S_IRWXU
-	      : MODE_RWX))
-	  | (we_are_root ? 0 : MODE_WXUSR));
+  mode = safe_dir_mode (&current_stat_info.stat);
 
   for (;;)
     {
@@ -1002,6 +1049,7 @@ extract_dir (char *file_name, int typeflag)
       if (errno == EEXIST
 	  && (interdir_made
 	      || keep_directory_symlink_option
+	      || old_files_option == NO_OVERWRITE_DIR_OLD_FILES
 	      || old_files_option == DEFAULT_OLD_FILES
 	      || old_files_option == OVERWRITE_OLD_FILES))
 	{
@@ -1021,6 +1069,31 @@ extract_dir (char *file_name, int typeflag)
 		    {
 		      repair_delayed_set_stat (file_name, &st);
 		      return 0;
+		    }
+		  else if (old_files_option == NO_OVERWRITE_DIR_OLD_FILES)
+		    {
+		      /* Temporarily change the directory mode to a safe
+			 value, to be able to create files in it, should
+			 the need be.
+		      */
+		      mode = safe_dir_mode (&st);
+		      status = fd_chmod(-1, file_name, mode,
+					AT_SYMLINK_NOFOLLOW, DIRTYPE);
+		      if (status == 0)
+			{
+			  /* Store the actual directory mode, to be restored
+			     later.
+			  */
+			  current_stat_info.stat = st;
+			  current_mode = mode & ~ current_umask;
+			  current_mode_mask = MODE_RWX;
+			  atflag = AT_SYMLINK_NOFOLLOW;
+			  break;
+			}
+		      else
+			{
+			  chmod_error_details (file_name, mode);
+			}
 		    }
 		  break;
 		}
@@ -1254,10 +1327,15 @@ extract_file (char *file_name, int typeflag)
    replaced after other extraction is done by a symbolic link if
    IS_SYMLINK is true, and by a hard link otherwise.  Set
    *INTERDIR_MADE if an intermediate directory is made in the
-   process.  */
+   process.
+   Install the created struct delayed_link after PREV, unless the
+   latter is NULL, in which case insert it at the head of the delayed
+   link list.
+*/
 
 static int
-create_placeholder_file (char *file_name, bool is_symlink, bool *interdir_made)
+create_placeholder_file (char *file_name, bool is_symlink, bool *interdir_made,
+			 struct delayed_link *prev)
 {
   int fd;
   struct stat st;
@@ -1292,8 +1370,16 @@ create_placeholder_file (char *file_name, bool is_symlink, bool *interdir_made)
 	xmalloc (offsetof (struct delayed_link, target)
 		 + strlen (current_stat_info.link_name)
 		 + 1);
-      p->next = delayed_link_head;
-      delayed_link_head = p;
+      if (prev)
+	{
+	  p->next = prev->next;
+	  prev->next = p;
+	}
+      else
+	{
+	  p->next = delayed_link_head;
+	  delayed_link_head = p;
+	}
       p->dev = st.st_dev;
       p->ino = st.st_ino;
       p->birthtime = get_stat_birthtime (&st);
@@ -1308,7 +1394,7 @@ create_placeholder_file (char *file_name, bool is_symlink, bool *interdir_made)
 	}
       p->change_dir = chdir_current;
       p->sources = xmalloc (offsetof (struct string_list, string)
-			    + strlen (file_name) + 1);
+			     + strlen (file_name) + 1);
       p->sources->next = 0;
       strcpy (p->sources->string, file_name);
       p->cntx_name = NULL;
@@ -1317,7 +1403,8 @@ create_placeholder_file (char *file_name, bool is_symlink, bool *interdir_made)
       p->acls_a_len = 0;
       p->acls_d_ptr = NULL;
       p->acls_d_len = 0;
-      xheader_xattr_copy (&current_stat_info, &p->xattr_map, &p->xattr_map_size);
+      xheader_xattr_copy (&current_stat_info, &p->xattr_map,
+			  &p->xattr_map_size);
       strcpy (p->target, current_stat_info.link_name);
 
       if ((h = find_direct_ancestor (file_name)) != NULL)
@@ -1329,18 +1416,57 @@ create_placeholder_file (char *file_name, bool is_symlink, bool *interdir_made)
   return -1;
 }
 
+/* Find a delayed_link structure corresponding to the source NAME.
+   Such a structure exists in the delayed link list only if the link
+   placeholder file has been created. Therefore, try to stat the NAME
+   first. If it doesn't exist, there is no matching entry in the list.
+   Otherwise, look for the entry in list which has the matching dev
+   and ino numbers.
+   
+   This approach avoids scanning the singly-linked list in obvious cases
+   and does not rely on comparing file names, which may differ for
+   various reasons (e.g. relative vs. absolute file names).
+ */
+static struct delayed_link *
+find_delayed_link_source (char const *name)
+{
+  struct delayed_link *dl;
+  struct stat st;
+
+  if (!delayed_link_head)
+    return NULL;
+  
+  if (fstatat (chdir_fd, name, &st, AT_SYMLINK_NOFOLLOW))
+    {
+      if (errno != ENOENT)
+	stat_error (name);
+      return NULL;
+    }
+  
+  for (dl = delayed_link_head; dl; dl = dl->next)
+    {
+      if (dl->dev == st.st_dev && dl->ino == st.st_ino)
+	break;
+    }
+  return dl;
+}
+  
 static int
 extract_link (char *file_name, int typeflag)
 {
   bool interdir_made = false;
   char const *link_name;
   int rc;
-
+  struct delayed_link *dl;
+  
   link_name = current_stat_info.link_name;
 
   if (! absolute_names_option && contains_dot_dot (link_name))
-    return create_placeholder_file (file_name, false, &interdir_made);
-
+    return create_placeholder_file (file_name, false, &interdir_made, NULL);
+  dl = find_delayed_link_source (link_name);
+  if (dl)
+    return create_placeholder_file (file_name, false, &interdir_made, dl);
+  
   do
     {
       struct stat st1, st2;
@@ -1402,7 +1528,7 @@ extract_symlink (char *file_name, int typeflag)
   if (! absolute_names_option
       && (IS_ABSOLUTE_FILE_NAME (current_stat_info.link_name)
 	  || contains_dot_dot (current_stat_info.link_name)))
-    return create_placeholder_file (file_name, true, &interdir_made);
+    return create_placeholder_file (file_name, true, &interdir_made, NULL);
 
   while (symlinkat (current_stat_info.link_name, chdir_fd, file_name) != 0)
     switch (maybe_recoverable (file_name, false, &interdir_made))
@@ -1495,47 +1621,23 @@ extract_fifo (char *file_name, int typeflag)
 }
 #endif
 
-static int
-extract_volhdr (char *file_name, int typeflag)
-{
-  skip_member ();
-  return 0;
-}
-
-static int
-extract_failure (char *file_name, int typeflag)
-{
-  return 1;
-}
-
-static int
-extract_skip (char *file_name, int typeflag)
-{
-  skip_member ();
-  return 0;
-}
-
 typedef int (*tar_extractor_t) (char *file_name, int typeflag);
 
 
-
 /* Prepare to extract a file. Find extractor function.
-   Return zero if extraction should not proceed.  */
+   Return true to proceed with the extraction, false to skip the current
+   member.  */
 
-static int
+static bool
 prepare_to_extract (char const *file_name, int typeflag, tar_extractor_t *fun)
 {
-  int rc = 1;
-
-  if (EXTRACT_OVER_PIPE)
-    rc = 0;
+  tar_extractor_t extractor = NULL;
 
   /* Select the extractor */
   switch (typeflag)
     {
     case GNUTYPE_SPARSE:
-      *fun = extract_file;
-      rc = 1;
+      extractor = extract_file;
       break;
 
     case AREGTYPE:
@@ -1544,106 +1646,101 @@ prepare_to_extract (char const *file_name, int typeflag, tar_extractor_t *fun)
       /* Appears to be a file.  But BSD tar uses the convention that a slash
 	 suffix means a directory.  */
       if (current_stat_info.had_trailing_slash)
-	*fun = extract_dir;
+	extractor = extract_dir;
       else
-	{
-	  *fun = extract_file;
-	  rc = 1;
-	}
+	extractor = extract_file;
       break;
 
     case SYMTYPE:
-      *fun = extract_symlink;
+      extractor = extract_symlink;
       break;
 
     case LNKTYPE:
-      *fun = extract_link;
+      extractor = extract_link;
       break;
 
 #if S_IFCHR
     case CHRTYPE:
       current_stat_info.stat.st_mode |= S_IFCHR;
-      *fun = extract_node;
+      extractor = extract_node;
       break;
 #endif
 
 #if S_IFBLK
     case BLKTYPE:
       current_stat_info.stat.st_mode |= S_IFBLK;
-      *fun = extract_node;
+      extractor = extract_node;
       break;
 #endif
 
 #if HAVE_MKFIFO || defined mkfifo
     case FIFOTYPE:
-      *fun = extract_fifo;
+      extractor = extract_fifo;
       break;
 #endif
 
     case DIRTYPE:
     case GNUTYPE_DUMPDIR:
-      *fun = extract_dir;
+      extractor = extract_dir;
       if (current_stat_info.is_dumpdir)
 	delay_directory_restore_option = true;
       break;
 
     case GNUTYPE_VOLHDR:
-      *fun = extract_volhdr;
-      break;
-
+      return false;
+      
     case GNUTYPE_MULTIVOL:
       ERROR ((0, 0,
 	      _("%s: Cannot extract -- file is continued from another volume"),
 	      quotearg_colon (current_stat_info.file_name)));
-      *fun = extract_skip;
-      break;
+      return false;
 
     case GNUTYPE_LONGNAME:
     case GNUTYPE_LONGLINK:
       ERROR ((0, 0, _("Unexpected long name header")));
-      *fun = extract_failure;
-      break;
+      return false;
 
     default:
       WARNOPT (WARN_UNKNOWN_CAST,
 	       (0, 0,
 		_("%s: Unknown file type '%c', extracted as normal file"),
 		quotearg_colon (file_name), typeflag));
-      *fun = extract_file;
+      extractor = extract_file;
     }
 
-  /* Determine whether the extraction should proceed */
-  if (rc == 0)
-    return 0;
-
-  switch (old_files_option)
+  if (!EXTRACT_OVER_PIPE)
     {
-    case UNLINK_FIRST_OLD_FILES:
-      if (!remove_any_file (file_name,
-                            recursive_unlink_option ? RECURSIVE_REMOVE_OPTION
-                                                      : ORDINARY_REMOVE_OPTION)
-	  && errno && errno != ENOENT)
+      switch (old_files_option)
 	{
-	  unlink_error (file_name);
-	  return 0;
-	}
-      break;
+	case UNLINK_FIRST_OLD_FILES:
+	  if (!remove_any_file (file_name,
+				recursive_unlink_option
+				  ? RECURSIVE_REMOVE_OPTION
+				  : ORDINARY_REMOVE_OPTION)
+	      && errno && errno != ENOENT)
+	    {
+	      unlink_error (file_name);
+	      return false;
+	    }
+	  break;
 
-    case KEEP_NEWER_FILES:
-      if (file_newer_p (file_name, 0, &current_stat_info))
-	{
-	  WARNOPT (WARN_IGNORE_NEWER,
-		   (0, 0, _("Current %s is newer or same age"),
-		    quote (file_name)));
-	  return 0;
-	}
-      break;
+	case KEEP_NEWER_FILES:
+	  if (file_newer_p (file_name, 0, &current_stat_info))
+	    {
+	      WARNOPT (WARN_IGNORE_NEWER,
+		       (0, 0, _("Current %s is newer or same age"),
+			quote (file_name)));
+	      return false;
+	    }
+	  break;
 
-    default:
-      break;
+	default:
+	  break;
+	}
     }
-
-  return 1;
+  *fun = extractor;
+  
+  return true;
 }
 
 /* Extract a file from the archive.  */
@@ -1706,13 +1803,14 @@ extract_archive (void)
 
   if (prepare_to_extract (current_stat_info.file_name, typeflag, &fun))
     {
-      if (fun && (*fun) (current_stat_info.file_name, typeflag)
-	  && backup_option)
-	undo_last_backup ();
+      if (fun (current_stat_info.file_name, typeflag) == 0)
+	return;
     }
   else
     skip_member ();
 
+  if (backup_option)
+    undo_last_backup ();
 }
 
 /* Extract the links whose final extraction were delayed.  */
@@ -1785,8 +1883,8 @@ apply_delayed_links (void)
 	  sources = next;
 	}
 
-   xheader_xattr_free (ds->xattr_map, ds->xattr_map_size);
-   free (ds->cntx_name);
+      xheader_xattr_free (ds->xattr_map, ds->xattr_map_size);
+      free (ds->cntx_name);
 
       {
 	struct delayed_link *next = ds->next;

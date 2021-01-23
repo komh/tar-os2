@@ -1,5 +1,5 @@
 /* This file is part of GNU tar.
-   Copyright 2006-2019 Free Software Foundation, Inc.
+   Copyright 2006-2021 Free Software Foundation, Inc.
 
    This program is free software; you can redistribute it and/or modify it
    under the terms of the GNU General Public License as published by the
@@ -208,6 +208,8 @@ parse_transform_expr (const char *expr)
     }
 
   delim = expr[1];
+  if (!delim)
+    USAGE_ERROR ((0, 0, _("Invalid transform expression")));
 
   /* Scan regular expression */
   for (i = 2; expr[i] && expr[i] != delim; i++)

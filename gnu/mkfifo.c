@@ -1,5 +1,5 @@
 /* Create a named fifo.
-   Copyright (C) 2009-2019 Free Software Foundation, Inc.
+   Copyright (C) 2009-2021 Free Software Foundation, Inc.
 
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ rpl_mkfifo (char const *name, mode_t mode)
   if (len && name[len - 1] == '/')
     {
       struct stat st;
-      if (stat (name, &st) == 0)
+      if (stat (name, &st) == 0 || errno == EOVERFLOW)
         errno = EEXIST;
       return -1;
     }

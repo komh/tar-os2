@@ -5,12 +5,12 @@
 # Gábor István <stive@mezobereny.hu>, 2002.
 # Gabor Kelemen <kelemeng@gnome.hu>, 2006, 2007, 2008, 2009, 2010, 2014, 2016.
 # Balázs Úr <urbalazs@gmail.com>, 2015, 2018.
-#: src/create.c:1598
+#: src/create.c:1590
 msgid ""
 msgstr ""
 "Project-Id-Version: tar 1.30\n"
 "Report-Msgid-Bugs-To: bug-tar@gnu.org\n"
-"POT-Creation-Date: 2019-02-23 14:57+0200\n"
+"POT-Creation-Date: 2021-01-07 16:35+0200\n"
 "PO-Revision-Date: 2018-01-20 14:21+0100\n"
 "Last-Translator: Balázs Úr <urbalazs@gmail.com>\n"
 "Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
@@ -22,41 +22,41 @@ msgstr ""
 "X-Generator: Lokalize 1.2\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: gnu/argmatch.c:134
+#: gnu/argmatch.c:132
 #, c-format
 msgid "invalid argument %s for %s"
 msgstr "a(z) „%s” argumentum érvénytelen a következőhöz: %s"
 
-#: gnu/argmatch.c:135
+#: gnu/argmatch.c:133
 #, c-format
 msgid "ambiguous argument %s for %s"
 msgstr "a(z) „%s” argumentum nem egyértelmű a következőhöz: „%s”"
 
-#: gnu/argmatch.c:154
+#: gnu/argmatch.c:152
 msgid "Valid arguments are:"
 msgstr "Az érvényes argumentumok a következők:"
 
-#: gnu/argp-help.c:148
+#: gnu/argp-help.c:151
 #, c-format
 msgid "ARGP_HELP_FMT: %s value is less than or equal to %s"
 msgstr "ARGP_HELP_FMT: %s értéke nem nagyobb, mint %s"
 
-#: gnu/argp-help.c:224
+#: gnu/argp-help.c:227
 #, c-format
 msgid "%.*s: ARGP_HELP_FMT parameter requires a value"
 msgstr "%.*s: Az ARGP_HELP_FMT paraméter egy értéket igényel"
 
-#: gnu/argp-help.c:234
+#: gnu/argp-help.c:237
 #, c-format
 msgid "%.*s: Unknown ARGP_HELP_FMT parameter"
 msgstr "%.*s: Ismeretlen ARGP_HELP_FMT paraméter"
 
-#: gnu/argp-help.c:247
+#: gnu/argp-help.c:250
 #, c-format
 msgid "Garbage in ARGP_HELP_FMT: %s"
 msgstr "Szemét az ARGP_HELP_FMT-ben: %s"
 
-#: gnu/argp-help.c:1228
+#: gnu/argp-help.c:1363
 msgid ""
 "Mandatory or optional arguments to long options are also mandatory or "
 "optional for any corresponding short options."
@@ -64,31 +64,31 @@ msgstr ""
 "A hosszú kapcsolók kötelező vagy elhagyható argumentumai a megfelelő rövid "
 "kapcsolókhoz is kötelezőek vagy elhagyhatóak."
 
-#: gnu/argp-help.c:1615
+#: gnu/argp-help.c:1729
 msgid "Usage:"
 msgstr "Használat:"
 
-#: gnu/argp-help.c:1619
+#: gnu/argp-help.c:1733
 msgid "  or: "
 msgstr "  vagy: "
 
-#: gnu/argp-help.c:1631
+#: gnu/argp-help.c:1745
 msgid " [OPTION...]"
 msgstr " [KAPCSOLÓ...]"
 
-#: gnu/argp-help.c:1658
+#: gnu/argp-help.c:1772
 #, c-format
 msgid "Try '%s --help' or '%s --usage' for more information.\n"
 msgstr ""
 "További információkért próbálja kiadni a „%s --help” vagy „%s --usage” "
 "parancsokat.\n"
 
-#: gnu/argp-help.c:1686
+#: gnu/argp-help.c:1800
 #, c-format
 msgid "Report bugs to %s.\n"
 msgstr "A hibák a(z) %s címen jelenthetők.\n"
 
-#: gnu/argp-help.c:1887 gnu/error.c:195
+#: gnu/argp-help.c:2001 gnu/error.c:195
 msgid "Unknown system error"
 msgstr "Ismeretlen rendszerhiba"
 
@@ -100,8 +100,8 @@ msgstr "ezen súgószöveg megjelenítése"
 msgid "give a short usage message"
 msgstr "rövid használati utasítás megjelenítése"
 
-#: gnu/argp-parse.c:83 src/tar.c:507 src/tar.c:509 src/tar.c:612
-#: tests/genfile.c:129
+#: gnu/argp-parse.c:83 src/tar.c:553 src/tar.c:555 src/tar.c:660
+#: tests/genfile.c:131
 msgid "NAME"
 msgstr "NÉV"
 
@@ -208,11 +208,11 @@ msgstr "a visszatérés meghiúsult a kiinduló munkakönyvtárba"
 #. If you don't know what to put here, please see
 #. <https://en.wikipedia.org/wiki/Quotation_marks_in_other_languages>
 #. and use glyphs suitable for your language.
-#: gnu/quotearg.c:362
+#: gnu/quotearg.c:355
 msgid "`"
 msgstr "”"
 
-#: gnu/quotearg.c:363
+#: gnu/quotearg.c:356
 msgid "'"
 msgstr "”"
 
@@ -253,14 +253,20 @@ msgstr "Csomagolta: %s\n"
 msgid "(C)"
 msgstr "(C)"
 
-#: gnu/version-etc.c:85
+#. TRANSLATORS: The %s placeholder is the web address of the GPL license.
+#: gnu/version-etc.c:88
+#, fuzzy, c-format
+#| msgid ""
+#| "\n"
+#| "License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl."
+#| "html>.\n"
+#| "This is free software: you are free to change and redistribute it.\n"
+#| "There is NO WARRANTY, to the extent permitted by law.\n"
+#| "\n"
 msgid ""
-"\n"
-"License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl."
-"html>.\n"
+"License GPLv3+: GNU GPL version 3 or later <%s>.\n"
 "This is free software: you are free to change and redistribute it.\n"
 "There is NO WARRANTY, to the extent permitted by law.\n"
-"\n"
 msgstr ""
 "\n"
 "Licenc: GPLv3+: A GNU GPL 3. vagy újabb változata <https://gnu.org/licenses/"
@@ -270,19 +276,19 @@ msgstr ""
 "\n"
 
 #. TRANSLATORS: %s denotes an author name.
-#: gnu/version-etc.c:102
+#: gnu/version-etc.c:105
 #, c-format
 msgid "Written by %s.\n"
 msgstr "Írta: %s.\n"
 
 #. TRANSLATORS: Each %s denotes an author name.
-#: gnu/version-etc.c:106
+#: gnu/version-etc.c:109
 #, c-format
 msgid "Written by %s and %s.\n"
 msgstr "Írta: %s és %s.\n"
 
 #. TRANSLATORS: Each %s denotes an author name.
-#: gnu/version-etc.c:110
+#: gnu/version-etc.c:113
 #, c-format
 msgid "Written by %s, %s, and %s.\n"
 msgstr "Írta: %s, %s és %s.\n"
@@ -290,7 +296,7 @@ msgstr "Írta: %s, %s és %s.\n"
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: gnu/version-etc.c:117
+#: gnu/version-etc.c:120
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
@@ -302,7 +308,7 @@ msgstr ""
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: gnu/version-etc.c:124
+#: gnu/version-etc.c:127
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
@@ -314,7 +320,7 @@ msgstr ""
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: gnu/version-etc.c:131
+#: gnu/version-etc.c:134
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
@@ -326,7 +332,7 @@ msgstr ""
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: gnu/version-etc.c:139
+#: gnu/version-etc.c:142
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
@@ -338,7 +344,7 @@ msgstr ""
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: gnu/version-etc.c:147
+#: gnu/version-etc.c:150
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
@@ -352,7 +358,7 @@ msgstr ""
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: gnu/version-etc.c:156
+#: gnu/version-etc.c:159
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
@@ -366,7 +372,7 @@ msgstr ""
 #. TRANSLATORS: Each %s denotes an author name.
 #. You can use line breaks, estimating that each author name occupies
 #. ca. 16 screen columns and that a screen line has ca. 80 columns.
-#: gnu/version-etc.c:167
+#: gnu/version-etc.c:170
 #, c-format
 msgid ""
 "Written by %s, %s, %s,\n"
@@ -381,32 +387,30 @@ msgstr ""
 #. for this package.  Please add _another line_ saying
 #. "Report translation bugs to <...>\n" with the address for translation
 #. bugs (typically your translation team's web or email address).
-#: gnu/version-etc.c:245
-#, c-format
-msgid ""
-"\n"
-"Report bugs to: %s\n"
+#: gnu/version-etc.c:249
+#, fuzzy, c-format
+#| msgid ""
+#| "\n"
+#| "Report bugs to: %s\n"
+msgid "Report bugs to: %s\n"
 msgstr ""
 "\n"
 "A hibák a(z) %s címen jelenthetők.\n"
 
-#: gnu/version-etc.c:247
+#: gnu/version-etc.c:251
 #, c-format
 msgid "Report %s bugs to: %s\n"
 msgstr "A(z) %s hibái a(z) %s címen jelenthetők.\n"
 
-#: gnu/version-etc.c:251
+#: gnu/version-etc.c:255 gnu/version-etc.c:257
 #, c-format
 msgid "%s home page: <%s>\n"
 msgstr "A(z) %s honlapja: <%s>\n"
 
-#: gnu/version-etc.c:253
-#, c-format
-msgid "%s home page: <https://www.gnu.org/software/%s/>\n"
-msgstr "A(z) %s honlapja: <https://www.gnu.org/software/%s/>\n"
-
-#: gnu/version-etc.c:256
-msgid "General help using GNU software: <https://www.gnu.org/gethelp/>\n"
+#: gnu/version-etc.c:260
+#, fuzzy, c-format
+#| msgid "General help using GNU software: <https://www.gnu.org/gethelp/>\n"
+msgid "General help using GNU software: <%s>\n"
 msgstr ""
 "Általános segítség a GNU szoftverek használatához: <https://www.gnu.org/"
 "gethelp/>\n"
@@ -577,8 +581,8 @@ msgid "Manipulate a tape drive, accepting commands from a remote process"
 msgstr ""
 "Szalagos meghajtó manipulálása, parancsok elfogadása távoli folyamattól"
 
-#: rmt/rmt.c:700 src/tar.c:432 src/tar.c:436 src/tar.c:610 src/tar.c:625
-#: src/tar.c:715 src/tar.c:731 tests/genfile.c:166
+#: rmt/rmt.c:700 src/tar.c:484 src/tar.c:488 src/tar.c:657 src/tar.c:673
+#: src/tar.c:762 src/tar.c:773 tests/genfile.c:168
 msgid "NUMBER"
 msgstr "SZÁM"
 
@@ -586,11 +590,11 @@ msgstr "SZÁM"
 msgid "set debug level"
 msgstr "hibakeresési szint beállítása"
 
-#: rmt/rmt.c:702 src/names.c:70 src/names.c:74 src/names.c:92 src/names.c:102
-#: src/names.c:105 src/names.c:108 src/names.c:111 src/names.c:113
-#: src/tar.c:430 src/tar.c:511 src/tar.c:513 src/tar.c:615 src/tar.c:748
-#: tests/genfile.c:131 tests/genfile.c:180 tests/genfile.c:184
-#: tests/genfile.c:187 tests/genfile.c:193
+#: rmt/rmt.c:702 src/names.c:77 src/names.c:81 src/names.c:99 src/names.c:109
+#: src/names.c:112 src/names.c:115 src/names.c:118 src/names.c:120
+#: src/tar.c:482 src/tar.c:557 src/tar.c:559 src/tar.c:664 src/tar.c:790
+#: tests/genfile.c:133 tests/genfile.c:182 tests/genfile.c:186
+#: tests/genfile.c:189 tests/genfile.c:195
 msgid "FILE"
 msgstr "FÁJL"
 
@@ -603,7 +607,7 @@ msgstr "hibakeresés kimeneti fájlnevének beállítása"
 msgid "cannot open %s"
 msgstr "a(z) %s nem nyitható meg"
 
-#: rmt/rmt.c:784 tests/genfile.c:977
+#: rmt/rmt.c:784 tests/genfile.c:979
 #, c-format
 msgid "too many arguments"
 msgstr "túl sok argumentum"
@@ -663,7 +667,7 @@ msgstr "Nem ellenőrizhető az archívum, ha a szabványos be/kimenetet használ
 msgid "Archive is compressed. Use %s option"
 msgstr "Az archívum tömörített. Használja a(z) %s kapcsolót."
 
-#: src/buffer.c:830 src/tar.c:2464
+#: src/buffer.c:830 src/tar.c:2506
 msgid "Cannot update compressed archives"
 msgstr "Tömörített archívumok nem frissíthetők"
 
@@ -815,8 +819,8 @@ msgstr[1] "Csak %lu bájt olvasható %lu bájtból"
 msgid "Contents differ"
 msgstr "A tartalom eltér"
 
-#: src/compare.c:133 src/extract.c:1204 src/incremen.c:1508 src/list.c:487
-#: src/list.c:1401 src/xheader.c:865
+#: src/compare.c:133 src/extract.c:1277 src/incremen.c:1511 src/list.c:487
+#: src/list.c:1401 src/xheader.c:882
 msgid "Unexpected EOF in archive"
 msgstr "Váratlan fájlvége jel az archívumban"
 
@@ -941,45 +945,45 @@ msgstr[1] "%s: a fájl zsugorítva %s bájtra, nullákkal kerül kitöltésre"
 msgid "%s: file is on a different filesystem; not dumped"
 msgstr "%s: a fájl eltérő fájlrendszeren van, nem kerül kiírásra"
 
-#: src/create.c:1246 src/create.c:1257 src/incremen.c:609 src/incremen.c:616
+#: src/create.c:1246 src/create.c:1257 src/incremen.c:619 src/incremen.c:626
 msgid "contents not dumped"
 msgstr "a tartalom nem került kiírásra"
 
-#: src/create.c:1463
+#: src/create.c:1455
 #, c-format
 msgid "%s: Unknown file type; file ignored"
 msgstr "%s: Ismeretlen fájltípus, fájl a figyelmen kívül hagyva"
 
-#: src/create.c:1575
+#: src/create.c:1567
 #, c-format
 msgid "Missing links to %s."
 msgstr "Hiányzó linkek a következőre: „%s”."
 
-#: src/create.c:1736
+#: src/create.c:1728
 #, c-format
 msgid "%s: file is unchanged; not dumped"
 msgstr "%s: a fájl változatlan, nem kerül kiírásra"
 
-#: src/create.c:1745
+#: src/create.c:1737
 #, c-format
 msgid "%s: file is the archive; not dumped"
 msgstr "%s: a fájl az archívumban van, nem kerül kiírásra"
 
-#: src/create.c:1773 src/incremen.c:602
+#: src/create.c:1765 src/incremen.c:612
 msgid "directory not dumped"
 msgstr "a könyvtár nem került kiírásra"
 
-#: src/create.c:1845
+#: src/create.c:1837
 #, c-format
 msgid "%s: file changed as we read it"
 msgstr "%s: a fájl módosult olvasás közben"
 
-#: src/create.c:1921
+#: src/create.c:1913
 #, c-format
 msgid "%s: socket ignored"
 msgstr "%s: a foglalat figyelmen kívül hagyva"
 
-#: src/create.c:1927
+#: src/create.c:1919
 #, c-format
 msgid "%s: door ignored"
 msgstr "%s: ajtó figyelmen kívül hagyva"
@@ -992,128 +996,128 @@ msgstr "Ugrás a következő fejlécre"
 msgid "Deleting non-header from archive"
 msgstr "A nem fejlécek törlése az archívumból"
 
-#: src/extract.c:301
+#: src/extract.c:310
 #, c-format
 msgid "%s: implausibly old time stamp %s"
 msgstr "%s: valószínűtlenül régi időbélyeg: %s"
 
-#: src/extract.c:319
+#: src/extract.c:328
 #, c-format
 msgid "%s: time stamp %s is %s s in the future"
 msgstr "%s: a(z) %s időbélyeg %s másodperccel a jövőbe mutat"
 
-#: src/extract.c:552
+#: src/extract.c:590
 #, c-format
 msgid "%s: Unexpected inconsistency when making directory"
 msgstr "%s: Váratlan inkonzisztencia a könyvtár létrehozása során"
 
-#: src/extract.c:770
+#: src/extract.c:808
 #, c-format
 msgid "%s: skipping existing file"
 msgstr "%s: meglévő fájl kihagyása"
 
-#: src/extract.c:901
+#: src/extract.c:939
 #, c-format
 msgid "%s: Directory renamed before its status could be extracted"
 msgstr "%s: a könyvtár átnevezésre került az állapotának kinyerése előtt"
 
-#: src/extract.c:1086
+#: src/extract.c:1159
 msgid "Extracting contiguous files as regular files"
 msgstr "A folytonos fájlok kibontása normál fájlként"
 
-#: src/extract.c:1433
+#: src/extract.c:1559
 msgid "Attempting extraction of symbolic links as hard links"
 msgstr "Kísérlet a szimbolikus linkek kibontására közvetlen linkként"
 
-#: src/extract.c:1596
+#: src/extract.c:1694
 #, c-format
 msgid "%s: Cannot extract -- file is continued from another volume"
 msgstr "%s: nem lehet kibontani -- a fájl egy másik köteten folytatódik"
 
-#: src/extract.c:1603 src/list.c:1164
+#: src/extract.c:1700 src/list.c:1164
 msgid "Unexpected long name header"
 msgstr "Váratlan hosszú névfejléc"
 
-#: src/extract.c:1610
+#: src/extract.c:1706
 #, c-format
 msgid "%s: Unknown file type '%c', extracted as normal file"
 msgstr "%s: Ismeretlen fájltípus: „%c”, normál fájlként lesz kibontva"
 
-#: src/extract.c:1636
+#: src/extract.c:1731
 #, c-format
 msgid "Current %s is newer or same age"
 msgstr "A jelenlegi „%s” újabb vagy egyező korú"
 
-#: src/extract.c:1664
+#: src/extract.c:1761
 #, c-format
 msgid "%s: Member name contains '..'"
 msgstr "%s: A tagnév „..” szöveget tartalmaz"
 
-#: src/extract.c:1696
+#: src/extract.c:1793
 #, c-format
 msgid "%s: Was unable to backup this file"
 msgstr "%s: Nem sikerült biztonsági mentést készíteni erről a fájlról"
 
-#: src/extract.c:1845
+#: src/extract.c:1943
 #, c-format
 msgid "Cannot rename %s to %s"
 msgstr "%s: Nem nevezhető át a következőre: %s"
 
-#: src/incremen.c:493 src/incremen.c:535
+#: src/incremen.c:501 src/incremen.c:544
 #, c-format
 msgid "%s: Directory has been renamed from %s"
 msgstr "%s: A könyvtár át lett nevezve a következőről: %s"
 
-#: src/incremen.c:548
+#: src/incremen.c:558
 #, c-format
 msgid "%s: Directory is new"
 msgstr "%s: a könyvtár új"
 
-#: src/incremen.c:565
+#: src/incremen.c:575
 #, c-format
 msgid "%s: directory is on a different filesystem; not dumped"
 msgstr "%s: a könyvtár eltérő fájlrendszeren van, nem kerül kiírásra"
 
-#: src/incremen.c:586
+#: src/incremen.c:596
 #, c-format
 msgid "%s: Directory has been renamed"
 msgstr "%s: a könyvtár át lett nevezve"
 
-#: src/incremen.c:1003 src/incremen.c:1018
+#: src/incremen.c:1006 src/incremen.c:1021
 msgid "Invalid time stamp"
 msgstr "Érvénytelen időbélyeg"
 
-#: src/incremen.c:1047
+#: src/incremen.c:1050
 msgid "Invalid modification time"
 msgstr "Érvénytelen módosítási idő"
 
-#: src/incremen.c:1057
+#: src/incremen.c:1060
 msgid "Invalid modification time (nanoseconds)"
 msgstr "Érvénytelen módosítási idő (nanomásodperc)"
 
-#: src/incremen.c:1073
+#: src/incremen.c:1076
 msgid "Invalid device number"
 msgstr "Érvénytelen eszközszám"
 
-#: src/incremen.c:1081
+#: src/incremen.c:1084
 msgid "Invalid inode number"
 msgstr "Érvénytelen inode-szám"
 
-#: src/incremen.c:1137
+#: src/incremen.c:1140
 #, c-format
 msgid "%s: byte %s: %s %.*s... too long"
 msgstr "%s: %s bájt: %s %.*s... túl hosszú"
 
-#: src/incremen.c:1153 src/incremen.c:1211 src/incremen.c:1273
+#: src/incremen.c:1156 src/incremen.c:1214 src/incremen.c:1276
 msgid "Unexpected EOF in snapshot file"
 msgstr "Váratlan fájlvége a pillanatképfájlban"
 
-#: src/incremen.c:1161
+#: src/incremen.c:1164
 #, c-format
 msgid "%s: byte %s: %s %s followed by invalid byte 0x%02x"
 msgstr "%s: %s bájt: %s %s után érvénytelen bájt áll: 0x%02x"
 
-#: src/incremen.c:1174
+#: src/incremen.c:1177
 #, c-format
 msgid ""
 "%s: byte %s: (valid range %s..%s)\n"
@@ -1122,85 +1126,85 @@ msgstr ""
 "%s: %s bájt: (érvényes tartomány: %s..%s)\n"
 "\t%s %s"
 
-#: src/incremen.c:1181
+#: src/incremen.c:1184
 #, c-format
 msgid "%s: byte %s: %s %s"
 msgstr "%s: %s bájt: %s %s"
 
-#: src/incremen.c:1262
+#: src/incremen.c:1265
 #, c-format
 msgid "%s: byte %s: %s"
 msgstr "%s: %s bájt: %s"
 
-#: src/incremen.c:1265
+#: src/incremen.c:1268
 msgid "Missing record terminator"
 msgstr "Hiányzó rekordlezáró"
 
-#: src/incremen.c:1371 src/incremen.c:1374
+#: src/incremen.c:1374 src/incremen.c:1377
 msgid "Bad incremental file format"
 msgstr "Hibás növekményes fájlformátum"
 
-#: src/incremen.c:1393
+#: src/incremen.c:1396
 #, c-format
 msgid "Unsupported incremental format version: %<PRIuMAX>"
 msgstr "Nem támogatott növekményes formátumverzió: %<PRIuMAX>"
 
-#: src/incremen.c:1549
+#: src/incremen.c:1552
 #, c-format
 msgid "Malformed dumpdir: expected '%c' but found %#3o"
 msgstr ""
 "Rosszul formázott kiíratási könyvtár: a várt „%c” helyett %#3o található"
 
-#: src/incremen.c:1559
+#: src/incremen.c:1562
 msgid "Malformed dumpdir: 'X' duplicated"
 msgstr "Rosszul formázott kiíratási könyvtár: az „X” többször szerepel"
 
-#: src/incremen.c:1572
+#: src/incremen.c:1575
 msgid "Malformed dumpdir: empty name in 'R'"
 msgstr "Rosszul formázott kiíratási könyvtár: üres név az „R”-ben"
 
-#: src/incremen.c:1585
+#: src/incremen.c:1588
 msgid "Malformed dumpdir: 'T' not preceded by 'R'"
 msgstr "Rosszul formázott kiíratási könyvtár: a „T”-t nem előzi meg az „R”"
 
-#: src/incremen.c:1591
+#: src/incremen.c:1594
 msgid "Malformed dumpdir: empty name in 'T'"
 msgstr "Rosszul formázott kiíratási könyvtár: üres név a „T”-ben"
 
-#: src/incremen.c:1611
+#: src/incremen.c:1614
 #, c-format
 msgid "Malformed dumpdir: expected '%c' but found end of data"
 msgstr ""
 "Rosszul formázott kiíratási könyvtár: a várt „%c” helyett az adatok vége "
 "található"
 
-#: src/incremen.c:1618
+#: src/incremen.c:1621
 msgid "Malformed dumpdir: 'X' never used"
 msgstr ""
 "Rosszul formázott kiíratási könyvtár: az „X” soha nem került felhasználásra"
 
-#: src/incremen.c:1662
+#: src/incremen.c:1665
 #, c-format
 msgid "Cannot create temporary directory using template %s"
 msgstr ""
 "Nem hozható létre ideiglenes könyvtár a következő sablon használatával: %s"
 
-#: src/incremen.c:1723
+#: src/incremen.c:1726
 #, c-format
 msgid "%s: Not purging directory: unable to stat"
 msgstr "%s: a könyvtár nem kerül törlésre: nem érhető el"
 
-#: src/incremen.c:1736
+#: src/incremen.c:1739
 #, c-format
 msgid "%s: directory is on a different device: not purging"
 msgstr "%s: a fájl egy másik eszközön van: nem kerül törlésre"
 
-#: src/incremen.c:1744
+#: src/incremen.c:1747
 #, c-format
 msgid "%s: Deleting %s\n"
 msgstr "%s: %s törlése\n"
 
-#: src/incremen.c:1749
+#: src/incremen.c:1752
 #, c-format
 msgid "%s: Cannot remove"
 msgstr "%s: nem távolítható el"
@@ -1308,96 +1312,96 @@ msgstr "--Folytatva %s bájttól--\n"
 msgid "Creating directory:"
 msgstr "Könyvtár létrehozása:"
 
-#: src/misc.c:751
+#: src/misc.c:749
 #, c-format
 msgid "Renaming %s to %s\n"
 msgstr "%s átnevezése a következőre: %s\n"
 
-#: src/misc.c:760 src/misc.c:779
+#: src/misc.c:758 src/misc.c:777
 #, c-format
 msgid "%s: Cannot rename to %s"
 msgstr "%s: Nem nevezhető át a következőre: %s"
 
-#: src/misc.c:784
+#: src/misc.c:782
 #, c-format
 msgid "Renaming %s back to %s\n"
 msgstr "%s helyreállítása a következő névre: %s\n"
 
-#: src/misc.c:1147
+#: src/misc.c:1151
 #, c-format
 msgid "%s: File removed before we read it"
 msgstr "%s: a fájl el lett távolítva a beolvasás előtt"
 
-#: src/misc.c:1161
+#: src/misc.c:1165
 msgid "child process"
 msgstr "gyermekfolyamat"
 
-#: src/misc.c:1170
+#: src/misc.c:1174
 msgid "interprocess channel"
 msgstr "folyamatközi csatorna"
 
-#: src/names.c:68
+#: src/names.c:75
 msgid "Local file name selection:"
 msgstr "Helyi fájlnévválasztás:"
 
-#: src/names.c:71
+#: src/names.c:78
 msgid "add given FILE to the archive (useful if its name starts with a dash)"
 msgstr ""
 "az adott FÁJL hozzáadása az archívumhoz (hasznos, ha neve kötőjellel "
 "kezdődik)"
 
-#: src/names.c:72 src/tar.c:484
+#: src/names.c:79 src/tar.c:534
 msgid "DIR"
 msgstr "KÖNYVTÁR"
 
-#: src/names.c:73
+#: src/names.c:80
 msgid "change to directory DIR"
 msgstr "váltás a KÖNYVTÁR könyvtárba"
 
-#: src/names.c:75
+#: src/names.c:82
 msgid "get names to extract or create from FILE"
 msgstr "kibontandó nevek lekérdezése vagy létrehozás a FÁJLBÓL"
 
-#: src/names.c:77
+#: src/names.c:84
 msgid "-T reads null-terminated names; implies --verbatim-files-from"
 msgstr ""
 "a -T nullal lezárt neveket olvas, következik belőle a --verbatim-files-from"
 
-#: src/names.c:80
+#: src/names.c:87
 msgid "disable the effect of the previous --null option"
 msgstr "a korábbi --null kapcsoló hatásának letiltása"
 
-#: src/names.c:82
+#: src/names.c:89
 msgid "unquote input file or member names (default)"
 msgstr ""
 "a bemeneti fájl vagy tagnevek idézettségének megszüntetése (alapértelmezett)"
 
-#: src/names.c:84
+#: src/names.c:91
 msgid "do not unquote input file or member names"
 msgstr "ne szüntesse meg a bemeneti fájl vagy tagnevek idézettségét"
 
-#: src/names.c:86
+#: src/names.c:93
 msgid "-T reads file names verbatim (no escape or option handling)"
 msgstr ""
 "a -T változatlan fájlneveket olvas (nincs elfedés vagy kapcsolókezelés)"
 
-#: src/names.c:88
+#: src/names.c:95
 msgid "-T treats file names starting with dash as options (default)"
 msgstr "a -T a kötőjellel kezdődő fájlneveket kapcsolónak tekinti (alapeset)"
 
-#: src/names.c:90 tests/genfile.c:135
+#: src/names.c:97 tests/genfile.c:137
 msgid "PATTERN"
 msgstr "MINTA"
 
-#: src/names.c:91
+#: src/names.c:98
 msgid "exclude files, given as a PATTERN"
 msgstr "a MINTAKÉNT megadott fájlok kihagyása"
 
-#: src/names.c:93
+#: src/names.c:100
 msgid "exclude patterns listed in FILE"
 msgstr "a FÁJLBAN megadott minták kihagyása"
 
-#: src/names.c:95
+#: src/names.c:102
 msgid ""
 "exclude contents of directories containing CACHEDIR.TAG, except for the tag "
 "file itself"
@@ -1405,24 +1409,24 @@ msgstr ""
 "a CACHEDIR.TAG-et tartalmazó könyvtárak tartalmának kihagyása, a címkefájl "
 "kivételével"
 
-#: src/names.c:98
+#: src/names.c:105
 msgid "exclude everything under directories containing CACHEDIR.TAG"
 msgstr "a CACHEDIR.TAG-et tartalmazó könyvtárak alatt minden kihagyása"
 
-#: src/names.c:101
+#: src/names.c:108
 msgid "exclude directories containing CACHEDIR.TAG"
 msgstr "a CACHEDIR.TAG-et tartalmazó könyvtárak kihagyása"
 
-#: src/names.c:103
+#: src/names.c:110
 msgid "exclude contents of directories containing FILE, except for FILE itself"
 msgstr ""
 "a FÁJLT tartalmazó könyvtárak tartalmának kihagyása, a FÁJL kivételével"
 
-#: src/names.c:106
+#: src/names.c:113
 msgid "read exclude patterns for each directory from FILE, if it exists"
 msgstr "kizáró minták olvasása minden egyes könyvtárhoz a FÁJLBÓL, ha létezik"
 
-#: src/names.c:109
+#: src/names.c:116
 msgid ""
 "read exclude patterns for each directory and its subdirectories from FILE, "
 "if it exists"
@@ -1430,75 +1434,81 @@ msgstr ""
 "kizáró minták olvasása minden egyes könyvtárhoz és annak alkönyvtáraihoz a "
 "FÁJLBÓL, ha létezik"
 
-#: src/names.c:112
+#: src/names.c:119
 msgid "exclude everything under directories containing FILE"
 msgstr "a FÁJLT tartalmazó könyvtárak alatt minden kihagyása"
 
-#: src/names.c:114
+#: src/names.c:121
 msgid "exclude directories containing FILE"
 msgstr "a FÁJLT tartalmazó könyvtárak kihagyása"
 
-#: src/names.c:116
+#: src/names.c:123
 msgid "exclude version control system directories"
 msgstr "verziókezelő rendszer könyvtárainak kihagyása"
 
-#: src/names.c:118
+#: src/names.c:125
 msgid "read exclude patterns from the VCS ignore files"
 msgstr "kizárási minták olvasása a VCS ignore fájlokból"
 
-#: src/names.c:120
+#: src/names.c:127
 msgid "exclude backup and lock files"
 msgstr "mentési és zárolási fájlok kihagyása"
 
-#: src/names.c:122
+#: src/names.c:129
 msgid "recurse into directories (default)"
 msgstr "belépés a könyvtárakba rekurzívan (alapértelmezett)"
 
-#: src/names.c:124
+#: src/names.c:131
 msgid "avoid descending automatically in directories"
 msgstr "ne lépjen be automatikusan a könyvtárakba"
 
-#: src/names.c:129
+#: src/names.c:134
 msgid "File name matching options (affect both exclude and include patterns):"
 msgstr ""
 "Fájlnévillesztés beállításai (érintik mind a kihagyási, mind a felvételi "
 "mintákat):"
 
-#: src/names.c:132
+#: src/names.c:137
 msgid "patterns match file name start"
 msgstr "a minták illesztése a fájlnevek elejére"
 
-#: src/names.c:134
+#: src/names.c:139
 msgid "patterns match after any '/' (default for exclusion)"
 msgstr "a minták illesztése bármely „/” után (alapértelmezett kihagyáskor)"
 
-#: src/names.c:136
+#: src/names.c:141
 msgid "ignore case"
 msgstr "kis- és nagybetűk figyelmen kívül hagyása"
 
-#: src/names.c:138
+#: src/names.c:143
 msgid "case sensitive matching (default)"
 msgstr "kis- és nagybetűkre érzékeny illesztés (alapértelmezett)"
 
-#: src/names.c:140
+#: src/names.c:145
 msgid "use wildcards (default for exclusion)"
 msgstr "helyettesítő karakterek használata (alapértelmezett kihagyáskor)"
 
-#: src/names.c:142
+#: src/names.c:147
 msgid "verbatim string matching"
 msgstr "szó szerinti karakterlánc-illesztés"
 
-#: src/names.c:144
+#: src/names.c:149
 msgid "wildcards match '/' (default for exclusion)"
 msgstr ""
 "a helyettesítő karakterek illeszkednek a „/” jelre (alapértelmezett "
 "kihagyáskor)"
 
-#: src/names.c:146
+#: src/names.c:151
 msgid "wildcards do not match '/'"
 msgstr "a helyettesítő karakterek nem illeszkednek a „/” jelre"
 
-#: src/names.c:732
+#: src/names.c:208
+#, fuzzy, c-format
+#| msgid "%s: unrecognized option '%s%s'\n"
+msgid "%s:%lu: unrecognized option"
+msgstr "%s: a(z) „%s%s” kapcsoló ismeretlen\n"
+
+#: src/names.c:747
 msgid ""
 "The following options were used after any non-optional arguments in archive "
 "create or update mode.  These options are positional and affect only "
@@ -1509,45 +1519,45 @@ msgstr ""
 "és csak az őket követő argumentumokat érintik. Rendezze őket újra megfelelő "
 "sorrendbe."
 
-#: src/names.c:743
+#: src/names.c:758
 #, c-format
 msgid "-C %s has no effect"
 msgstr "a -C %s kapcsolónak nincs hatása"
 
-#: src/names.c:748
+#: src/names.c:763
 #, c-format
 msgid "--%s %s has no effect"
 msgstr "a --%s %s kapcsolónak nincs hatása"
 
-#: src/names.c:752
+#: src/names.c:767
 #, c-format
 msgid "--%s has no effect"
 msgstr "a --%s kapcsolónak nincs hatása"
 
-#: src/names.c:878
+#: src/names.c:902
 msgid "command line"
 msgstr "parancssor"
 
-#: src/names.c:896
+#: src/names.c:920
 #, c-format
 msgid "%s: file list requested from %s already read from %s"
 msgstr "%s: a(z) %s helyről kért fájllista már be van olvasva innen: %s"
 
-#: src/names.c:977 src/checkpoint.c:308
+#: src/names.c:1001 src/checkpoint.c:308
 #, c-format
 msgid "cannot split string '%s': %s"
 msgstr "nem darabolható a(z) „%s” karakterlánc: %s"
 
-#: src/names.c:1024
+#: src/names.c:1048
 #, c-format
 msgid "%s: file name read contains nul character"
 msgstr "%s: a beolvasott fájlnév null karaktert tartalmaz"
 
-#: src/names.c:1388
+#: src/names.c:1401
 msgid "Pattern matching characters used in file names"
 msgstr "Mintaillesztő karaktereket használt a fájlnevekben"
 
-#: src/names.c:1390
+#: src/names.c:1403
 msgid ""
 "Use --wildcards to enable pattern matching, or --no-wildcards to suppress "
 "this warning"
@@ -1555,29 +1565,29 @@ msgstr ""
 "Használja a --wildcards kapcsolót a mintaillesztés engedélyezéséhez, vagy a "
 "--no-wildcards kapcsolót ezen figyelmeztetés letiltásához"
 
-#: src/names.c:1408 src/names.c:1424
+#: src/names.c:1421 src/names.c:1437
 #, c-format
 msgid "%s: Not found in archive"
 msgstr "%s: Nem található az archívumban"
 
-#: src/names.c:1409
+#: src/names.c:1422
 #, c-format
 msgid "%s: Required occurrence not found in archive"
 msgstr "%s: A szükséges előfordulás nem található az archívumban"
 
-#: src/names.c:1443
+#: src/names.c:1456
 #, c-format
 msgid "Archive label mismatch"
 msgstr "Hibás archívumcímke"
 
-#: src/names.c:1747
+#: src/names.c:1751
 msgid ""
 "Using -C option inside file list is not allowed with --listed-incremental"
 msgstr ""
 "A -C használata fájllistán belül nem engedélyezett a --listed-incremental "
 "kapcsolóval"
 
-#: src/names.c:1753
+#: src/names.c:1757
 msgid "Only one -C option is allowed with --listed-incremental"
 msgstr "Csak egy -C engedélyezett a --listed-incremental kapcsolóval"
 
@@ -1646,89 +1656,89 @@ msgstr ""
 "                  egyébként egyszerű\n"
 "  never, simple   mindig egyszerű mentés létrehozása\n"
 
-#: src/tar.c:393
+#: src/tar.c:446
 msgid "Main operation mode:"
 msgstr "Fő működési mód:"
 
-#: src/tar.c:396
+#: src/tar.c:449
 msgid "list the contents of an archive"
 msgstr "felsorolja egy archívum tartalmát"
 
-#: src/tar.c:398
+#: src/tar.c:451
 msgid "extract files from an archive"
 msgstr "fájlok kibontása egy archívumból"
 
-#: src/tar.c:401
+#: src/tar.c:454
 msgid "create a new archive"
 msgstr "új archívum létrehozása"
 
-#: src/tar.c:403
+#: src/tar.c:456
 msgid "find differences between archive and file system"
 msgstr "különbségek keresése az archívum és a fájlrendszer között"
 
-#: src/tar.c:406
+#: src/tar.c:459
 msgid "append files to the end of an archive"
 msgstr "fájlok hozzáfűzése egy archívum végéhez"
 
-#: src/tar.c:408
+#: src/tar.c:461
 msgid "only append files newer than copy in archive"
 msgstr "csak az archívumban lévő másolatnál újabb fájlok hozzáfűzése"
 
-#: src/tar.c:410
+#: src/tar.c:463
 msgid "append tar files to an archive"
 msgstr "tar fájlok hozzáfűzése egy archívumhoz"
 
-#: src/tar.c:413
+#: src/tar.c:466
 msgid "delete from the archive (not on mag tapes!)"
 msgstr "törlés az archívumból (szalagon nem működik!)"
 
-#: src/tar.c:415
+#: src/tar.c:468
 msgid "test the archive volume label and exit"
 msgstr "az archívum kötetcímkéjének tesztelése és kilépés"
 
-#: src/tar.c:420
+#: src/tar.c:471
 msgid "Operation modifiers:"
 msgstr "Műveletmódosítók:"
 
-#: src/tar.c:423
+#: src/tar.c:474
 msgid "handle sparse files efficiently"
 msgstr "ritka fájlok hatékony kezelése"
 
-#: src/tar.c:424
+#: src/tar.c:475
 msgid "TYPE"
 msgstr "TÍPUS"
 
-#: src/tar.c:425
+#: src/tar.c:476
 msgid "technique to detect holes"
 msgstr "lyukfelismerési módszer"
 
-#: src/tar.c:426
+#: src/tar.c:477
 msgid "MAJOR[.MINOR]"
 msgstr "MAGAS[.ALACSONY]"
 
-#: src/tar.c:427
+#: src/tar.c:478
 msgid "set version of the sparse format to use (implies --sparse)"
 msgstr ""
 "a használandó ritka formátum verziójának beállítása (magával vonja\n"
 " a --sparse kapcsolót)"
 
-#: src/tar.c:429
+#: src/tar.c:481
 msgid "handle old GNU-format incremental backup"
 msgstr "régi GNU formátumú növekményes mentés kezelése"
 
-#: src/tar.c:431
+#: src/tar.c:483
 msgid "handle new GNU-format incremental backup"
 msgstr "új GNU formátumú növekményes mentés kezelése"
 
-#: src/tar.c:433
+#: src/tar.c:485
 msgid "dump level for created listed-incremental archive"
 msgstr "kiíratási szint a létrehozott listázott növekményes archívumhoz"
 
-#: src/tar.c:435
+#: src/tar.c:487
 msgid "do not exit with nonzero on unreadable files"
 msgstr "ne lépjen ki nem nulla értékkel ha a fájl olvashatatlan"
 
-#: src/tar.c:437
+#: src/tar.c:489
 msgid ""
 "process only the NUMBERth occurrence of each file in the archive; this "
 "option is valid only in conjunction with one of the subcommands --delete, --"
@@ -1741,149 +1751,149 @@ msgstr ""
 "átadásra a parancssoron vagy a -T kapcsolón keresztül. A SZÁM "
 "alapértelmezett értéke az 1."
 
-#: src/tar.c:443
+#: src/tar.c:495
 msgid "archive is seekable"
 msgstr "az archívum kereshető"
 
-#: src/tar.c:445
+#: src/tar.c:497
 msgid "archive is not seekable"
 msgstr "az archívumban nem lehet pozicionálni"
 
-#: src/tar.c:447
+#: src/tar.c:499
 msgid "do not check device numbers when creating incremental archives"
 msgstr "ne ellenőrizze az eszközszámokat növekményes archívumok létrehozásakor"
 
-#: src/tar.c:450
+#: src/tar.c:502
 msgid "check device numbers when creating incremental archives (default)"
 msgstr ""
 "eszközszámok ellenőrzése növekményes archívumok létrehozásakor "
 "(alapértelmezett)"
 
-#: src/tar.c:456
+#: src/tar.c:506
 msgid "Overwrite control:"
 msgstr "Felülírás felügyelete:"
 
-#: src/tar.c:459
+#: src/tar.c:509
 msgid "attempt to verify the archive after writing it"
 msgstr "kísérlet az archívum ellenőrzésére annak kiírása után"
 
-#: src/tar.c:461
+#: src/tar.c:511
 msgid "remove files after adding them to the archive"
 msgstr "fájlok eltávolítása azok archívumhoz adása után"
 
-#: src/tar.c:463
+#: src/tar.c:513
 msgid "don't replace existing files when extracting, treat them as errors"
 msgstr "ne cserélje a meglévő fájlokat kibontáskor, kezelje ezeket hibaként"
 
-#: src/tar.c:466
+#: src/tar.c:516
 msgid "don't replace existing files when extracting, silently skip over them"
 msgstr ""
 "ne cserélje a meglévő fájlokat kibontáskor, szó nélkül hagyja ki ezeket"
 
-#: src/tar.c:469
+#: src/tar.c:519
 msgid "don't replace existing files that are newer than their archive copies"
 msgstr "ne cserélje az archív változatuknál újabb meglévő fájlokat"
 
-#: src/tar.c:471
+#: src/tar.c:521
 msgid "overwrite existing files when extracting"
 msgstr "meglévő fájlok felülírása kibontáskor"
 
-#: src/tar.c:473
+#: src/tar.c:523
 msgid "remove each file prior to extracting over it"
 msgstr "minden egyes fájl eltávolítása a rá történő kibontás előtt"
 
-#: src/tar.c:475
+#: src/tar.c:525
 msgid "empty hierarchies prior to extracting directory"
 msgstr "hierarchiák kiürítése könyvtár kibontása előtt"
 
-#: src/tar.c:477
+#: src/tar.c:527
 msgid "preserve metadata of existing directories"
 msgstr "meglévő könyvtárak metaadatainak megőrzése"
 
-#: src/tar.c:479
+#: src/tar.c:529
 msgid "overwrite metadata of existing directories when extracting (default)"
 msgstr ""
 "meglévő könyvtárak metaadatainak felülírása kibontáskor (alapértelmezett)"
 
-#: src/tar.c:482
+#: src/tar.c:532
 msgid "preserve existing symlinks to directories when extracting"
 msgstr "könyvtárakra mutató meglévő szimlinkek megőrzése kibontáskor"
 
-#: src/tar.c:485
+#: src/tar.c:535
 msgid "create a subdirectory to avoid having loose files extracted"
 msgstr "alkönyvtár létrehozása a laza fájlok kibontásának elkerüléséhez"
 
-#: src/tar.c:491
+#: src/tar.c:539
 msgid "Select output stream:"
 msgstr "Kimeneti adatfolyam kiválasztása:"
 
-#: src/tar.c:494
+#: src/tar.c:542
 msgid "extract files to standard output"
 msgstr "fájlok kibontása a szabványos kimenetre"
 
-#: src/tar.c:495 src/tar.c:588 src/tar.c:590 tests/genfile.c:190
+#: src/tar.c:543 src/tar.c:647 src/tar.c:650 tests/genfile.c:192
 msgid "COMMAND"
 msgstr "PARANCS"
 
-#: src/tar.c:496
+#: src/tar.c:544
 msgid "pipe extracted files to another program"
 msgstr "kibontott fájlok továbbítása másik program számára"
 
-#: src/tar.c:498
+#: src/tar.c:546
 msgid "ignore exit codes of children"
 msgstr "utódok kilépési kódjainak figyelmen kívül hagyása"
 
-#: src/tar.c:500
+#: src/tar.c:548
 msgid "treat non-zero exit codes of children as error"
 msgstr "az utódok nem nulla kilépési kódjainak kezelése hibaként"
 
-#: src/tar.c:505
+#: src/tar.c:551
 msgid "Handling of file attributes:"
 msgstr "Fájlattribútumok kezelése:"
 
-#: src/tar.c:508
+#: src/tar.c:554
 msgid "force NAME as owner for added files"
 msgstr "a NÉV kényszerítése a hozzáadott fájlok tulajdonosaként"
 
-#: src/tar.c:510
+#: src/tar.c:556
 msgid "force NAME as group for added files"
 msgstr "a NÉV kényszerítése a hozzáadott fájlok csoportjaként"
 
-#: src/tar.c:512
+#: src/tar.c:558
 msgid "use FILE to map file owner UIDs and names"
 msgstr "a FÁJL használata a fájltulajdonos UID-ek és nevek leképezésére"
 
-#: src/tar.c:514
+#: src/tar.c:560
 msgid "use FILE to map file owner GIDs and names"
 msgstr "a FÁJL használata a fájltulajdonos GID-ek és nevek leképezésére"
 
-#: src/tar.c:515 src/tar.c:701
+#: src/tar.c:561 src/tar.c:749
 msgid "DATE-OR-FILE"
 msgstr "DÁTUM-VAGY-FÁJL"
 
-#: src/tar.c:516
+#: src/tar.c:562
 msgid "set mtime for added files from DATE-OR-FILE"
 msgstr "a DÁTUM-VAGY-FÁJL dátumnál újabb fájlok mtime értékének beállítása"
 
-#: src/tar.c:518
+#: src/tar.c:564
 msgid ""
 "only set time when the file is more recent than what was given with --mtime"
 msgstr ""
 "csak akkor állítson be időt, ha a fájl újabb, mint a --mtime által megadott"
 
-#: src/tar.c:519
+#: src/tar.c:565
 msgid "CHANGES"
 msgstr "MÓDOSÍTÁSOK"
 
-#: src/tar.c:520
+#: src/tar.c:566
 msgid "force (symbolic) mode CHANGES for added files"
 msgstr "a (szimbolikus) mód módosítások kényszerítése a hozzáadott fájlokra"
 
-#: src/tar.c:522
+#: src/tar.c:568
 msgid "METHOD"
 msgstr "MÓDSZER"
 
-#: src/tar.c:523
+#: src/tar.c:569
 msgid ""
 "preserve access times on dumped files, either by restoring the times after "
 "reading (METHOD='replace'; default) or by not setting the times in the first "
@@ -1893,11 +1903,11 @@ msgstr ""
 "olvasás után történő visszaállításával (MÓDSZER='replace'; alapértelmezett) "
 "vagy az időpontok be nem állításával az első helyen (MÓDSZER='system')"
 
-#: src/tar.c:527
+#: src/tar.c:573
 msgid "don't extract file modified time"
 msgstr "ne bontsa ki a fájl módosításának időpontját"
 
-#: src/tar.c:529
+#: src/tar.c:575
 msgid ""
 "try extracting files with the same ownership as exists in the archive "
 "(default for superuser)"
@@ -1905,22 +1915,22 @@ msgstr ""
 "próbálja az archívumban létezővel azonos tulajdonossal kibontani a fájlokat "
 "(alapértelmezett a rendszergazdának)"
 
-#: src/tar.c:531
+#: src/tar.c:577
 msgid "extract files as yourself (default for ordinary users)"
 msgstr ""
 "fájlok kibontása a saját nevében (alapértelmezett normál felhasználóknak)"
 
-#: src/tar.c:533
+#: src/tar.c:579
 msgid "always use numbers for user/group names"
 msgstr "mindig számok használata a felhasználó- vagy csoportnevekhez"
 
-#: src/tar.c:535
+#: src/tar.c:581
 msgid "extract information about file permissions (default for superuser)"
 msgstr ""
 "a fájl jogosultságaival kapcsolatos információk kibontása (alapértelmezett a "
 "rendszergazda számára)"
 
-#: src/tar.c:539
+#: src/tar.c:585
 msgid ""
 "apply the user's umask when extracting permissions from the archive (default "
 "for ordinary users)"
@@ -1928,14 +1938,14 @@ msgstr ""
 "a felhasználó umask értékének alkalmazása a jogosultságok kibontásakor az "
 "archívumból (alapértelmezett az egyszerű felhasználók számára)"
 
-#: src/tar.c:541
+#: src/tar.c:587
 msgid ""
 "member arguments are listed in the same order as the files in the archive"
 msgstr ""
 "a tagargumentumok ugyanabban a sorrendben kerülnek felsorolásra, mint az "
 "archívum fájljai"
 
-#: src/tar.c:545
+#: src/tar.c:591
 msgid ""
 "delay setting modification times and permissions of extracted directories "
 "until the end of extraction"
@@ -1943,191 +1953,191 @@ msgstr ""
 "kibontott könyvtárak módosítási idői és jogosultságai beállításának "
 "késleltetése a kibontás befejeztéig"
 
-#: src/tar.c:548
+#: src/tar.c:594
 msgid "cancel the effect of --delay-directory-restore option"
 msgstr "a --delay-directory-restore kapcsoló hatásának megszüntetése"
 
-#: src/tar.c:549
+#: src/tar.c:595
 msgid "ORDER"
 msgstr "SORREND"
 
-#: src/tar.c:551
+#: src/tar.c:597
 msgid "directory sorting order: none (default), name or inode"
 msgstr "könyvtárrendezési sorrend: nincs (alapértelmezett), név vagy inode"
 
-#: src/tar.c:553
+#: src/tar.c:599
 msgid "directory sorting order: none (default) or name"
 msgstr "könyvtárrendezési sorrend: nincs (alapértelmezett) vagy név"
 
-#: src/tar.c:560
+#: src/tar.c:604
 msgid "Handling of extended file attributes:"
 msgstr "Kiterjesztett fájlattribútumok kezelése:"
 
-#: src/tar.c:563
+#: src/tar.c:607
 msgid "Enable extended attributes support"
 msgstr "Kiterjesztett attribútumok támogatásának engedélyezése"
 
-#: src/tar.c:565
+#: src/tar.c:609
 msgid "Disable extended attributes support"
 msgstr "Kiterjesztett attribútumok támogatásának kikapcsolása"
 
-#: src/tar.c:566 src/tar.c:568
+#: src/tar.c:610 src/tar.c:612
 msgid "MASK"
 msgstr "MASZK"
 
-#: src/tar.c:567
+#: src/tar.c:611
 msgid "specify the include pattern for xattr keys"
 msgstr "Adja meg az xattr kulcsok felvételi mintáját"
 
-#: src/tar.c:569
+#: src/tar.c:613
 msgid "specify the exclude pattern for xattr keys"
 msgstr "Adja meg az xattr kulcsok kihagyási mintáját"
 
-#: src/tar.c:571
+#: src/tar.c:615
 msgid "Enable the SELinux context support"
 msgstr "A SELinux kontextustámogatás bekapcsolása"
 
-#: src/tar.c:573
+#: src/tar.c:617
 msgid "Disable the SELinux context support"
 msgstr "A SELinux kontextustámogatás kikapcsolása"
 
-#: src/tar.c:575
+#: src/tar.c:619
 msgid "Enable the POSIX ACLs support"
 msgstr "A POSIX ACL-ek támogatásának bekapcsolása"
 
-#: src/tar.c:577
+#: src/tar.c:621
 msgid "Disable the POSIX ACLs support"
 msgstr "A POSIX ACL-ek támogatásának kikapcsolása"
 
-#: src/tar.c:582
+#: src/tar.c:624
 msgid "Device selection and switching:"
 msgstr "Eszköz kiválasztása és váltása:"
 
-#: src/tar.c:584
+#: src/tar.c:626
 msgid "ARCHIVE"
 msgstr "ARCHÍVUM"
 
-#: src/tar.c:585
+#: src/tar.c:627
 msgid "use archive file or device ARCHIVE"
 msgstr "az ARCHÍVUM archívumfájl vagy -eszköz használata"
 
-#: src/tar.c:587
-msgid "archive file is local even if it has a colon"
-msgstr "az archívumfájl helyi, még ha tartalmaz is kettőspontot"
-
-#: src/tar.c:589
-msgid "use given rmt COMMAND instead of rmt"
-msgstr "az adott rmt PARANCS használata az rmt helyett"
-
-#: src/tar.c:591
-msgid "use remote COMMAND instead of rsh"
-msgstr "a távoli PARANCS használata az rsh helyett"
-
-#: src/tar.c:595
+#: src/tar.c:631
 msgid "specify drive and density"
 msgstr "meghajtó és sűrűség megadása"
 
-#: src/tar.c:609
+#: src/tar.c:645
+msgid "archive file is local even if it has a colon"
+msgstr "az archívumfájl helyi, még ha tartalmaz is kettőspontot"
+
+#: src/tar.c:648
+msgid "use given rmt COMMAND instead of rmt"
+msgstr "az adott rmt PARANCS használata az rmt helyett"
+
+#: src/tar.c:651
+msgid "use remote COMMAND instead of rsh"
+msgstr "a távoli PARANCS használata az rsh helyett"
+
+#: src/tar.c:655
 msgid "create/list/extract multi-volume archive"
 msgstr "többkötetes archívum létrehozása/listázása/kibontása"
 
-#: src/tar.c:611
+#: src/tar.c:658
 msgid "change tape after writing NUMBER x 1024 bytes"
 msgstr "szalagváltás a SZÁM x 1024 bájt kiírása után"
 
-#: src/tar.c:613
+#: src/tar.c:661
 msgid "run script at end of each tape (implies -M)"
 msgstr "parancsfájl futtatása minden egyes szalag végén (-M esetén)"
 
-#: src/tar.c:616
+#: src/tar.c:665
 msgid "use/update the volume number in FILE"
 msgstr "a FÁJLBAN található számú kötet használata/frissítése"
 
-#: src/tar.c:621
+#: src/tar.c:669
 msgid "Device blocking:"
 msgstr "Eszközblokkolás:"
 
-#: src/tar.c:623
+#: src/tar.c:671
 msgid "BLOCKS"
 msgstr "BLOKK"
 
-#: src/tar.c:624
+#: src/tar.c:672
 msgid "BLOCKS x 512 bytes per record"
 msgstr "rekordonként BLOKK x 512 bájt"
 
-#: src/tar.c:626
+#: src/tar.c:674
 msgid "NUMBER of bytes per record, multiple of 512"
 msgstr "SZÁM bájt rekordonként, az 512 többszöröse"
 
-#: src/tar.c:628
+#: src/tar.c:676
 msgid "ignore zeroed blocks in archive (means EOF)"
 msgstr "nullázott blokkok (EOF) mellőzése az archívumban"
 
-#: src/tar.c:630
+#: src/tar.c:678
 msgid "reblock as we read (for 4.2BSD pipes)"
 msgstr "újrablokkolás olvasáskor (4.2BSD csövekhez)"
 
-#: src/tar.c:635
+#: src/tar.c:681
 msgid "Archive format selection:"
 msgstr "Archívumformátum kiválasztása:"
 
-#: src/tar.c:637 tests/genfile.c:153
+#: src/tar.c:683 tests/genfile.c:155
 msgid "FORMAT"
 msgstr "FORMÁTUM"
 
-#: src/tar.c:638
+#: src/tar.c:684
 msgid "create archive of the given format"
 msgstr "az adott formátumú archívum létrehozása"
 
-#: src/tar.c:640
+#: src/tar.c:686
 msgid "FORMAT is one of the following:"
 msgstr "A FORMÁTUM a következők egyike:"
 
-#: src/tar.c:641
+#: src/tar.c:687
 msgid "old V7 tar format"
 msgstr "régi V7 tar formátum"
 
-#: src/tar.c:644
+#: src/tar.c:690
 msgid "GNU format as per tar <= 1.12"
 msgstr "A tar <= 1.12 által használt GNU formátum"
 
-#: src/tar.c:646
+#: src/tar.c:692
 msgid "GNU tar 1.13.x format"
 msgstr "GNU tar 1.13.x formátum"
 
-#: src/tar.c:648
+#: src/tar.c:694
 msgid "POSIX 1003.1-1988 (ustar) format"
 msgstr "POSIX 1003.1-1988 (ustar) formátum"
 
-#: src/tar.c:650
+#: src/tar.c:696
 msgid "POSIX 1003.1-2001 (pax) format"
 msgstr "POSIX 1003.1-2001 (pax) formátum"
 
-#: src/tar.c:651
+#: src/tar.c:697
 msgid "same as pax"
 msgstr "azonos a pax formátummal"
 
-#: src/tar.c:654
+#: src/tar.c:701
 msgid "same as --format=v7"
 msgstr "azonos a --format=v7 formátummal"
 
-#: src/tar.c:657
+#: src/tar.c:704
 msgid "same as --format=posix"
 msgstr "azonos a --format=posix formátummal"
 
-#: src/tar.c:658
+#: src/tar.c:705
 msgid "keyword[[:]=value][,keyword[[:]=value]]..."
 msgstr "kulcsszó[[:]=érték][,kulcsszó[[:]=érték]..."
 
-#: src/tar.c:659
+#: src/tar.c:706
 msgid "control pax keywords"
 msgstr "a pax kulcsszavak irányítása"
 
-#: src/tar.c:660
+#: src/tar.c:707
 msgid "TEXT"
 msgstr "SZÖVEG"
 
-#: src/tar.c:661
+#: src/tar.c:708
 msgid ""
 "create archive with volume name TEXT; at list/extract time, use TEXT as a "
 "globbing pattern for volume name"
@@ -2135,84 +2145,84 @@ msgstr ""
 "archívum létrehozása a SZÖVEG kötetnévvel. Listázáskor vagy kibontáskor "
 "használja a kötetnév keresési mintájaként a SZÖVEGET"
 
-#: src/tar.c:666
+#: src/tar.c:712
 msgid "Compression options:"
 msgstr "Tömörítési kapcsolók:"
 
-#: src/tar.c:668
+#: src/tar.c:714
 msgid "use archive suffix to determine the compression program"
 msgstr "archívum kiterjesztésének használata a tömörítőprogram meghatározására"
 
-#: src/tar.c:670
+#: src/tar.c:717
 msgid "do not use archive suffix to determine the compression program"
 msgstr ""
 "ne használja az archívum kiterjesztését a tömörítőprogram meghatározására"
 
-#: src/tar.c:672
+#: src/tar.c:719
 msgid "PROG"
 msgstr "PROG"
 
-#: src/tar.c:673
+#: src/tar.c:720
 msgid "filter through PROG (must accept -d)"
 msgstr "tömörítése a PROG használatával (el kell fogadnia a -d kapcsolót)"
 
-#: src/tar.c:690
+#: src/tar.c:735
 msgid "Local file selection:"
 msgstr "Helyi fájlválasztás:"
 
-#: src/tar.c:692
+#: src/tar.c:737
 msgid "stay in local file system when creating archive"
 msgstr "az archívum létrehozásakor maradjon a helyi fájlrendszeren"
 
-#: src/tar.c:694
+#: src/tar.c:739
 msgid "don't strip leading '/'s from file names"
 msgstr "ne vágja le a kezdő „/” jelet a fájlnevekből"
 
-#: src/tar.c:696
+#: src/tar.c:741
 msgid "follow symlinks; archive and dump the files they point to"
 msgstr ""
 "szimbolikus linkek követése; az általuk mutatott fájlok archiválása és "
 "kiíratása"
 
-#: src/tar.c:698
+#: src/tar.c:744
 msgid "follow hard links; archive and dump the files they refer to"
 msgstr ""
 "közvetlen linkek követése; az általuk mutatott fájlok archiválása és "
 "kiíratása"
 
-#: src/tar.c:699
+#: src/tar.c:746
 msgid "MEMBER-NAME"
 msgstr "TAGNÉV"
 
-#: src/tar.c:700
+#: src/tar.c:747
 msgid "begin at member MEMBER-NAME when reading the archive"
 msgstr "kezdés a TAGNÉV tagnál az archívum olvasásakor"
 
-#: src/tar.c:702
+#: src/tar.c:750
 msgid "only store files newer than DATE-OR-FILE"
 msgstr "csak a DÁTUM-VAGY-FÁJL dátumnál újabb fájlok tárolása"
 
-#: src/tar.c:704
+#: src/tar.c:752
 msgid "DATE"
 msgstr "DÁTUM"
 
-#: src/tar.c:705
+#: src/tar.c:753
 msgid "compare date and time when data changed only"
 msgstr "dátum és idő összehasonlítása ha csak a dátum módosult"
 
-#: src/tar.c:706
+#: src/tar.c:754
 msgid "CONTROL"
 msgstr "FELÜGYELET"
 
-#: src/tar.c:707
+#: src/tar.c:755
 msgid "backup before removal, choose version CONTROL"
 msgstr "mentés eltávolítás előtt, a FELÜGYELET verzió kiválasztása"
 
-#: src/tar.c:708 src/tar.c:767 src/tar.c:769 tests/genfile.c:169
+#: src/tar.c:756 src/tar.c:806 src/tar.c:808 tests/genfile.c:171
 msgid "STRING"
 msgstr "KARAKTERLÁNC"
 
-#: src/tar.c:709
+#: src/tar.c:757
 msgid ""
 "backup before removal, override usual suffix ('~' unless overridden by "
 "environment variable SIMPLE_BACKUP_SUFFIX)"
@@ -2220,62 +2230,50 @@ msgstr ""
 "mentés eltávolítás előtt, a szokásos utótag („~”, hacsak a "
 "SIMPLE_BACKUP_SUFFIX környezeti változó nem bírálja felül) felülbírálása"
 
-#: src/tar.c:714
+#: src/tar.c:761
 msgid "File name transformations:"
 msgstr "Fájlnév-átalakítások:"
 
-#: src/tar.c:716
+#: src/tar.c:763
 msgid "strip NUMBER leading components from file names on extraction"
 msgstr "a fájlnevek SZÁM darab kezdő összetevőjének levágása kibontáskor"
 
-#: src/tar.c:718
+#: src/tar.c:765
 msgid "EXPRESSION"
 msgstr "KIFEJEZÉS"
 
-#: src/tar.c:719
+#: src/tar.c:766
 msgid "use sed replace EXPRESSION to transform file names"
 msgstr ""
 "A KIFEJEZÉS sed helyettesítőkifejezés használata fájlnevek átalakítására"
 
-#: src/tar.c:725
+#: src/tar.c:771
 msgid "Informative output:"
 msgstr "Informatív kimenet:"
 
-#: src/tar.c:728
-msgid "verbosely list files processed"
-msgstr "feldolgozott fájlok bőbeszédű listázása"
-
-#: src/tar.c:729
-msgid "KEYWORD"
-msgstr "KULCSSZÓ"
-
-#: src/tar.c:730
-msgid "warning control"
-msgstr "figyelmeztetés felügyelete"
-
-#: src/tar.c:732
+#: src/tar.c:774
 msgid "display progress messages every NUMBERth record (default 10)"
 msgstr ""
 "előrehaladási üzenetek megjelenítése minden SZÁM. rekordnál (alapértelmezés: "
 "10)"
 
-#: src/tar.c:734
+#: src/tar.c:776
 msgid "ACTION"
 msgstr "MŰVELET"
 
-#: src/tar.c:735
+#: src/tar.c:777
 msgid "execute ACTION on each checkpoint"
 msgstr "a MŰVELET végrehajtása minden ellenőrzőponton"
 
-#: src/tar.c:738
+#: src/tar.c:780
 msgid "print a message if not all links are dumped"
 msgstr "üzenet kiírása, ha nem minden link került kiíratásra"
 
-#: src/tar.c:739
+#: src/tar.c:781
 msgid "SIGNAL"
 msgstr "SZIGNÁL"
 
-#: src/tar.c:740
+#: src/tar.c:782
 msgid ""
 "print total bytes after processing the archive; with an argument - print "
 "total bytes when this SIGNAL is delivered; Allowed signals are: SIGHUP, "
@@ -2287,35 +2285,31 @@ msgstr ""
 "Az engedélyezett szignálok: SIGHUP, SIGQUIT, SIGINT, SIGUSR1 és SIGUSR2; a "
 "SIG előtag nélküli nevek is elfogadottak"
 
-#: src/tar.c:745
+#: src/tar.c:787
 msgid "print file modification times in UTC"
 msgstr "a fájlmódosítási idők kiírása UTC szerint"
 
-#: src/tar.c:747
+#: src/tar.c:789
 msgid "print file time to its full resolution"
 msgstr "fájl módosítási idejének kiírása teljes pontossággal"
 
-#: src/tar.c:749
+#: src/tar.c:791
 msgid "send verbose output to FILE"
 msgstr "bőbeszédű kimenet küldése a FÁJLBA"
 
-#: src/tar.c:751
+#: src/tar.c:793
 msgid "show block number within archive with each message"
 msgstr "az archívumon belüli blokkszám megjelenítése minden egyes üzenettel"
 
-#: src/tar.c:753
-msgid "ask for confirmation for every action"
-msgstr "megerősítés kérése minden egyes művelethez"
-
-#: src/tar.c:756
+#: src/tar.c:795
 msgid "show tar defaults"
 msgstr "a tar alapértelmezéseinek megjelenítése"
 
-#: src/tar.c:758
+#: src/tar.c:797
 msgid "show valid ranges for snapshot-file fields"
 msgstr "érvényes tartományok megjelenítése a pillanatkép-fájl mezőkhöz"
 
-#: src/tar.c:760
+#: src/tar.c:799
 msgid ""
 "when listing or extracting, list each directory that does not match search "
 "criteria"
@@ -2323,31 +2317,47 @@ msgstr ""
 "listázáskor vagy kibontáskor minden egyes, a keresési feltételnek meg nem "
 "felelő könyvtár listázása"
 
-#: src/tar.c:762
+#: src/tar.c:801
 msgid "show file or archive names after transformation"
 msgstr "fájl- vagy archívumnevek megjelenítése átalakítás után"
 
-#: src/tar.c:765
+#: src/tar.c:804
 msgid "STYLE"
 msgstr "STÍLUS"
 
-#: src/tar.c:766
+#: src/tar.c:805
 msgid "set name quoting style; see below for valid STYLE values"
 msgstr "az idézési stílus beállítása, az érvényes STÍLUS értékeket lásd alább"
 
-#: src/tar.c:768
+#: src/tar.c:807
 msgid "additionally quote characters from STRING"
 msgstr "a KARAKTERLÁNCBÓL származó karakterek kiegészítő idézése"
 
-#: src/tar.c:770
+#: src/tar.c:809
 msgid "disable quoting for characters from STRING"
 msgstr "a KARAKTERLÁNCBÓL származó karakterek idézésének letiltása"
 
-#: src/tar.c:775
+#: src/tar.c:811
+msgid "ask for confirmation for every action"
+msgstr "megerősítés kérése minden egyes művelethez"
+
+#: src/tar.c:814
+msgid "verbosely list files processed"
+msgstr "feldolgozott fájlok bőbeszédű listázása"
+
+#: src/tar.c:815
+msgid "KEYWORD"
+msgstr "KULCSSZÓ"
+
+#: src/tar.c:816
+msgid "warning control"
+msgstr "figyelmeztetés felügyelete"
+
+#: src/tar.c:819
 msgid "Compatibility options:"
 msgstr "Kompatibilitási kapcsolók:"
 
-#: src/tar.c:778
+#: src/tar.c:822
 msgid ""
 "when creating, same as --old-archive; when extracting, same as --no-same-"
 "owner"
@@ -2355,22 +2365,22 @@ msgstr ""
 "létrehozáskor megegyezik a --old-archive kapcsolóval; kibontáskor a --no-"
 "same-owner kapcsolóval"
 
-#: src/tar.c:783
+#: src/tar.c:825
 msgid "Other options:"
 msgstr "Egyéb kapcsolók:"
 
-#: src/tar.c:786
+#: src/tar.c:828
 msgid "disable use of some potentially harmful options"
 msgstr "néhány potenciálisan káros kapcsoló használatának letiltása"
 
 #. TRANSLATORS: Both %s in this statement are replaced with
 #. option names.
-#: src/tar.c:846
+#: src/tar.c:872
 #, c-format
 msgid "'%s' cannot be used with '%s'"
 msgstr "a(z) „%s” kapcsoló nem használható a következővel: „%s”"
 
-#: src/tar.c:934
+#: src/tar.c:960
 msgid ""
 "You may not specify more than one '-Acdtrux', '--delete' or  '--test-label' "
 "option"
@@ -2378,40 +2388,40 @@ msgstr ""
 "A következő kapcsolók közül egynél többet nem használhat: „-Acdtrux”, „--"
 "delete” vagy „--test-label”"
 
-#: src/tar.c:946
+#: src/tar.c:972
 msgid "Conflicting compression options"
 msgstr "A tömörítési kapcsolók ütköznek"
 
-#: src/tar.c:1000
+#: src/tar.c:1026
 #, c-format
 msgid "Unknown signal name: %s"
 msgstr "Ismeretlen szignálnév: %s"
 
-#: src/tar.c:1030
+#: src/tar.c:1056
 msgid "Date sample file not found"
 msgstr "A dátummintafájl nem található"
 
-#: src/tar.c:1038
+#: src/tar.c:1064
 #, c-format
 msgid "Substituting %s for unknown date format %s"
 msgstr "%s cseréje az ismeretlen %s dátumformátumhoz"
 
-#: src/tar.c:1067
+#: src/tar.c:1093
 #, c-format
 msgid "Option %s: Treating date '%s' as %s"
 msgstr "„%s” kapcsoló: A(z) „%s” dátum kezelése mint %s"
 
-#: src/tar.c:1107 src/tar.c:1111 src/tar.c:1115 src/tar.c:1119 src/tar.c:1123
-#: src/tar.c:1127 src/tar.c:1131 src/tar.c:1135
+#: src/tar.c:1133 src/tar.c:1137 src/tar.c:1141 src/tar.c:1145 src/tar.c:1149
+#: src/tar.c:1153 src/tar.c:1157 src/tar.c:1161
 #, c-format
 msgid "filter the archive through %s"
 msgstr "az archívum tömörítése a(z) %s használatával"
 
-#: src/tar.c:1143
+#: src/tar.c:1169
 msgid "Valid arguments for the --quoting-style option are:"
 msgstr "A --quoting-style kapcsoló érvényes paraméterei:"
 
-#: src/tar.c:1147
+#: src/tar.c:1173
 msgid ""
 "\n"
 "*This* tar defaults to:\n"
@@ -2419,164 +2429,164 @@ msgstr ""
 "\n"
 "*Ezen* tar alapértelmezései:\n"
 
-#: src/tar.c:1259
+#: src/tar.c:1285
 msgid "Invalid owner or group ID"
 msgstr "Érvénytelen tulajdonos- vagy csoportazonosító"
 
-#: src/tar.c:1353
+#: src/tar.c:1388
 msgid "Invalid blocking factor"
 msgstr "Érvénytelen blokkolási tényező"
 
-#: src/tar.c:1472
-msgid "Invalid tape length"
-msgstr "Érvénytelen szalagméret"
-
-#: src/tar.c:1486
-msgid "Invalid incremental level value"
-msgstr "Hibás növekményszintérték"
-
-#: src/tar.c:1532
-msgid "More than one threshold date"
-msgstr "Egynél több küszöbdátum"
-
-#: src/tar.c:1599 src/tar.c:1602
-msgid "Invalid sparse version value"
-msgstr "Érvénytelen ritka verzió érték"
-
-#: src/tar.c:1670
-msgid "--atime-preserve='system' is not supported on this platform"
-msgstr ""
-"Az --atime-preserve='system' nem támogatott ezen az operációs rendszeren"
-
-#: src/tar.c:1695
-msgid "--checkpoint value is not an integer"
-msgstr "A --checkpoint értéke nem egy egész"
-
-#: src/tar.c:1773
-msgid "Invalid mode given on option"
-msgstr "Érvénytelen mód került megadásra a kapcsolóban"
-
-#: src/tar.c:1806
-msgid "Invalid number"
-msgstr "Érvénytelen szám"
-
-#: src/tar.c:1870
-msgid "Invalid record size"
-msgstr "Érvénytelen rekordméret"
-
-#: src/tar.c:1873
-#, c-format
-msgid "Record size must be a multiple of %d."
-msgstr "A rekordméretnek %d többszörösének kell lennie."
-
-#: src/tar.c:1919
-msgid "Invalid number of elements"
-msgstr "Érvénytelen elemszám"
-
-#: src/tar.c:1944
-msgid "Only one --to-command option allowed"
-msgstr "Csak egy --to-command kapcsoló engedélyezett"
-
-#: src/tar.c:2032
+#: src/tar.c:1449
 #, c-format
 msgid "Malformed density argument: %s"
 msgstr "Rosszul formázott sűrűségargumentum: %s"
 
-#: src/tar.c:2058
+#: src/tar.c:1475
 #, c-format
 msgid "Unknown density: '%c'"
 msgstr "Ismeretlen sűrűség: „%c”"
 
-#: src/tar.c:2075
+#: src/tar.c:1492
 #, c-format
 msgid "Options '-[0-7][lmh]' not supported by *this* tar"
 msgstr "A „-[0-7][lmh]” kapcsolókat *ez* a tar NEM támogatja"
 
-#: src/tar.c:2082
+#: src/tar.c:1573
+msgid "Invalid tape length"
+msgstr "Érvénytelen szalagméret"
+
+#: src/tar.c:1587
+msgid "Invalid incremental level value"
+msgstr "Hibás növekményszintérték"
+
+#: src/tar.c:1633
+msgid "More than one threshold date"
+msgstr "Egynél több küszöbdátum"
+
+#: src/tar.c:1700 src/tar.c:1703
+msgid "Invalid sparse version value"
+msgstr "Érvénytelen ritka verzió érték"
+
+#: src/tar.c:1779
+msgid "--atime-preserve='system' is not supported on this platform"
+msgstr ""
+"Az --atime-preserve='system' nem támogatott ezen az operációs rendszeren"
+
+#: src/tar.c:1804
+msgid "--checkpoint value is not an integer"
+msgstr "A --checkpoint értéke nem egy egész"
+
+#: src/tar.c:1882
+msgid "Invalid mode given on option"
+msgstr "Érvénytelen mód került megadásra a kapcsolóban"
+
+#: src/tar.c:1915
+msgid "Invalid number"
+msgstr "Érvénytelen szám"
+
+#: src/tar.c:1979
+msgid "Invalid record size"
+msgstr "Érvénytelen rekordméret"
+
+#: src/tar.c:1982
+#, c-format
+msgid "Record size must be a multiple of %d."
+msgstr "A rekordméretnek %d többszörösének kell lennie."
+
+#: src/tar.c:2028
+msgid "Invalid number of elements"
+msgstr "Érvénytelen elemszám"
+
+#: src/tar.c:2053
+msgid "Only one --to-command option allowed"
+msgstr "Csak egy --to-command kapcsoló engedélyezett"
+
+#: src/tar.c:2118
 #, c-format
 msgid "%s:%lu: location of the error"
 msgstr "%s:%lu: a hiba helye"
 
-#: src/tar.c:2085
+#: src/tar.c:2121
 #, c-format
 msgid "error parsing %s"
 msgstr "hiba a(z) „%s” elemzésekor"
 
-#: src/tar.c:2099
+#: src/tar.c:2139
 msgid "[FILE]..."
 msgstr "[FÁJL]..."
 
-#: src/tar.c:2190
-#, c-format
-msgid "non-option arguments in %s"
-msgstr "nem kapcsoló argumentumok ebben: %s"
-
-#: src/tar.c:2205
+#: src/tar.c:2240
 #, c-format
 msgid "cannot split TAR_OPTIONS: %s"
 msgstr "nem darabolható a TAR_OPTIONS: %s"
 
-#: src/tar.c:2300
+#: src/tar.c:2255
+#, c-format
+msgid "non-option arguments in %s"
+msgstr "nem kapcsoló argumentumok ebben: %s"
+
+#: src/tar.c:2343
 #, c-format
 msgid "Old option '%c' requires an argument."
 msgstr "A régi „%c” kapcsoló paramétert igényel."
 
-#: src/tar.c:2373
+#: src/tar.c:2415
 msgid "--occurrence is meaningless without a file list"
 msgstr "a --occurrence értelmetlen fájllista nélkül"
 
-#: src/tar.c:2399
+#: src/tar.c:2441
 msgid "Multiple archive files require '-M' option"
 msgstr "Több archívumfájl esetén szükséges a „-M” kapcsoló"
 
-#: src/tar.c:2416
+#: src/tar.c:2458
 msgid "--level is meaningless without --listed-incremental"
 msgstr "a --level értelmetlen a --listed-incremental nélkül"
 
-#: src/tar.c:2433
+#: src/tar.c:2475
 #, c-format
 msgid "%s: Volume label is too long (limit is %lu byte)"
 msgid_plural "%s: Volume label is too long (limit is %lu bytes)"
 msgstr[0] "%s: A kötetcímke túl hosszú (a korlát %lu bájt)"
 msgstr[1] "%s: A kötetcímke túl hosszú (a korlát %lu bájt)"
 
-#: src/tar.c:2446
+#: src/tar.c:2488
 msgid "Cannot verify multi-volume archives"
 msgstr "A többkötetes archívumok nem ellenőrizhetők"
 
-#: src/tar.c:2448
+#: src/tar.c:2490
 msgid "Cannot verify compressed archives"
 msgstr "A tömörített archívumok nem ellenőrizhetők"
 
-#: src/tar.c:2462
+#: src/tar.c:2504
 msgid "Cannot use multi-volume compressed archives"
 msgstr "Nem használhatók többkötetes tömörített archívumok"
 
-#: src/tar.c:2466
+#: src/tar.c:2508
 msgid "Cannot concatenate compressed archives"
 msgstr "Tömörített archívumok nem fűzhetők össze"
 
-#: src/tar.c:2473
+#: src/tar.c:2515
 msgid "--clamp-mtime needs a date specified using --mtime"
 msgstr "a --clamp-mtime egy, a --mtime használatával megadott dátumot igényel"
 
-#: src/tar.c:2483
+#: src/tar.c:2525
 msgid "--pax-option can be used only on POSIX archives"
 msgstr "a --pax kapcsoló csak POSIX archívumokon használható"
 
-#: src/tar.c:2490
+#: src/tar.c:2532
 msgid "--acls can be used only on POSIX archives"
 msgstr "a --acls kapcsoló csak POSIX archívumokon használható"
 
-#: src/tar.c:2495
+#: src/tar.c:2537
 msgid "--selinux can be used only on POSIX archives"
 msgstr "a --selinux kapcsoló csak POSIX archívumokon használható"
 
-#: src/tar.c:2500
+#: src/tar.c:2542
 msgid "--xattrs can be used only on POSIX archives"
 msgstr "a --xattrs kapcsoló csak POSIX archívumokon használható"
 
-#: src/tar.c:2549
+#: src/tar.c:2591
 msgid ""
 "Cannot deduce top-level directory name; please set it explicitly with --one-"
 "top-level=DIR"
@@ -2584,26 +2594,26 @@ msgstr ""
 "Nem lehet kikövetkeztetni a felsőszintű könyvtár nevét; állítsa be világosan "
 "a --one-top-level=KVT kapcsolóval"
 
-#: src/tar.c:2582
+#: src/tar.c:2624
 msgid "Volume length cannot be less than record size"
 msgstr "A kötet hossza nem lehet kisebb a rekord méreténél"
 
-#: src/tar.c:2606
+#: src/tar.c:2648
 msgid "Cowardly refusing to create an empty archive"
 msgstr "Üres archívum létrehozása visszautasítva"
 
-#: src/tar.c:2632
+#: src/tar.c:2674
 msgid "Options '-Aru' are incompatible with '-f -'"
 msgstr "Az „-Aru” kapcsolók összeférhetetlenek a „-f -” kapcsolóval"
 
-#: src/tar.c:2743
+#: src/tar.c:2785
 msgid ""
 "You must specify one of the '-Acdtrux', '--delete' or '--test-label' options"
 msgstr ""
 "Meg kell adnia a következő kapcsolók egyikét: „-Acdtrux”, „--delete” vagy „--"
 "test-label”"
 
-#: src/tar.c:2800
+#: src/tar.c:2842
 #, c-format
 msgid "Exiting with failure status due to previous errors"
 msgstr "Kilépés hibaállapottal a korábbi hibák miatt"
@@ -2639,69 +2649,69 @@ msgstr "A(z) %s minta nem használható"
 msgid "Keyword %s cannot be overridden"
 msgstr "A(z) %s minta nem bírálható felül"
 
-#: src/xheader.c:476
+#: src/xheader.c:493
 msgid "can't update global extended header record"
 msgstr ""
 
-#: src/xheader.c:686
+#: src/xheader.c:703
 msgid "Malformed extended header: missing length"
 msgstr "Rosszul formázott kiterjesztett fejléc: a hossz hiányzik"
 
-#: src/xheader.c:695
+#: src/xheader.c:712
 #, c-format
 msgid "Extended header length %*s is out of range"
 msgstr "A kiterjesztett fejléc %*s hossza kívül esik a tartományon"
 
-#: src/xheader.c:707
+#: src/xheader.c:724
 msgid "Malformed extended header: missing blank after length"
 msgstr ""
 "Rosszul formázott kiterjesztett fejléc: a hossz után hiányzik egy üres hely "
 "karakter"
 
-#: src/xheader.c:715
+#: src/xheader.c:732
 msgid "Malformed extended header: missing equal sign"
 msgstr "A kiterjesztett fejléc hibás: egy egyenlőségjel hiányzik"
 
-#: src/xheader.c:721
+#: src/xheader.c:738
 msgid "Malformed extended header: missing newline"
 msgstr "Rosszul formázott kiterjesztett fejléc: az újsor hiányzik"
 
-#: src/xheader.c:759
+#: src/xheader.c:776
 #, c-format
 msgid "Ignoring unknown extended header keyword '%s'"
 msgstr ""
 "A(z) „%s” ismeretlen kiterjesztett fejléc kulcsszó figyelmen kívül marad"
 
-#: src/xheader.c:1041
+#: src/xheader.c:1058
 #, c-format
 msgid "Generated keyword/value pair is too long (keyword=%s, length=%s)"
 msgstr "Az előállított kulcsszó/érték pár túl hosszú (kulcsszó: %s, hossz: %s)"
 
 #. TRANSLATORS: The first %s is the pax extended header keyword
 #. (atime, gid, etc.).
-#: src/xheader.c:1071
+#: src/xheader.c:1088
 #, c-format
 msgid "Extended header %s=%s is out of range %s..%s"
 msgstr "A kiterjesztett fejléc %s=%s értéke túllépi a(z) %s..%s tartományát"
 
-#: src/xheader.c:1122 src/xheader.c:1155 src/xheader.c:1505
+#: src/xheader.c:1139 src/xheader.c:1172 src/xheader.c:1522
 #, c-format
 msgid "Malformed extended header: invalid %s=%s"
 msgstr "Rosszul formázott kiterjesztett fejléc: érvénytelen %s=%s"
 
-#: src/xheader.c:1458 src/xheader.c:1483 src/xheader.c:1538
+#: src/xheader.c:1475 src/xheader.c:1500 src/xheader.c:1555
 #, c-format
 msgid "Malformed extended header: excess %s=%s"
 msgstr "Rosszul formázott kiterjesztett fejléc: többlet %s=%s"
 
-#: src/xheader.c:1551
+#: src/xheader.c:1568
 #, c-format
 msgid "Malformed extended header: invalid %s: unexpected delimiter %c"
 msgstr ""
 "Rosszul formázott kiterjesztett fejléc: érvénytelen %s: váratlan határoló "
 "(%c)"
 
-#: src/xheader.c:1561
+#: src/xheader.c:1578
 #, c-format
 msgid "Malformed extended header: invalid %s: odd number of values"
 msgstr ""
@@ -2744,7 +2754,7 @@ msgstr "%u. írási ellenőrzőpont"
 msgid "Read checkpoint %u"
 msgstr "%u. olvasási ellenőrzőpont"
 
-#: tests/genfile.c:110
+#: tests/genfile.c:112
 msgid ""
 "genfile manipulates data files for GNU paxutils test suite.\n"
 "OPTIONS are:\n"
@@ -2752,76 +2762,76 @@ msgstr ""
 "a genfiles adatfájlokat kezel a GNU paxutils tesztcsomag számára.\n"
 "A KAPCSOLÓK:\n"
 
-#: tests/genfile.c:126
+#: tests/genfile.c:128
 msgid "File creation options:"
 msgstr "Fájllétrehozási kapcsolók:"
 
-#: tests/genfile.c:127 tests/genfile.c:138
+#: tests/genfile.c:129 tests/genfile.c:140
 msgid "SIZE"
 msgstr "MÉRET"
 
-#: tests/genfile.c:128
+#: tests/genfile.c:130
 msgid "Create file of the given SIZE"
 msgstr "Az adott MÉRETŰ fájl létrehozása"
 
-#: tests/genfile.c:130
+#: tests/genfile.c:132
 msgid "Write to file NAME, instead of standard output"
 msgstr "Írás a NÉV nevű fájlba a szabványos kimenet helyett"
 
-#: tests/genfile.c:132
+#: tests/genfile.c:134
 msgid "Read file names from FILE"
 msgstr "Fájlnevek beolvasása a FÁJLBÓL"
 
-#: tests/genfile.c:134
+#: tests/genfile.c:136
 msgid "-T reads null-terminated names"
 msgstr "a -T nullal lezárt neveket olvas"
 
-#: tests/genfile.c:136
+#: tests/genfile.c:138
 msgid "Fill the file with the given PATTERN. PATTERN is 'default' or 'zeros'"
 msgstr ""
 "A fájl feltöltése az adott MINTÁVAL. A MINTA a 'default' (alapértelmezett) "
 "vagy 'zeros' (nullák) egyike"
 
-#: tests/genfile.c:139
+#: tests/genfile.c:141
 msgid "Size of a block for sparse file"
 msgstr "Egy blokk mérete ritka fájlhoz"
 
-#: tests/genfile.c:141
+#: tests/genfile.c:143
 msgid "Generate sparse file. Rest of the command line gives the file map."
 msgstr ""
 "Ritka fájl előállítása. A parancssor többi része megadja a fájlleképezést."
 
-#: tests/genfile.c:143
+#: tests/genfile.c:145
 msgid "OFFSET"
 msgstr "ELTOLÁS"
 
-#: tests/genfile.c:144
+#: tests/genfile.c:146
 msgid "Seek to the given offset before writing data"
 msgstr "Az adott eltolásra pozicionálás az adatok kiírása előtt"
 
-#: tests/genfile.c:147
+#: tests/genfile.c:149
 msgid "Suppress non-fatal diagnostic messages"
 msgstr "Nem végzetes diagnosztikai üzenetek elnyomása"
 
-#: tests/genfile.c:151
+#: tests/genfile.c:153
 msgid "File statistics options:"
 msgstr "Fájlstatisztika kapcsolói:"
 
-#: tests/genfile.c:154
+#: tests/genfile.c:156
 msgid "Print contents of struct stat for each given file. Default FORMAT is: "
 msgstr ""
 "A stat struktúra tartalmának kiírása minden egyes megadott fájlhoz. Az "
 "alapértelmezett FORMÁTUM: "
 
-#: tests/genfile.c:161
+#: tests/genfile.c:163
 msgid "Synchronous execution options:"
 msgstr "Szinkron végrehajtási kapcsolók:"
 
-#: tests/genfile.c:163
+#: tests/genfile.c:165
 msgid "N"
 msgstr ""
 
-#: tests/genfile.c:164
+#: tests/genfile.c:166
 #, fuzzy
 #| msgid ""
 #| "Execute ARGS. Useful with --checkpoint and one of --cut, --append, --"
@@ -2833,22 +2843,22 @@ msgstr ""
 "Az adott ARGS végrehajtása. Hasznos a --checkpoint és a --cut, --append, --"
 "touch vagy --unlink egyikével"
 
-#: tests/genfile.c:167
+#: tests/genfile.c:169
 msgid "Perform given action (see below) upon reaching checkpoint NUMBER"
 msgstr ""
 "Az adott művelet (lásd alább) végrehajtása a SZÁM-adik ellenőrzőpont elérése "
 "után"
 
-#: tests/genfile.c:170
+#: tests/genfile.c:172
 msgid "Set date for next --touch option"
 msgstr "Dátum beállítása a következő --touch kapcsoló számára"
 
-#: tests/genfile.c:173
+#: tests/genfile.c:175
 msgid "Display executed checkpoints and exit status of COMMAND"
 msgstr ""
 "Végrehajtott ellenőrzőpontok és a PARANCS kilépési állapotának megjelenítése"
 
-#: tests/genfile.c:178
+#: tests/genfile.c:180
 msgid ""
 "Synchronous execution actions. These are executed when checkpoint number "
 "given by --checkpoint option is reached."
@@ -2856,7 +2866,7 @@ msgstr ""
 "Szinkron végrehajtási tevékenységek. Ezek a --checkpoint kapcsoló által "
 "megadott számú ellenőrzőpont elérésekor kerülnek végrehajtásra."
 
-#: tests/genfile.c:181
+#: tests/genfile.c:183
 msgid ""
 "Truncate FILE to the size specified by previous --length option (or 0, if it "
 "is not given)"
@@ -2864,164 +2874,167 @@ msgstr ""
 "A FÁJL csonkolása az előző --length kapcsoló által megadott méretre (vagy "
 "nullára, ha nincs megadva)"
 
-#: tests/genfile.c:185
+#: tests/genfile.c:187
 msgid "Append SIZE bytes to FILE. SIZE is given by previous --length option."
 msgstr ""
 "MÉRET bájt hozzáfűzése a FÁJLHOZ. A MÉRETET az előző --length kapcsoló adja "
 "meg."
 
-#: tests/genfile.c:188
+#: tests/genfile.c:190
 msgid "Update the access and modification times of FILE"
 msgstr "A FÁJL hozzáférési és módosítási idejének frissítése"
 
-#: tests/genfile.c:191
+#: tests/genfile.c:193
 msgid "Execute COMMAND"
 msgstr "A PARANCS végrehajtása"
 
-#: tests/genfile.c:194
+#: tests/genfile.c:196
 msgid "Delete FILE"
 msgstr "FÁJL törlése"
 
-#: tests/genfile.c:245
+#: tests/genfile.c:247
 #, c-format
 msgid "Invalid size: %s"
 msgstr "Érvénytelen méret: %s"
 
-#: tests/genfile.c:250
+#: tests/genfile.c:252
 #, c-format
 msgid "Number out of allowed range: %s"
 msgstr "A szám kívül esik az engedélyezett tartományon: %s"
 
-#: tests/genfile.c:253
+#: tests/genfile.c:255
 #, c-format
 msgid "Negative size: %s"
 msgstr "Negatív méret: %s"
 
-#: tests/genfile.c:266 tests/genfile.c:633
+#: tests/genfile.c:268 tests/genfile.c:635
 #, c-format
 msgid "stat(%s) failed"
 msgstr "a stat(%s) meghiúsult"
 
-#: tests/genfile.c:269
+#: tests/genfile.c:271
 #, c-format
 msgid "requested file length %lu, actual %lu"
 msgstr "a kért fájlhossz %lu, a tényleges %lu"
 
-#: tests/genfile.c:273
+#: tests/genfile.c:275
 #, c-format
 msgid "created file is not sparse"
 msgstr "a létrehozott fájl nem ritka"
 
-#: tests/genfile.c:366
+#: tests/genfile.c:368
 #, c-format
 msgid "Error parsing number near `%s'"
 msgstr "Hiba a(z) „%s” közelében található szám elemzésekor"
 
-#: tests/genfile.c:372
+#: tests/genfile.c:374
 #, c-format
 msgid "Unknown date format"
 msgstr "Ismeretlen dátumformátum"
 
-#: tests/genfile.c:396
+#: tests/genfile.c:398
 msgid "[ARGS...]"
 msgstr "[ARGUMENTUMOK...]"
 
-#: tests/genfile.c:433 tests/genfile.c:473 tests/genfile.c:574
-#: tests/genfile.c:737 tests/genfile.c:751
+#: tests/genfile.c:435 tests/genfile.c:475 tests/genfile.c:576
+#: tests/genfile.c:739 tests/genfile.c:753
 #, c-format
 msgid "cannot open `%s'"
 msgstr "a(z) „%s” nem nyitható meg"
 
-#: tests/genfile.c:439
+#: tests/genfile.c:441
 msgid "cannot seek"
 msgstr "Nem lehet pozicionálni"
 
-#: tests/genfile.c:456
+#: tests/genfile.c:458
 #, c-format
 msgid "file name contains null character"
 msgstr "a fájlnév null karaktert tartalmaz"
 
-#: tests/genfile.c:569
+#: tests/genfile.c:571
 #, c-format
 msgid "cannot generate sparse files on standard output, use --file option"
 msgstr ""
 "nem állíthatók elő ritka fájlok a szabványos kimeneten, használja a --file "
 "kapcsolót"
 
-#: tests/genfile.c:660
+#: tests/genfile.c:662
 #, c-format
 msgid "incorrect mask (near `%s')"
 msgstr "helytelen maszk (a(z) „%s” közelében)"
 
-#: tests/genfile.c:666 tests/genfile.c:699
+#: tests/genfile.c:668 tests/genfile.c:701
 #, c-format
 msgid "Unknown field `%s'"
 msgstr "Ismeretlen mező: „%s”"
 
-#: tests/genfile.c:726
+#: tests/genfile.c:728
 #, c-format
 msgid "cannot set time on `%s'"
 msgstr "nem állítható be az idő a következőn: „%s”"
 
-#: tests/genfile.c:756
+#: tests/genfile.c:758
 #, c-format
 msgid "cannot truncate `%s'"
 msgstr "a(z) „%s” nem csonkítható"
 
-#: tests/genfile.c:765
+#: tests/genfile.c:767
 #, c-format
 msgid "command failed: %s"
 msgstr "A(z) „%s” parancs meghiúsult"
 
-#: tests/genfile.c:772
+#: tests/genfile.c:774
 #, c-format
 msgid "cannot stat `%s'"
 msgstr "a(z) „%s” nem érhető el"
 
-#: tests/genfile.c:776
+#: tests/genfile.c:778
 #, c-format
 msgid "cannot remove directory `%s'"
 msgstr "a(z) „%s” könyvtár nem távolítható el"
 
-#: tests/genfile.c:779
+#: tests/genfile.c:781
 #, c-format
 msgid "cannot unlink `%s'"
 msgstr "a(z) „%s” nem törölhető"
 
-#: tests/genfile.c:918
+#: tests/genfile.c:920
 #, c-format
 msgid "Command exited successfully\n"
 msgstr "A parancs sikeresen befejeződött\n"
 
-#: tests/genfile.c:920
+#: tests/genfile.c:922
 #, c-format
 msgid "Command failed with status %d\n"
 msgstr "A parancs meghiúsult a következő állapottal: %d\n"
 
-#: tests/genfile.c:924
+#: tests/genfile.c:926
 #, c-format
 msgid "Command terminated on signal %d\n"
 msgstr "A parancs befejeződött a következő szignállal: %d\n"
 
-#: tests/genfile.c:926
+#: tests/genfile.c:928
 #, c-format
 msgid "Command stopped on signal %d\n"
 msgstr "A parancs leállítva a következő szignállal: %d\n"
 
-#: tests/genfile.c:929
+#: tests/genfile.c:931
 #, c-format
 msgid "Command dumped core\n"
 msgstr "A parancs hibakeresési kimenetet adott vissza\n"
 
-#: tests/genfile.c:932
+#: tests/genfile.c:934
 #, c-format
 msgid "Command terminated\n"
 msgstr "A parancs befejeződött\n"
 
-#: tests/genfile.c:964
+#: tests/genfile.c:966
 #, c-format
 msgid "--stat requires file names"
 msgstr "a --stat fájlneveket igényel"
+
+#~ msgid "%s home page: <https://www.gnu.org/software/%s/>\n"
+#~ msgstr "A(z) %s honlapja: <https://www.gnu.org/software/%s/>\n"
 
 #~ msgid "OPTION"
 #~ msgstr "KAPCSOLÓ"
